@@ -20,11 +20,11 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static final class DriveConstants{
-    public static final int LeftMaster_ID = 1; //3
-    public static final int LeftSlave_ID = 2; //4
+    public static final int LeftMaster_ID = 9; //3
+    public static final int LeftSlave_ID = 8; //4
 
-    public static final int RightMaster_ID = 3; //1
-    public static final int RightSlave_ID = 4;  //2
+    public static final int RightMaster_ID = 7; //1
+    public static final int RightSlave_ID = 6;  //2
 
     public static final double kP = 0//3.9356
     ,  kI = 0
@@ -48,5 +48,24 @@ public final class Constants {
 
     public static final int Solenoid_Shifter_ID = 0;
 }
+public static final class ShooterConstants{
+  /** ---PROTOTYPE--- */
+  public static final byte FLY_WHEEL_LOWER_ID = 1; 
+  public static final byte FLY_WHEEL_UPPER_ID = 2;
+
+  public static double kP= 0,
+                       kI = 0,
+                       kD = 0,
+                       kIz = 0,
+                       kFF = 0,
+                       kMaxOutput = 0,
+                       kMinOutput = 0, 
+                       maxRPM = 0, 
+                       maxVel = 0, //---------
+                       minVel = 0, //---------
+                       maxAcc = 0, 
+                       allowedErr = 0;
 
 }
+}
+
