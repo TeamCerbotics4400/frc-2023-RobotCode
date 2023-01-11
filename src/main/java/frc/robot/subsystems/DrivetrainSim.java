@@ -8,12 +8,11 @@ import com.ctre.phoenix.motorcontrol.TalonSRXSimCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.ctre.phoenix.sensors.Pigeon2;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -25,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class DriveTrain extends SubsystemBase {
+public class DrivetrainSim extends SubsystemBase {
   /** Creates a new DriveTrain. */
   WPI_TalonSRX leftLeader = new WPI_TalonSRX(0);
   WPI_TalonSRX leftFollower = new WPI_TalonSRX(1);
@@ -60,7 +59,7 @@ public class DriveTrain extends SubsystemBase {
 
   BasePigeonSimCollection m_gyroSim;
 
-  public DriveTrain() {
+  public DrivetrainSim() {
     
     m_leftEncoder.setDistancePerPulse(0);
     m_rightEncoder.setDistancePerPulse(0);
@@ -136,8 +135,38 @@ public class DriveTrain extends SubsystemBase {
     
   }
 
+  public Encoder getLeftEncoder(){
+    return m_leftEncoder;
+  }
+
+  public Encoder getRightEncoder(){
+    return m_rightEncoder;
+  }
+
+  public double getAverangeEncoderDistance(){
+    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
+  }
+
   public void setMaxOutput(double maxOutput){
     m_drive.setMaxOutput(maxOutput);
   }
+
+  public double getDrawnCurrentAmps(){
+    return m_drivetrainSim.getCurrentDrawAmps();
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+  }
+
+  public void setTeleopControl(double speed, double turn){
+    double left = speed - turn;
+    double right = speed + turn;
+
+    leftLeader.set(left);
+    rightLeader.set(right);
+  }
+
+
 
 }
