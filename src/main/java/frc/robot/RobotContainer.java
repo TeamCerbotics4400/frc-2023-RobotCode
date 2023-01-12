@@ -5,8 +5,12 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.DefaultShooter;
+import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -17,7 +21,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
+  Joystick joystick = new Joystick(0);
+  JoystickButton FerBestoPrograON = new JoystickButton(joystick, 1);
+  JoystickButton FerBestoPrograOFF = new JoystickButton(joystick, 2);
+  JoystickButton buttonX = new JoystickButton(joystick, 3);
+  JoystickButton buttonY = new JoystickButton(joystick, 4);
+  JoystickButton leftBumper = new JoystickButton(joystick, 5);
+  JoystickButton rightBumper = new JoystickButton(joystick, 6);
+  private final Shooter shooter1 = new Shooter();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -36,7 +47,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-  
+    FerBestoPrograON.toggleOnTrue(new DefaultShooter(shooter1));
+    
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
