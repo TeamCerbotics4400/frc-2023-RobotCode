@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXSimCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -11,10 +12,15 @@ import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -24,9 +30,15 @@ import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SimulationConstants;
 
+//26 de largo
+//26 de ancho
 public class DrivetrainSim extends SubsystemBase {
   /** Creates a new DrivetrainSim. */
   WPI_TalonSRX leftLeader = new WPI_TalonSRX(2);
@@ -42,6 +54,9 @@ public class DrivetrainSim extends SubsystemBase {
 
   private final MotorControllerGroup rightGroup = 
   new MotorControllerGroup(rightLeader, rightFollower);
+
+  PIDController leftPIDController = new PIDController(0, 0, 0);
+  PIDController rightPIDController = new PIDController(0, 0, 0);
 
   private Encoder leftEncoder = new Encoder(0, 1, false);
   private Encoder rightEncoder = new Encoder(2, 3, true);
@@ -190,4 +205,41 @@ public class DrivetrainSim extends SubsystemBase {
   public double getHeading(){
     return Math.IEEEremainder(pigeonGyro.getYaw(), 360) * (true ? -1.0 : 1.0);
   }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    
+    leftLeader.set(ControlMode.PercentOutput, leftVolts / leftLeader.getBusVoltage());
+    //rightMaster.set(rightVolts / 12);
+    rightLeader.set(ControlMode.PercentOutput, rightVolts / rightLeader.getBusVoltage());   
+  }
+
+  public RamseteController disabledRamsete = new RamseteController() {
+    @Override
+    public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
+    double angularVelocityRefRadiansPerSecond) {
+      return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+    }
+  };
+  
+  public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
+    if (initPose) {
+      new InstantCommand(() -> {resetOdometry(trajectory.getInitialPose());}); 
+    }
+    RamseteCommand rCommand = new RamseteCommand(
+      trajectory,
+      this::getPose,
+      new RamseteController(SimulationConstants.kRamseteB, SimulationConstants.kRamseteZeta),
+      new SimpleMotorFeedforward(
+        SimulationConstants.kS,
+        SimulationConstants.kV,
+        SimulationConstants.kA),
+        SimulationConstants.kDriveKinematics,
+        this::getWheelSpeed,
+        leftPIDController,
+        rightPIDController,
+        // RamseteCommand passes volts to the callback
+        this::tankDriveVolts,
+        this);
+        return rCommand;
+      }
 }

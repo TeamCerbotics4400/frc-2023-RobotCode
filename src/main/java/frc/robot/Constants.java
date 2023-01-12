@@ -52,6 +52,17 @@ public final class Constants {
     public static final double kDriveGearing = 8;
 
     public static final double kPDriveVel = 8.5;
+
+    public static final double kP = 0, 
+    kI = 0, 
+    kD = 0;
+
+    public static final double kS = 0, 
+    kV = 0, 
+    kA = 0;
+
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
   }
 
   public static class OperatorConstants {
