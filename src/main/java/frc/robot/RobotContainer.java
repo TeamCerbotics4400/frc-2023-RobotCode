@@ -4,12 +4,11 @@
 
 package frc.robot;
 
-<<<<<<< HEAD
+
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DefaultShooter;
 import frc.robot.subsystems.Shooter;
-=======
->>>>>>> a0c173e35d1003922f6acc8a8b17f0381ff09137
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -26,7 +25,7 @@ import frc.robot.subsystems.DrivetrainSim;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-<<<<<<< HEAD
+
   Joystick joystick = new Joystick(0);
   JoystickButton FerBestoPrograON = new JoystickButton(joystick, 1);
   JoystickButton FerBestoPrograOFF = new JoystickButton(joystick, 2);
@@ -35,10 +34,10 @@ public class RobotContainer {
   JoystickButton leftBumper = new JoystickButton(joystick, 5);
   JoystickButton rightBumper = new JoystickButton(joystick, 6);
   private final Shooter shooter1 = new Shooter();
-=======
+
   DrivetrainSim driveSim = new DrivetrainSim();
   Joystick joy0 = new Joystick(0);
->>>>>>> a0c173e35d1003922f6acc8a8b17f0381ff09137
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
