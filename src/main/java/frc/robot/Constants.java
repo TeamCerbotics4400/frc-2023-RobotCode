@@ -5,6 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -16,9 +20,55 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static class SimulationConstants{
+    public static final double kTrackwidthMeters = 0.69;
+    public static final DifferentialDriveKinematics kDriveKinematics =
+        new DifferentialDriveKinematics(kTrackwidthMeters);
+
+    public static final int kEncoderCPR = 1024;
+    public static final double kWheelDiameterMeters = 0.15;
+    public static final double kEncoderDistancePerPulse =
+        // Assumes the encoders are directly mounted on the wheel shafts
+        (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+
+    public static final boolean kGyroReversed = true;
+
+    public static final double ksVolts = 0.22;
+    public static final double kvVoltSecondsPerMeter = 1.98;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+
+    public static final double kvVoltSecondsPerRadian = 1.5;
+    public static final double kaVoltSecondsSquaredPerRadian = 0.3;
+
+    public static final LinearSystem<N2, N2, N2> kDrivetrainPlant =
+        LinearSystemId.identifyDrivetrainSystem(
+            kvVoltSecondsPerMeter,
+            kaVoltSecondsSquaredPerMeter,
+            kvVoltSecondsPerRadian,
+            kaVoltSecondsSquaredPerRadian);
+
+    public static final DCMotor kDriveGearbox = DCMotor.getCIM(2);
+    public static final double kDriveGearing = 8;
+
+    public static final double kPDriveVel = 8.5;
+
+    public static final double kP = 0, 
+    kI = 0, 
+    kD = 0;
+
+    public static final double kS = 0, 
+    kV = 0, 
+    kA = 0;
+
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
+  }
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
   public static final class DriveConstants{
     public static final int LeftMaster_ID = 9; //3
     public static final int LeftSlave_ID = 8; //4
@@ -50,8 +100,8 @@ public final class Constants {
 }
 public static final class ShooterConstants{
   /** ---PROTOTYPE--- */
-  public static final byte FLY_WHEEL_LOWER_ID = 1; 
-  public static final byte FLY_WHEEL_UPPER_ID = 2;
+  public static final byte FLY_WHEEL_LOWER_ID = 0; 
+  public static final byte FLY_WHEEL_UPPER_ID = 1;
 
   public static double kP= 0,
                        kI = 0,
