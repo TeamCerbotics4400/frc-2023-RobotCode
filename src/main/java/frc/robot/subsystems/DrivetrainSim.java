@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -39,7 +39,7 @@ import frc.robot.Constants.SimulationConstants;
 //26 de largo
 //26 de ancho
 public class DrivetrainSim extends SubsystemBase {
-  /** Creates a new DrivetrainSim. */
+  /** Creates a new DrivetrainSim. 
   WPI_TalonSRX leftLeader = new WPI_TalonSRX(2);
   WPI_TalonSRX rightLeader = new WPI_TalonSRX(3);
   WPI_TalonSRX leftFollower = new WPI_TalonSRX(4);
@@ -241,4 +241,4 @@ public class DrivetrainSim extends SubsystemBase {
         this);
         return rCommand;
       }
-}
+}*/

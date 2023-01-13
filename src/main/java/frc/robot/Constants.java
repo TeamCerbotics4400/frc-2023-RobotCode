@@ -100,8 +100,8 @@ public final class Constants {
 }
 public static final class ShooterConstants{
   /** ---PROTOTYPE--- */
-  public static final byte FLY_WHEEL_LOWER_ID = 0; 
-  public static final byte FLY_WHEEL_UPPER_ID = 1;
+  public static final byte FLY_WHEEL_LOWER_ID = 1; 
+  public static final byte FLY_WHEEL_UPPER_ID = 2;
 
   public static double kP= 0,
                        kI = 0,
