@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.server.PathPlannerServer;
+
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -45,6 +47,8 @@ public class Robot extends TimedRobot {
     myBooleanLog = new BooleanLogEntry(log, "/my/boolean");
     myDoubleLog = new DoubleLogEntry(log, "/my/double");
     myStringLog = new StringLogEntry(log, "/my/string");
+
+    PathPlannerServer.startServer(5811);
   }
 
   /**

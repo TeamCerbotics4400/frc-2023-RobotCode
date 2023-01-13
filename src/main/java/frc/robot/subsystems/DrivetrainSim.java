@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/* 
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -39,7 +39,7 @@ import frc.robot.Constants.SimulationConstants;
 //26 de largo
 //26 de ancho
 public class DrivetrainSim extends SubsystemBase {
-  /** Creates a new DrivetrainSim. 
+  /** Creates a new DrivetrainSim.*/
   WPI_TalonSRX leftLeader = new WPI_TalonSRX(2);
   WPI_TalonSRX rightLeader = new WPI_TalonSRX(3);
   WPI_TalonSRX leftFollower = new WPI_TalonSRX(4);
@@ -54,8 +54,8 @@ public class DrivetrainSim extends SubsystemBase {
   private final MotorControllerGroup rightGroup = 
   new MotorControllerGroup(rightLeader, rightFollower);
 
-  PIDController leftPIDController = new PIDController(0, 0, 0);
-  PIDController rightPIDController = new PIDController(0, 0, 0);
+  PIDController leftPIDController = new PIDController(SimulationConstants.kP, SimulationConstants.kI, SimulationConstants.kD);
+  PIDController rightPIDController = new PIDController(SimulationConstants.kP, SimulationConstants.kI, SimulationConstants.kD);
 
   private Encoder leftEncoder = new Encoder(0, 1, false);
   private Encoder rightEncoder = new Encoder(2, 3, true);
@@ -89,8 +89,8 @@ public class DrivetrainSim extends SubsystemBase {
 
     leftLeader.setInverted(false);
     leftFollower.setInverted(false);
-    rightLeader.setInverted(true);
-    rightFollower.setInverted(true);
+    rightLeader.setInverted(false);
+    rightFollower.setInverted(false);
 
     leftEncoder.setDistancePerPulse(SimulationConstants.kEncoderDistancePerPulse);
     rightEncoder.setDistancePerPulse(SimulationConstants.kEncoderDistancePerPulse);
@@ -126,6 +126,8 @@ public class DrivetrainSim extends SubsystemBase {
     leftEncoder.getDistance(), rightEncoder.getDistance());
 
     simField.setRobotPose(getPose());
+
+    SmartDashboard.putNumber("Average Encoder Distance", getAverageEncoderDistance());
   }
 
   @Override
@@ -163,8 +165,8 @@ public class DrivetrainSim extends SubsystemBase {
   }
 
   public void arcadeDrive(double speed, double turn){
-    double left = speed - turn;
-    double right = speed + turn;
+    double left = speed + turn;
+    double right = speed - turn;
 
     leftGroup.set(left);
     rightGroup.set(right);
@@ -241,4 +243,20 @@ public class DrivetrainSim extends SubsystemBase {
         this);
         return rCommand;
       }
-}*/
+
+      private double nativeUnitsToDistanceMeters(double sensorCounts){
+        double motorRotations = (double)sensorCounts / SimulationConstants.kEncoderCPR;
+        double wheelRotations = motorRotations / SimulationConstants.kDriveGearing;
+        double positionMeters = wheelRotations * (2 * Math.PI * SimulationConstants.kWheelDiameterMeters);
+        return positionMeters;
+      }
+    
+      //Velocidad (metros por segundo) a unidades de encoder
+      private int velocityToNativeUnits(double velocityMetersPerSecond){
+        double wheelRotationsPerSecond = velocityMetersPerSecond/(2 * Math.PI * SimulationConstants.kWheelDiameterMeters);
+        double motorRotationsPerSecond = wheelRotationsPerSecond * SimulationConstants.kDriveGearing;
+        double motorRotationsPer100ms = motorRotationsPerSecond / SimulationConstants.k100msPerSecond;
+        int sensorCountsPer100ms = (int)(motorRotationsPer100ms * SimulationConstants.kEncoderCPR);
+        return sensorCountsPer100ms;
+      }
+}

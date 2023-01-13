@@ -53,16 +53,21 @@ public final class Constants {
 
     public static final double kPDriveVel = 8.5;
 
-    public static final double kP = 0, 
+    public static final double kP = 0.1, 
     kI = 0, 
     kD = 0;
 
-    public static final double kS = 0, 
-    kV = 0, 
-    kA = 0;
+    public static final double kS = 0.22, 
+    kV = 1.98, 
+    kA = 0.2;
 
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
+
+    public static final double kMaxSpeedMetersPerSecond = 4.0; 
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3.0; 
+
+    public static final int k100msPerSecond = 10;
   }
 
   public static class OperatorConstants {
@@ -103,9 +108,9 @@ public static final class ShooterConstants{
   public static final byte FLY_WHEEL_LOWER_ID = 1; 
   public static final byte FLY_WHEEL_UPPER_ID = 2;
 
-  public static double kP= 0,
+  public static double kP= 0, //0.00001
                        kI = 0,
-                       kD = 0,
+                       kD = 0, //0.0001
                        kIz = 0,
                        kFF = 0,
                        kMaxOutput = 0,

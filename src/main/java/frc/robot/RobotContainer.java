@@ -14,8 +14,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-//import frc.robot.commands.SimTeleOp;
-//import frc.robot.subsystems.DrivetrainSim;
+import frc.robot.commands.SimTeleOp;
+import frc.robot.commands.SimAutoCommands.TestAuto;
+import frc.robot.subsystems.DrivetrainSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,7 +31,7 @@ public class RobotContainer {
   JoystickButton rightBumper = new JoystickButton(joystick, 6);
   private final Shooter shooter1 = new Shooter();
 
-  //DrivetrainSim driveSim = new DrivetrainSim();
+  DrivetrainSim driveSim = new DrivetrainSim();
   Joystick joy0 = new Joystick(0);
 
 
@@ -40,9 +41,9 @@ public class RobotContainer {
     new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(shooter1));
     configureBindings();
 
-    /*driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
+    driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
     () -> joy0.getRawAxis(1), 
-    () -> joy0.getRawAxis(4)));*/
+    () -> joy0.getRawAxis(4)));
   }
 
   /**
@@ -70,7 +71,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    Command autonomousCommand = new TestAuto(driveSim);
+    return autonomousCommand;
   }
 
   /*public DrivetrainSim getSimDrive(){
