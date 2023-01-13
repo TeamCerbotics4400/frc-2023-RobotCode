@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase {
     flyWheelUpper.restoreFactoryDefaults();
 
     flyWheelLower.setInverted(true);
-    flyWheelUpper.setInverted(false);
+    flyWheelUpper.setInverted(true);
 
     flyWheelLower.setCANTimeout(10);
     flyWheelUpper.setCANTimeout(10);
@@ -80,6 +80,9 @@ public class Shooter extends SubsystemBase {
     double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
     double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
     double targetVelo = SmartDashboard.getNumber("Target Velocity", 0);
+
+    SmartDashboard.putNumber("Velocidad Izq", flyWheelLowerEncoder.getVelocity());
+    SmartDashboard.putNumber("Velocidad Der", flyWheelUpperEncoder.getVelocity());
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
     if((p != ShooterConstants.kP)) {   flyWheelLower_PIDController.setP(p);     flyWheelUpper_PIDController.setP(p);      ShooterConstants.kP = p; }
