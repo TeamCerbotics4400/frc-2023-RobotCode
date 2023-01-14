@@ -6,17 +6,21 @@ package frc.robot;
 
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.DefaultShooter;
-import frc.robot.subsystems.Shooter;
+//import frc.robot.commands.DefaultShooter;
+import frc.robot.commands.IntakeToggle;
+//import frc.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.SimTeleOp;
-import frc.robot.commands.SimAutoCommands.TestAuto;
-import frc.robot.subsystems.DrivetrainSim;
+//import frc.robot.commands.SimTeleOp;
+//import frc.robot.commands.SimAutoCommands.TestAuto;
+//import frc.robot.subsystems.DrivetrainSim;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,23 +30,20 @@ import frc.robot.subsystems.DrivetrainSim;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
-  Joystick joystick = new Joystick(0);
-  JoystickButton rightBumper = new JoystickButton(joystick, 6);
-  private final Shooter shooter1 = new Shooter();
-
-  DrivetrainSim driveSim = new DrivetrainSim();
   Joystick joy0 = new Joystick(0);
-
+  //private final Shooter shooter1 = new Shooter();
+  //DrivetrainSim driveSim = new DrivetrainSim();
+  Intake intake = new Intake();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
-    new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(shooter1));
+    // Configure the trigger bindings 
 
-    driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
+    //new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(shooter1));
+
+    /*driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
     () -> joy0.getRawAxis(4), //4 para joystick, 0 para teclado
-    () -> joy0.getRawAxis(1)));
+    () -> joy0.getRawAxis(1)));*/
 
     configureBindings();
 
@@ -60,7 +61,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
+    new JoystickButton(joy0, 0).whileTrue(new IntakeToggle(intake));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
@@ -74,7 +75,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new TestAuto(driveSim);
+    return null;//new TestAuto(driveSim);
   }
 
   /*public DrivetrainSim getSimDrive(){
