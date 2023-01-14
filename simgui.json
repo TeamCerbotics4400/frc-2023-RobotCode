@@ -2,13 +2,28 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "height": 8.007096290588379,
+        "image": "C:\\Apps\\Pathplanner\\data\\flutter_assets\\images\\field23.png",
+        "units": "feet",
+        "width": 16.547897338867188,
         "window": {
           "visible": true
         }
+      }
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
       }
     }
   }

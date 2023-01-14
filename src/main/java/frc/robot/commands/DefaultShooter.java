@@ -4,12 +4,8 @@
 
 package frc.robot.commands;
 
-import javax.management.monitor.GaugeMonitor;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Shooter;
 
 public class DefaultShooter extends CommandBase {

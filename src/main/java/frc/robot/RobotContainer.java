@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.SimTeleOp;
+import frc.robot.commands.SimAutoCommands.TestAuto;
+import frc.robot.subsystems.DrivetrainSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,19 +24,23 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  Joystick joystick = new Joystick(0);
-  JoystickButton FerBestoPrograON = new JoystickButton(joystick, 1);
-  JoystickButton FerBestoPrograOFF = new JoystickButton(joystick, 2);
-  JoystickButton buttonX = new JoystickButton(joystick, 3);
-  JoystickButton buttonY = new JoystickButton(joystick, 4);
-  JoystickButton leftBumper = new JoystickButton(joystick, 5);
-  JoystickButton rightBumper = new JoystickButton(joystick, 6);
+  Joystick joy0 = new Joystick(0);
+  JoystickButton rightBumper = new JoystickButton(joy0, 6);
   private final Shooter shooter1 = new Shooter();
+  private final DrivetrainSim driveSim = new DrivetrainSim();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(shooter1));
+
+    driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
+    () -> joy0.getRawAxis(4), //4 para joystick, 0 para teclado
+    () -> joy0.getRawAxis(1)));
+
     configureBindings();
+
+    
   }
 
   /**
@@ -47,8 +54,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    FerBestoPrograON.whileTrue(new DefaultShooter(shooter1));
-    FerBestoPrograOFF.whileTrue(new DefaultShooter(shooter1));
     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
@@ -63,6 +68,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return new TestAuto(driveSim);
   }
+
+  /*public DrivetrainSim getSimDrive(){
+    return driveSim;
+  }*/
 }

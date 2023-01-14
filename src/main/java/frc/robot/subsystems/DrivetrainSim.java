@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonSRXSimCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
@@ -21,6 +21,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -39,7 +40,7 @@ import frc.robot.Constants.SimulationConstants;
 //26 de largo
 //26 de ancho
 public class DrivetrainSim extends SubsystemBase {
-  /** Creates a new DrivetrainSim. */
+  /** Creates a new DrivetrainSim.*/
   WPI_TalonSRX leftLeader = new WPI_TalonSRX(2);
   WPI_TalonSRX rightLeader = new WPI_TalonSRX(3);
   WPI_TalonSRX leftFollower = new WPI_TalonSRX(4);
@@ -54,8 +55,10 @@ public class DrivetrainSim extends SubsystemBase {
   private final MotorControllerGroup rightGroup = 
   new MotorControllerGroup(rightLeader, rightFollower);
 
-  PIDController leftPIDController = new PIDController(0, 0, 0);
-  PIDController rightPIDController = new PIDController(0, 0, 0);
+  PIDController leftPIDController = 
+  new PIDController(SimulationConstants.kP, SimulationConstants.kI, SimulationConstants.kD);
+  PIDController rightPIDController = 
+  new PIDController(SimulationConstants.kP, SimulationConstants.kI, SimulationConstants.kD);
 
   private Encoder leftEncoder = new Encoder(0, 1, false);
   private Encoder rightEncoder = new Encoder(2, 3, true);
@@ -79,18 +82,19 @@ public class DrivetrainSim extends SubsystemBase {
   
     leftLeader.configFactoryDefault();
     leftFollower.configFactoryDefault();
+    leftFollower.follow(leftLeader);
+    leftFollower.setInverted(InvertType.FollowMaster);
+
     rightLeader.configFactoryDefault();
     rightFollower.configFactoryDefault();
+    rightFollower.follow(rightLeader);
+    rightFollower.setInverted(InvertType.FollowMaster);
 
-    leftLeader.setNeutralMode(NeutralMode.Brake);
-    leftFollower.setNeutralMode(NeutralMode.Brake);
-    rightLeader.setNeutralMode(NeutralMode.Brake);
-    rightFollower.setNeutralMode(NeutralMode.Brake);
+    leftLeader.setInverted(InvertType.None);
+    leftLeader.setSensorPhase(false);
 
-    leftLeader.setInverted(false);
-    leftFollower.setInverted(false);
-    rightLeader.setInverted(true);
-    rightFollower.setInverted(true);
+    rightLeader.setInverted(InvertType.InvertMotorOutput);
+    rightLeader.setSensorPhase(false);
 
     leftEncoder.setDistancePerPulse(SimulationConstants.kEncoderDistancePerPulse);
     rightEncoder.setDistancePerPulse(SimulationConstants.kEncoderDistancePerPulse);
@@ -100,9 +104,10 @@ public class DrivetrainSim extends SubsystemBase {
 
      if(RobotBase.isSimulation()){
       m_driveSim = new DifferentialDrivetrainSim(SimulationConstants.kDriveGearbox, 
-      SimulationConstants.kDriveGearing, 15, 52, 
-      SimulationConstants.kWheelDiameterMeters / 2, SimulationConstants.kTrackwidthMeters, 
-      VecBuilder.fill(0, 0, 0.0001, 0.1, 0.1, 0.005, 0.005));
+      SimulationConstants.kDriveGearing, 15, 26.5, 
+      Units.inchesToMeters(SimulationConstants.kWheelRadiusInches), 
+      SimulationConstants.kTrackwidthMeters, 
+      null/*VecBuilder.fill(0, 0, 0.0001, 0.1, 0.1, 0.005, 0.005)*/);
       
 
      simField = new Field2d();
@@ -126,12 +131,19 @@ public class DrivetrainSim extends SubsystemBase {
     leftEncoder.getDistance(), rightEncoder.getDistance());
 
     simField.setRobotPose(getPose());
+
+    SmartDashboard.putNumber("Average Encoder Distance", getAverageEncoderDistance());
+    SmartDashboard.putNumber("Angulo del Robot", getHeading());
   }
 
   @Override
   public void simulationPeriodic() {
-    m_driveSim.setInputs(leftGroup.get() * RobotController.getBatteryVoltage(), 
-    rightGroup.get() * RobotController.getBatteryVoltage());
+
+    leftLeader.setVoltage(RobotController.getBatteryVoltage());
+    rightLeader.setVoltage(RobotController.getBatteryVoltage());
+
+    m_driveSim.setInputs(leftLeader.getMotorOutputVoltage(),
+                         -rightLeader.getMotorOutputVoltage());
 
     m_driveSim.update(0.020);
 
@@ -157,14 +169,15 @@ public class DrivetrainSim extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose){
     resetEncoders();
+    zeroHeading();
     m_driveSim.setPose(pose);
     m_odometry.resetPosition(Rotation2d.fromDegrees(getHeading()), 
     leftEncoder.getDistance(), rightEncoder.getDistance(), pose);
   }
 
   public void arcadeDrive(double speed, double turn){
-    double left = speed - turn;
-    double right = speed + turn;
+    double left = speed + turn;
+    double right = speed - turn;
 
     leftGroup.set(left);
     rightGroup.set(right);
@@ -240,5 +253,21 @@ public class DrivetrainSim extends SubsystemBase {
         this::tankDriveVolts,
         this);
         return rCommand;
+      }
+
+      private double nativeUnitsToDistanceMeters(double sensorCounts){
+        double motorRotations = (double)sensorCounts / SimulationConstants.kEncoderCPR;
+        double wheelRotations = motorRotations / SimulationConstants.kDriveGearing;
+        double positionMeters = wheelRotations * (2 * Math.PI * SimulationConstants.kWheelDiameterMeters);
+        return positionMeters;
+      }
+    
+      //Velocidad (metros por segundo) a unidades de encoder
+      private int velocityToNativeUnits(double velocityMetersPerSecond){
+        double wheelRotationsPerSecond = velocityMetersPerSecond/(2 * Math.PI * SimulationConstants.kWheelDiameterMeters);
+        double motorRotationsPerSecond = wheelRotationsPerSecond * SimulationConstants.kDriveGearing;
+        double motorRotationsPer100ms = motorRotationsPerSecond / SimulationConstants.k100msPerSecond;
+        int sensorCountsPer100ms = (int)(motorRotationsPer100ms * SimulationConstants.kEncoderCPR);
+        return sensorCountsPer100ms;
       }
 }
