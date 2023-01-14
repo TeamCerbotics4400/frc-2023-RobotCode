@@ -9,6 +9,7 @@ import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.SimulationConstants;
 import frc.robot.subsystems.DrivetrainSim;
@@ -21,10 +22,11 @@ public class TestAuto extends SequentialCommandGroup {
   public TestAuto(DrivetrainSim simDrive) {
     Trajectory trajectory = PathPlanner.loadPath("Test Path", 
     SimulationConstants.kMaxSpeedMetersPerSecond, 
-    SimulationConstants.kMaxAccelerationMetersPerSecondSquared, false);
+    SimulationConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
     Command resetOdo = new InstantCommand(() -> simDrive.resetOdometry(trajectory.getInitialPose()));
     
-    addCommands(resetOdo);
+    addCommands(resetOdo, 
+    new ParallelRaceGroup(simDrive.createCommandForTrajectory(trajectory, true)));
   }
 }

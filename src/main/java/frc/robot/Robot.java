@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.DrivetrainSim;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,9 +28,12 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  BooleanLogEntry myBooleanLog;
+  /*BooleanLogEntry myBooleanLog;
   DoubleLogEntry myDoubleLog;
-  StringLogEntry myStringLog;
+  StringLogEntry myStringLog;*/
+  
+
+  private DrivetrainSim drivesim;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,13 +44,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    DataLogManager.start();
+    /*DataLogManager.start();
     DataLog log = DataLogManager.getLog();
     DriverStation.startDataLog(log);
 
     myBooleanLog = new BooleanLogEntry(log, "/my/boolean");
     myDoubleLog = new DoubleLogEntry(log, "/my/double");
-    myStringLog = new StringLogEntry(log, "/my/string");
+    myStringLog = new StringLogEntry(log, "/my/string");*/
 
     PathPlannerServer.startServer(5811);
   }
@@ -103,9 +107,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    myBooleanLog.append(true);
+    /*myBooleanLog.append(true);
     myDoubleLog.append(3.5);
-    myStringLog.append("Ala si jala esto");
+    myStringLog.append("Ala si jala esto");*/
   }
 
   @Override

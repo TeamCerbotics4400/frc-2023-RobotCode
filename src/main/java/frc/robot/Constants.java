@@ -22,7 +22,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
   public static class SimulationConstants{
-    public static final double kTrackwidthMeters = 0.69;
+    public static final double kTrackwidthMeters = 0.546;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
 
@@ -49,11 +49,13 @@ public final class Constants {
             kaVoltSecondsSquaredPerRadian);
 
     public static final DCMotor kDriveGearbox = DCMotor.getCIM(2);
-    public static final double kDriveGearing = 8;
+    public static final double kDriveGearing = 10.71;
+
+    public static final double kWheelRadiusInches = 3;
 
     public static final double kPDriveVel = 8.5;
 
-    public static final double kP = 0.1, 
+    public static final double kP = 0, 
     kI = 0, 
     kD = 0;
 

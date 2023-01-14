@@ -39,11 +39,14 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(shooter1));
-    configureBindings();
 
     driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
-    () -> joy0.getRawAxis(1), 
-    () -> joy0.getRawAxis(4)));
+    () -> joy0.getRawAxis(4), //4 para joystick, 0 para teclado
+    () -> joy0.getRawAxis(1)));
+
+    configureBindings();
+
+    
   }
 
   /**
@@ -71,8 +74,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    Command autonomousCommand = new TestAuto(driveSim);
-    return autonomousCommand;
+    return new TestAuto(driveSim);
   }
 
   /*public DrivetrainSim getSimDrive(){
