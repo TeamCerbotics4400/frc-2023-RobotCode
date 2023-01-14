@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.Util.Alert;
+import frc.robot.Util.Alert.AlertType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -20,7 +25,56 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  private static final RobotType robot = RobotType.ROBOT_2023P;
+  public static final double loopPeriodSecs = 0.02;
 
+  private static final Alert invalidRobotAlert =
+      new Alert("Invalid robot selected, using competition robot as default.", AlertType.ERROR);
+
+  public static RobotType getRobot() {
+    if (RobotBase.isReal()) {
+      if (robot == RobotType.ROBOT_SIMBOT) { // Invalid robot selected
+        invalidRobotAlert.set(true);
+        return RobotType.ROBOT_2023C;
+      } else {
+        return robot;
+      }
+    } else {
+      return robot;
+    }
+  }
+
+  public static Mode getMode() {
+    switch (getRobot()) {
+      case ROBOT_2023C:
+      case ROBOT_2023P:
+        return RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
+
+      case ROBOT_SIMBOT:
+        return Mode.SIM;
+
+      default:
+        return Mode.REAL;
+    }
+  }
+
+  public static final Map<RobotType, String> logFolders =
+      Map.of(RobotType.ROBOT_2023P, "/media/sda2/");
+
+  public static enum RobotType {
+    ROBOT_2023C,
+    ROBOT_2023P,
+    ROBOT_SIMBOT
+  }
+
+  public static enum Mode {
+    REAL,
+    REPLAY,
+    SIM
+  }
+
+
+  public static final boolean tuningMode = false;
   public static class SimulationConstants{
     public static final double kTrackwidthMeters = 0.546;
     public static final DifferentialDriveKinematics kDriveKinematics =
@@ -124,6 +178,25 @@ public static final class ShooterConstants{
                        allowedErr = 0;
 
                        public static double targetVelocity = 0;
+
+}
+public static final class IntakeConstants{
+  public static final byte RapidWheeel_ID = 3;
+  public static final byte IShouldBeAServo_ID = 4;
+  public static double kP= 0,
+                       kI = 0,
+                       kD = 0,
+                       kIz = 0,
+                       kFF = 0,
+                       kMaxOutput = 0,
+                       kMinOutput = 0, 
+                       maxRPM = 0, 
+                       maxVel = 0, //---------
+                       minVel = 0, //---------
+                       maxAcc = 0, 
+                       allowedErr = 0;
+
+  public static double targetVelocity = 0;
 
 }
 }

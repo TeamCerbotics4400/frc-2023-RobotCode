@@ -53,7 +53,6 @@ public class Shooter extends SubsystemBase {
     flyWheelUpper_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
     flyWheelUpper_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);
 
-
     SmartDashboard.putNumber("Target Velocity", ShooterConstants.targetVelocity);
 
   }
@@ -68,7 +67,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Velocidad Der", flyWheelUpperEncoder.getVelocity());
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if ((ShooterConstants.targetVelocity != targetVelo )) {ShooterConstants.targetVelocity = targetVelo;}}
+    if ((ShooterConstants.targetVelocity != targetVelo )) {ShooterConstants.targetVelocity = targetVelo;}
+  }
     
   public void setLowerFlyWheelVelo(double setPoint){
     flyWheelLower_PIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
