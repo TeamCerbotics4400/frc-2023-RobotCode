@@ -100,14 +100,14 @@ public final class Constants {
 }
 public static final class ShooterConstants{
   /** ---PROTOTYPE--- */
-  public static final byte FLY_WHEEL_LOWER_ID = 0; 
-  public static final byte FLY_WHEEL_UPPER_ID = 1;
+  public static final byte FLY_WHEEL_LOWER_ID = 1; 
+  public static final byte FLY_WHEEL_UPPER_ID = 2;
 
-  public static double kP= 0,
+  public static double kP= 0.000031,
                        kI = 0,
-                       kD = 0,
+                       kD = 0.0001,
                        kIz = 0,
-                       kFF = 0,
+                       kFF = 0.0001678,
                        kMaxOutput = 0,
                        kMinOutput = 0, 
                        maxRPM = 0, 
@@ -115,6 +115,8 @@ public static final class ShooterConstants{
                        minVel = 0, //---------
                        maxAcc = 0, 
                        allowedErr = 0;
+
+                       public static double targetVelocity = 0;
 
 }
 }

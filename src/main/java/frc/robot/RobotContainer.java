@@ -4,18 +4,14 @@
 
 package frc.robot;
 
-
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DefaultShooter;
 import frc.robot.subsystems.Shooter;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.SimTeleOp;
-import frc.robot.subsystems.DrivetrainSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,7 +21,6 @@ import frc.robot.subsystems.DrivetrainSim;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
   Joystick joystick = new Joystick(0);
   JoystickButton FerBestoPrograON = new JoystickButton(joystick, 1);
   JoystickButton FerBestoPrograOFF = new JoystickButton(joystick, 2);
@@ -35,18 +30,10 @@ public class RobotContainer {
   JoystickButton rightBumper = new JoystickButton(joystick, 6);
   private final Shooter shooter1 = new Shooter();
 
-  DrivetrainSim driveSim = new DrivetrainSim();
-  Joystick joy0 = new Joystick(0);
-
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-
-    driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
-    () -> joy0.getRawAxis(1), 
-    () -> joy0.getRawAxis(4)));
   }
 
   /**
@@ -60,7 +47,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    FerBestoPrograON.toggleOnTrue(new DefaultShooter(shooter1));
+    FerBestoPrograON.whileTrue(new DefaultShooter(shooter1));
+    FerBestoPrograOFF.whileTrue(new DefaultShooter(shooter1));
     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
@@ -76,9 +64,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
-  }
-
-  public DrivetrainSim getSimDrive(){
-    return driveSim;
   }
 }

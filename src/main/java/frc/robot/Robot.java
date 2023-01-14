@@ -4,6 +4,15 @@
 
 package frc.robot;
 
+import java.lang.System.Logger;
+
+import edu.wpi.first.networktables.BooleanEntry;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -19,6 +28,10 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  BooleanLogEntry myBooleanLogEntry;
+  DoubleLogEntry myDoubleLogEntry;
+  StringLogEntry myStringLogEntry;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -28,6 +41,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    DataLogManager.start();
+    DataLog log = DataLogManager.getLog();
+    DriverStation.startDataLog(log);
+
+    myBooleanLogEntry = new BooleanLogEntry(log, "/my/boolean");
+    myDoubleLogEntry = new DoubleLogEntry(log, "/my/double");
+    myStringLogEntry = new StringLogEntry(log, "/my/string");
   }
 
   /**
@@ -81,7 +101,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    myBooleanLogEntry.append(true);
+    myDoubleLogEntry.append(3.5);
+    myStringLogEntry.append("Ala si jala esto");
+  }
 
   @Override
   public void testInit() {
