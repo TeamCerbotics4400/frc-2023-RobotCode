@@ -35,7 +35,7 @@ public class RobotContainer {
     new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(shooter1));
 
     driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
-    () -> joy0.getRawAxis(4), //4 para joystick, 0 para teclado
+    () -> joy0.getRawAxis(2), //4 para joystick, 0 para teclado
     () -> joy0.getRawAxis(1)));
 
     configureBindings();

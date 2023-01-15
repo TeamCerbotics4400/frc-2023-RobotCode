@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -64,6 +65,9 @@ public class DriveTrain extends SubsystemBase {
   encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()),
   new Pose2d(5.0, 13.5, new Rotation2d()));
 
+  private final DifferentialDrivePoseEstimator m_poseEstimator =
+            new DifferentialDrivePoseEstimator(
+                    DriveConstants.kDriveKinematics, Rotation2d.fromDegrees(getAngle()), 0.0, 0.0, new Pose2d());
 
 
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
@@ -207,6 +211,17 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(encoderDer.getPosition()));
   }
 
+  public void updateOdometry() {
+    m_poseEstimator.update(
+            Rotation2d.fromDegrees(getAngle()), encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()));
+
+    // Also apply vision measurements. We use 0.3 seconds in the past as an example
+    
+    }
+
+    m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
+    m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
+}
   public void log(){
     SmartDashboard.putNumber("Distancia X", odometry.getPoseMeters().getTranslation().getX());
     SmartDashboard.putNumber("Distancia Y", odometry.getPoseMeters().getTranslation().getY());

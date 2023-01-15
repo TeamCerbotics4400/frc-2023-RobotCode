@@ -11,7 +11,6 @@
     "windows": {
       "/SmartDashboard/Field": {
         "height": 8.007096290588379,
-        "image": "C:\\Apps\\Pathplanner\\data\\flutter_assets\\images\\field23.png",
         "units": "feet",
         "width": 16.547897338867188,
         "window": {
