@@ -216,12 +216,10 @@ public class DriveTrain extends SubsystemBase {
             Rotation2d.fromDegrees(getAngle()), encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()));
 
     // Also apply vision measurements. We use 0.3 seconds in the past as an example
-    
     }
 
-    m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
-    m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
-}
+    
+
   public void log(){
     SmartDashboard.putNumber("Distancia X", odometry.getPoseMeters().getTranslation().getX());
     SmartDashboard.putNumber("Distancia Y", odometry.getPoseMeters().getTranslation().getY());
