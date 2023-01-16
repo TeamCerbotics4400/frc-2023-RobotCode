@@ -76,7 +76,7 @@ public class DrivetrainSim extends SubsystemBase {
 
   private final BasePigeonSimCollection simGyro = pigeonGyro.getSimCollection();
 
-  private final Field2d simField;
+  private final Field2d simField = new Field2d();
   
   public DrivetrainSim() {
   
@@ -110,14 +110,12 @@ public class DrivetrainSim extends SubsystemBase {
       null/*VecBuilder.fill(0, 0, 0.0001, 0.1, 0.1, 0.005, 0.005)*/);
       
 
-     simField = new Field2d();
      leftEncoderSim = new EncoderSim(leftEncoder);
      rightEncoderSim = new EncoderSim(rightEncoder);
      SmartDashboard.putData("Field", simField);
 
      } else{
 
-      simField = null;
      leftEncoderSim = null;
      rightEncoderSim = null;
 

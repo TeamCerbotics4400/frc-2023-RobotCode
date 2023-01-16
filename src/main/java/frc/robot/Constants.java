@@ -180,6 +180,14 @@ public static final class ShooterConstants{
                        public static double targetVelocity = 0;
 
 }
+
+public static final class VisionConstants {
+  /** ---PROTOTYPE--- */
+  public static double HEIGHT_OF_OUTER_PORT = 2.64;//Altura del target
+  public static double LIMELIGHT_FLOOR_CLEREANCE= 0.79;//Altura de la limelight
+  public static double LIMELIGHT_VERTICAL_ANGLE = 36; //Angulo de la limelight
+}
+
 public static final class IntakeConstants{
   public static final byte RapidWheeel_ID = 3;
   public static final byte IShouldBeAServo_ID = 4;

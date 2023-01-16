@@ -42,6 +42,9 @@ public class DriveTrain extends SubsystemBase {
   PIDController leftPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
 
+  LimelightSubsystem limelight;
+
+  Field2d field2d = new Field2d();
 
   MotorControllerGroup leftControllers = new MotorControllerGroup(leftMaster, leftSlave);
   MotorControllerGroup rightControllers = new MotorControllerGroup(rightMaster, rightSlave);
@@ -72,7 +75,10 @@ public class DriveTrain extends SubsystemBase {
 
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
 
-  public DriveTrain() {
+  public DriveTrain(LimelightSubsystem limelightSubsystem) {
+
+    this.limelight = limelightSubsystem;
+
     rightMaster.setInverted(false);
     rightSlave.setInverted(false);
 
@@ -106,6 +112,7 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Target Angle", 0);
 
+    SmartDashboard.putData("Field", field2d);
   }
 
   public void drive(double speed, double turn){
@@ -209,11 +216,11 @@ public class DriveTrain extends SubsystemBase {
     odometry.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(encoderIzq.getPosition()), 
     encoderCountsToMeters(encoderDer.getPosition()));
+
+   
   }
 
   public void updateOdometry() {
-    m_poseEstimator.update(
-            Rotation2d.fromDegrees(getAngle()), encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()));
 
     // Also apply vision measurements. We use 0.3 seconds in the past as an example
     }
@@ -224,6 +231,12 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Distancia X", odometry.getPoseMeters().getTranslation().getX());
     SmartDashboard.putNumber("Distancia Y", odometry.getPoseMeters().getTranslation().getY());
     SmartDashboard.putNumber("Angle", odometry.getPoseMeters().getRotation().getDegrees());
+
+    field2d.setRobotPose(limelight.getRobotPose().toPose2d());
+
+    
+
+
     m_field.setRobotPose(odometry.getPoseMeters().getTranslation().getX(),
     odometry.getPoseMeters().getTranslation().getY(),
     odometry.getPoseMeters().getRotation());

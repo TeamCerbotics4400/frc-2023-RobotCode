@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SimTeleOp;
 import frc.robot.commands.SimAutoCommands.TestAuto;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DrivetrainSim;
+import frc.robot.subsystems.LimelightSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +30,8 @@ public class RobotContainer {
   JoystickButton rightBumper = new JoystickButton(joy0, 6);
   private final Shooter shooter1 = new Shooter();
   private final DrivetrainSim driveSim = new DrivetrainSim();
+  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  private final DriveTrain drivetrain = new DriveTrain(limelightSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
