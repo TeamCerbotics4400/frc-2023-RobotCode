@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SimTeleOp;
 import frc.robot.commands.SimAutoCommands.TestAuto;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DrivetrainSim;
 import frc.robot.subsystems.NeoIntake;
+import frc.robot.subsystems.LimelightSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,6 +35,10 @@ public class RobotContainer {
   
   JoystickButton Citrus1678BestoFRCTeam = new JoystickButton(joy0, 2);
   JoystickButton FerBestoProgra = new JoystickButton(joy0, 1);
+ /*  private final DrivetrainSim driveSim = new DrivetrainSim();*/
+ //Lo dejo asi porque luego causa conflictos con el robot como tal
+  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  private final DriveTrain drivetrain = new DriveTrain(limelightSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -41,6 +47,10 @@ public class RobotContainer {
     Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
     FerBestoProgra.onTrue(new DefaultShooter(shooter1));
 
+/*    driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
+ *  () -> joy0.getRawAxis(2), //4 para joystick, 0 para teclado
+ *  () -> joy0.getRawAxis(1)));
+*/
 
     configureBindings();
 
