@@ -12,7 +12,7 @@ public class DefaultShooter extends CommandBase {
   /** Creates a new DefaultShooter. */
   private Shooter shooter;
 
-  public DefaultShooter(Shooter shooter) {
+  public DefaultShooter(Shooter shooterz) {
     this.shooter = shooter;
 
     addRequirements(shooter);
