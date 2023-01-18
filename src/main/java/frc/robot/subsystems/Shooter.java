@@ -53,7 +53,7 @@ public class Shooter extends SubsystemBase {
     flyWheelUpper_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
     flyWheelUpper_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);
 
-    SmartDashboard.putNumber("Target Velocity", ShooterConstants.targetVelocity);
+
 
   }
 
@@ -63,8 +63,6 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     double targetVelo = SmartDashboard.getNumber("Target Velocity", 0);
 
-    SmartDashboard.putNumber("Velocidad Izq", flyWheelLowerEncoder.getVelocity());
-    SmartDashboard.putNumber("Velocidad Der", flyWheelUpperEncoder.getVelocity());
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
     if ((ShooterConstants.targetVelocity != targetVelo )) {ShooterConstants.targetVelocity = targetVelo;}

@@ -207,8 +207,8 @@ public static final class VisionConstants {
 }
 
 public static final class IntakeConstants{
-  public static final byte RapidWheeel_ID = 3;
-  public static final byte IShouldBeAServo_ID = 4;
+  public static final byte RapidWheeel_ID = 4;
+  public static final byte IShouldBeAServo_ID = 3;
   public static double kP= 0,
                        kI = 0,
                        kD = 0,
@@ -225,5 +225,15 @@ public static final class IntakeConstants{
   public static double targetVelocity = 0;
 
 }
+  /**son recordatorios que me pongo en el codigo (Favor de no borrar ni tomar en serio)*/
+
+  /* vDelCodigo = "1.4"; */
+  /* Cosas Por Hacer:
+  *  boolean PID_Intake = false ;
+   * boolean Sim = false;
+   * 
+   */
 }
+  
+
 
