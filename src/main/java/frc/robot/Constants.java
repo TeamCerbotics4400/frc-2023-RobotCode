@@ -6,6 +6,9 @@ package frc.robot;
 
 import java.util.Map;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
@@ -131,11 +134,11 @@ public final class Constants {
   }
 
   public static final class DriveConstants{
-    public static final int LeftMaster_ID = 9; //3
+    public static final int LeftMaster_ID = 2; //3
     public static final int LeftSlave_ID = 8; //4
 
-    public static final int RightMaster_ID = 7; //1
-    public static final int RightSlave_ID = 6;  //2
+    public static final int RightMaster_ID = 4; //1
+    public static final int RightSlave_ID = 14;  //2
 
     public static final double kP = 0//3.9356
     ,  kI = 0
@@ -159,6 +162,12 @@ public final class Constants {
 
     public static final int Solenoid_Shifter_ID = 0;
 }
+
+public static final class FieldConstants{
+  public static final double length = Units.feetToMeters(54);
+  public static final double width = Units.feetToMeters(27);
+}
+
 public static final class ShooterConstants{
   /** ---PROTOTYPE--- */
   public static final byte FLY_WHEEL_LOWER_ID = 1; 
@@ -186,6 +195,15 @@ public static final class VisionConstants {
   public static double HEIGHT_OF_OUTER_PORT = 2.64;//Altura del target
   public static double LIMELIGHT_FLOOR_CLEREANCE= 0.79;//Altura de la limelight
   public static double LIMELIGHT_VERTICAL_ANGLE = 36; //Angulo de la limelight
+
+  public static final Transform3d robotToCam =
+          new Transform3d(
+                  new Translation3d(0.33, 0.03, 0.53),
+                  new Rotation3d(
+                          0, 0,
+                          0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
+  // from center.
+  public static final String cameraName = "photonvision";
 }
 
 public static final class IntakeConstants{
