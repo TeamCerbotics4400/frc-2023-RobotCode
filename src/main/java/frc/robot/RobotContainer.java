@@ -5,20 +5,18 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.DefaultShooter;
-import frc.robot.commands.Intake;
-import frc.robot.subsystems.Shooter;
+//import frc.robot.commands.DefaultShooter;
+//import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.SimTeleOp;
-import frc.robot.commands.SimAutoCommands.TestAuto;
+//import frc.robot.commands.SimTeleOp;
+//import frc.robot.commands.SimAutoCommands.TestAuto;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DrivetrainSim;
-import frc.robot.subsystems.NeoIntake;
-import frc.robot.subsystems.LimelightSubsystem;
+//import frc.robot.subsystems.DrivetrainSim;
+//import frc.robot.subsystems.LimelightSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,8 +28,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Joystick joy0 = new Joystick(0);
   JoystickButton rightBumper = new JoystickButton(joy0, 6);
-  private final Shooter shooter1 = new Shooter();
-  private final NeoIntake neointake = new NeoIntake();
+// private final Shooter shooter1 = new Shooter();
+//  private final NeoIntake neointake = new NeoIntake();
   JoystickButton FerBestoProgra = new JoystickButton(joy0, 1);
   JoystickButton Citrus1678BestoFRCTeam = new JoystickButton(joy0, 2);
   JoystickButton buttonX = new JoystickButton(joy0, 3);
@@ -44,16 +42,20 @@ public class RobotContainer {
  /*  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   private final DriveTrain drivetrain = new DriveTrain(limelightSubsystem);*/
 
+  //private final DrivetrainSim driveSim = new DrivetrainSim();
+  //private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  //private final DriveTrain drivetrain = new DriveTrain(limelightSubsystem);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
     // Configure the trigger bindings
 
+    //new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(shooter1));
 
-/*    driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
- *  () -> joy0.getRawAxis(2), //4 para joystick, 0 para teclado
- *  () -> joy0.getRawAxis(1)));
-*/
+    /*driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
+    () -> joy0.getRawAxis(2), //4 para joystick, 0 para teclado
+    () -> joy0.getRawAxis(1)));*/
 
     configureBindings();
 
@@ -71,14 +73,13 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
-    FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));
-    
-  }
+
+    /*Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
+    FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));*/
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    
+  }    
   
 
   /**
@@ -88,7 +89,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return /*new TestAuto(driveSim)*/ null;
   }
 
   /*public DrivetrainSim getSimDrive(){

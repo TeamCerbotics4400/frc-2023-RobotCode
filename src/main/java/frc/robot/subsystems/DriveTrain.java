@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import org.photonvision.RobotPoseEstimator;
+
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -12,11 +16,13 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -42,7 +48,7 @@ public class DriveTrain extends SubsystemBase {
   PIDController leftPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
 
-  LimelightSubsystem limelight;
+  //LimelightSubsystem limelight;
 
   Field2d field2d = new Field2d();
 
@@ -70,14 +76,18 @@ public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
             new DifferentialDrivePoseEstimator(
-                    DriveConstants.kDriveKinematics, Rotation2d.fromDegrees(getAngle()), 0.0, 0.0, new Pose2d());
+                    DriveConstants.kDriveKinematics, 
+                    Rotation2d.fromDegrees(getAngle()), 
+                    0.0, 0.0, new Pose2d());
 
 
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
 
-  public DriveTrain(LimelightSubsystem limelightSubsystem) {
+  public PhotonCameraWrapper pcw;
 
-    this.limelight = limelightSubsystem;
+  public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
+
+    //this.limelight = limelightSubsystem;
 
     rightMaster.setInverted(false);
     rightSlave.setInverted(false);
@@ -112,7 +122,21 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Target Angle", 0);
 
-    SmartDashboard.putData("Field", field2d);
+    pcw = new PhotonCameraWrapper();
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    log();
+
+    odometry.update(Rotation2d.fromDegrees(getAngle()), 
+    encoderCountsToMeters(encoderIzq.getPosition()), 
+    encoderCountsToMeters(encoderDer.getPosition()));
+
+    updateOdometryWVisionCorrection();
+
+   
   }
 
   public void drive(double speed, double turn){
@@ -182,6 +206,26 @@ public class DriveTrain extends SubsystemBase {
     differentialDrive.feed();
   }
 
+  //Metodo de prueba
+  public void updateOdometryWVisionCorrection(){
+    m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
+    encoderCountsToMeters(encoderIzq.getPosition()), 
+    encoderCountsToMeters(encoderDer.getPosition()));
+
+    Pair<Pose2d, Double> result = 
+    pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+
+    var cameraPose = result.getFirst();
+    var camPoseObsTime = result.getSecond();
+
+    if(cameraPose != null){
+      m_poseEstimator.addVisionMeasurement(cameraPose, camPoseObsTime);
+      m_field.getObject("Cam est Pose").setPose(cameraPose);
+    } else {
+      m_field.getObject("Cam est Pose").setPose(new Pose2d(-100, -100, new Rotation2d()));
+    }
+  }
+
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
     if (initPose) {
@@ -208,17 +252,7 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    log();
-
-    odometry.update(Rotation2d.fromDegrees(getAngle()), 
-    encoderCountsToMeters(encoderIzq.getPosition()), 
-    encoderCountsToMeters(encoderDer.getPosition()));
-
-   
-  }
+  
 
   public void updateOdometry() {
 
@@ -232,7 +266,7 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Distancia Y", odometry.getPoseMeters().getTranslation().getY());
     SmartDashboard.putNumber("Angle", odometry.getPoseMeters().getRotation().getDegrees());
 
-    field2d.setRobotPose(limelight.getRobotPose().toPose2d());
+    //field2d.setRobotPose(limelight.getRobotPose().toPose2d());
 
     
 
