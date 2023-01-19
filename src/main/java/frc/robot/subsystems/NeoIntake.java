@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/* 
+
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class NeoIntake extends SubsystemBase {
-  /** Creates a new NeoIntake. 
+  // Creates a new NeoIntake. 
 
-  CANSparkMax I_Should_Be_A_Servo = new CANSparkMax(IntakeConstants.RapidWheeel_ID, MotorType.kBrushless);
-  CANSparkMax RPWheel = new CANSparkMax(IntakeConstants.IShouldBeAServo_ID, MotorType.kBrushless);
+  CANSparkMax I_Should_Be_A_Servo = new CANSparkMax(IntakeConstants.IShouldBeAServo_ID, MotorType.kBrushless);
+  CANSparkMax RPWheel = new CANSparkMax(IntakeConstants.RapidWheeel_ID, MotorType.kBrushless);
 
   private RelativeEncoder i_Should_Be_A_Servo_Encoder =  I_Should_Be_A_Servo.getEncoder();
   
@@ -26,7 +26,7 @@ public class NeoIntake extends SubsystemBase {
   private SparkMaxPIDController I_Should_Be_A_Servo_PIDController = I_Should_Be_A_Servo.getPIDController();
   private SparkMaxPIDController ishouldbeaservo_PIDController = RPWheel.getPIDController();
 
-  private double targetVelocity = 0;
+  private double targetPosition = 0;
   private double RPVelo = 0;
 
   public NeoIntake() { 
@@ -39,8 +39,8 @@ public class NeoIntake extends SubsystemBase {
     I_Should_Be_A_Servo.setCANTimeout(10);
     RPWheel.setCANTimeout(10);
 
-    I_Should_Be_A_Servo.setIdleMode(IdleMode.kCoast);
-    RPWheel.setIdleMode(IdleMode.kCoast);
+    I_Should_Be_A_Servo.setIdleMode(IdleMode.kBrake);
+    RPWheel.setIdleMode(IdleMode.kBrake);
 
     int smartMotionSlot = 0;
 
@@ -61,8 +61,8 @@ public class NeoIntake extends SubsystemBase {
     SmartDashboard.putNumber("Feed Forward", IntakeConstants.kFF);
     SmartDashboard.putNumber("Max Output", IntakeConstants.kMaxOutput);
     SmartDashboard.putNumber("Min Output", IntakeConstants.kMinOutput);
-    SmartDashboard.putNumber("RP Velocity", RPVelo);
-    SmartDashboard.putNumber("Target INTAKE Velocity", targetVelocity);
+    SmartDashboard.putNumber("RP Power", RPVelo);
+    SmartDashboard.putNumber("Target Arm Position", targetPosd);
 
   }
 
@@ -83,7 +83,7 @@ public class NeoIntake extends SubsystemBase {
     double allE = SmartDashboard.getNumber("Allowed Closed Loop INTAKE Error", 0);
     double targetVelo = SmartDashboard.getNumber("Target INTAKE Velocity", 0);
     double RPWheelVelo = SmartDashboard.getNumber("Target RP Velocity", 0);
-    SmartDashboard.putNumber("Velocidad del ''IshouldBeAServo''", i_Should_Be_A_Servo_Encoder.getVelocity());
+    SmartDashboard.putNumber("Posicion del ''IshouldBeAServo''", i_Should_Be_A_Servo_Encoder.getPosition());
 
 
 
@@ -93,12 +93,11 @@ public class NeoIntake extends SubsystemBase {
     if((d != IntakeConstants.kD)) {   I_Should_Be_A_Servo_PIDController.setD(d);     }
     if((iz != IntakeConstants.kIz)) { I_Should_Be_A_Servo_PIDController.setIZone(iz);}
     if((ff != IntakeConstants.kFF)) { I_Should_Be_A_Servo_PIDController.setFF(ff);   }
-    if ((targetVelocity != targetVelo )) {targetVelocity = targetVelo;}
+    if ((targetPosition != targetVelo )) {targetPosition = targetVelo;}
     if ((RPWheelVelo != RPVelo)) {RPWheelVelo = RPVelo;}
     if((max != IntakeConstants.kMaxOutput) || (min != IntakeConstants.kMinOutput)) { 
       I_Should_Be_A_Servo_PIDController.setOutputRange(min, max); 
       IntakeConstants.kMinOutput = min; IntakeConstants.kMaxOutput = max; 
-    
     }
     
     if((maxV != IntakeConstants.maxVel)) { I_Should_Be_A_Servo_PIDController.setSmartMotionMaxVelocity(maxV,0); IntakeConstants.maxVel = maxV; }
@@ -113,11 +112,11 @@ public class NeoIntake extends SubsystemBase {
   }
 
   public void goToDashboardVelocity(){
-    SetRapidWheelVelocity(targetVelocity);
+    SetRapidWheelVelocity(targetPosition);
     setMotorsPower(RPVelo);
   }
 
   public void setMotorsPower(double Power){
     I_Should_Be_A_Servo.set(Power);
   }
-}*/
+}
