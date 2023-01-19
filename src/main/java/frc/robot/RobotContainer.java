@@ -28,14 +28,29 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Joystick joy0 = new Joystick(0);
   JoystickButton rightBumper = new JoystickButton(joy0, 6);
-  //private final Shooter shooter1 = new Shooter();
+// private final Shooter shooter1 = new Shooter();
+//  private final NeoIntake neointake = new NeoIntake();
+  JoystickButton FerBestoProgra = new JoystickButton(joy0, 1);
+  JoystickButton Citrus1678BestoFRCTeam = new JoystickButton(joy0, 2);
+  JoystickButton buttonX = new JoystickButton(joy0, 3);
+  JoystickButton buttonY = new JoystickButton(joy0, 4);
+  JoystickButton leftBumper = new JoystickButton(joy0, 5);
+
+
+ /*  private final DrivetrainSim driveSim = new DrivetrainSim();*/
+ //Lo dejo asi porque luego causa conflictos con el robot como tal
+ /*  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  private final DriveTrain drivetrain = new DriveTrain(limelightSubsystem);*/
+
   //private final DrivetrainSim driveSim = new DrivetrainSim();
   //private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   //private final DriveTrain drivetrain = new DriveTrain(limelightSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
   public RobotContainer() {
     // Configure the trigger bindings
+
     //new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(shooter1));
 
     /*driveSim.setDefaultCommand(new SimTeleOp(driveSim, 
@@ -58,13 +73,14 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+
     /*Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
     FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));*/
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    
-  }
+  }    
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
