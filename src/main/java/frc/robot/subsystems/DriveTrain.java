@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import org.photonvision.RobotPoseEstimator;
+import org.photonvision.EstimatedRobotPose;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
@@ -100,10 +100,10 @@ public class DriveTrain extends SubsystemBase {
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
-    leftMaster.setIdleMode(IdleMode.kBrake);
-    leftSlave.setIdleMode(IdleMode.kBrake);
-    rightMaster.setIdleMode(IdleMode.kBrake);
-    rightSlave.setIdleMode(IdleMode.kBrake);
+    leftMaster.setIdleMode(IdleMode.kCoast);
+    leftSlave.setIdleMode(IdleMode.kCoast);
+    rightMaster.setIdleMode(IdleMode.kCoast);
+    rightSlave.setIdleMode(IdleMode.kCoast);
 
     encoderIzq.setPosition(0);
     encoderDer.setPosition(0);
@@ -132,9 +132,7 @@ public class DriveTrain extends SubsystemBase {
 
     odometry.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(encoderIzq.getPosition()), 
-    encoderCountsToMeters(encoderDer.getPosition()));
-
-    updateOdometryWVisionCorrection();
+    encoderCountsToMeters(encoderDer.getPosition())); 
 
    
   }
@@ -212,18 +210,20 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(encoderIzq.getPosition()), 
     encoderCountsToMeters(encoderDer.getPosition()));
 
-    Pair<Pose2d, Double> result = 
+    Optional<EstimatedRobotPose> result = 
     pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
 
-    var cameraPose = result.getFirst();
-    var camPoseObsTime = result.getSecond();
 
-    if(cameraPose != null){
-      m_poseEstimator.addVisionMeasurement(cameraPose, camPoseObsTime);
-      m_field.getObject("Cam est Pose").setPose(cameraPose);
+    if(result.isPresent()){
+      EstimatedRobotPose camPose = result.get();
+      m_poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), 
+      camPose.timestampSeconds);
+      m_field.getObject("Cam est Pose").setPose(camPose.estimatedPose.toPose2d());
     } else {
       m_field.getObject("Cam est Pose").setPose(new Pose2d(-100, -100, new Rotation2d()));
     }
+
+    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
   }
 
   

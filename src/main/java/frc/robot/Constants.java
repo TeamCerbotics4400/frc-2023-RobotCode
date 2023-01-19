@@ -203,7 +203,7 @@ public static final class VisionConstants {
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
   // from center.
-  public static final String cameraName = "photonvision";
+  public static final String cameraName = "Limelight";
 }
 
 public static final class IntakeConstants{
