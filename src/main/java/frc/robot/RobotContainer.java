@@ -4,19 +4,20 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-//import frc.robot.commands.DefaultShooter;
-//import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DefaultShooter;
+import frc.robot.commands.Intake;
 //import frc.robot.commands.SimTeleOp;
 //import frc.robot.commands.SimAutoCommands.TestAuto;
 import frc.robot.subsystems.DriveTrain;
 //import frc.robot.subsystems.DrivetrainSim;
 //import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.NeoIntake;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,16 +28,24 @@ import frc.robot.subsystems.DriveTrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Joystick joy0 = new Joystick(0);
-  JoystickButton rightBumper = new JoystickButton(joy0, 6);
-// private final Shooter shooter1 = new Shooter();
-//  private final NeoIntake neointake = new NeoIntake();
+
+
+
+ private final Shooter shooter1 = new Shooter();
+
+  private final NeoIntake neointake = new NeoIntake();
+
   JoystickButton FerBestoProgra = new JoystickButton(joy0, 1);
+
   JoystickButton Citrus1678BestoFRCTeam = new JoystickButton(joy0, 2);
+
   JoystickButton buttonX = new JoystickButton(joy0, 3);
+
   JoystickButton buttonY = new JoystickButton(joy0, 4);
+
   JoystickButton leftBumper = new JoystickButton(joy0, 5);
-
-
+  
+  JoystickButton rightBumper = new JoystickButton(joy0, 6);
  /*  private final DrivetrainSim driveSim = new DrivetrainSim();*/
  //Lo dejo asi porque luego causa conflictos con el robot como tal
  /*  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
@@ -44,7 +53,7 @@ public class RobotContainer {
 
   //private final DrivetrainSim driveSim = new DrivetrainSim();
   private final DriveTrain drivetrain = new DriveTrain();
-  private final NeoIntake intake = new NeoIntake
+  private final NeoIntake intake = new NeoIntake();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -73,8 +82,8 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    /*Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
-    FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));*/
+    Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
+    FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.

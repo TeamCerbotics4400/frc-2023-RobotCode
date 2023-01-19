@@ -1,14 +1,14 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/* 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.NeoIntake;
 
 public class Intake extends CommandBase {
-  /** Creates a new Intake. 
+  // Creates a new Intake. 
   private NeoIntake neointake;
   public Intake(NeoIntake neointake) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -38,4 +38,4 @@ public class Intake extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-}*/
+}
