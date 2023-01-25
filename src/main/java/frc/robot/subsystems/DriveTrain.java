@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.subsystems;
 
 import java.util.Optional;
@@ -39,7 +39,7 @@ import frc.robot.Constants.DriveConstants;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
-  CANSparkMax leftMaster = new CANSparkMax(DriveConstants.LeftMaster_ID, MotorType.kBrushless);
+/* CANSparkMax leftMaster = new CANSparkMax(DriveConstants.LeftMaster_ID, MotorType.kBrushless);
   CANSparkMax leftSlave = new CANSparkMax(DriveConstants.LeftSlave_ID, MotorType.kBrushless);
 
   CANSparkMax rightMaster = new CANSparkMax(DriveConstants.RightMaster_ID, MotorType.kBrushless);
@@ -84,11 +84,12 @@ public class DriveTrain extends SubsystemBase {
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
 
   public PhotonCameraWrapper pcw;
-
-  public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
-
+/* 
+  public DriveTrain(/*LimelightSubsystem limelightSubsystem) {
+*/
     //this.limelight = limelightSubsystem;
-
+    
+/* 
     rightMaster.setInverted(false);
     rightSlave.setInverted(false);
 
@@ -304,3 +305,4 @@ public class DriveTrain extends SubsystemBase {
     
   }
 }
+*/

@@ -62,7 +62,7 @@ public class NeoIntake extends SubsystemBase {
     SmartDashboard.putNumber("Max Output", IntakeConstants.kMaxOutput);
     SmartDashboard.putNumber("Min Output", IntakeConstants.kMinOutput);
     SmartDashboard.putNumber("RP Power", RapidVelo);
-    SmartDashboard.putNumber("Rotations", targetPosition);
+    SmartDashboard.putNumber("Set Rotations", targetPosition);
   }
 
 

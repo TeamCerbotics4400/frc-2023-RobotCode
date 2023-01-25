@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.commands;
 
 
@@ -10,7 +10,7 @@ import frc.robot.subsystems.Shooter;
 
 public class DefaultShooter extends CommandBase {
   /** Creates a new DefaultShooter. */
-  private Shooter shooter;
+ /*  private Shooter shooter;
 
   public DefaultShooter(Shooter shooter) {
     this.shooter = shooter;
@@ -40,3 +40,4 @@ public class DefaultShooter extends CommandBase {
     return false;
   }
 }
+*/

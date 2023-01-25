@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveTrain;
+//import frc.robot.subsystems.DriveTrain;
 //import frc.robot.subsystems.DrivetrainSim;
 
 /**
@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  DriveTrain m_drive = new DriveTrain();
+ // DriveTrain m_drive = new DriveTrain();
 
   BooleanLogEntry myBooleanLogEntry;
   DoubleLogEntry myDoubleLogEntry;
@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    m_drive.updateOdometryWVisionCorrection();
+ //   m_drive.updateOdometryWVisionCorrection();
     
   }
 

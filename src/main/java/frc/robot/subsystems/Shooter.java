@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
-public class Shooter extends SubsystemBase {
+/*public class Shooter extends SubsystemBase {
   /*  Creates a new Shooter. */
-  private CANSparkMax flyWheelLower = new CANSparkMax(ShooterConstants.FLY_WHEEL_LOWER_ID, MotorType.kBrushless);
+ /*  private CANSparkMax flyWheelLower = new CANSparkMax(ShooterConstants.FLY_WHEEL_LOWER_ID, MotorType.kBrushless);
   private CANSparkMax flyWheelUpper = new CANSparkMax(ShooterConstants.FLY_WHEEL_UPPER_ID, MotorType.kBrushless);
 
   
@@ -84,4 +84,4 @@ public class Shooter extends SubsystemBase {
     flyWheelLower.set(LowerPower);
     flyWheelUpper.set(UpperPower);
   }
-}
+} */

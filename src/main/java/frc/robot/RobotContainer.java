@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.DefaultShooter;
+//import frc.robot.commands.DefaultShooter;
 import frc.robot.commands.Intake;
 //import frc.robot.commands.SimTeleOp;
 //import frc.robot.commands.SimAutoCommands.TestAuto;
-import frc.robot.subsystems.DriveTrain;
+//import frc.robot.subsystems.DriveTrain;
 //import frc.robot.subsystems.DrivetrainSim;
 //import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.NeoIntake;
-import frc.robot.subsystems.Shooter;
+//import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -31,13 +31,13 @@ public class RobotContainer {
 
 
 
- private final Shooter shooter1 = new Shooter();
+// private final Shooter shooter1 = new Shooter();
 
   private final NeoIntake neointake = new NeoIntake();
 
-  JoystickButton FerBestoProgra = new JoystickButton(joy0, 1);
+  JoystickButton FerBestoProgra = new JoystickButton(joy0, 2);
 
-  JoystickButton Citrus1678BestoFRCTeam = new JoystickButton(joy0, 2);
+  JoystickButton Citrus1678BestoFRCTeam = new JoystickButton(joy0, 1);
 
   JoystickButton buttonX = new JoystickButton(joy0, 3);
 
@@ -52,8 +52,8 @@ public class RobotContainer {
   private final DriveTrain drivetrain = new DriveTrain(limelightSubsystem);*/
 
   //private final DrivetrainSim driveSim = new DrivetrainSim();
-  private final DriveTrain drivetrain = new DriveTrain();
-  private final NeoIntake intake = new NeoIntake();
+ // private final DriveTrain drivetrain = new DriveTrain();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -83,7 +83,7 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
-    FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));
+  //  FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
