@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 //import frc.robot.commands.DefaultShooter;
-import frc.robot.commands.Intake;
+//import frc.robot.commands.Intake;
 //import frc.robot.commands.SimTeleOp;
 //import frc.robot.commands.SimAutoCommands.TestAuto;
 //import frc.robot.subsystems.DriveTrain;
@@ -82,7 +82,7 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
+   // Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
   //  FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
