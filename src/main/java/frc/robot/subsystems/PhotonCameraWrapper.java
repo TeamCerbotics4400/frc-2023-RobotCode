@@ -7,9 +7,10 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
-import org.photonvision.RobotPoseEstimator;
-import org.photonvision.RobotPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -18,24 +19,25 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 
 /** Add your docs here. */
 public class PhotonCameraWrapper {
     public PhotonCamera photonCamera;
-    public RobotPoseEstimator poseEstimator;
+    //public RobotPoseEstimator poseEstimator;
+    public PhotonPoseEstimator photonPoseEstimator;
     
     public PhotonCameraWrapper() {
         final AprilTag tag6 = new AprilTag(6, 
-        new Pose3d(new Pose2d(FieldConstants.length, FieldConstants.width / 2.0, 
+        new Pose3d(new Pose2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19), 
         Rotation2d.fromDegrees(0))));
         final AprilTag tag7 = new AprilTag(7, 
-        new Pose3d(new Pose2d(FieldConstants.length, FieldConstants.width / 2.0, 
+        new Pose3d(new Pose2d(Units.inchesToMeters(40.45), Units.inchesToMeters(108.19), 
         Rotation2d.fromDegrees(0))));
-        final AprilTag tag8 = new AprilTag(9, 
-        new Pose3d(new Pose2d(FieldConstants.length, FieldConstants.width / 2.0, 
+        final AprilTag tag8 = new AprilTag(8, 
+        new Pose3d(new Pose2d(Units.inchesToMeters(40.45), Units.inchesToMeters(42.19), 
         Rotation2d.fromDegrees(0))));
 
         ArrayList<AprilTag> atList = new ArrayList<AprilTag>();
@@ -51,21 +53,12 @@ public class PhotonCameraWrapper {
         var camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
         camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.robotToCam));
 
-        poseEstimator = new RobotPoseEstimator(atfl, 
-        PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camList);
+        photonPoseEstimator = new PhotonPoseEstimator(atfl, 
+        PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT, photonCamera, VisionConstants.robotToCam);
     }
 
-    public Pair<Pose2d, Double> getEstimatedGlobalPose(Pose2d prevEstimatedPose){
-        poseEstimator.setReferencePose(prevEstimatedPose);
-
-        double currentTime = Timer.getFPGATimestamp();
-        Optional<Pair<Pose3d, Double>>result = poseEstimator.update();
-
-        if(result.isPresent()){
-            return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), 
-            currentTime - result.get().getSecond());
-        } else{
-            return new Pair<Pose2d, Double>(new Pose2d(0, 0, new Rotation2d()), 0.0);
-        }
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedPose){
+        photonPoseEstimator.setReferencePose(prevEstimatedPose);
+        return photonPoseEstimator.update();
     }
 }

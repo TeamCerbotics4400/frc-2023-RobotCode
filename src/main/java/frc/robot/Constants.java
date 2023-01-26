@@ -135,10 +135,10 @@ public final class Constants {
 
   public static final class DriveConstants{
     public static final int LeftMaster_ID = 2; //3
-    public static final int LeftSlave_ID = 8; //4
+    public static final int LeftSlave_ID = 3; //4
 
     public static final int RightMaster_ID = 4; //1
-    public static final int RightSlave_ID = 14;  //2
+    public static final int RightSlave_ID = 5;  //2
 
     public static final double kP = 0//3.9356
     ,  kI = 0
@@ -170,8 +170,8 @@ public static final class FieldConstants{
 
 public static final class ShooterConstants{
   /** ---PROTOTYPE--- */
-  public static final byte FLY_WHEEL_LOWER_ID = 1; 
-  public static final byte FLY_WHEEL_UPPER_ID = 2;
+  public static final byte FLY_WHEEL_LOWER_ID = 8; 
+  public static final byte FLY_WHEEL_UPPER_ID = 9;
 
   public static double kP= 0.000031,
                        kI = 0,
@@ -203,12 +203,12 @@ public static final class VisionConstants {
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
   // from center.
-  public static final String cameraName = "photonvision";
+  public static final String cameraName = "Limelight";
 }
 
 public static final class IntakeConstants{
-  public static final byte IShouldBeAServo_ID = 3;
-  public static final byte RapidWheeel_ID = 4;
+  public static final byte IntakePoseMotor_ID = 6;
+  public static final byte RapidWheeel_ID = 7;
   public static double kP= 0,
                        kI = 0,
                        kD = 0,
@@ -217,10 +217,10 @@ public static final class IntakeConstants{
                        kMaxOutput = 0,
                        kMinOutput = 0, 
                        maxRPM = 0, 
-                       maxVel = 0, //---------
+                       maxVel = 100, //---------
                        minVel = 0, //---------
-                       maxAcc = 0, 
-                       allowedErr = 0;
+                       maxAcc = 10, 
+                       allowedErr = 5;
 
 
 
