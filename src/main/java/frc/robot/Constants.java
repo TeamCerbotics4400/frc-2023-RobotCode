@@ -212,7 +212,7 @@ public static final class VisionConstants {
 
 public static final class IntakeConstants{
  // public static final byte IShouldBeAServo_ID = 8;  
-  public static final byte RapidWheeel_ID = 7;
+  public static final byte RapidWheeel_ID = 6;
 
   public static double Kp= 0,
                        kI = 0,
@@ -229,7 +229,7 @@ public static final class IntakeConstants{
 
   //Posiciones Intake.
 
-  public static final byte PositionIntake = 6;
+  public static final byte PositionIntake = 7;
 
   public static double Undeploy = 10;
   public static double i_kP = 5e-5, 
