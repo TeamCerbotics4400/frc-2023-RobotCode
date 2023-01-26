@@ -133,7 +133,10 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(encoderIzq.getPosition()), 
     encoderCountsToMeters(encoderDer.getPosition())); 
 
-   
+    SmartDashboard.putNumber("Odometry X", odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Odometry Y", odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Odometry Rotation", odometry.getPoseMeters().getRotation().getDegrees());
+  
   }
 
   public void drive(double speed, double turn){
