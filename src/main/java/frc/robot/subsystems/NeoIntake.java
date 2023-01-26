@@ -1,129 +1,165 @@
-/*f de fuck*/// Copyright (c) FIRST and other WPILib contributors.
-/*f de fuck*/// Open Source Software; you can modify and/or share it under the terms of
-/*f de fuck*/// the WPILib BSD license file in the root directory of this project.
-/*f de fuck*/
-/*f de fuck*/package frc.robot.subsystems;
-/*f de fuck*/
-/*f de fuck*/import com.revrobotics.CANSparkMax;
-/*f de fuck*/import com.revrobotics.RelativeEncoder;
-/*f de fuck*/import com.revrobotics.SparkMaxPIDController;
-/*f de fuck*/import com.revrobotics.CANSparkMax.IdleMode;
-/*f de fuck*/import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-/*f de fuck*/
-/*f de fuck*/import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-/*f de fuck*/import edu.wpi.first.wpilibj2.command.SubsystemBase;
-/*f de fuck*/import frc.robot.Constants.IntakeConstants;
-/*f de fuck*/
-/*f de fuck*/public class NeoIntake extends SubsystemBase {
-/*f de fuck*/  // Creates a new NeoIntake. 
-/*f de fuck*/
-/*f de fuck*/  CANSparkMax I_Should_Be_A_Servo = new CANSparkMax(IntakeConstants.IShouldBeAServo_ID, MotorType.kBrushless);
-/*f de fuck*/  CANSparkMax RapidWheel = new CANSparkMax(IntakeConstants.RapidWheeel_ID, MotorType.kBrushless);
-/*f de fuck*/
-/*f de fuck*/  private RelativeEncoder i_Should_Be_A_Servo_Encoder =  I_Should_Be_A_Servo.getEncoder();
-/*f de fuck*/  
-/*f de fuck*/
-/*f de fuck*/  private SparkMaxPIDController I_Should_Be_A_Servo_PIDController = I_Should_Be_A_Servo.getPIDController();
-/*f de fuck*/  private SparkMaxPIDController RapidWHeelPIDController = RapidWheel.getPIDController();
-/*f de fuck*/
-/*f de fuck*/  private double targetPosition = 0;
-/*f de fuck*/  private double RapidVelo = 0;
-/*f de fuck*/
-/*f de fuck*/  public NeoIntake() { 
-/*f de fuck*/    I_Should_Be_A_Servo.restoreFactoryDefaults();
-/*f de fuck*/    RapidWheel.restoreFactoryDefaults();
-/*f de fuck*/
-/*f de fuck*/    I_Should_Be_A_Servo.setInverted(true);
-/*f de fuck*/    RapidWheel.setInverted(true);
-/*f de fuck*/
-/*f de fuck*/    I_Should_Be_A_Servo.setCANTimeout(10);
-/*f de fuck*/    RapidWheel.setCANTimeout(10);
-/*f de fuck*/
-/*f de fuck*/    I_Should_Be_A_Servo.setIdleMode(IdleMode.kBrake);
-/*f de fuck*/    RapidWheel.setIdleMode(IdleMode.kBrake);
-/*f de fuck*/
-/*f de fuck*/    int smartMotionSlot = 0;
-/*f de fuck*/
-/*f de fuck*/    I_Should_Be_A_Servo_PIDController.setSmartMotionMaxVelocity(IntakeConstants.maxVel, smartMotionSlot);
-/*f de fuck*/    I_Should_Be_A_Servo_PIDController.setSmartMotionMinOutputVelocity(IntakeConstants.minVel, smartMotionSlot);
-/*f de fuck*/    I_Should_Be_A_Servo_PIDController.setSmartMotionMaxAccel(IntakeConstants.maxAcc, smartMotionSlot);
-/*f de fuck*/    I_Should_Be_A_Servo_PIDController.setSmartMotionAllowedClosedLoopError(IntakeConstants.allowedErr, smartMotionSlot);
-/*f de fuck*/
-/*f de fuck*/    RapidWHeelPIDController.setSmartMotionMaxVelocity(IntakeConstants.maxVel, smartMotionSlot);
-/*f de fuck*/    RapidWHeelPIDController.setSmartMotionMinOutputVelocity(IntakeConstants.minVel, smartMotionSlot);
-/*f de fuck*/    RapidWHeelPIDController.setSmartMotionMaxAccel(IntakeConstants.maxAcc, smartMotionSlot);
-/*f de fuck*/    RapidWHeelPIDController.setSmartMotionAllowedClosedLoopError(IntakeConstants.allowedErr, smartMotionSlot);
-/*f de fuck*/
-/*f de fuck*/    SmartDashboard.putNumber("P Gain", IntakeConstants.Kp);
-/*f de fuck*/    SmartDashboard.putNumber("I Gain", IntakeConstants.kI);
-/*f de fuck*/    SmartDashboard.putNumber("D Gain", IntakeConstants.kD);
-/*f de fuck*/    SmartDashboard.putNumber("I Zone", IntakeConstants.kIz);
-/*f de fuck*/    SmartDashboard.putNumber("Feed Forward", IntakeConstants.kFF);
-/*f de fuck*/    SmartDashboard.putNumber("Max Output", IntakeConstants.kMaxOutput);
-/*f de fuck*/    SmartDashboard.putNumber("Min Output", IntakeConstants.kMinOutput);
-/*f de fuck*/    SmartDashboard.putNumber("RP Power", RapidVelo);
-/*f de fuck*/    SmartDashboard.putNumber("Set Rotations", targetPosition);
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
+
+public class NeoIntake extends SubsystemBase {
+  // Creates a new NeoIntake. 
+
+  
+  CANSparkMax RapidWheel = new CANSparkMax(IntakeConstants.RapidWheeel_ID, MotorType.kBrushless);
+  
+
+  private SparkMaxPIDController RapidWHeelPIDController = RapidWheel.getPIDController();
+
+  private double targetPosition = 0;
+  private double RapidVelo = 0;
+
+  //Posiciones Intake.
+
+  private CANSparkMax PositionIntake = new CANSparkMax(IntakeConstants.PositionIntake, MotorType.kBrushless);
+
+  private RelativeEncoder PositionIntake_encoder = PositionIntake.getEncoder();
+
+  private SparkMaxPIDController PositionIntake_PIDController = PositionIntake.getPIDController();
+
+  private double DeployPosition = 0;
+  private double UnDeployPosition = IntakeConstants.Undeploy;
+
+  public NeoIntake() { 
+
+    RapidWheel.restoreFactoryDefaults();
+
+    RapidWheel.setInverted(true);
+
+    RapidWheel.setCANTimeout(10);
+    RapidWheel.setIdleMode(IdleMode.kBrake);
+
+    int smartMotionSlot = 0;
+
+    RapidWHeelPIDController.setSmartMotionMaxVelocity(IntakeConstants.maxVel, smartMotionSlot);
+    RapidWHeelPIDController.setSmartMotionMinOutputVelocity(IntakeConstants.minVel, smartMotionSlot);
+    RapidWHeelPIDController.setSmartMotionMaxAccel(IntakeConstants.maxAcc, smartMotionSlot);
+    RapidWHeelPIDController.setSmartMotionAllowedClosedLoopError(IntakeConstants.allowedErr, smartMotionSlot);
+
+    SmartDashboard.putNumber("P Gain", IntakeConstants.Kp);
+    SmartDashboard.putNumber("I Gain", IntakeConstants.kI);
+    SmartDashboard.putNumber("D Gain", IntakeConstants.kD);
+    SmartDashboard.putNumber("I Zone", IntakeConstants.kIz);
+    SmartDashboard.putNumber("Feed Forward", IntakeConstants.kFF);
+    SmartDashboard.putNumber("Max Output", IntakeConstants.kMaxOutput);
+    SmartDashboard.putNumber("Min Output", IntakeConstants.kMinOutput);
+    SmartDashboard.putNumber("RP Power", RapidVelo);
+    SmartDashboard.putNumber("Set Rotations", targetPosition);
+
+    //Posiciones Intake.
+
+    PositionIntake.restoreFactoryDefaults();
+    PositionIntake.setCANTimeout(10);
+    PositionIntake.setIdleMode(IdleMode.kBrake);
+
+    PositionIntake_PIDController.setSmartMotionMaxVelocity(IntakeConstants.i_MaxVel, smartMotionSlot);
+    PositionIntake_PIDController.setSmartMotionMinOutputVelocity(IntakeConstants.i_MinVel, smartMotionSlot);
+    PositionIntake_PIDController.setSmartMotionMaxAccel(IntakeConstants.i_MaxAcc, smartMotionSlot);
+    PositionIntake_PIDController.setSmartMotionAllowedClosedLoopError(IntakeConstants.i_allowedErr, smartMotionSlot);
+
+    SmartDashboard.putNumber("Intake_Arm P Gain", IntakeConstants.i_kP);
+    SmartDashboard.putNumber("Intake_Arm I Gain", IntakeConstants.i_kI);
+    SmartDashboard.putNumber("Intake_Arm D Gain", IntakeConstants.i_kD);
+    SmartDashboard.putNumber("Intake_Arm I Zone", IntakeConstants.i_kI);
+    SmartDashboard.putNumber("Intake_Arm Feed Forward", IntakeConstants.i_kFF);
+    SmartDashboard.putNumber("Intake_Arm Max Output", IntakeConstants.i_kMaxOutput);
+    SmartDashboard.putNumber("Intake_Arm Min Output", IntakeConstants.i_kMinOutput);
+    SmartDashboard.putNumber("Deploy Position", DeployPosition);
+    SmartDashboard.putNumber("Deploy Position", IntakeConstants.Undeploy);
+
+  }
 
 
-/*f de fuck*/  }
-/*f de fuck*/
-/*f de fuck*/
-/*f de fuck*/  @Override
-/*f de fuck*/  public void periodic() {
-/*f de fuck*/    // This method will be called once per scheduler run
-/*f de fuck*/    double p = SmartDashboard.getNumber("P Gain", 0);
-/*f de fuck*/    double i = SmartDashboard.getNumber("I Gain", 0);
-/*f de fuck*/    double d = SmartDashboard.getNumber("D Gain", 0);
-/*f de fuck*/    double iz = SmartDashboard.getNumber("I Zone", 0);
-/*f de fuck*/    double ff = SmartDashboard.getNumber("Feed Forward", 0);
-/*f de fuck*/    double max = SmartDashboard.getNumber("Max Output", 0);
-/*f de fuck*/    double min = SmartDashboard.getNumber("Min Output", 0);
-/*f de fuck*/    double maxV = SmartDashboard.getNumber("Max Velocity", 0);
-/*f de fuck*/    double minV = SmartDashboard.getNumber("Min Velocity", 0);
-/*f de fuck*/    double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
-/*f de fuck*/    double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    double p = SmartDashboard.getNumber("P Gain", 0);
+    double i = SmartDashboard.getNumber("I Gain", 0);
+    double d = SmartDashboard.getNumber("D Gain", 0);
+    double iz = SmartDashboard.getNumber("I Zone", 0);
+    double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    double max = SmartDashboard.getNumber("Max Output", 0);
+    double min = SmartDashboard.getNumber("Min Output", 0);
+    double maxV = SmartDashboard.getNumber("Max Velocity", 0);
+    double minV = SmartDashboard.getNumber("Min Velocity", 0);
+    double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
+    double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
 
 
-/*f de fuck*/                String fDeFuck = "f de fuck";
+                String fDeFuck = "f de fuck";
                         if(fDeFuck!= "f de jfuck"){
-                          System.out.println("This code is not workin' 'cause the line ''/*f de fuck*/'' is not available");
+                          System.out.println("This code is not workin' 'cause the line '''' is not available");
                         }
 
-/*f de fuck*/    // if PID coefficients on SmartDashboard have changed, write new values to controller
-/*f de fuck*/    if((p != IntakeConstants.Kp)) { I_Should_Be_A_Servo_PIDController.setP(p); IntakeConstants.Kp = p; }
-/*f de fuck*/    if((i != IntakeConstants.kI)) { I_Should_Be_A_Servo_PIDController.setI(i); IntakeConstants.kI = i; }
-/*f de fuck*/    if((d != IntakeConstants.kD)) { I_Should_Be_A_Servo_PIDController.setD(d); IntakeConstants.kD = d; }
-/*f de fuck*/    if((iz != IntakeConstants.kIz)) { I_Should_Be_A_Servo_PIDController.setIZone(iz); IntakeConstants.kIz = iz; }
-/*f de fuck*/    if((ff != IntakeConstants.kFF)) { I_Should_Be_A_Servo_PIDController.setFF(ff); IntakeConstants.kFF = ff; }
-/*f de fuck*/    if((max != IntakeConstants.kMaxOutput) || (min != IntakeConstants.kMinOutput)) { 
-/*f de fuck*/      I_Should_Be_A_Servo_PIDController.setOutputRange(min, max); 
-/*f de fuck*/      IntakeConstants.kMinOutput = min; IntakeConstants.kMaxOutput = max; 
-/*f de fuck*/    }
-/*f de fuck*/    if((maxV != IntakeConstants.maxVel)) { I_Should_Be_A_Servo_PIDController.setSmartMotionMaxVelocity(maxV,0); IntakeConstants.maxVel = maxV; }
-/*f de fuck*/    if((minV != IntakeConstants.minVel)) { I_Should_Be_A_Servo_PIDController.setSmartMotionMinOutputVelocity(minV,0); IntakeConstants.minVel = minV; }
-/*f de fuck*/    if((maxA != IntakeConstants.maxAcc)) { I_Should_Be_A_Servo_PIDController.setSmartMotionMaxAccel(maxA,0); IntakeConstants.maxAcc = maxA; }
-/*f de fuck*/    if((allE != IntakeConstants.allowedErr)) { I_Should_Be_A_Servo_PIDController.setSmartMotionAllowedClosedLoopError(allE,0); IntakeConstants.allowedErr = allE; }
-/*f de fuck*/
-/*f de fuck*/    double setPoint, processVariable;
-/*f de fuck*/    boolean mode = SmartDashboard.getBoolean("Mode", false);
-/*f de fuck*/    if(mode) {
-/*f de fuck*/      setPoint = SmartDashboard.getNumber("Set Velocity", 0);
-/*f de fuck*/      I_Should_Be_A_Servo_PIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
-/*f de fuck*/      processVariable = i_Should_Be_A_Servo_Encoder.getVelocity();
-/*f de fuck*/    } else {
-/*f de fuck*/      setPoint = SmartDashboard.getNumber("Set Position", 0);
-/*f de fuck*/      /**
-/*f de fuck*/       /*As with other PID modes, Smart Motion is set by calling the
-/*f de fuck*/       /** setReference method on an existing pid object and setting
-/*f de fuck*/       /* the control type to kSmartMotion
-/*f de fuck*/       /*/
-/*f de fuck*/      I_Should_Be_A_Servo_PIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
-/*f de fuck*/      processVariable = i_Should_Be_A_Servo_Encoder.getPosition();
-/*f de fuck*/    }
-/*f de fuck*/    
-/*f de fuck*/    SmartDashboard.putNumber("SetPoint", setPoint);
-/*f de fuck*/    SmartDashboard.putNumber("Process Variable", processVariable);
-/*f de fuck*/    SmartDashboard.putNumber("Output", I_Should_Be_A_Servo.getAppliedOutput());
-/*f de fuck*/  }
-/*f de fuck*/}
-/*f de fuck*/
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+  
+    //Posiciones Intake.
+
+    double i_p = SmartDashboard.getNumber("Intake_Arm P Gain", 0);
+    double i_i = SmartDashboard.getNumber("Intake_Arm I Gain", 0);
+    double i_d = SmartDashboard.getNumber("Intake_Arm D Gain", 0);
+    double i_iz = SmartDashboard.getNumber("Intake_Arm I Zone", 0);
+    double i_ff = SmartDashboard.getNumber("Intake_Arm Feed Forward", 0);
+    double i_max = SmartDashboard.getNumber("Intake_Arm Max Output", 0);
+    double i_min = SmartDashboard.getNumber("Intake_Arm Min Output", 0);
+    double i_maxV = SmartDashboard.getNumber("Intake_ArmMax Velocity", 0);
+    double i_minV = SmartDashboard.getNumber("Intake_Arm Min Velocity", 0);
+    double i_maxA = SmartDashboard.getNumber("Intake_Arm Max Acceleration", 0);
+    double i_allE = SmartDashboard.getNumber("Intake_Arm Allowed Closed Loop Error", 0);
+
+    if((p != IntakeConstants.i_kP)) { PositionIntake_PIDController.setP(p); IntakeConstants.i_kP = i_p; }
+    if((i != IntakeConstants.i_kI)) { PositionIntake_PIDController.setI(i); IntakeConstants.i_kI = i_i; }
+    if((d != IntakeConstants.i_kD)) { PositionIntake_PIDController.setD(d); IntakeConstants.i_kD = i_d; }
+    if((iz != IntakeConstants.i_kIz)) { PositionIntake_PIDController.setIZone(iz); IntakeConstants.i_kIz = i_iz; }
+    if((ff != IntakeConstants.i_kFF)) { PositionIntake_PIDController.setFF(ff); IntakeConstants.i_kFF = i_ff; }
+    if((max != IntakeConstants.i_kMaxOutput) || (i_min != IntakeConstants.i_kMinOutput)) { 
+      PositionIntake_PIDController.setOutputRange(i_min, i_max); 
+      IntakeConstants.i_kMinOutput = i_min; IntakeConstants.i_kMaxOutput = i_max; 
+    }
+    if((i_maxV != IntakeConstants.i_MaxVel)) { PositionIntake_PIDController.setSmartMotionMaxVelocity(i_maxV,0); IntakeConstants.i_MaxVel = i_maxV; }
+    if((i_minV != IntakeConstants.i_MinVel)) { PositionIntake_PIDController.setSmartMotionMinOutputVelocity(i_minV,0); IntakeConstants.i_MinVel = i_minV; }
+    if((i_maxA != IntakeConstants.i_MaxAcc)) { PositionIntake_PIDController.setSmartMotionMaxAccel(i_maxA,0); IntakeConstants.i_MaxAcc = i_maxA; }
+    if((i_allE != IntakeConstants.i_allowedErr)) { PositionIntake_PIDController.setSmartMotionAllowedClosedLoopError(i_allE,0); IntakeConstants.i_allowedErr = i_allE; }
+
+    double deploy_setPoint, deploy_processVariable;
+    boolean deploy_mode = SmartDashboard.getBoolean("Deploy Mode", false);
+    if(deploy_mode) {
+      deploy_setPoint = SmartDashboard.getNumber("Set Position UP", 0);
+      PositionIntake_PIDController.setReference(deploy_setPoint, CANSparkMax.ControlType.kSmartMotion);
+      deploy_processVariable = PositionIntake_encoder.getPosition();
+    } else {
+      deploy_setPoint = SmartDashboard.getNumber("Position", 0);
+      /**
+       /*As with other PID modes, Smart Motion is set by calling the
+       /** setReference method on an existing pid object and setting
+       /* the control type to kSmartMotion
+       /*/
+      PositionIntake_PIDController.setReference(deploy_setPoint, CANSparkMax.ControlType.kSmartMotion);
+      deploy_processVariable = PositionIntake_encoder.getPosition();
+
+      
+    }
+
+    SmartDashboard.putNumber("i_SetPoint", deploy_setPoint);
+    SmartDashboard.putNumber("i_Process Variable", deploy_processVariable);
+    SmartDashboard.putNumber("i_Output", PositionIntake.getAppliedOutput());    
+
+  }
+}

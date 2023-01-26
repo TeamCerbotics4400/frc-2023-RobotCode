@@ -211,8 +211,9 @@ public static final class VisionConstants {
 
 
 public static final class IntakeConstants{
-  public static final byte IShouldBeAServo_ID = 6;
+ // public static final byte IShouldBeAServo_ID = 8;  
   public static final byte RapidWheeel_ID = 7;
+
   public static double Kp= 0,
                        kI = 0,
                        kD = 0,
@@ -226,6 +227,23 @@ public static final class IntakeConstants{
                        maxAcc = 0, 
                        allowedErr = 0;
 
+  //Posiciones Intake.
+
+  public static final byte PositionIntake = 6;
+
+  public static double Undeploy = 10;
+  public static double i_kP = 5e-5, 
+                       i_kI = 1e-6,
+                       i_kD = 0,
+                       i_kIz = 0, 
+                       i_kFF = 0.000156, 
+                       i_kMaxOutput = 1, 
+                       i_kMinOutput = -1,
+                       i_maxRPM = 5700,
+                       i_MaxVel = 2000, //rpm
+                       i_MinVel = 0,
+                       i_MaxAcc = 1500,
+                       i_allowedErr = 0;
 
 
 }
