@@ -21,24 +21,38 @@ public class LimelightSubsystem extends SubsystemBase {
 
   private static LimelightSubsystem instance = null;
   
+  private DoubleArraySubscriber camposeSub;
+  private DoubleArraySubscriber posesub;
   
   private Translation3d tran3d;
   private Rotation3d r3d;
   private Pose3d p3d;
-  
+  //double[] result = new double[6];
 
-  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = limelight.getEntry("tx");
-  NetworkTableEntry ty = limelight.getEntry("ty");
-  NetworkTableEntry ta = limelight.getEntry("ta");
-  private DoubleArraySubscriber poseSubscriber = limelight.getDoubleArrayTopic("botpose").subscribe(new double[] {});
   
   // Filters to prevent target values from oscillating too much
 SlewRateLimiter targetXFilter = new SlewRateLimiter(20);
 SlewRateLimiter innerTargetXFilter = new SlewRateLimiter(20);
+NetworkTable limelight;
+NetworkTableEntry tx;
+    NetworkTableEntry ty;
+    NetworkTableEntry ta;
+    
 
   public LimelightSubsystem() {
-     
+    /*result[0] = 0;
+    result[1] = 0;
+    result[2] = 0;
+    result[3] = 0;
+    result[4] = 0;
+    result[5] = 0;
+    limelight = NetworkTableInstance.getDefault().getTable("limelight");
+    tx = limelight.getEntry("tx");
+    ty = limelight.getEntry("ty");
+    ta = limelight.getEntry("ta");
+    camposeSub = limelight.getDoubleArrayTopic("campose").subscribe(new, null)
+    posesub = limelight.getDoubleArrayTopic("botpose").subscribe(new double[] {});
+    
   }
 
   @Override
@@ -49,13 +63,12 @@ SlewRateLimiter innerTargetXFilter = new SlewRateLimiter(20);
     // post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", tx.getDouble(0.0));
     SmartDashboard.putNumber("LimelightY", ty.getDouble(0.0));// Datos del target
-    SmartDashboard.putNumber("Distancia X vision", getRobotPose().getX());
-    SmartDashboard.putNumber("Distancia Y vision", getRobotPose().getY());
-    SmartDashboard.putNumber("Angle vision", getRobotPose().getRotation().getAngle());
+    //SmartDashboard.putNumber("Distancia X vision", getRobotPose().getX());
+    //SmartDashboard.putNumber("Distancia Y vision", getRobotPose().getY());
+    //`SmartDashboard.putNumber("Angle vision", getRobotPose().getRotation().getAngle());
 
   
     distFromTarget();
-    getRobotPose();
   }
 
   public double distFromTarget() {
@@ -104,7 +117,8 @@ SlewRateLimiter innerTargetXFilter = new SlewRateLimiter(20);
 
   
   public Pose3d getRobotPose(){
-    double[] result = poseSubscriber.get();
+    
+    double[] result = posesub.get();
     tran3d = new Translation3d(result[0], result[1], result[2]);
     r3d = new Rotation3d(result[3], result[4], result[5]);
     p3d = new Pose3d(tran3d, r3d);

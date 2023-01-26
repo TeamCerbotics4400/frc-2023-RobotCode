@@ -4,12 +4,20 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveTrain;
 
 public class TeleOpControl extends CommandBase {
   /** Creates a new TeleOpControl. */
-  public TeleOpControl() {
+  DriveTrain m_drive;
+  Joystick joy;
+  public TeleOpControl(DriveTrain m_drive, Joystick joy) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.m_drive = m_drive;
+    this.joy = joy;
+
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +26,9 @@ public class TeleOpControl extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_drive.drive(joy.getRawAxis(1), joy.getRawAxis(2));
+  }
 
   // Called once the command ends or is interrupted.
   @Override

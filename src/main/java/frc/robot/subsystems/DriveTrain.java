@@ -16,17 +16,16 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -62,7 +61,7 @@ public class DriveTrain extends SubsystemBase {
   RelativeEncoder encoderIzq = leftMaster.getEncoder();
   RelativeEncoder encoderDer = rightMaster.getEncoder();
 
-  Pigeon2 imu = new Pigeon2(1);
+  Pigeon2 imu = new Pigeon2(13);
 
   SparkMaxPIDController controladorIzq = leftMaster.getPIDController();
   SparkMaxPIDController controladorDer = rightMaster.getPIDController();
@@ -83,7 +82,7 @@ public class DriveTrain extends SubsystemBase {
 
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
 
-  public PhotonCameraWrapper pcw;
+ public PhotonCameraWrapper pcw;
 
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
 
@@ -139,6 +138,15 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(double speed, double turn){
     differentialDrive.arcadeDrive(speed, turn);
+    differentialDrive.feed();
+  }
+
+  public void arcadeDrive(double speed, double turn){
+    double left = speed + turn;
+    double right = speed - turn;
+
+    leftMaster.set(left);
+    rightMaster.set(right);
   }
 
   public double getAngle(){
@@ -179,6 +187,10 @@ public class DriveTrain extends SubsystemBase {
     return odometry.getPoseMeters();
   }
 
+  public double getPitch(){
+    return imu.getPitch();
+  }
+
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(encoderCountsToMeters(encoderIzq.getPosition()),
     encoderCountsToMeters(encoderDer.getPosition()));
@@ -205,7 +217,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   //Metodo de prueba
-  public void updateOdometryWVisionCorrection(){
+  public void updateOdometryWVisionCorrectionPhoton(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(encoderIzq.getPosition()), 
     encoderCountsToMeters(encoderDer.getPosition()));
@@ -220,11 +232,23 @@ public class DriveTrain extends SubsystemBase {
       camPose.timestampSeconds);
       m_field.getObject("Cam est Pose").setPose(camPose.estimatedPose.toPose2d());
     } else {
-      m_field.getObject("Cam est Pose").setPose(new Pose2d(-100, -100, new Rotation2d()));
+      m_field.getObject("Cam est Pose").setPose(getPose());
     }
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
   }
+
+  /*public void updateOdometryWVisionCorrectionLimelight(){
+    m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
+    encoderCountsToMeters(encoderIzq.getPosition()), 
+    encoderCountsToMeters(encoderDer.getPosition()));
+
+    m_poseEstimator.addVisionMeasurement(limelight.getRobotPose().toPose2d(),
+    Timer.getFPGATimestamp());
+    m_field.getObject("Cam est Pose Lime").setPose(limelight.getRobotPose().toPose2d());
+
+    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
+  }*/
 
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {

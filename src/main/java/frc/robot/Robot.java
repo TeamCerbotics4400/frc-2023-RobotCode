@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import java.lang.System.Logger;
-
-import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -18,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveTrain;
 //import frc.robot.subsystems.DrivetrainSim;
+//import frc.robot.subsystems.LimelightSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,7 +28,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  DriveTrain m_drive = new DriveTrain();
+  //LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
   BooleanLogEntry myBooleanLogEntry;
   DoubleLogEntry myDoubleLogEntry;
@@ -67,8 +65,8 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-    m_drive.updateOdometryWVisionCorrection();
+    CommandScheduler.getInstance().run(); 
+    m_robotContainer.getDrivetrain().updateOdometryWVisionCorrectionPhoton();
     
   }
 

@@ -53,26 +53,9 @@ public class PhotonCameraWrapper {
         var camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
         camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.robotToCam));
 
-        /*poseEstimator = new RobotPoseEstimator(atfl, 
-        PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camList); */
-
         photonPoseEstimator = new PhotonPoseEstimator(atfl, 
         PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT, photonCamera, VisionConstants.robotToCam);
     }
-
-    /*public Pair<Pose2d, Double> getEstimatedGlobalPose(Pose2d prevEstimatedPose){
-        poseEstimator.setReferencePose(prevEstimatedPose);
-
-        double currentTime = Timer.getFPGATimestamp();
-        Optional<Pair<Pose3d, Double>>result = poseEstimator.update();
-
-        if(result.isPresent()){
-            return new Pair<Pose2d, Double>(result.get().getFirst().toPose2d(), 
-            currentTime - result.get().getSecond());
-        } else{
-            return new Pair<Pose2d, Double>(new Pose2d(0, 0, new Rotation2d()), 0.0);
-        }
-    }*/
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedPose){
         photonPoseEstimator.setReferencePose(prevEstimatedPose);
