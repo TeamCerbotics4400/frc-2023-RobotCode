@@ -17,17 +17,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
-/*public class Shooter extends SubsystemBase {
-  /*  Creates a new Shooter. */
- /*  private CANSparkMax flyWheelLower = new CANSparkMax(ShooterConstants.FLY_WHEEL_LOWER_ID, MotorType.kBrushless);
+public class Shooter extends SubsystemBase {
+   /* Creates a new Shooter. */
+  private CANSparkMax flyWheelLower = new CANSparkMax(ShooterConstants.FLY_WHEEL_LOWER_ID, MotorType.kBrushless);
   private CANSparkMax flyWheelUpper = new CANSparkMax(ShooterConstants.FLY_WHEEL_UPPER_ID, MotorType.kBrushless);
-
   
   private RelativeEncoder flyWheelLowerEncoder = flyWheelLower.getEncoder();
   private RelativeEncoder flyWheelUpperEncoder = flyWheelUpper.getEncoder();
 
   private SparkMaxPIDController flyWheelLower_PIDController = flyWheelLower.getPIDController();
   private SparkMaxPIDController flyWheelUpper_PIDController = flyWheelUpper.getPIDController();
+
+  private double targetVelocity = 0;
 
   public Shooter() {
     flyWheelLower.restoreFactoryDefaults();
@@ -43,6 +44,7 @@ import frc.robot.Constants.ShooterConstants;
     flyWheelUpper.setIdleMode(IdleMode.kCoast);
 
     int smartMotionSlot = 0;
+  
     flyWheelLower_PIDController.setSmartMotionMaxVelocity(ShooterConstants.maxVel, smartMotionSlot);
     flyWheelLower_PIDController.setSmartMotionMinOutputVelocity(ShooterConstants.minVel, smartMotionSlot);
     flyWheelLower_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
@@ -52,8 +54,6 @@ import frc.robot.Constants.ShooterConstants;
     flyWheelUpper_PIDController.setSmartMotionMinOutputVelocity(ShooterConstants.minVel, smartMotionSlot);
     flyWheelUpper_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
     flyWheelUpper_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);
-
-
 
   }
 
@@ -65,7 +65,7 @@ import frc.robot.Constants.ShooterConstants;
 
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if ((ShooterConstants.targetVelocity != targetVelo )) {ShooterConstants.targetVelocity = targetVelo;}
+    if ((targetVelocity != targetVelo )) {targetVelocity = targetVelo;}
   }
     
   public void setLowerFlyWheelVelo(double setPoint){
@@ -76,12 +76,12 @@ import frc.robot.Constants.ShooterConstants;
   }
 
   public void goToDashboardVelocity(){
-    setLowerFlyWheelVelo(ShooterConstants.targetVelocity);
-    setUpperFlyWheelVelo(ShooterConstants.targetVelocity);
+    setLowerFlyWheelVelo(targetVelocity);
+    setUpperFlyWheelVelo(targetVelocity);
   }
 
   public void setMotorsPower(double UpperPower, double LowerPower){
     flyWheelLower.set(LowerPower);
     flyWheelUpper.set(UpperPower);
   }
-} */
+} 
