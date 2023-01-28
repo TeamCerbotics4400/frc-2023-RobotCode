@@ -163,6 +163,11 @@ public final class Constants {
     public static final int Solenoid_Shifter_ID = 0;
 }
 
+public static final class AutoConstants{
+  public static final double kMaxSpeedMetersPerSecond = 0;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 0;
+}
+
 public static final class FieldConstants{
   public static final double length = Units.feetToMeters(54);
   public static final double width = Units.feetToMeters(27);

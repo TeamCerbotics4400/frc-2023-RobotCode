@@ -25,9 +25,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -82,6 +85,9 @@ public class DriveTrain extends SubsystemBase {
 
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
 
+  ShuffleboardTab debuggingTab;
+  ShuffleboardTab competitionTab;
+
  public PhotonCameraWrapper pcw;
 
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
@@ -121,6 +127,9 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Target Angle", 0);
 
+    debuggingTab = Shuffleboard.getTab("Debugging Tab");
+    competitionTab = Shuffleboard.getTab("Competition Tab");
+
     pcw = new PhotonCameraWrapper();
   }
 
@@ -139,17 +148,18 @@ public class DriveTrain extends SubsystemBase {
   
   }
 
+  public void selectDashboardType(){
+    if(DriverStation.isFMSAttached()){
+      Shuffleboard.getTab("Competition Tab");
+    }
+    else{
+      Shuffleboard.getTab("Debugging Tab");
+    }
+  }
+
   public void drive(double speed, double turn){
     differentialDrive.arcadeDrive(speed, turn);
     differentialDrive.feed();
-  }
-
-  public void arcadeDrive(double speed, double turn){
-    double left = speed + turn;
-    double right = speed - turn;
-
-    leftMaster.set(left);
-    rightMaster.set(right);
   }
 
   public double getAngle(){
