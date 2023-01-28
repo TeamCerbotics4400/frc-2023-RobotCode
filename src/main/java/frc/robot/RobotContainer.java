@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.TeleOpControl;
 //import frc.robot.commands.DefaultShooter;
 //import frc.robot.subsystems.Shooter;
@@ -28,7 +29,7 @@ import frc.robot.subsystems.NeoIntake;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  Joystick joy1= new Joystick(0);
+  Joystick joy1 = new Joystick(0);
   private DriveTrain m_drive = new DriveTrain();
   JoystickButton rightBumper = new JoystickButton(joy1, 6);
 // private final Shooter shooter1 = new Shooter();
@@ -83,6 +84,8 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    joy1));
+
+   new JoystickButton(joy1, 6).toggleOnTrue(new AutoBalanceCommand(m_drive));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     /*Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));

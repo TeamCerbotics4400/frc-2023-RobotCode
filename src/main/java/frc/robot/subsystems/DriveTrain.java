@@ -144,7 +144,8 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Odometry X", odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Odometry Y", odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Odometry Rotation", odometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("Odometry Rotation", 
+    odometry.getPoseMeters().getRotation().getDegrees());
   
   }
 
