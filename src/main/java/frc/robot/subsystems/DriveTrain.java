@@ -25,6 +25,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -66,12 +68,14 @@ public class DriveTrain extends SubsystemBase {
   SparkMaxPIDController controladorIzq = leftMaster.getPIDController();
   SparkMaxPIDController controladorDer = rightMaster.getPIDController();
 
-  Rotation2d rotacionChasis = new Rotation2d(getAngle());
+  //Rotation2d rotacionChasis = new Rotation2d(getAngle());
+
+  private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
-  rotacionChasis,
-  encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()),
-  new Pose2d(5.0, 13.5, new Rotation2d()));
+  Rotation2d.fromDegrees(getAngle()),
+  encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()), 
+  mPosition);
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
             new DifferentialDrivePoseEstimator(
@@ -85,31 +89,31 @@ public class DriveTrain extends SubsystemBase {
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
 
-  public PhotonCameraWrapper pcw;
+  private GenericEntry yawEntry;
 
-  boolean autoBalanceMode = false;
-  double balancedAngle = 0.0;
-  double balancedRate = 0.0;
+  //private NetworkTableEntry yawEntry;
+
+  public PhotonCameraWrapper pcw;
 
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
 
     //this.limelight = limelightSubsystem;
 
-    rightMaster.setInverted(false);
-    rightSlave.setInverted(false);
+    rightMaster.setInverted(true);
+    rightSlave.setInverted(true);
 
-    leftMaster.setInverted(true);
-    leftSlave.setInverted(true);
+    leftMaster.setInverted(false);
+    leftSlave.setInverted(false);
 
     SmartDashboard.putData("Field", m_field);
     
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
-    leftMaster.setIdleMode(IdleMode.kCoast);
-    leftSlave.setIdleMode(IdleMode.kCoast);
-    rightMaster.setIdleMode(IdleMode.kCoast);
-    rightSlave.setIdleMode(IdleMode.kCoast);
+    leftMaster.setIdleMode(IdleMode.kBrake);
+    leftSlave.setIdleMode(IdleMode.kBrake);
+    rightMaster.setIdleMode(IdleMode.kBrake);
+    rightSlave.setIdleMode(IdleMode.kBrake);
 
     encoderIzq.setPosition(0);
     encoderDer.setPosition(0);
@@ -131,7 +135,12 @@ public class DriveTrain extends SubsystemBase {
     debuggingTab = Shuffleboard.getTab("Debugging Tab");
     competitionTab = Shuffleboard.getTab("Competition Tab");
 
+    yawEntry = debuggingTab.add("Imu Yaw", 0).withWidget("Text View").getEntry();
+
     pcw = new PhotonCameraWrapper();
+
+    resetImu();
+
   }
 
   @Override
@@ -147,6 +156,12 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Odometry Y", odometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Odometry Rotation", 
     odometry.getPoseMeters().getRotation().getDegrees());
+
+    yawEntry.setDouble(getAngle());
+
+    /*Shuffleboard.getTab("Debugging Tab").addPersistent("Pitch", getPitch());
+    Shuffleboard.getTab("Debugging Tab").addPersistent("Yaw", getYaw());
+    Shuffleboard.getTab("Debugging Tab").addPersistent("Roll", getRoll());*/
   
   }
 
@@ -165,7 +180,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getAngle(){
-    return -imu.getPitch();
+    return imu.getYaw();
+  }
+
+  public void resetImu(){
+    imu.setYaw(0);
   }
 
   public double encoderCountsToMeters(double encoderCounts){
@@ -206,8 +225,12 @@ public class DriveTrain extends SubsystemBase {
     return imu.getPitch();
   }
 
-  public void getPitchRate(){
+  public double getYaw(){
+    return imu.getYaw();
+  }
 
+  public double getRoll(){
+    return imu.getRoll();
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -254,7 +277,7 @@ public class DriveTrain extends SubsystemBase {
       m_field.getObject("Cam est Pose").setPose(getPose());
     }
 
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    m_field.setRobotPose(getPose());
   }
 
   /*public void updateOdometryWVisionCorrectionLimelight(){
@@ -268,16 +291,6 @@ public class DriveTrain extends SubsystemBase {
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
   }*/
-
-  public void autoBalanceMode(){
-    if(!autoBalanceMode && (Math.abs(getPitch()) > Math.abs(balancedAngle))){
-      autoBalanceMode = true;
-    }
-    else if(autoBalanceMode && (Math.abs(getPitch()) <= Math.abs(balancedAngle))){
-      autoBalanceMode = false;
-    }
-  }
-
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
     if (initPose) {

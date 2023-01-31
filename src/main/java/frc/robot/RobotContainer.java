@@ -5,7 +5,9 @@
 package frc.robot;
 
 import frc.robot.commands.AutoBalanceCommand;
+import frc.robot.commands.ResetImuCommand;
 import frc.robot.commands.TeleOpControl;
+import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 //import frc.robot.commands.DefaultShooter;
 //import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
@@ -86,6 +88,8 @@ public class RobotContainer {
    joy1));
 
    new JoystickButton(joy1, 6).toggleOnTrue(new AutoBalanceCommand(m_drive));
+
+   new JoystickButton(joy1, 1).onTrue(new ResetImuCommand(m_drive));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     /*Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
@@ -103,7 +107,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return /*new TestAuto(driveSim)*/ null;
+    return new StraightLineAutoCommand(m_drive);
   }
 
   /*public DrivetrainSim getSimDrive(){

@@ -141,7 +141,7 @@ public final class Constants {
     public static final int RightMaster_ID = 4; //1
     public static final int RightSlave_ID = 5;  //2
 
-    public static final double kP = 0.15872//3.9356
+    public static final double kP = 0//3.9356
     ,  kI = 0
     , kD = 0;
 
@@ -149,10 +149,9 @@ public final class Constants {
                                kV = 2.8101,//2.8101, 
                                kA = 0.39782;//0.64907;
 
-    public static final double WHEEL_DIAMETER = 0;
-    public static final double GEAR_RATIO_ONE = 0;//7 : 1
-    public static final double GEAR_RATIO_TWO = 0;//9.22 : 1
-    public static final double TRACK_WIDTH = 0; 
+    public static final double WHEEL_DIAMETER = 0.1524;
+    public static final double GEAR_RATIO = 0;//7 : 1
+    public static final double TRACK_WIDTH = 0.69; 
     public static final double ENCODER_CPR = 0;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(TRACK_WIDTH);
@@ -165,8 +164,8 @@ public final class Constants {
 }
 
 public static final class AutoConstants{
-  public static final double kMaxSpeedMetersPerSecond = 0;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 0;
+  public static final double kMaxSpeedMetersPerSecond = 2.0;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;
 }
 
 public static final class FieldConstants{

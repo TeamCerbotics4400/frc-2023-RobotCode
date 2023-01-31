@@ -7,12 +7,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class AutoBalanceCommand extends CommandBase {
-  /** Creates a new AutoBalanceCommand. */
-  private final DriveTrain m_drive;
-
-
-  public AutoBalanceCommand(DriveTrain m_drive) {
+public class ResetImuCommand extends CommandBase {
+  /** Creates a new ResetImuCommand. */
+  DriveTrain m_drive;
+  public ResetImuCommand(DriveTrain m_drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
 
@@ -26,6 +24,7 @@ public class AutoBalanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_drive.resetImu();
   }
 
   // Called once the command ends or is interrupted.
