@@ -26,7 +26,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -51,8 +50,6 @@ public class DriveTrain extends SubsystemBase {
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
 
   //LimelightSubsystem limelight;
-
-  Field2d field2d = new Field2d();
 
   MotorControllerGroup leftControllers = new MotorControllerGroup(leftMaster, leftSlave);
   MotorControllerGroup rightControllers = new MotorControllerGroup(rightMaster, rightSlave);
@@ -88,7 +85,11 @@ public class DriveTrain extends SubsystemBase {
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
 
- public PhotonCameraWrapper pcw;
+  public PhotonCameraWrapper pcw;
+
+  boolean autoBalanceMode = false;
+  double balancedAngle = 0.0;
+  double balancedRate = 0.0;
 
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
 
@@ -205,6 +206,10 @@ public class DriveTrain extends SubsystemBase {
     return imu.getPitch();
   }
 
+  public void getPitchRate(){
+
+  }
+
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(encoderCountsToMeters(encoderIzq.getPosition()),
     encoderCountsToMeters(encoderDer.getPosition()));
@@ -263,6 +268,15 @@ public class DriveTrain extends SubsystemBase {
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
   }*/
+
+  public void autoBalanceMode(){
+    if(!autoBalanceMode && (Math.abs(getPitch()) > Math.abs(balancedAngle))){
+      autoBalanceMode = true;
+    }
+    else if(autoBalanceMode && (Math.abs(getPitch()) <= Math.abs(balancedAngle))){
+      autoBalanceMode = false;
+    }
+  }
 
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {

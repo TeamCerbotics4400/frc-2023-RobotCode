@@ -78,7 +78,8 @@ public final class Constants {
 
 
   public static final boolean tuningMode = false;
-  public static class SimulationConstants{
+
+  /*public static class SimulationConstants{
     public static final double kTrackwidthMeters = 0.546;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
@@ -127,7 +128,7 @@ public final class Constants {
     public static final double kMaxAccelerationMetersPerSecondSquared = 3.0; 
 
     public static final int k100msPerSecond = 10;
-  }
+  }*/
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
@@ -140,13 +141,13 @@ public final class Constants {
     public static final int RightMaster_ID = 4; //1
     public static final int RightSlave_ID = 5;  //2
 
-    public static final double kP = 0//3.9356
+    public static final double kP = 0.15872//3.9356
     ,  kI = 0
-    , kD = 03 ;
+    , kD = 0;
 
-    public static final double kS = 0,//0.2131,
-                               kV = 0,//2.8451, 
-                               kA = 0;//0.64907;
+    public static final double kS = 0.15862,//0.15862
+                               kV = 2.8101,//2.8101, 
+                               kA = 0.39782;//0.64907;
 
     public static final double WHEEL_DIAMETER = 0;
     public static final double GEAR_RATIO_ONE = 0;//7 : 1

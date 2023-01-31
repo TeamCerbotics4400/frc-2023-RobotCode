@@ -11,11 +11,6 @@ public class AutoBalanceCommand extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   private final DriveTrain m_drive;
 
-  private boolean autoBalanceMode = false;
-  
-  double balancedAngle = 0.0;
-  double pitchAngle;
-
   public AutoBalanceCommand(DriveTrain m_drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
@@ -30,12 +25,7 @@ public class AutoBalanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!autoBalanceMode && (Math.abs(pitchAngle) > Math.abs(balancedAngle))){
-      autoBalanceMode = true;
-    }
-    else if(autoBalanceMode && (Math.abs(pitchAngle) <= Math.abs(balancedAngle))){
-      autoBalanceMode = false;
-    }
+    
 
    
   }
