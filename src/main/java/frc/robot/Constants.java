@@ -175,16 +175,16 @@ public static final class FieldConstants{
 
 public static final class ShooterConstants{
   /** ---PROTOTYPE--- */
-  public static final byte FLY_WHEEL_LOWER_ID = 8; 
-  public static final byte FLY_WHEEL_UPPER_ID = 9;
+  public static final byte LEFT_FLYWHEEL_ID = 8; 
+  public static final byte RIGHT_FLYWHEEL_ID = 9;
 
   public static double kP= 0.000031,
                        kI = 0,
                        kD = 0.0001,
                        kIz = 0,
                        kFF = 0.0001678,
-                       kMaxOutput = 0,
-                       kMinOutput = 0, 
+                       kMaxOutput = 1,
+                       kMinOutput = -1, 
                        maxRPM = 0, 
                        maxVel = 0, //---------
                        minVel = 0, //---------

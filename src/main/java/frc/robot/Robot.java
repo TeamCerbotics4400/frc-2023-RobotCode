@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
     DataLog log = DataLogManager.getLog();
     DriverStation.startDataLog(log);
 
-    m_robotContainer.getDrivetrain().selectDashboardType();
+    //m_robotContainer.getDrivetrain().selectDashboardType();
 
     /*myBooleanLogEntry = new BooleanLogEntry(log, "/my/boolean");
     myDoubleLogEntry = new DoubleLogEntry(log, "/my/double");
@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run(); 
-    m_robotContainer.getDrivetrain().updateOdometryWVisionCorrectionPhoton();
+    //m_robotContainer.getDrivetrain().updateOdometryWVisionCorrectionPhoton();
     
   }
 

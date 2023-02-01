@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.commands.AutoCommands;
 
 import com.pathplanner.lib.PathPlanner;
@@ -16,7 +16,7 @@ import frc.robot.subsystems.DriveTrain;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PIDTunerPathCommand extends SequentialCommandGroup {
-  /** Creates a new PIDTunerPathCommand. */
+  /** Creates a new PIDTunerPathCommand. 
   static Trajectory pidTunPath = new PathPlanner().loadPath("PIDTuner", 
   AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
@@ -29,4 +29,4 @@ public class PIDTunerPathCommand extends SequentialCommandGroup {
     addCommands(resetOdometry, m_drive.createCommandForTrajectory(pidTunPath, false)
     .andThen(() -> m_drive.tankDriveVolts(0, 0)));
   }
-}
+}*/

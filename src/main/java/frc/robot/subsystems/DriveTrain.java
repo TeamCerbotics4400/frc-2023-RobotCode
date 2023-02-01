@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.subsystems;
 
 import java.util.Optional;
@@ -41,7 +41,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveTrain extends SubsystemBase {
-  /** Creates a new DriveTrain. */
+  /** Creates a new DriveTrain. 
   CANSparkMax leftMaster = new CANSparkMax(DriveConstants.LeftMaster_ID, MotorType.kBrushless);
   CANSparkMax leftSlave = new CANSparkMax(DriveConstants.LeftSlave_ID, MotorType.kBrushless);
 
@@ -95,7 +95,7 @@ public class DriveTrain extends SubsystemBase {
 
   public PhotonCameraWrapper pcw;
 
-  public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
+  public DriveTrain(/*LimelightSubsystem limelightSubsystem) {
 
     //this.limelight = limelightSubsystem;
 
@@ -161,7 +161,7 @@ public class DriveTrain extends SubsystemBase {
 
     /*Shuffleboard.getTab("Debugging Tab").addPersistent("Pitch", getPitch());
     Shuffleboard.getTab("Debugging Tab").addPersistent("Yaw", getYaw());
-    Shuffleboard.getTab("Debugging Tab").addPersistent("Roll", getRoll());*/
+    Shuffleboard.getTab("Debugging Tab").addPersistent("Roll", getRoll());
   
   }
 
@@ -290,7 +290,7 @@ public class DriveTrain extends SubsystemBase {
     m_field.getObject("Cam est Pose Lime").setPose(limelight.getRobotPose().toPose2d());
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-  }*/
+  }
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
     if (initPose) {
@@ -368,4 +368,4 @@ public class DriveTrain extends SubsystemBase {
     }
     
   }
-}
+}*/

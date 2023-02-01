@@ -1,10 +1,8 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/* 
-package frc.robot.subsystems;
 
-import java.lang.annotation.Target;
+package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -12,48 +10,67 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
-  /** Creates a new Shooter. 
-  private CANSparkMax flyWheelLower = new CANSparkMax(ShooterConstants.FLY_WHEEL_LOWER_ID, MotorType.kBrushless);
-  private CANSparkMax flyWheelUpper = new CANSparkMax(ShooterConstants.FLY_WHEEL_UPPER_ID, MotorType.kBrushless);
+  /** Creates a new Shooter. */
+  private CANSparkMax leftFlywheel = new CANSparkMax(ShooterConstants.LEFT_FLYWHEEL_ID, 
+  MotorType.kBrushless);
+  private CANSparkMax rightFlywheel = new CANSparkMax(ShooterConstants.RIGHT_FLYWHEEL_ID,
+  MotorType.kBrushless);
 
-  
-  private RelativeEncoder flyWheelLowerEncoder = flyWheelLower.getEncoder();
-  private RelativeEncoder flyWheelUpperEncoder = flyWheelUpper.getEncoder();
+  private Servo leftServo = new Servo(5);
+  private Servo rightServo = new Servo(4);
 
-  private SparkMaxPIDController flyWheelLower_PIDController = flyWheelLower.getPIDController();
-  private SparkMaxPIDController flyWheelUpper_PIDController = flyWheelUpper.getPIDController();
+  private RelativeEncoder leftFlywheelEncoder = leftFlywheel.getEncoder();
+  private RelativeEncoder rightFlywheelEncoder = rightFlywheel.getEncoder();
+
+  private SparkMaxPIDController leftFlywheel_PIDController = leftFlywheel.getPIDController();
+  private SparkMaxPIDController rightFlywheel_PIDController = rightFlywheel.getPIDController();
+
+  double desiredVelo = 0;
 
   public Shooter() {
-    flyWheelLower.restoreFactoryDefaults();
-    flyWheelUpper.restoreFactoryDefaults();
+    leftFlywheel.restoreFactoryDefaults();
+    rightFlywheel.restoreFactoryDefaults();
 
-    flyWheelLower.setInverted(true);
-    flyWheelUpper.setInverted(true);
+    leftFlywheel.setInverted(true);
+    rightFlywheel.setInverted(true);
 
-    flyWheelLower.setCANTimeout(10);
-    flyWheelUpper.setCANTimeout(10);
+    leftFlywheel.setCANTimeout(10);
+    rightFlywheel.setCANTimeout(10);
 
-    flyWheelLower.setIdleMode(IdleMode.kCoast);
-    flyWheelUpper.setIdleMode(IdleMode.kCoast);
+    leftFlywheel.setIdleMode(IdleMode.kCoast);
+    rightFlywheel.setIdleMode(IdleMode.kCoast);
 
+    /* 
     int smartMotionSlot = 0;
-    flyWheelLower_PIDController.setSmartMotionMaxVelocity(ShooterConstants.maxVel, smartMotionSlot);
-    flyWheelLower_PIDController.setSmartMotionMinOutputVelocity(ShooterConstants.minVel, smartMotionSlot);
-    flyWheelLower_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
-    flyWheelLower_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);
+    leftFlywheel_PIDController.setSmartMotionMaxVelocity(ShooterConstants.maxVel, smartMotionSlot);
+    leftFlywheel_PIDController.setSmartMotionMinOutputVelocity(ShooterConstants.minVel, smartMotionSlot);
+    leftFlywheel_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
+    leftFlywheel_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);
 
-    flyWheelUpper_PIDController.setSmartMotionMaxVelocity(ShooterConstants.maxVel, smartMotionSlot);
-    flyWheelUpper_PIDController.setSmartMotionMinOutputVelocity(ShooterConstants.minVel, smartMotionSlot);
-    flyWheelUpper_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
-    flyWheelUpper_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);
+    rightFlywheel_PIDController.setSmartMotionMaxVelocity(ShooterConstants.maxVel, smartMotionSlot);
+    rightFlywheel_PIDController.setSmartMotionMinOutputVelocity(ShooterConstants.minVel, smartMotionSlot);
+    rightFlywheel_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
+    rightFlywheel_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);*/
 
+    leftFlywheel_PIDController.setP(ShooterConstants.kP);
+    leftFlywheel_PIDController.setD(ShooterConstants.kD);
+    leftFlywheel_PIDController.setFF(ShooterConstants.kFF);
+    leftFlywheel_PIDController.setOutputRange(ShooterConstants.kMinOutput, 
+    ShooterConstants.kMaxOutput);
 
+    rightFlywheel_PIDController.setP(ShooterConstants.kP);
+    rightFlywheel_PIDController.setD(ShooterConstants.kD);
+    rightFlywheel_PIDController.setFF(ShooterConstants.kFF);
+    rightFlywheel_PIDController.setOutputRange(ShooterConstants.kMinOutput, 
+    ShooterConstants.kMaxOutput);
+
+    SmartDashboard.putNumber("Target Velo", desiredVelo);
 
   }
 
@@ -61,27 +78,43 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double targetVelo = SmartDashboard.getNumber("Target Velocity", 0);
-
+    double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if ((ShooterConstants.targetVelocity != targetVelo )) {ShooterConstants.targetVelocity = targetVelo;}
+    if ((desiredVelo != targetVelo )) {desiredVelo = targetVelo;}
+
+    SmartDashboard.putNumber("Left RPM", getLeftRPM());
+    SmartDashboard.putNumber("Right RPM", getRightRPM());
+
   }
     
   public void setLowerFlyWheelVelo(double setPoint){
-    flyWheelLower_PIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+    leftFlywheel_PIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
   }
   public void setUpperFlyWheelVelo(double setPoint){
-    flyWheelUpper_PIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+    rightFlywheel_PIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+  }
+
+  public double getLeftRPM(){
+    return leftFlywheelEncoder.getVelocity();
+  }
+
+  public double getRightRPM(){
+    return rightFlywheelEncoder.getVelocity();
   }
 
   public void goToDashboardVelocity(){
-    setLowerFlyWheelVelo(ShooterConstants.targetVelocity);
-    setUpperFlyWheelVelo(ShooterConstants.targetVelocity);
+    setLowerFlyWheelVelo(desiredVelo);
+    setUpperFlyWheelVelo(desiredVelo);
   }
 
   public void setMotorsPower(double UpperPower, double LowerPower){
-    flyWheelLower.set(LowerPower);
-    flyWheelUpper.set(UpperPower);
+    leftFlywheel.set(LowerPower);
+    rightFlywheel.set(UpperPower);
   }
-}*/
+
+  public void setServosAngle(double leftAngle, double rightAngle){
+    leftServo.setAngle(leftAngle);
+    rightServo.setAngle(rightAngle);
+  }
+}
