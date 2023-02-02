@@ -10,10 +10,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.numbers.N2;
-import edu.wpi.first.math.system.LinearSystem;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.Util.Alert;
@@ -173,28 +169,6 @@ public static final class FieldConstants{
   public static final double width = Units.feetToMeters(27);
 }
 
-public static final class ShooterConstants{
-  /** ---PROTOTYPE--- */
-  public static final byte LEFT_FLYWHEEL_ID = 8; 
-  public static final byte RIGHT_FLYWHEEL_ID = 9;
-
-  public static double kP= 0.000031,
-                       kI = 0,
-                       kD = 0.0001,
-                       kIz = 0,
-                       kFF = 0.0001678,
-                       kMaxOutput = 1,
-                       kMinOutput = -1, 
-                       maxRPM = 0, 
-                       maxVel = 0, //---------
-                       minVel = 0, //---------
-                       maxAcc = 0, 
-                       allowedErr = 0;
-
-                       public static double targetVelocity = 0;
-
-}
-
 public static final class VisionConstants {
   /** ---PROTOTYPE--- */
   public static double HEIGHT_OF_OUTER_PORT = 2.64;//Altura del target
@@ -209,26 +183,6 @@ public static final class VisionConstants {
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
   // from center.
   public static final String cameraName = "Limelight";
-}
-
-public static final class IntakeConstants{
-  public static final byte IntakePoseMotor_ID = 6;
-  public static final byte RapidWheeel_ID = 7;
-  public static double kP= 0,
-                       kI = 0,
-                       kD = 0,
-                       kIz = 0,
-                       kFF = 0,
-                       kMaxOutput = 0,
-                       kMinOutput = 0, 
-                       maxRPM = 0, 
-                       maxVel = 100, //---------
-                       minVel = 0, //---------
-                       maxAcc = 10, 
-                       allowedErr = 5;
-
-
-
 }
   /* vDelCodigo = "1.5"; */
   /* Cosas Por Hacer:
