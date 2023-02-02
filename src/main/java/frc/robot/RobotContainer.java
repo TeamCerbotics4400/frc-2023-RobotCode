@@ -7,7 +7,7 @@ package frc.robot;
 import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.ResetImuCommand;
 import frc.robot.commands.TeleOpControl;
-//import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
+import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -67,10 +67,10 @@ public class RobotContainer {
    joy0));
 
    //Autobalance
-   new JoystickButton(joy0, 6).toggleOnTrue(new AutoBalanceCommand(m_drive));
+   new JoystickButton(joy0, 1).toggleOnTrue(new AutoBalanceCommand(m_drive));
 
    //Reset Imu
-   new JoystickButton(joy0, 1).onTrue(new ResetImuCommand(m_drive));
+   new JoystickButton(joy0, 2).onTrue(new ResetImuCommand(m_drive));
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
@@ -89,7 +89,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;//new StraightLineAutoCommand(m_drive);
+    return new StraightLineAutoCommand(m_drive);
   }
 
   /*public DrivetrainSim getSimDrive(){

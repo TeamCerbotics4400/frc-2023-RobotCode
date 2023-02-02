@@ -137,7 +137,7 @@ public final class Constants {
     public static final int RightMaster_ID = 4; //1
     public static final int RightSlave_ID = 5;  //2
 
-    public static final double kP = 0//3.9356
+    public static final double kP = 0.15872//3.9356
     ,  kI = 0
     , kD = 0;
 

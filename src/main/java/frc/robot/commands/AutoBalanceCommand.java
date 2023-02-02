@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
@@ -11,7 +13,8 @@ public class AutoBalanceCommand extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   private final DriveTrain m_drive;
 
-
+  private double balancedAngle = 0.0;
+  
   public AutoBalanceCommand(DriveTrain m_drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
@@ -21,11 +24,16 @@ public class AutoBalanceCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_drive.getBalanceController().setSetpoint(balancedAngle);
+    m_drive.getBalanceController().setTolerance(0.5);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_drive.drive(m_drive.getBalanceController().calculate(m_drive.getPitch()), 0);
+    m_drive.feedDrive();
   }
 
   // Called once the command ends or is interrupted.

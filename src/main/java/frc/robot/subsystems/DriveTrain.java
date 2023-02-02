@@ -26,7 +26,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -50,6 +49,8 @@ public class DriveTrain extends SubsystemBase {
 
   PIDController leftPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+
+  private PIDController balancePID = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD); 
 
   //LimelightSubsystem limelight;
 
@@ -125,11 +126,10 @@ public class DriveTrain extends SubsystemBase {
 
     imu.configFactoryDefault();
 
-    SmartDashboard.putNumber("kP", 0);
-    SmartDashboard.putNumber("kD", 0);
-    SmartDashboard.putNumber("kI", 0);
-    SmartDashboard.putNumber("kFF", 0);
-
+    SmartDashboard.putNumber("kP", DriveConstants.kP);
+    SmartDashboard.putNumber("kI", DriveConstants.kI);
+    SmartDashboard.putNumber("kD", DriveConstants.kD);
+    
     SmartDashboard.putNumber("Target Angle", 0);
 
     debuggingTab = Shuffleboard.getTab("Debugging Tab");
@@ -152,10 +152,23 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(encoderIzq.getPosition()), 
     encoderCountsToMeters(encoderDer.getPosition())); 
 
+    double p = SmartDashboard.getNumber("kP", 0.15872);
+    double i = SmartDashboard.getNumber("kI", 0);
+    double d = SmartDashboard.getNumber("kD", 0);
+
+    if((p != DriveConstants.kP)) {p = DriveConstants.kP;}
+    if((i != DriveConstants.kI)) {i = DriveConstants.kI;}
+    if((d != DriveConstants.kD)) {d = DriveConstants.kD;}
+
     SmartDashboard.putNumber("Odometry X", odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Odometry Y", odometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Odometry Rotation", 
     odometry.getPoseMeters().getRotation().getDegrees());
+
+    SmartDashboard.putNumber("RobotPitch", getPitch());
+
+    SmartDashboard.putNumber("Pose Error", balancePID.getPositionError());
+    SmartDashboard.putNumber("Velo Error", balancePID.getVelocityError());
 
     yawEntry.setDouble(getAngle());
 
@@ -278,6 +291,14 @@ public class DriveTrain extends SubsystemBase {
     }
 
     m_field.setRobotPose(getPose());
+  }
+
+  public void feedDrive(){
+    differentialDrive.feed();
+  }
+
+  public PIDController getBalanceController(){
+    return balancePID;
   }
 
   /*public void updateOdometryWVisionCorrectionLimelight(){
