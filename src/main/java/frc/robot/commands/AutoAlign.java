@@ -27,17 +27,21 @@ public class AutoAlign extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drive.drive(0, m_drive.getAlignController().calculate(m_drive.getAngle(), 
-    pcw.getTargetYaw()));
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_drive.drive(0, m_drive.getAlignController().calculate(m_drive.getAngle(), 
+    pcw.getTargetYaw()));
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drive.tankDriveVolts(0, 0);
+  }
 
   // Returns true when the command should end.
   @Override

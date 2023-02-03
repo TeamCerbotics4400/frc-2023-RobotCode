@@ -102,6 +102,12 @@ public class DriveTrain extends SubsystemBase {
 
     //this.limelight = limelightSubsystem;
 
+    leftMaster.restoreFactoryDefaults();
+    leftSlave.restoreFactoryDefaults();
+
+    rightMaster.restoreFactoryDefaults();
+    rightSlave.restoreFactoryDefaults();
+
     rightMaster.setInverted(true);
     rightSlave.setInverted(true);
 
@@ -142,7 +148,7 @@ public class DriveTrain extends SubsystemBase {
     pcw = new PhotonCameraWrapper();
 
     resetImu();
-
+    resetEncoders();
   }
 
   @Override
@@ -195,7 +201,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getAngle(){
-    return imu.getYaw();
+    return  imu.getYaw();
   }
 
   public void resetImu(){
@@ -261,7 +267,8 @@ public class DriveTrain extends SubsystemBase {
   
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
-    odometry.resetPosition(Rotation2d.fromDegrees(-getAngle()),
+    resetImu();
+    odometry.resetPosition(Rotation2d.fromDegrees(getAngle()),
     encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()),
       pose);
   }

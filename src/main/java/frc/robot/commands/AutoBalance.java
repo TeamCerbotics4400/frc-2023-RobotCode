@@ -33,12 +33,13 @@ public class AutoBalance extends CommandBase {
   @Override
   public void execute() {
     m_drive.drive(m_drive.getBalanceController().calculate(m_drive.getPitch()), 0);
-    m_drive.feedDrive();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drive.tankDriveVolts(0, 0);
+  }
 
   // Returns true when the command should end.
   @Override
