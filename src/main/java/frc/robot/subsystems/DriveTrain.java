@@ -52,6 +52,8 @@ public class DriveTrain extends SubsystemBase {
 
   private PIDController balancePID = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD); 
 
+  private PIDController alignPID = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+
   //LimelightSubsystem limelight;
 
   MotorControllerGroup leftControllers = new MotorControllerGroup(leftMaster, leftSlave);
@@ -301,6 +303,10 @@ public class DriveTrain extends SubsystemBase {
     return balancePID;
   }
 
+  public PIDController getAlignController(){
+    return alignPID;
+  }
+
   /*public void updateOdometryWVisionCorrectionLimelight(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(encoderIzq.getPosition()), 
@@ -328,8 +334,8 @@ public class DriveTrain extends SubsystemBase {
                 DriveConstants.kA),
                 DriveConstants.kDriveKinematics,
             this::getWheelSpeeds,
-            new PIDController(DriveConstants.kP, 0, 0),
-            new PIDController(DriveConstants.kP, 0, 0),
+            leftPIDController,
+            rightPIDController,
             // RamseteCommand passes volts to the callback
             this::tankDriveVolts,
             this);

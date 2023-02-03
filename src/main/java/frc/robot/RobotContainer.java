@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.commands.AutoBalanceCommand;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ResetImuCommand;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
@@ -67,7 +67,7 @@ public class RobotContainer {
    joy0));
 
    //Autobalance
-   new JoystickButton(joy0, 1).toggleOnTrue(new AutoBalanceCommand(m_drive));
+   new JoystickButton(joy0, 1).toggleOnTrue(new AutoBalance(m_drive));
 
    //Reset Imu
    new JoystickButton(joy0, 2).onTrue(new ResetImuCommand(m_drive));

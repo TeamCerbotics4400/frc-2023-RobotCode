@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class AutoBalanceCommand extends CommandBase {
+public class AutoBalance extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   private final DriveTrain m_drive;
 
   private double balancedAngle = 0.0;
   
-  public AutoBalanceCommand(DriveTrain m_drive) {
+  public AutoBalance(DriveTrain m_drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
 

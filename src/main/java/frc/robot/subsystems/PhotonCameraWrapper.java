@@ -61,4 +61,8 @@ public class PhotonCameraWrapper {
         photonPoseEstimator.setReferencePose(prevEstimatedPose);
         return photonPoseEstimator.update();
     }
+
+    public double getTargetYaw(){
+        return photonCamera.getLatestResult().getBestTarget().getYaw();
+    }
 }
