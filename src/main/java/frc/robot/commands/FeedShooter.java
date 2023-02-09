@@ -7,14 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class DefaultShooter extends CommandBase {
-  /** Creates a new DefaultShooter. */
-  private Shooter shooter;
+public class FeedShooter extends CommandBase {
+  /** Creates a new FeedShooter. */
+  Shooter m_shooter;
+  public FeedShooter(Shooter m_shooter) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.m_shooter = m_shooter;
 
-  public DefaultShooter(Shooter shooter) {
-    this.shooter = shooter;
-
-    addRequirements(shooter);
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -24,13 +24,13 @@ public class DefaultShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.goToDashboardVelocity();
+    m_shooter.setServosAngle(28, 90);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setMotorsPower(0, 0);
+    m_shooter.setServosAngle(75, 55);
   }
 
   // Returns true when the command should end.

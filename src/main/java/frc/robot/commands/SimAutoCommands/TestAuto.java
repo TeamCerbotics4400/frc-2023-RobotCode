@@ -18,7 +18,7 @@ import frc.robot.subsystems.DrivetrainSim;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TestAuto extends SequentialCommandGroup {
-  /** Creates a new TestAuto. 
+  /*  Creates a new TestAuto. 
   public TestAuto(DrivetrainSim simDrive) {
     Trajectory trajectory = PathPlanner.loadPath("Test Path", 
     SimulationConstants.kMaxSpeedMetersPerSecond, 

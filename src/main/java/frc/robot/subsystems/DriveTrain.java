@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.subsystems;
 
 import java.util.Optional;
@@ -25,9 +25,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,7 +41,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveTrain extends SubsystemBase {
-  /** Creates a new DriveTrain. */
+  /** Creates a new DriveTrain. 
   CANSparkMax leftMaster = new CANSparkMax(DriveConstants.LeftMaster_ID, MotorType.kBrushless);
   CANSparkMax leftSlave = new CANSparkMax(DriveConstants.LeftSlave_ID, MotorType.kBrushless);
 
@@ -48,8 +52,6 @@ public class DriveTrain extends SubsystemBase {
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
 
   //LimelightSubsystem limelight;
-
-  Field2d field2d = new Field2d();
 
   MotorControllerGroup leftControllers = new MotorControllerGroup(leftMaster, leftSlave);
   MotorControllerGroup rightControllers = new MotorControllerGroup(rightMaster, rightSlave);
@@ -66,12 +68,14 @@ public class DriveTrain extends SubsystemBase {
   SparkMaxPIDController controladorIzq = leftMaster.getPIDController();
   SparkMaxPIDController controladorDer = rightMaster.getPIDController();
 
-  Rotation2d rotacionChasis = new Rotation2d(getAngle());
+  //Rotation2d rotacionChasis = new Rotation2d(getAngle());
+
+  private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
-  rotacionChasis,
-  encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()),
-  new Pose2d(5.0, 13.5, new Rotation2d()));
+  Rotation2d.fromDegrees(getAngle()),
+  encoderCountsToMeters(encoderIzq.getPosition()), encoderCountsToMeters(encoderDer.getPosition()), 
+  mPosition);
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
             new DifferentialDrivePoseEstimator(
@@ -82,27 +86,34 @@ public class DriveTrain extends SubsystemBase {
 
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
 
- public PhotonCameraWrapper pcw;
+  ShuffleboardTab debuggingTab;
+  ShuffleboardTab competitionTab;
 
-  public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
+  private GenericEntry yawEntry;
+
+  //private NetworkTableEntry yawEntry;
+
+  public PhotonCameraWrapper pcw;
+
+  public DriveTrain(/*LimelightSubsystem limelightSubsystem) {
 
     //this.limelight = limelightSubsystem;
 
-    rightMaster.setInverted(false);
-    rightSlave.setInverted(false);
+    rightMaster.setInverted(true);
+    rightSlave.setInverted(true);
 
-    leftMaster.setInverted(true);
-    leftSlave.setInverted(true);
+    leftMaster.setInverted(false);
+    leftSlave.setInverted(false);
 
     SmartDashboard.putData("Field", m_field);
     
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
-    leftMaster.setIdleMode(IdleMode.kCoast);
-    leftSlave.setIdleMode(IdleMode.kCoast);
-    rightMaster.setIdleMode(IdleMode.kCoast);
-    rightSlave.setIdleMode(IdleMode.kCoast);
+    leftMaster.setIdleMode(IdleMode.kBrake);
+    leftSlave.setIdleMode(IdleMode.kBrake);
+    rightMaster.setIdleMode(IdleMode.kBrake);
+    rightSlave.setIdleMode(IdleMode.kBrake);
 
     encoderIzq.setPosition(0);
     encoderDer.setPosition(0);
@@ -121,7 +132,15 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Target Angle", 0);
 
+    debuggingTab = Shuffleboard.getTab("Debugging Tab");
+    competitionTab = Shuffleboard.getTab("Competition Tab");
+
+    yawEntry = debuggingTab.add("Imu Yaw", 0).withWidget("Text View").getEntry();
+
     pcw = new PhotonCameraWrapper();
+
+    resetImu();
+
   }
 
   @Override
@@ -135,8 +154,24 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Odometry X", odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Odometry Y", odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Odometry Rotation", odometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("Odometry Rotation", 
+    odometry.getPoseMeters().getRotation().getDegrees());
+
+    yawEntry.setDouble(getAngle());
+
+    /*Shuffleboard.getTab("Debugging Tab").addPersistent("Pitch", getPitch());
+    Shuffleboard.getTab("Debugging Tab").addPersistent("Yaw", getYaw());
+    Shuffleboard.getTab("Debugging Tab").addPersistent("Roll", getRoll());
   
+  }
+
+  public void selectDashboardType(){
+    if(DriverStation.isFMSAttached()){
+      Shuffleboard.getTab("Competition Tab");
+    }
+    else{
+      Shuffleboard.getTab("Debugging Tab");
+    }
   }
 
   public void drive(double speed, double turn){
@@ -144,16 +179,12 @@ public class DriveTrain extends SubsystemBase {
     differentialDrive.feed();
   }
 
-  public void arcadeDrive(double speed, double turn){
-    double left = speed + turn;
-    double right = speed - turn;
-
-    leftMaster.set(left);
-    rightMaster.set(right);
+  public double getAngle(){
+    return imu.getYaw();
   }
 
-  public double getAngle(){
-    return -imu.getPitch();
+  public void resetImu(){
+    imu.setYaw(0);
   }
 
   public double encoderCountsToMeters(double encoderCounts){
@@ -192,6 +223,14 @@ public class DriveTrain extends SubsystemBase {
 
   public double getPitch(){
     return imu.getPitch();
+  }
+
+  public double getYaw(){
+    return imu.getYaw();
+  }
+
+  public double getRoll(){
+    return imu.getRoll();
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -238,7 +277,7 @@ public class DriveTrain extends SubsystemBase {
       m_field.getObject("Cam est Pose").setPose(getPose());
     }
 
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    m_field.setRobotPose(getPose());
   }
 
   /*public void updateOdometryWVisionCorrectionLimelight(){
@@ -251,8 +290,7 @@ public class DriveTrain extends SubsystemBase {
     m_field.getObject("Cam est Pose Lime").setPose(limelight.getRobotPose().toPose2d());
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-  }*/
-
+  }
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
     if (initPose) {
@@ -330,4 +368,4 @@ public class DriveTrain extends SubsystemBase {
     }
     
   }
-}
+}*/

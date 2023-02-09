@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -17,11 +17,15 @@ import frc.robot.Constants.IntakeConstants;
 
 public class NeoIntake extends SubsystemBase {
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Creates a new NeoIntake. 
 
   CANSparkMax I_Should_Be_A_Servo = new CANSparkMax(IntakeConstants.IShouldBeAServo_ID, MotorType.kBrushless);
 =======
   /** Creates a new NeoIntake. */
+=======
+  /** Creates a new NeoIntake. 
+>>>>>>> e6051454bf996a48105b60e72b2946df882c6728
 
   CANSparkMax IntakePoseMotor = new CANSparkMax(IntakeConstants.IntakePoseMotor_ID, MotorType.kBrushless);
 >>>>>>> ca4a1edbf4b99af1cb37529ba51dc5497accb75a
@@ -167,5 +171,9 @@ public class NeoIntake extends SubsystemBase {
   public void setMotorsPower(double Power){
     IntakePoseMotor.set(Power);
   }
+<<<<<<< HEAD
 >>>>>>> ca4a1edbf4b99af1cb37529ba51dc5497accb75a
 }
+=======
+}*/
+>>>>>>> e6051454bf996a48105b60e72b2946df882c6728

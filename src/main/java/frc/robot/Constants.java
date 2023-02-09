@@ -78,7 +78,8 @@ public final class Constants {
 
 
   public static final boolean tuningMode = false;
-  public static class SimulationConstants{
+
+  /*public static class SimulationConstants{
     public static final double kTrackwidthMeters = 0.546;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
@@ -127,7 +128,7 @@ public final class Constants {
     public static final double kMaxAccelerationMetersPerSecondSquared = 3.0; 
 
     public static final int k100msPerSecond = 10;
-  }
+  }*/
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
@@ -142,16 +143,15 @@ public final class Constants {
 
     public static final double kP = 0//3.9356
     ,  kI = 0
-    , kD = 03 ;
+    , kD = 0;
 
-    public static final double kS = 0,//0.2131,
-                               kV = 0,//2.8451, 
-                               kA = 0;//0.64907;
+    public static final double kS = 0.15862,//0.15862
+                               kV = 2.8101,//2.8101, 
+                               kA = 0.39782;//0.64907;
 
-    public static final double WHEEL_DIAMETER = 0;
-    public static final double GEAR_RATIO_ONE = 0;//7 : 1
-    public static final double GEAR_RATIO_TWO = 0;//9.22 : 1
-    public static final double TRACK_WIDTH = 0; 
+    public static final double WHEEL_DIAMETER = 0.1524;
+    public static final double GEAR_RATIO = 0;//7 : 1
+    public static final double TRACK_WIDTH = 0.69; 
     public static final double ENCODER_CPR = 0;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(TRACK_WIDTH);
@@ -163,6 +163,11 @@ public final class Constants {
     public static final int Solenoid_Shifter_ID = 0;
 }
 
+public static final class AutoConstants{
+  public static final double kMaxSpeedMetersPerSecond = 2.0;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;
+}
+
 public static final class FieldConstants{
   public static final double length = Units.feetToMeters(54);
   public static final double width = Units.feetToMeters(27);
@@ -170,16 +175,16 @@ public static final class FieldConstants{
 
 public static final class ShooterConstants{
   /** ---PROTOTYPE--- */
-  public static final byte FLY_WHEEL_LOWER_ID = 8; 
-  public static final byte FLY_WHEEL_UPPER_ID = 9;
+  public static final byte LEFT_FLYWHEEL_ID = 8; 
+  public static final byte RIGHT_FLYWHEEL_ID = 9;
 
   public static double kP= 0.000031,
                        kI = 0,
                        kD = 0.0001,
                        kIz = 0,
                        kFF = 0.0001678,
-                       kMaxOutput = 0,
-                       kMinOutput = 0, 
+                       kMaxOutput = 1,
+                       kMinOutput = -1, 
                        maxRPM = 0, 
                        maxVel = 0, //---------
                        minVel = 0, //---------

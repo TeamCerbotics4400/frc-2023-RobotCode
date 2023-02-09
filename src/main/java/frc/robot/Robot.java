@@ -4,16 +4,16 @@
 
 package frc.robot;
 
-import edu.wpi.first.util.datalog.BooleanLogEntry;
+//import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.util.datalog.StringLogEntry;
+//import edu.wpi.first.util.datalog.DoubleLogEntry;
+//import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveTrain;
+//import frc.robot.subsystems.DriveTrain;
 //import frc.robot.subsystems.DrivetrainSim;
 //import frc.robot.subsystems.LimelightSubsystem;
 
@@ -30,9 +30,9 @@ public class Robot extends TimedRobot {
 
   //LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
-  BooleanLogEntry myBooleanLogEntry;
+  /*BooleanLogEntry myBooleanLogEntry;
   DoubleLogEntry myDoubleLogEntry;
-  StringLogEntry myStringLogEntry;
+  StringLogEntry myStringLogEntry;*/
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -47,9 +47,11 @@ public class Robot extends TimedRobot {
     DataLog log = DataLogManager.getLog();
     DriverStation.startDataLog(log);
 
-    myBooleanLogEntry = new BooleanLogEntry(log, "/my/boolean");
+    //m_robotContainer.getDrivetrain().selectDashboardType();
+
+    /*myBooleanLogEntry = new BooleanLogEntry(log, "/my/boolean");
     myDoubleLogEntry = new DoubleLogEntry(log, "/my/double");
-    myStringLogEntry = new StringLogEntry(log, "/my/string");
+    myStringLogEntry = new StringLogEntry(log, "/my/string");*/
   }
 
   /**
@@ -66,7 +68,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run(); 
-    m_robotContainer.getDrivetrain().updateOdometryWVisionCorrectionPhoton();
+    //m_robotContainer.getDrivetrain().updateOdometryWVisionCorrectionPhoton();
     
   }
 
@@ -106,9 +108,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    myBooleanLogEntry.append(true);
+    /*myBooleanLogEntry.append(true);
     myDoubleLogEntry.append(3.5);
-    myStringLogEntry.append("Ala si jala esto");
+    myStringLogEntry.append("Ala si jala esto");*/
   }
 
   @Override
