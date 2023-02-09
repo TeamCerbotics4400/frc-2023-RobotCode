@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import org.ejml.dense.row.linsol.qr.LinearSolverQrHouseCol_MT_FDRM;
 import org.photonvision.EstimatedRobotPose;
 
 import com.ctre.phoenix.sensors.Pigeon2;
@@ -27,6 +28,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -37,7 +39,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.LimelightHelpers.LimelightResults;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
@@ -96,7 +100,7 @@ public class DriveTrain extends SubsystemBase {
 
   //private NetworkTableEntry yawEntry;
 
-  public PhotonCameraWrapper pcw;
+  //public PhotonCameraWrapper pcw;
 
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
 
@@ -145,7 +149,7 @@ public class DriveTrain extends SubsystemBase {
 
     yawEntry = debuggingTab.add("Imu Yaw", 0).withWidget("Text View").getEntry();
 
-    pcw = new PhotonCameraWrapper();
+    //pcw = new PhotonCameraWrapper();
 
     resetImu();
     resetEncoders();
@@ -186,6 +190,8 @@ public class DriveTrain extends SubsystemBase {
     /*Shuffleboard.getTab("Debugging Tab").addPersistent("Pitch", getPitch());
     Shuffleboard.getTab("Debugging Tab").addPersistent("Yaw", getYaw());
     Shuffleboard.getTab("Debugging Tab").addPersistent("Roll", getRoll());*/
+
+  
   
   }
 
@@ -289,20 +295,23 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
 
-    Optional<EstimatedRobotPose> result = 
-    pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+    LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight-cerbo");
 
-
-    if(result.isPresent()){
-      EstimatedRobotPose camPose = result.get();
-      m_poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), 
-      camPose.timestampSeconds);
-      m_field.getObject("Cam est Pose").setPose(camPose.estimatedPose.toPose2d());
+    if(llresults.targetingResults.valid){
+      m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiBlue("limelight-cerbo"), 
+      Timer.getFPGATimestamp());
+      m_field.getObject("Cam est Pose").setPose(LimelightHelpers.getBotPose2d_wpiBlue("limelight-cerbo"));
     } else {
       m_field.getObject("Cam est Pose").setPose(getPose());
     }
 
     m_field.setRobotPose(getPose());
+
+  }
+
+  public void getLimeFieldPose(){
+    m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d("limelight-cerbo"), Timer.getFPGATimestamp());
+    m_field.setRobotPose(LimelightHelpers.getBotPose2d("limelight-cerbo"));
   }
 
   public void feedDrive(){

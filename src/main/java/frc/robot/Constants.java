@@ -177,7 +177,7 @@ public static final class VisionConstants {
 
   public static final Transform3d robotToCam =
           new Transform3d(
-                  new Translation3d(0.33, 0.03, 0.53),
+                  new Translation3d(0.32, 0.03, 0.53),
                   new Rotation3d(
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
