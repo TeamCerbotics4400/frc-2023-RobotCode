@@ -10,12 +10,15 @@ import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 import frc.robot.commands.DefaultShooter;
 import frc.robot.commands.FeedShooter;
+import frc.robot.commands.IntakePieces;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.FeederLinkage;
+import frc.robot.subsystems.IntakeLinkage;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -29,8 +32,8 @@ public class RobotContainer {
   Joystick joy0 = new Joystick(0);
   private DriveTrain m_drive = new DriveTrain();
   JoystickButton rightBumper = new JoystickButton(joy0, 6);
-// private final Shooter shooter1 = new Shooter();
-  //private final NeoIntake neointake = new NeoIntake();
+  private IntakeLinkage m_intake = new IntakeLinkage();
+  private FeederLinkage m_feeder = new FeederLinkage();
   private Shooter m_shooter = new Shooter();
   //JoystickButton FerBestoProgra = new JoystickButton(joy0, 1);
   //JoystickButton Citrus1678BestoFRCTeam = new JoystickButton(joy0, 2);
@@ -78,7 +81,9 @@ public class RobotContainer {
    //Servos Shooter
    new JoystickButton(joy0, 3).whileTrue(new FeedShooter(m_shooter));
 
-   new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(m_shooter));
+   new JoystickButton(joy0, 4).whileTrue(new DefaultShooter(m_shooter));
+
+   new JoystickButton(joy0, 6).whileTrue(new IntakePieces(m_intake, m_feeder));
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
