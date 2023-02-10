@@ -75,61 +75,31 @@ public final class Constants {
 
   public static final boolean tuningMode = false;
 
-  /*public static class SimulationConstants{
-    public static final double kTrackwidthMeters = 0.546;
-    public static final DifferentialDriveKinematics kDriveKinematics =
-        new DifferentialDriveKinematics(kTrackwidthMeters);
-
-    public static final int kEncoderCPR = 1024;
-    public static final double kWheelDiameterMeters = 0.15;
-    public static final double kEncoderDistancePerPulse =
-        // Assumes the encoders are directly mounted on the wheel shafts
-        (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
-
-    public static final boolean kGyroReversed = true;
-
-    public static final double ksVolts = 0.22;
-    public static final double kvVoltSecondsPerMeter = 1.98;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.2;
-
-    public static final double kvVoltSecondsPerRadian = 1.5;
-    public static final double kaVoltSecondsSquaredPerRadian = 0.3;
-
-    public static final LinearSystem<N2, N2, N2> kDrivetrainPlant =
-        LinearSystemId.identifyDrivetrainSystem(
-            kvVoltSecondsPerMeter,
-            kaVoltSecondsSquaredPerMeter,
-            kvVoltSecondsPerRadian,
-            kaVoltSecondsSquaredPerRadian);
-
-    public static final DCMotor kDriveGearbox = DCMotor.getCIM(2);
-    public static final double kDriveGearing = 10.71;
-
-    public static final double kWheelRadiusInches = 3;
-
-    public static final double kPDriveVel = 8.5;
-
-    public static final double kP = 0, 
-    kI = 0, 
-    kD = 0;
-
-    public static final double kS = 0.22, 
-    kV = 1.98, 
-    kA = 0.2;
-
-    public static final double kRamseteB = 2;
-    public static final double kRamseteZeta = 0.7;
-
-    public static final double kMaxSpeedMetersPerSecond = 4.0; 
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3.0; 
-
-    public static final int k100msPerSecond = 10;
-  }*/
-
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
 
+public static final class ShooterConstants{
+  /** ---PROTOTYPE--- */
+  public static final byte LEFT_FLYWHEEL_ID = 8; 
+  public static final byte RIGHT_FLYWHEEL_ID = 9;
+
+  public static double kP= 0.000031,
+                       kI = 0,
+                       kD = 0.0001,
+                       kIz = 0,
+                       kFF = 0.0001678,
+                       kMaxOutput = 1,
+                       kMinOutput = -1, 
+                       maxRPM = 0, 
+                       maxVel = 0, //---------
+                       minVel = 0, //---------
+                       maxAcc = 0, 
+                       allowedErr = 0;
+
+                       public static double targetVelocity = 0;
+
+}
   public static final class DriveConstants{
     public static final int LeftMaster_ID = 2; //3
     public static final int LeftSlave_ID = 3; //4

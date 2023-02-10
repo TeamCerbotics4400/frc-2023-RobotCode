@@ -8,12 +8,15 @@ import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ResetImuCommand;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
+import frc.robot.commands.DefaultShooter;
+import frc.robot.commands.FeedShooter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,10 +31,9 @@ public class RobotContainer {
   JoystickButton rightBumper = new JoystickButton(joy0, 6);
 // private final Shooter shooter1 = new Shooter();
   //private final NeoIntake neointake = new NeoIntake();
+  private Shooter m_shooter = new Shooter();
   //JoystickButton FerBestoProgra = new JoystickButton(joy0, 1);
   //JoystickButton Citrus1678BestoFRCTeam = new JoystickButton(joy0, 2);
-
-  //private final DrivetrainSim driveSim = new DrivetrainSim();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
@@ -42,6 +44,7 @@ public class RobotContainer {
     () -> joy0.getRawAxis(2), //4 para joystick, 0 para teclado
     () -> joy0.getRawAxis(1)));*/
     
+
 
     configureBindings();
 
@@ -71,6 +74,11 @@ public class RobotContainer {
 
    //Reset Imu
    new JoystickButton(joy0, 2).onTrue(new ResetImuCommand(m_drive));
+
+   //Servos Shooter
+   new JoystickButton(joy0, 3).whileTrue(new FeedShooter(m_shooter));
+
+   new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(m_shooter));
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
@@ -90,6 +98,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return new StraightLineAutoCommand(m_drive);
+    return null;
   }
 
   /*public DrivetrainSim getSimDrive(){
