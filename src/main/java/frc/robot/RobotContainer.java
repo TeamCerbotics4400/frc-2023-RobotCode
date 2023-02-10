@@ -98,7 +98,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return new StraightLineAutoCommand(m_drive);
-    return null;
   }
 
   /*public DrivetrainSim getSimDrive(){
