@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import java.util.Optional;
-
-import org.ejml.dense.row.linsol.qr.LinearSolverQrHouseCol_MT_FDRM;
 import org.photonvision.EstimatedRobotPose;
 
 import com.ctre.phoenix.sensors.Pigeon2;

@@ -10,8 +10,8 @@ import frc.robot.subsystems.IntakeLinkage;
 
 public class IntakePieces extends CommandBase {
   /** Creates a new DefaultIntake. */
-  IntakeLinkage m_Intake;
-  FeederLinkage m_Feeder;
+  IntakeLinkage m_intake;
+  FeederLinkage m_feeder;
 
   double iDeployed = 0.0;
   double iRetracted = 0.0;
@@ -19,10 +19,12 @@ public class IntakePieces extends CommandBase {
   double fIdle = 0.0;
   double fIntaking = 0.0;
 
-  public IntakePieces(IntakeLinkage m_Intake, FeederLinkage m_Feeder) {
+  public IntakePieces(IntakeLinkage m_intake, FeederLinkage m_feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_Intake = m_Intake;
-    this.m_Feeder = m_Feeder;
+    this.m_intake = m_intake;
+    this.m_feeder = m_feeder;
+
+    addRequirements(m_intake, m_feeder);
   }
 
   // Called when the command is initially scheduled.
@@ -32,21 +34,21 @@ public class IntakePieces extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Intake.setIntakePose(iDeployed);
-    m_Intake.setIntakePower(1.0);
+    m_intake.setIntakePose(iDeployed);
+    m_intake.setIntakePower(1.0);
 
-    m_Feeder.setFeederPose(fIntaking);
-    m_Feeder.setFeederPower(1.0);
+    m_feeder.setFeederPose(fIntaking);
+    m_feeder.setFeederPower(1.0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Intake.setIntakePose(iRetracted);
-    m_Intake.setIntakePower(0.0);
+    m_intake.setIntakePose(iRetracted);
+    m_intake.setIntakePower(0.0);
 
-    m_Feeder.setFeederPose(fIdle);
-    m_Feeder.setFeederPower(0.0);
+    m_feeder.setFeederPose(fIdle);
+    m_feeder.setFeederPower(0.0);
   }
 
   // Returns true when the command should end.

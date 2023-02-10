@@ -10,7 +10,6 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -22,9 +21,6 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax rightFlywheel = new CANSparkMax(ShooterConstants.RIGHT_FLYWHEEL_ID,
   MotorType.kBrushless);
 
-  private Servo leftServo = new Servo(5);
-  private Servo rightServo = new Servo(4);
-
   private RelativeEncoder leftFlywheelEncoder = leftFlywheel.getEncoder();
   private RelativeEncoder rightFlywheelEncoder = rightFlywheel.getEncoder();
 
@@ -32,6 +28,8 @@ public class Shooter extends SubsystemBase {
   private SparkMaxPIDController rightFlywheel_PIDController = rightFlywheel.getPIDController();
 
   double desiredVelo = 0;
+
+  boolean onTarget = false;
 
   public Shooter() {
     leftFlywheel.restoreFactoryDefaults();
@@ -94,6 +92,14 @@ public class Shooter extends SubsystemBase {
     rightFlywheel_PIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
   }
 
+  public double getTargetVelo(){
+    return desiredVelo;
+  }
+
+  public double getAverageRPM(){
+    return (getLeftRPM() + getRightRPM()) / 2;
+  }
+
   public double getLeftRPM(){
     return leftFlywheelEncoder.getVelocity();
   }
@@ -112,8 +118,15 @@ public class Shooter extends SubsystemBase {
     rightFlywheel.set(UpperPower);
   }
 
-  public void setServosAngle(double leftAngle, double rightAngle){
-    leftServo.setAngle(leftAngle);
-    rightServo.setAngle(rightAngle);
+  public boolean isOnTarget(){
+    
+    double rpmDifference = getAverageRPM() - getTargetVelo();
+
+    if(rpmDifference <= ShooterConstants.shooterTreshold){
+      return onTarget = true;
+    }
+    else{
+      return onTarget = false;
+    }
   }
 }

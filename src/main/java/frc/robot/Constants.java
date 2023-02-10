@@ -101,6 +101,8 @@ public final class Constants {
                          FkIz = 0,
                          FkD = 0, 
                          FkFF = 0;
+
+    
   }
 
   public static final class ShooterConstants{
@@ -122,6 +124,8 @@ public final class Constants {
                          allowedErr = 0;
 
     public static double targetVelocity = 0;
+
+    public static final double shooterTreshold = 300;
 
 }
   public static final class DriveConstants{
@@ -151,6 +155,8 @@ public final class Constants {
     public static final double TRACK_SCRUB_FACTOR = 0;//Para un giro mas cerrado del cheezy drive
 
     public static final int Solenoid_Shifter_ID = 0;
+
+    
 }
 
 public static final class AutoConstants{
