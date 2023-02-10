@@ -45,11 +45,11 @@ import frc.robot.LimelightHelpers.LimelightResults;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
-  CANSparkMax leftMaster = new CANSparkMax(DriveConstants.LeftMaster_ID, MotorType.kBrushless);
-  CANSparkMax leftSlave = new CANSparkMax(DriveConstants.LeftSlave_ID, MotorType.kBrushless);
+  CANSparkMax leftLeader = new CANSparkMax(DriveConstants.LeftLeader_ID, MotorType.kBrushless);
+  CANSparkMax leftFollower = new CANSparkMax(DriveConstants.LeftFollower_ID, MotorType.kBrushless);
 
-  CANSparkMax rightMaster = new CANSparkMax(DriveConstants.RightMaster_ID, MotorType.kBrushless);
-  CANSparkMax rightSlave = new CANSparkMax(DriveConstants.RightSlave_ID, MotorType.kBrushless);
+  CANSparkMax rightLeader = new CANSparkMax(DriveConstants.RightLeader_ID, MotorType.kBrushless);
+  CANSparkMax rightFollower = new CANSparkMax(DriveConstants.RightFollower_ID, MotorType.kBrushless);
 
   PIDController leftPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
@@ -60,20 +60,20 @@ public class DriveTrain extends SubsystemBase {
 
   //LimelightSubsystem limelight;
 
-  MotorControllerGroup leftControllers = new MotorControllerGroup(leftMaster, leftSlave);
-  MotorControllerGroup rightControllers = new MotorControllerGroup(rightMaster, rightSlave);
+  MotorControllerGroup leftControllers = new MotorControllerGroup(leftLeader, leftFollower);
+  MotorControllerGroup rightControllers = new MotorControllerGroup(rightLeader, rightFollower);
 
   DifferentialDrive differentialDrive = new DifferentialDrive(leftControllers, rightControllers);
 
   Field2d m_field = new Field2d();
 
-  RelativeEncoder leftEncoder = leftMaster.getEncoder();
-  RelativeEncoder rightEncoder = rightMaster.getEncoder();
+  RelativeEncoder leftEncoder = leftLeader.getEncoder();
+  RelativeEncoder rightEncoder = rightLeader.getEncoder();
 
   Pigeon2 imu = new Pigeon2(13);
 
-  SparkMaxPIDController controladorIzq = leftMaster.getPIDController();
-  SparkMaxPIDController controladorDer = rightMaster.getPIDController();
+  SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
+  SparkMaxPIDController controladorDer = rightLeader.getPIDController();
 
   //Rotation2d rotacionChasis = new Rotation2d(getAngle());
 
@@ -106,27 +106,27 @@ public class DriveTrain extends SubsystemBase {
 
     //this.limelight = limelightSubsystem;
 
-    leftMaster.restoreFactoryDefaults();
-    leftSlave.restoreFactoryDefaults();
+    leftLeader.restoreFactoryDefaults();
+    leftFollower.restoreFactoryDefaults();
 
-    rightMaster.restoreFactoryDefaults();
-    rightSlave.restoreFactoryDefaults();
+    rightLeader.restoreFactoryDefaults();
+    rightFollower.restoreFactoryDefaults();
 
-    rightMaster.setInverted(true);
-    rightSlave.setInverted(true);
+    rightLeader.setInverted(true);
+    rightFollower.setInverted(true);
 
-    leftMaster.setInverted(false);
-    leftSlave.setInverted(false);
+    leftLeader.setInverted(false);
+    leftFollower.setInverted(false);
 
     SmartDashboard.putData("Field", m_field);
     
-    leftSlave.follow(leftMaster);
-    rightSlave.follow(rightMaster);
+    leftFollower.follow(leftLeader);
+    rightFollower.follow(rightLeader);
 
-    leftMaster.setIdleMode(IdleMode.kBrake);
-    leftSlave.setIdleMode(IdleMode.kBrake);
-    rightMaster.setIdleMode(IdleMode.kBrake);
-    rightSlave.setIdleMode(IdleMode.kBrake);
+    leftLeader.setIdleMode(IdleMode.kBrake);
+    leftFollower.setIdleMode(IdleMode.kBrake);
+    rightLeader.setIdleMode(IdleMode.kBrake);
+    rightFollower.setIdleMode(IdleMode.kBrake);
 
     leftEncoder.setPosition(0);
     rightEncoder.setPosition(0);

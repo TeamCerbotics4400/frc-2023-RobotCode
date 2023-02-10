@@ -24,6 +24,8 @@ import team4400.Alert.AlertType;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+
   private static final RobotType robot = RobotType.ROBOT_2023P;
   public static final double loopPeriodSecs = 0.02;
 
@@ -79,33 +81,55 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-public static final class ShooterConstants{
-  /** ---PROTOTYPE--- */
-  public static final byte LEFT_FLYWHEEL_ID = 8; 
-  public static final byte RIGHT_FLYWHEEL_ID = 9;
+  public static final class LinkageConstants {
 
-  public static double kP= 0.000031,
-                       kI = 0,
-                       kD = 0.0001,
-                       kIz = 0,
-                       kFF = 0.0001678,
-                       kMaxOutput = 1,
-                       kMinOutput = -1, 
-                       maxRPM = 0, 
-                       maxVel = 0, //---------
-                       minVel = 0, //---------
-                       maxAcc = 0, 
-                       allowedErr = 0;
+    public static final boolean linkageTuningMode = false;
 
-                       public static double targetVelocity = 0;
+    public static final byte INTAKE_LINKAGE_ID = 5;
+    public static final byte INTAKE_WHEEL_ID = 6;
+    public static final byte FEEDER_LINKAGE_ID = 7;
+    public static final byte FEEDER_WHEEL_ID = 8;
+
+    public static double IkP= 0,
+                         IkI = 0,
+                         IkIz = 0,
+                         IkD = 0, 
+                         IkFF = 0;
+    
+    public static double FkP= 0,
+                         FkI = 0,
+                         FkIz = 0,
+                         FkD = 0, 
+                         FkFF = 0;
+  }
+
+  public static final class ShooterConstants{
+    /** ---PROTOTYPE--- */
+    public static final byte LEFT_FLYWHEEL_ID = 9; 
+    public static final byte RIGHT_FLYWHEEL_ID = 10;
+
+    public static double kP= 0.000031,
+                         kI = 0,
+                         kD = 0.0001,
+                         kIz = 0,
+                         kFF = 0.0001678,
+                         kMaxOutput = 1,
+                         kMinOutput = -1, 
+                         maxRPM = 0, 
+                         maxVel = 0, //---------
+                         minVel = 0, //---------
+                         maxAcc = 0, 
+                         allowedErr = 0;
+
+    public static double targetVelocity = 0;
 
 }
   public static final class DriveConstants{
-    public static final int LeftMaster_ID = 2; //3
-    public static final int LeftSlave_ID = 3; //4
+    public static final int LeftLeader_ID = 1; //3
+    public static final int LeftFollower_ID = 2; //4
 
-    public static final int RightMaster_ID = 4; //1
-    public static final int RightSlave_ID = 5;  //2
+    public static final int RightLeader_ID = 3; //1
+    public static final int RightFollower_ID = 4;  //2
 
     public static final double kP = 0.013687//3.9356
     ,  kI = 0
