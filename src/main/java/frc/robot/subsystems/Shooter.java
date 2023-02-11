@@ -35,14 +35,14 @@ public class Shooter extends SubsystemBase {
     leftFlywheel.restoreFactoryDefaults();
     rightFlywheel.restoreFactoryDefaults();
 
-    leftFlywheel.setInverted(true);
-    rightFlywheel.setInverted(true);
+    
 
     leftFlywheel.setCANTimeout(10);
     rightFlywheel.setCANTimeout(10);
 
     leftFlywheel.setIdleMode(IdleMode.kCoast);
     rightFlywheel.setIdleMode(IdleMode.kCoast);
+
 
     /* 
     int smartMotionSlot = 0;
@@ -69,6 +69,8 @@ public class Shooter extends SubsystemBase {
 
     SmartDashboard.putNumber("Target Velo", desiredVelo);
 
+    leftFlywheel.setInverted(false);
+    rightFlywheel.setInverted(true);
   }
 
 
@@ -120,7 +122,7 @@ public class Shooter extends SubsystemBase {
 
   public boolean isOnTarget(){
     
-    double rpmDifference = getAverageRPM() - getTargetVelo();
+    double rpmDifference = getTargetVelo() - getAverageRPM();
 
     if(rpmDifference <= ShooterConstants.shooterTreshold){
       return onTarget = true;

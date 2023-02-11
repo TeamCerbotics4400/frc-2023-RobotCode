@@ -36,7 +36,15 @@ public class FeederLinkage extends SubsystemBase {
     feederController.setP(LinkageConstants.FkP);
     feederController.setI(LinkageConstants.FkI);
     feederController.setD(LinkageConstants.FkD);
-    feederController.setFF(LinkageConstants.IkFF);
+    feederController.setFF(LinkageConstants.FkFF);
+    feederController.setOutputRange(LinkageConstants.FkMinOutput, LinkageConstants.FkMaxOutput);
+
+    int smartMotionSlot = 0;
+    feederController.setSmartMotionMaxVelocity(0.9, smartMotionSlot);
+    feederController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
+    feederController.setSmartMotionMaxAccel(LinkageConstants.FMaxAcc, smartMotionSlot);
+
+    feederController.setSmartMotionAllowedClosedLoopError(0.1, smartMotionSlot);
 
     if(LinkageConstants.linkageTuningMode){
       SmartDashboard.putNumber("FLinkage P", LinkageConstants.FkP);
@@ -53,8 +61,7 @@ public class FeederLinkage extends SubsystemBase {
     SmartDashboard.putNumber("Feeder Encoder", feederEncoder.getPosition());
 
     if(LinkageConstants.linkageTuningMode){
-      double feederP = SmartDashboard.getNumber("FLinkage P", LinkageConstants.FkP);
-      double feederI = SmartDashboard.getNumber("FLinkage I", LinkageConstants.FkI);
+      double feederP = SmartDashboard.getNumber("FLinkage P", LinkageConstants.FkP);      double feederI = SmartDashboard.getNumber("FLinkage I", LinkageConstants.FkI);
       double feederD = SmartDashboard.getNumber("FLinkage D", LinkageConstants.FkD);
       double feederFF = SmartDashboard.getNumber("FLinkage FF", LinkageConstants.FkFF);
 
@@ -66,7 +73,7 @@ public class FeederLinkage extends SubsystemBase {
   }
 
   public void setFeederPose(double pose){
-    feederController.setReference(pose, ControlType.kPosition);
+    feederController.setReference(pose, ControlType.kSmartMotion);
   }
 
   public void setFeederPower(double power){

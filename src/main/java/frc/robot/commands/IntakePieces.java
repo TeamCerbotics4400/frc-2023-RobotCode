@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -11,15 +11,12 @@ import frc.robot.subsystems.FeederLinkage;
 import frc.robot.subsystems.IntakeLinkage;
 
 public class IntakePieces extends CommandBase {
-  /** Creates a new DefaultIntake. */
+  /** Creates a new DefaultIntake. 
   IntakeLinkage m_intake;
   FeederLinkage m_feeder;
 
-  double iDeployed = 0.0;
-  double iRetracted = 0.0;
-
   double fIdle = 0.0;
-  double fIntaking = 0.0;
+  
 
   public IntakePieces(IntakeLinkage m_intake, FeederLinkage m_feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -58,4 +55,4 @@ public class IntakePieces extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-}
+}*/

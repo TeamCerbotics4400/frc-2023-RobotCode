@@ -10,7 +10,7 @@ import frc.robot.commands.ShooterTrigger;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 import frc.robot.commands.DefaultShooter;
-import frc.robot.commands.IntakePieces;
+//import frc.robot.commands.IntakePieces;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FeederLinkage;
-import frc.robot.subsystems.IntakeLinkage;
+//import frc.robot.subsystems.IntakeLinkage;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -31,7 +31,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Joystick joy0 = new Joystick(0);
   private DriveTrain m_drive = new DriveTrain();
-  private IntakeLinkage m_intake = new IntakeLinkage();
+  //private IntakeLinkage m_intake = new IntakeLinkage();
   private FeederLinkage m_feeder = new FeederLinkage();
   private Shooter m_shooter = new Shooter();
 
@@ -63,16 +63,17 @@ public class RobotContainer {
    joy0));
 
    //Autobalance
-   new JoystickButton(joy0, 1).toggleOnTrue(new AutoBalance(m_drive));
+   new JoystickButton(joy0, 7).toggleOnTrue(new AutoBalance(m_drive));
 
    //Reset Imu
-   new JoystickButton(joy0, 2).onTrue(new ResetImuCommand(m_drive));
+   new JoystickButton(joy0, 8).onTrue(new ResetImuCommand(m_drive));
 
+   new JoystickButton(joy0, 1).whileTrue(new DefaultShooter(m_shooter));
    //Shooter
-   new JoystickButton(joy0, 3).whileTrue(new ShooterTrigger(m_shooter, m_feeder));
+   new JoystickButton(joy0, 2).whileTrue(new ShooterTrigger(m_feeder));
 
    //Intake y feeder
-   new JoystickButton(joy0, 6).whileTrue(new IntakePieces(m_intake, m_feeder));
+
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 

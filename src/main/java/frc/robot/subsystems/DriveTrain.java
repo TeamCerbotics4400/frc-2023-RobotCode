@@ -135,10 +135,6 @@ public class DriveTrain extends SubsystemBase {
     controladorDer.setFF(0.5);
 
     imu.configFactoryDefault();
-
-    SmartDashboard.putNumber("kP", DriveConstants.kP);
-    SmartDashboard.putNumber("kI", DriveConstants.kI);
-    SmartDashboard.putNumber("kD", DriveConstants.kD);
     
     SmartDashboard.putNumber("Target Angle", 0);
 
@@ -161,14 +157,6 @@ public class DriveTrain extends SubsystemBase {
     odometry.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition())); 
-
-    double p = SmartDashboard.getNumber("kP", 0.013687);
-    double i = SmartDashboard.getNumber("kI", 0);
-    double d = SmartDashboard.getNumber("kD", 0.0010903);
-
-    if((p != DriveConstants.kP)) {p = DriveConstants.kP;}
-    if((i != DriveConstants.kI)) {i = DriveConstants.kI;}
-    if((d != DriveConstants.kD)) {d = DriveConstants.kD;}
 
     SmartDashboard.putNumber("Odometry X", odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Odometry Y", odometry.getPoseMeters().getY());

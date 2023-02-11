@@ -90,23 +90,29 @@ public final class Constants {
     public static final byte FEEDER_LINKAGE_ID = 7;
     public static final byte FEEDER_WHEEL_ID = 6;
 
-    public static final double intakeExtended = 2.333332538604736;
+    public static final double intakeExtended = 2.40;
 
-    public static final double feederIntaking = 0.33;
-    public static final double feederShooting = -0.57; 
-    public static double IkP= 0,
+    public static final double feederIntaking = 0.28571423;
+    public static final double feederShooting = -0.642857;
+
+    public static double IkP= 0.2,
                          IkI = 0,
                          IkIz = 0,
-                         IkD = 0, 
+                         IkD = 0.01, 
                          IkFF = 0;
     
     public static double FkP= 0,
                          FkI = 0,
                          FkIz = 0,
                          FkD = 0, 
-                         FkFF = 0;
+                         FkFF = 0.05,
+                         FkMaxOutput = 1,
+                         FkMinOutput = -1,
+                         FMaxAcc = 1500;
 
-    
+
+
+                         
   }
 
   public static final class ShooterConstants{
@@ -118,7 +124,7 @@ public final class Constants {
                          kI = 0,
                          kD = 0.0001,
                          kIz = 0,
-                         kFF = 0.0001678,
+                         kFF = 0.00018,
                          kMaxOutput = 1,
                          kMinOutput = -1, 
                          maxRPM = 0, 

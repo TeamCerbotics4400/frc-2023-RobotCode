@@ -11,18 +11,16 @@ import frc.robot.subsystems.Shooter;
 
 public class ShooterTrigger extends CommandBase {
   /** Creates a new TestShooter. */
-  Shooter m_shooter;
   FeederLinkage m_feeder;
 
   double fIdle = 0.0;
   double fTrigger = 0.0;
 
-  public ShooterTrigger(Shooter m_shooter, FeederLinkage m_feeder) {
+  public ShooterTrigger(FeederLinkage m_feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_shooter = m_shooter;
     this.m_feeder = m_feeder;
 
-    addRequirements(m_shooter, m_feeder);
+    addRequirements(m_feeder);
   }
 
   // Called when the command is initially scheduled.
@@ -32,21 +30,22 @@ public class ShooterTrigger extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.goToDashboardVelocity();
-
-    if(m_shooter.isOnTarget()){
+    //m_shooter.goToDashboardVelocity();
+    m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
+    m_feeder.setFeederPower(1.0);
+    /*if(m_shooter.isOnTarget()){
       m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
       m_feeder.setFeederPower(1.0);
     } else{
       m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
       m_feeder.setFeederPower(0.0);
-    }
+    }*/
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setMotorsPower(0, 0);
+    //m_shooter.setMotorsPower(0, 0);
     m_feeder.setFeederPose(0);
     m_feeder.setFeederPower(0.0);
   }
