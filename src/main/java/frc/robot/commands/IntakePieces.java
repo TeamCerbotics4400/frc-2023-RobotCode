@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.Constants.LinkageConstants;
 import frc.robot.subsystems.FeederLinkage;
 import frc.robot.subsystems.IntakeLinkage;
 
@@ -34,20 +36,20 @@ public class IntakePieces extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.setIntakePose(iDeployed);
+    m_intake.setIntakePose(LinkageConstants.intakeExtended);
     m_intake.setIntakePower(1.0);
 
-    m_feeder.setFeederPose(fIntaking);
+    m_feeder.setFeederPose(LinkageConstants.feederIntaking);
     m_feeder.setFeederPower(1.0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.setIntakePose(iRetracted);
+    m_intake.setIntakePose(0);
     m_intake.setIntakePower(0.0);
 
-    m_feeder.setFeederPose(fIdle);
+    m_feeder.setFeederPose(0);
     m_feeder.setFeederPower(0.0);
   }
 

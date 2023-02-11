@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.FeederLinkage;
 import frc.robot.subsystems.Shooter;
 
@@ -34,10 +35,10 @@ public class ShooterTrigger extends CommandBase {
     m_shooter.goToDashboardVelocity();
 
     if(m_shooter.isOnTarget()){
-      m_feeder.setFeederPose(fTrigger);
+      m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
       m_feeder.setFeederPower(1.0);
     } else{
-      m_feeder.setFeederPose(fIdle);
+      m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
       m_feeder.setFeederPower(0.0);
     }
   }
@@ -46,7 +47,7 @@ public class ShooterTrigger extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_shooter.setMotorsPower(0, 0);
-    m_feeder.setFeederPose(fIdle);
+    m_feeder.setFeederPose(0);
     m_feeder.setFeederPower(0.0);
   }
 

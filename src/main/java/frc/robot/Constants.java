@@ -83,13 +83,17 @@ public final class Constants {
 
   public static final class LinkageConstants {
 
-    public static final boolean linkageTuningMode = false;
+    public static final boolean linkageTuningMode = true;
 
     public static final byte INTAKE_LINKAGE_ID = 5;
-    public static final byte INTAKE_WHEEL_ID = 6;
+    public static final byte INTAKE_WHEEL_ID = 8;
     public static final byte FEEDER_LINKAGE_ID = 7;
-    public static final byte FEEDER_WHEEL_ID = 8;
+    public static final byte FEEDER_WHEEL_ID = 6;
 
+    public static final double intakeExtended = 2.333332538604736;
+
+    public static final double feederIntaking = 0.33;
+    public static final double feederShooting = -0.57; 
     public static double IkP= 0,
                          IkI = 0,
                          IkIz = 0,

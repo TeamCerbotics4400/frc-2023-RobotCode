@@ -18,7 +18,7 @@ import frc.robot.Constants.LinkageConstants;
 public class FeederLinkage extends SubsystemBase {
   /** Creates a new FeederLinkage. */
   CANSparkMax feederLinkage = new CANSparkMax(LinkageConstants.FEEDER_LINKAGE_ID, MotorType.kBrushless);
-  CANSparkMax feederLinkageWheel = new CANSparkMax(LinkageConstants.FEEDER_LINKAGE_ID, MotorType.kBrushless);
+  CANSparkMax feederLinkageWheel = new CANSparkMax(LinkageConstants.FEEDER_WHEEL_ID, MotorType.kBrushless);
 
   RelativeEncoder feederEncoder = feederLinkage.getEncoder();
 
@@ -40,9 +40,9 @@ public class FeederLinkage extends SubsystemBase {
 
     if(LinkageConstants.linkageTuningMode){
       SmartDashboard.putNumber("FLinkage P", LinkageConstants.FkP);
-      SmartDashboard.putNumber("FLinkage P", LinkageConstants.FkI);
-      SmartDashboard.putNumber("FLinkage P", LinkageConstants.FkD);
-      SmartDashboard.putNumber("FLinkage P", LinkageConstants.FkFF);
+      SmartDashboard.putNumber("FLinkage I", LinkageConstants.FkI);
+      SmartDashboard.putNumber("FLinkage D", LinkageConstants.FkD);
+      SmartDashboard.putNumber("FLinkage FF", LinkageConstants.FkFF);
     }
   }
 
