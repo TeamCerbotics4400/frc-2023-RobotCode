@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LinkageConstants;
 
 public class FeederLinkage extends SubsystemBase {
-  /** Creates a new FeederLinkage. */
+  /** Creates a new FeederLinkage. 
   CANSparkMax feederLinkage = new CANSparkMax(LinkageConstants.FEEDER_LINKAGE_ID, MotorType.kBrushless);
   CANSparkMax feederLinkageWheel = new CANSparkMax(LinkageConstants.FEEDER_WHEEL_ID, MotorType.kBrushless);
 
@@ -79,4 +79,4 @@ public class FeederLinkage extends SubsystemBase {
   public void setFeederPower(double power){
     feederLinkageWheel.set(power);
   }
-}
+}*/

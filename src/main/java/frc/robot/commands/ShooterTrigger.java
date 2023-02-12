@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -9,7 +9,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.FeederLinkage;
 
 public class ShooterTrigger extends CommandBase {
-  /** Creates a new TestShooter. */
+  /** Creates a new TestShooter. 
   FeederLinkage m_feeder;
 
   double fIdle = 0.0;
@@ -38,7 +38,7 @@ public class ShooterTrigger extends CommandBase {
     } else{
       m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
       m_feeder.setFeederPower(0.0);
-    }*/
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -54,4 +54,4 @@ public class ShooterTrigger extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-}
+}*/

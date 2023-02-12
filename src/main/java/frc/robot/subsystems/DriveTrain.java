@@ -163,15 +163,15 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Odometry Rotation", 
     odometry.getPoseMeters().getRotation().getDegrees());
 
-    SmartDashboard.putNumber("RobotPitch", getPitch());
+    //SmartDashboard.putNumber("RobotPitch", getPitch());
 
-    SmartDashboard.putNumber("Pose Error", balancePID.getPositionError());
-    SmartDashboard.putNumber("Velo Error", balancePID.getVelocityError());
+    //SmartDashboard.putNumber("Pose Error", balancePID.getPositionError());
+    //SmartDashboard.putNumber("Velo Error", balancePID.getVelocityError());
 
     yawEntry.setDouble(getAngle());
 
-    SmartDashboard.putNumber("Left Encoder", encoderCountsToMeters(leftEncoder.getPosition()));
-    SmartDashboard.putNumber("Right Encoder", encoderCountsToMeters(rightEncoder.getPosition()));
+    //SmartDashboard.putNumber("Left Encoder", encoderCountsToMeters(leftEncoder.getPosition()));
+    //SmartDashboard.putNumber("Right Encoder", encoderCountsToMeters(rightEncoder.getPosition()));
 
     /*Shuffleboard.getTab("Debugging Tab").addPersistent("Pitch", getPitch());
     Shuffleboard.getTab("Debugging Tab").addPersistent("Yaw", getYaw());
@@ -364,9 +364,6 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Angle", odometry.getPoseMeters().getRotation().getDegrees());
 
     //field2d.setRobotPose(limelight.getRobotPose().toPose2d());
-
-    
-
 
     m_field.setRobotPose(odometry.getPoseMeters().getTranslation().getX(),
     odometry.getPoseMeters().getTranslation().getY(),

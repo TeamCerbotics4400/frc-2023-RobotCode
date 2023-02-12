@@ -120,11 +120,11 @@ public final class Constants {
     public static final byte LEFT_FLYWHEEL_ID = 9; 
     public static final byte RIGHT_FLYWHEEL_ID = 10;
 
-    public static double kP= 0.000031,
-                         kI = 0,
-                         kD = 0.0001,
-                         kIz = 0,
-                         kFF = 0.00018,
+    public static double kP= 0.096,//0.1,//0.000031, //con bandas = 0.098
+                         kI = 0.001,//0.001,//0,
+                         kD = 0.001,//5,//0.0001,
+                         kIz = 300,
+                         kFF = 0.40,//1023.0/20660.0,//0.00018, //con bandas = 0.42
                          kMaxOutput = 1,
                          kMinOutput = -1, 
                          maxRPM = 0, 
