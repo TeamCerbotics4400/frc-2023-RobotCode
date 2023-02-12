@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
-  /** Creates a new Shooter. */
+  /** Creates a new Shooter. 
   private CANSparkMax leftFlywheel = new CANSparkMax(ShooterConstants.LEFT_FLYWHEEL_ID, 
   MotorType.kBrushless);
   private CANSparkMax rightFlywheel = new CANSparkMax(ShooterConstants.RIGHT_FLYWHEEL_ID,
@@ -53,7 +53,7 @@ public class Shooter extends SubsystemBase {
     rightFlywheel_PIDController.setSmartMotionMaxVelocity(ShooterConstants.maxVel, smartMotionSlot);
     rightFlywheel_PIDController.setSmartMotionMinOutputVelocity(ShooterConstants.minVel, smartMotionSlot);
     rightFlywheel_PIDController.setSmartMotionMaxAccel(ShooterConstants.maxAcc, smartMotionSlot);
-    rightFlywheel_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);*/
+    rightFlywheel_PIDController.setSmartMotionAllowedClosedLoopError(ShooterConstants.allowedErr, smartMotionSlot);
 
     leftFlywheel_PIDController.setP(ShooterConstants.kP);
     leftFlywheel_PIDController.setD(ShooterConstants.kD);
@@ -131,4 +131,4 @@ public class Shooter extends SubsystemBase {
       return onTarget = false;
     }
   }
-}
+}*/

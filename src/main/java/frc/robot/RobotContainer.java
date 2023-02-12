@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.FeederLinkage;
 //import frc.robot.subsystems.IntakeLinkage;
-import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,7 +33,7 @@ public class RobotContainer {
   private DriveTrain m_drive = new DriveTrain();
   //private IntakeLinkage m_intake = new IntakeLinkage();
   private FeederLinkage m_feeder = new FeederLinkage();
-  private Shooter m_shooter = new Shooter();
+  private FalconShooter m_shooter = new FalconShooter();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

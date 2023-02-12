@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.FalconShooter;
 
 public class DefaultShooter extends CommandBase {
   /** Creates a new DefaultShooter. */
-  private Shooter shooter;
+  private FalconShooter shooter;
 
-  public DefaultShooter(Shooter shooter) {
+  public DefaultShooter(FalconShooter shooter) {
     this.shooter = shooter;
 
     addRequirements(shooter);
