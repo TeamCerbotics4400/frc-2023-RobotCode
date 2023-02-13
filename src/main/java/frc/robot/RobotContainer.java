@@ -4,22 +4,21 @@
 
 package frc.robot;
 
-import frc.robot.commands.AutoBalance;
-import frc.robot.commands.ResetImuCommand;
-//import frc.robot.commands.ShooterTrigger;
-import frc.robot.commands.TeleOpControl;
-import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
-import frc.robot.commands.DefaultShooter;
-//import frc.robot.commands.IntakePieces;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoBalance;
+import frc.robot.commands.ResetImuCommand;
+import frc.robot.commands.ShooterTrigger;
+import frc.robot.commands.TeleOpControl;
+import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
-//import frc.robot.subsystems.FeederLinkage;
 //import frc.robot.subsystems.IntakeLinkage;
+//import frc.robot.commands.IntakePieces;
+import frc.robot.subsystems.FeederLinkage;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,7 +32,7 @@ public class RobotContainer {
   Joystick joy1 = new Joystick(1);
   private DriveTrain m_drive = new DriveTrain();
   //private IntakeLinkage m_intake = new IntakeLinkage();
-  //private FeederLinkage m_feeder = new FeederLinkage();
+  private FeederLinkage m_feeder = new FeederLinkage();
   private FalconShooter m_shooter = new FalconShooter();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -69,7 +68,7 @@ public class RobotContainer {
    //Reset Imu
    new JoystickButton(joy0, 8).onTrue(new ResetImuCommand(m_drive));
 
-   new JoystickButton(joy1, 1).whileTrue(new DefaultShooter(m_shooter));
+   new JoystickButton(joy1, 1).whileTrue(new ShooterTrigger(m_feeder, m_shooter));
    //Shooter
    //new JoystickButton(joy0, 2).whileTrue(new ShooterTrigger(m_feeder));
 
@@ -77,9 +76,6 @@ public class RobotContainer {
 
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    /*Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
-    FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));*/
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
