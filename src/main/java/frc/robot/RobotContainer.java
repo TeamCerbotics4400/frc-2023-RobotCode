@@ -20,6 +20,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoBalance;
+import frc.robot.commands.ResetImuCommand;
+import frc.robot.commands.ShooterTrigger;
+import frc.robot.commands.TeleOpControl;
+import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.FeederLinkage;
@@ -79,7 +84,7 @@ public class RobotContainer {
 
    new JoystickButton(joy1, 2).whileTrue(new ConeShooter(m_shooter));
 
-   new JoystickButton(joy1, 5).whileTrue(new ShooterTrigger(m_feeder));
+   new JoystickButton(joy1, 5).whileTrue(new ShooterTrigger(m_feeder, m_shooter));
    
    new JoystickButton(joy0, 6).whileTrue(new IntakePieces(m_intake));
 
@@ -91,9 +96,6 @@ public class RobotContainer {
 
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    /*Citrus1678BestoFRCTeam.toggleOnTrue(new Intake(neointake));
-    FerBestoProgra.toggleOnTrue(new DefaultShooter(shooter1));*/
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
