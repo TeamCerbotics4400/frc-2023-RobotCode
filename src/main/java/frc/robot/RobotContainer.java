@@ -5,11 +5,15 @@
 package frc.robot;
 
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.ConeShooter;
 import frc.robot.commands.ResetImuCommand;
+import frc.robot.commands.ShooterTrigger;
 //import frc.robot.commands.ShooterTrigger;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
-import frc.robot.commands.DefaultShooter;
+import frc.robot.commands.CubeShooter;
+import frc.robot.commands.IntakePieces;
+import frc.robot.commands.DefaultIndexer;
 //import frc.robot.commands.IntakePieces;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,8 +22,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
-//import frc.robot.subsystems.FeederLinkage;
-//import frc.robot.subsystems.IntakeLinkage;
+import frc.robot.subsystems.FeederLinkage;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IntakeLinkage;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,9 +37,10 @@ public class RobotContainer {
   Joystick joy0 = new Joystick(0);
   Joystick joy1 = new Joystick(1);
   private DriveTrain m_drive = new DriveTrain();
-  //private IntakeLinkage m_intake = new IntakeLinkage();
-  //private FeederLinkage m_feeder = new FeederLinkage();
+  private IntakeLinkage m_intake = new IntakeLinkage();
+  private FeederLinkage m_feeder = new FeederLinkage();
   private FalconShooter m_shooter = new FalconShooter();
+  private IndexerSubsystem m_indexer = new IndexerSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -64,12 +70,20 @@ public class RobotContainer {
    joy0));
 
    //Autobalance
-   new JoystickButton(joy0, 7).toggleOnTrue(new AutoBalance(m_drive));
+   new JoystickButton(joy1, 7).toggleOnTrue(new AutoBalance(m_drive));
 
    //Reset Imu
-   new JoystickButton(joy0, 8).onTrue(new ResetImuCommand(m_drive));
+   new JoystickButton(joy1, 8).onTrue(new ResetImuCommand(m_drive));
 
-   new JoystickButton(joy1, 1).whileTrue(new DefaultShooter(m_shooter));
+   new JoystickButton(joy1, 1).whileTrue(new CubeShooter(m_shooter));
+
+   new JoystickButton(joy1, 2).whileTrue(new ConeShooter(m_shooter));
+
+   new JoystickButton(joy1, 5).whileTrue(new ShooterTrigger(m_feeder));
+   
+   new JoystickButton(joy0, 6).whileTrue(new IntakePieces(m_intake));
+
+   new JoystickButton(joy1, 3).whileTrue(new DefaultIndexer(m_indexer));
    //Shooter
    //new JoystickButton(joy0, 2).whileTrue(new ShooterTrigger(m_feeder));
 

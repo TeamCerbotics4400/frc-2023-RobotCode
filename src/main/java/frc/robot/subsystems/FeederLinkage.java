@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/* 
+
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LinkageConstants;
 
 public class FeederLinkage extends SubsystemBase {
-  /** Creates a new FeederLinkage. 
+  /** Creates a new FeederLinkage. */
   CANSparkMax feederLinkage = new CANSparkMax(LinkageConstants.FEEDER_LINKAGE_ID, MotorType.kBrushless);
   CANSparkMax feederLinkageWheel = new CANSparkMax(LinkageConstants.FEEDER_WHEEL_ID, MotorType.kBrushless);
 
@@ -28,8 +28,8 @@ public class FeederLinkage extends SubsystemBase {
     feederLinkage.restoreFactoryDefaults();
     feederLinkageWheel.restoreFactoryDefaults();
 
-    feederLinkage.setIdleMode(IdleMode.kBrake);
-    feederLinkageWheel.setIdleMode(IdleMode.kBrake);
+    feederLinkage.setIdleMode(IdleMode.kCoast);
+    feederLinkageWheel.setIdleMode(IdleMode.kCoast);
 
     feederEncoder.setPosition(0);
 
@@ -45,13 +45,13 @@ public class FeederLinkage extends SubsystemBase {
     feederController.setSmartMotionMaxAccel(LinkageConstants.FMaxAcc, smartMotionSlot);
 
     feederController.setSmartMotionAllowedClosedLoopError(0.1, smartMotionSlot);
-
+ /* 
     if(LinkageConstants.linkageTuningMode){
       SmartDashboard.putNumber("FLinkage P", LinkageConstants.FkP);
       SmartDashboard.putNumber("FLinkage I", LinkageConstants.FkI);
       SmartDashboard.putNumber("FLinkage D", LinkageConstants.FkD);
       SmartDashboard.putNumber("FLinkage FF", LinkageConstants.FkFF);
-    }
+    }*/
   }
 
   @Override
@@ -59,9 +59,10 @@ public class FeederLinkage extends SubsystemBase {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber("Feeder Encoder", feederEncoder.getPosition());
-
+ /* 
     if(LinkageConstants.linkageTuningMode){
-      double feederP = SmartDashboard.getNumber("FLinkage P", LinkageConstants.FkP);      double feederI = SmartDashboard.getNumber("FLinkage I", LinkageConstants.FkI);
+      double feederP = SmartDashboard.getNumber("FLinkage P", LinkageConstants.FkP);      
+      double feederI = SmartDashboard.getNumber("FLinkage I", LinkageConstants.FkI);
       double feederD = SmartDashboard.getNumber("FLinkage D", LinkageConstants.FkD);
       double feederFF = SmartDashboard.getNumber("FLinkage FF", LinkageConstants.FkFF);
 
@@ -69,7 +70,7 @@ public class FeederLinkage extends SubsystemBase {
       if((feederI != LinkageConstants.FkI)) {feederController.setI(feederI); LinkageConstants.FkP = feederI;}
       if((feederD != LinkageConstants.FkD)) {feederController.setD(feederD); LinkageConstants.FkP = feederD;}
       if((feederFF != LinkageConstants.FkFF)) {feederController.setFF(feederFF); LinkageConstants.FkP = feederFF;}
-    }
+    }*/
   }
 
   public void setFeederPose(double pose){
@@ -79,4 +80,4 @@ public class FeederLinkage extends SubsystemBase {
   public void setFeederPower(double power){
     feederLinkageWheel.set(power);
   }
-}*/
+}

@@ -18,41 +18,41 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
-public class FalconShooter extends SubsystemBase {
+public class IndexerSubsystem extends SubsystemBase {
   /** Creates a new FalconShooter. */
-  TalonFX leftFlyWheel = new TalonFX(ShooterConstants.LEFT_FLYWHEEL_ID);
-  TalonFX rightFlyWheel = new TalonFX(ShooterConstants.RIGHT_FLYWHEEL_ID);
+  CANSparkMax lowerLeftFlywheel = new CANSparkMax(ShooterConstants.LOWER_LEFT_FLY, MotorType.kBrushless);
+  CANSparkMax lowerRightFlywheel = new CANSparkMax(ShooterConstants.LOWER_RIGHT_FLY, MotorType.kBrushless);
 
-  boolean onTarget = false;
+  SparkMaxPIDController lowerLeftController = lowerLeftFlywheel.getPIDController();
+  SparkMaxPIDController lowerRightController = lowerRightFlywheel.getPIDController();
+
+  RelativeEncoder lowerLeftEncoder = lowerLeftFlywheel.getEncoder();
+  RelativeEncoder lowerRightEncoder = lowerRightFlywheel.getEncoder();
 
   double desiredVelo = 0;
 
   int pidSlot = 0;
 
-  public FalconShooter() {
-    leftFlyWheel.configFactoryDefault();
-    rightFlyWheel.configFactoryDefault();
+  public IndexerSubsystem() {
 
-    leftFlyWheel.setInverted(false);
-    rightFlyWheel.setInverted(true);
+    lowerLeftFlywheel.restoreFactoryDefaults();
+    lowerRightFlywheel.restoreFactoryDefaults();
 
-    leftFlyWheel.setNeutralMode(NeutralMode.Coast);
-    rightFlyWheel.setNeutralMode(NeutralMode.Coast);
+    lowerLeftFlywheel.setInverted(false);
+    lowerRightFlywheel.setInverted(true);
 
-    leftFlyWheel.configVoltageCompSaturation(12);
-    rightFlyWheel.configVoltageCompSaturation(12);
+    lowerLeftFlywheel.setIdleMode(IdleMode.kCoast);
+    lowerRightFlywheel.setIdleMode(IdleMode.kCoast);
 
-    leftFlyWheel.config_kP(pidSlot, ShooterConstants.kP);
-    leftFlyWheel.config_kI(pidSlot, ShooterConstants.kI);
-    leftFlyWheel.config_IntegralZone(pidSlot, ShooterConstants.kIz);
-    leftFlyWheel.config_kD(pidSlot, ShooterConstants.kD);
-    leftFlyWheel.config_kF(pidSlot, ShooterConstants.kFF);
+    lowerLeftController.setP(ShooterConstants.LkP);
+    lowerLeftController.setI(ShooterConstants.LkI);
+    lowerLeftController.setD(ShooterConstants.LkD);
+    lowerLeftController.setFF(ShooterConstants.LkFF);
 
-    rightFlyWheel.config_kP(pidSlot, ShooterConstants.kP);
-    rightFlyWheel.config_kI(pidSlot, ShooterConstants.kI);
-    rightFlyWheel.config_kD(pidSlot, ShooterConstants.kD);
-    rightFlyWheel.config_IntegralZone(pidSlot, ShooterConstants.kIz);
-    rightFlyWheel.config_kF(pidSlot, ShooterConstants.kFF);
+    lowerRightController.setP(ShooterConstants.LkP);
+    lowerRightController.setI(ShooterConstants.LkI);
+    lowerRightController.setD(ShooterConstants.LkD);
+    lowerRightController.setFF(ShooterConstants.LkFF);
     
     SmartDashboard.putNumber("Target Velo", desiredVelo);
 /* 
@@ -62,15 +62,18 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Iz", ShooterConstants.kIz);
     SmartDashboard.putNumber("Shooter FF", ShooterConstants.kFF);*/
 
+    SmartDashboard.putNumber("Lower P", ShooterConstants.LkP);
+    SmartDashboard.putNumber("Lower I", ShooterConstants.LkI);
+    SmartDashboard.putNumber("Lower D", ShooterConstants.LkD);
+    SmartDashboard.putNumber("Lower FF", ShooterConstants.LkFF);
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    SmartDashboard.putNumber("Average RPM", getAverageRPM());
-    SmartDashboard.putNumber("Left RPM", getLeftRPM());
-    SmartDashboard.putNumber("Right RPM", getRightRPM());
+    SmartDashboard.putNumber("Avergae RPM NEO", getAverageNeoRPM());
 
     double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
@@ -80,6 +83,15 @@ public class FalconShooter extends SubsystemBase {
     double lI = SmartDashboard.getNumber("Lower I", ShooterConstants.LkI);
     double lD = SmartDashboard.getNumber("Lower D", ShooterConstants.LkD);
     double lFF = SmartDashboard.getNumber("Lower FF", ShooterConstants.LkFF);
+
+    if((lP != ShooterConstants.LkP)){lowerLeftController.setP(lP); lowerRightController.setP(lP);
+                                      ShooterConstants.LkP = lP;}
+    if((lI != ShooterConstants.LkI)){lowerLeftController.setI(lI); lowerRightController.setI(lI);
+                                      ShooterConstants.LkI = lI;}
+    if((lD != ShooterConstants.LkD)){lowerLeftController.setD(lD); lowerRightController.setD(lD);
+                                      ShooterConstants.LkD = lD;}
+    if((lFF != ShooterConstants.LkFF)){lowerLeftController.setFF(lFF); lowerRightController.setFF(lFF);
+                                        ShooterConstants.LkFF = lFF;}
     
 
   /* 
@@ -101,31 +113,23 @@ public class FalconShooter extends SubsystemBase {
                                     rightFlyWheel.config_kF(pidSlot,ff); ShooterConstants.kFF = ff;}*/
   }
 
-  public double falconUnitsToRPM(double sensorUnits) {
-    return (sensorUnits / 2048.0) * 600.0;
+  public double getLowerLeftRPM(){
+    return lowerLeftEncoder.getVelocity();
   }
   
-  public double RPMtoFalconUnits(double RPM) {
-    return (RPM / 600.0) * 2048.0;
+  public double getLowerRightRPM(){
+    return lowerRightEncoder.getVelocity();
   }
 
-  public double getLeftRPM(){
-    return falconUnitsToRPM(leftFlyWheel.getSelectedSensorVelocity());
-  }
-
-  public double getRightRPM(){
-    return falconUnitsToRPM(rightFlyWheel.getSelectedSensorVelocity());
-  }
-
-  public double getAverageRPM(){
-    return (getLeftRPM() + getRightRPM()) / 2;
+  public double getAverageNeoRPM(){
+    return (getLowerLeftRPM() + getLowerRightRPM()) / 2;
   }
 
   public double getTargetVelo(){
     return desiredVelo;
   }
 
-  public boolean isOnTarget(){
+  /*public boolean isOnTarget(){
     double rpmDifference = getTargetVelo() - getAverageRPM();
 
     if(rpmDifference <= ShooterConstants.shooterTreshold){
@@ -133,30 +137,28 @@ public class FalconShooter extends SubsystemBase {
     } else {
       return onTarget = false;
     }
+  }*/
+
+  public void lowerLeftSetpoint(double setPoint){
+    lowerLeftController.setReference(setPoint, ControlType.kVelocity);
   }
 
-  public void leftSetpoint(double setPoint){
-    leftFlyWheel.set(TalonFXControlMode.Velocity, setPoint);
+  public void lowerRightSetpoint(double setPoint){
+    lowerRightController.setReference(setPoint, ControlType.kVelocity);
   }
 
-  public void rightSetpoint(double setPoint){
-    rightFlyWheel.set(TalonFXControlMode.Velocity, setPoint);
+  public void setNeoVelo(double leftVelo, double rightVelo){
+    lowerLeftSetpoint(leftVelo);
+    lowerRightSetpoint(rightVelo);
   }
 
   public void goToDashboardVelocity(){
-    leftSetpoint(desiredVelo);
-    rightSetpoint(desiredVelo);
-  }
-
-  public void coneDashboardVelo(){
-    leftSetpoint(desiredVelo);
-    rightSetpoint(desiredVelo);
+    lowerLeftSetpoint(desiredVelo);
+    lowerRightSetpoint(desiredVelo);
   }
 
   public void setMotorsPower(double leftPower, double rightPower){
-    leftFlyWheel.set(TalonFXControlMode.PercentOutput, leftPower);
-    rightFlyWheel.set(TalonFXControlMode.PercentOutput, rightPower);
+    lowerLeftFlywheel.set(leftPower);
+    lowerRightFlywheel.set(rightPower);
   }
 }
-
-

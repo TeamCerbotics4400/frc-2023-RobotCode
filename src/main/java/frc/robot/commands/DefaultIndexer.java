@@ -5,21 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.FeederLinkage;
+import frc.robot.subsystems.IndexerSubsystem;
 
-public class ShooterTrigger extends CommandBase {
+public class DefaultIndexer extends CommandBase {
   /** Creates a new TestShooter. */
-  FeederLinkage m_feeder;
+  IndexerSubsystem m_indexer;
 
-  double fIdle = 0.0;
-  double fTrigger = 0.0;
-
-  public ShooterTrigger(FeederLinkage m_feeder) {
+  public DefaultIndexer(IndexerSubsystem m_indexer) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_feeder = m_feeder;
+    this.m_indexer = m_indexer;
 
-    addRequirements(m_feeder);
+    addRequirements(m_indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -30,8 +26,7 @@ public class ShooterTrigger extends CommandBase {
   @Override
   public void execute() {
     //m_shooter.goToDashboardVelocity();
-    m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
-    m_feeder.setFeederPower(0);
+    m_indexer.setNeoVelo(2000, 2000);
     /*if(m_shooter.isOnTarget()){
       m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
       m_feeder.setFeederPower(1.0);
@@ -45,8 +40,7 @@ public class ShooterTrigger extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     //m_shooter.setMotorsPower(0, 0);
-    m_feeder.setFeederPose(0);
-    m_feeder.setFeederPower(0.0);
+    m_indexer.setMotorsPower(0, 0);
   }
 
   // Returns true when the command should end.

@@ -7,14 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FalconShooter;
 
-public class DefaultShooter extends CommandBase {
-  /** Creates a new DefaultShooter. */
-  private FalconShooter shooter;
+public class ConeShooter extends CommandBase {
+  /** Creates a new ConeShooter. */
+  FalconShooter m_Shooter;
+  public ConeShooter(FalconShooter m_Shooter) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.m_Shooter = m_Shooter;
 
-  public DefaultShooter(FalconShooter shooter) {
-    this.shooter = shooter;
-
-    addRequirements(shooter);
+    addRequirements(m_Shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -24,13 +24,13 @@ public class DefaultShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.goToDashboardVelocity();
+    m_Shooter.coneDashboardVelo();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setMotorsPower(0, 0);
+    m_Shooter.setMotorsPower(0, 0);
   }
 
   // Returns true when the command should end.

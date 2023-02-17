@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/* 
+ 
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LinkageConstants;
 
 public class IntakeLinkage extends SubsystemBase {
-  /** Creates a new Linkage. 
+  /** Creates a new Linkage. */
   CANSparkMax intakeLinkage = new CANSparkMax(LinkageConstants.INTAKE_LINKAGE_ID, MotorType.kBrushless);
   CANSparkMax intakeLinkageWheel = new CANSparkMax(LinkageConstants.INTAKE_WHEEL_ID, MotorType.kBrushless);
   
@@ -28,8 +28,8 @@ public class IntakeLinkage extends SubsystemBase {
     intakeLinkage.restoreFactoryDefaults();
     intakeLinkageWheel.restoreFactoryDefaults();
 
-    intakeLinkage.setIdleMode(IdleMode.kBrake);
-    intakeLinkageWheel.setIdleMode(IdleMode.kBrake);
+    intakeLinkage.setIdleMode(IdleMode.kCoast);
+    intakeLinkageWheel.setIdleMode(IdleMode.kCoast);
   
     intakeEncoder.setPosition(0);
 
@@ -38,6 +38,13 @@ public class IntakeLinkage extends SubsystemBase {
     intakeController.setD(LinkageConstants.IkD);
     intakeController.setFF(LinkageConstants.IkFF);
 
+    int smartMotionSlot = 0;
+    intakeController.setSmartMotionMaxVelocity(0.1, smartMotionSlot);
+    intakeController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
+    intakeController.setSmartMotionMaxAccel(LinkageConstants.FMaxAcc, smartMotionSlot);
+
+    intakeController.setSmartMotionAllowedClosedLoopError(0.1, smartMotionSlot);
+ 
     if(LinkageConstants.linkageTuningMode){
       SmartDashboard.putNumber("ILinkage P", LinkageConstants.IkP);
       SmartDashboard.putNumber("ILinkage I", LinkageConstants.IkI);
@@ -51,7 +58,7 @@ public class IntakeLinkage extends SubsystemBase {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber("Intake Encoder", intakeEncoder.getPosition());
-
+ 
     if(LinkageConstants.linkageTuningMode){
       double intakeP = SmartDashboard.getNumber("ILinkage P", LinkageConstants.IkP);
       double intakeI = SmartDashboard.getNumber("ILinkage I", LinkageConstants.IkI);
@@ -66,10 +73,10 @@ public class IntakeLinkage extends SubsystemBase {
   }
 
   public void setIntakePose(double pose){
-    intakeController.setReference(pose, ControlType.kPosition);
+    intakeController.setReference(pose, ControlType.kSmartMotion);
   }
 
   public void setIntakePower(double power){
     intakeLinkageWheel.set(power);
   }
-}*/
+}

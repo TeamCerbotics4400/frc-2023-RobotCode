@@ -85,46 +85,47 @@ public final class Constants {
 
     public static final boolean linkageTuningMode = true;
 
-    public static final byte INTAKE_LINKAGE_ID = 5;
-    public static final byte INTAKE_WHEEL_ID = 8;
-    public static final byte FEEDER_LINKAGE_ID = 7;
-    public static final byte FEEDER_WHEEL_ID = 6;
+    public static final byte INTAKE_LINKAGE_ID = 12;
+    public static final byte INTAKE_WHEEL_ID = 9;
+    public static final byte FEEDER_LINKAGE_ID = 5;
+    public static final byte FEEDER_WHEEL_ID = 8;
 
-    public static final double intakeExtended = 2.40;
+    public static final double intakeExtended = -7.0476284;
 
     public static final double feederIntaking = 0.28571423;
-    public static final double feederShooting = -0.642857;
+    public static final double feederShooting = 5.07142257;
 
-    public static double IkP= 0.2,
+    public static double IkP= 0,
                          IkI = 0,
                          IkIz = 0,
-                         IkD = 0.01, 
-                         IkFF = 0;
+                         IkD = 0, 
+                         IkFF = 0.7,
+                         IMaxAcc = 10;
     
     public static double FkP= 0,
                          FkI = 0,
                          FkIz = 0,
                          FkD = 0, 
-                         FkFF = 0.05,
+                         FkFF = 0.3,
                          FkMaxOutput = 1,
                          FkMinOutput = -1,
                          FMaxAcc = 1500;
-
-
-
                          
   }
 
   public static final class ShooterConstants{
     /** ---PROTOTYPE--- */
-    public static final byte LEFT_FLYWHEEL_ID = 9; 
-    public static final byte RIGHT_FLYWHEEL_ID = 10;
+    public static final byte LEFT_FLYWHEEL_ID = 10; 
+    public static final byte RIGHT_FLYWHEEL_ID = 11;
 
-    public static double kP= 0.096,//0.1,//0.000031, //con bandas = 0.098
-                         kI = 0.001,//0.001,//0,
-                         kD = 0.001,//5,//0.0001,
+    public static final byte LOWER_LEFT_FLY = 6;
+    public static final byte LOWER_RIGHT_FLY = 7;
+
+    public static double kP= 0.096, //con bandas = 0.098
+                         kI = 0.001,
+                         kD = 0.001,
                          kIz = 300,
-                         kFF = 0.40,//1023.0/20660.0,//0.00018, //con bandas = 0.42
+                         kFF = 0.40,//con bandas = 0.42
                          kMaxOutput = 1,
                          kMinOutput = -1, 
                          maxRPM = 0, 
@@ -132,6 +133,12 @@ public final class Constants {
                          minVel = 0, //---------
                          maxAcc = 0, 
                          allowedErr = 0;
+
+    public static double LkP = 6.6882E-11,
+                         LkI = 0,
+                         LkD = 0,
+                         LkIz = 0,
+                         LkFF = 0.000189;
 
     public static double targetVelocity = 0;
 
@@ -192,7 +199,7 @@ public static final class VisionConstants {
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
   // from center.
-  public static final String cameraName = "Limelight";
+  public static final String cameraName = "OV9281";
 }
   /* vDelCodigo = "1.5"; */
   /* Cosas Por Hacer:

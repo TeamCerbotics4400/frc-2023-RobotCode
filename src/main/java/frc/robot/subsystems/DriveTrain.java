@@ -24,6 +24,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -98,7 +99,7 @@ public class DriveTrain extends SubsystemBase {
 
   //private NetworkTableEntry yawEntry;
 
-  //public PhotonCameraWrapper pcw;
+  public PhotonCameraWrapper pcw;
 
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
 
@@ -143,7 +144,9 @@ public class DriveTrain extends SubsystemBase {
 
     yawEntry = debuggingTab.add("Imu Yaw", 0).withWidget("Text View").getEntry();
 
-    //pcw = new PhotonCameraWrapper();
+    pcw = new PhotonCameraWrapper();
+
+    PortForwarder.add(5800, "photonvision.local", 5800);
 
     resetImu();
     resetEncoders();
@@ -281,9 +284,10 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
 
-    LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight-cerbo");
+    Optional<EstimatedRobotPose> result = 
+    pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
 
-    if(llresults.targetingResults.valid){
+    if(result.isPresent()){
       m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiBlue("limelight-cerbo"), 
       Timer.getFPGATimestamp());
       m_field.getObject("Cam est Pose").setPose(LimelightHelpers.getBotPose2d_wpiBlue("limelight-cerbo"));
@@ -298,10 +302,6 @@ public class DriveTrain extends SubsystemBase {
   public void getLimeFieldPose(){
     m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d("limelight-cerbo"), Timer.getFPGATimestamp());
     m_field.setRobotPose(LimelightHelpers.getBotPose2d("limelight-cerbo"));
-  }
-
-  public void feedDrive(){
-    differentialDrive.feed();
   }
 
   public PIDController getBalanceController(){
