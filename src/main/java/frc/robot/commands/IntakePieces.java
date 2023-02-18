@@ -28,14 +28,14 @@ public class IntakePieces extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.setIntakePose(LinkageConstants.intakeExtended);
-    m_intake.setIntakePower(1.0);
+    //m_intake.setIntakePose(LinkageConstants.intakeExtended);
+    m_intake.setIntakePower(-1.0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.setIntakePose(0);
+    //m_intake.setIntakePose(0);
     m_intake.setIntakePower(0.0);
 
   }

@@ -288,14 +288,15 @@ public class DriveTrain extends SubsystemBase {
     pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
 
     if(result.isPresent()){
-      m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiBlue("limelight-cerbo"), 
-      Timer.getFPGATimestamp());
-      m_field.getObject("Cam est Pose").setPose(LimelightHelpers.getBotPose2d_wpiBlue("limelight-cerbo"));
+      EstimatedRobotPose camPose = result.get();
+      m_poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), 
+      camPose.timestampSeconds);
+      m_field.getObject("Cam est Pose").setPose(camPose.estimatedPose.toPose2d());
     } else {
-      m_field.getObject("Cam est Pose").setPose(getPose());
+      m_field.getObject("Cam est Pose").setPose(m_poseEstimator.getEstimatedPosition());
     }
 
-    m_field.setRobotPose(getPose());
+    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
 
   }
 
