@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -12,15 +12,10 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.Pair;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.FieldConstants;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants.VisionConstants;
 
 /** Add your docs here. */
@@ -30,34 +25,25 @@ public class PhotonCameraWrapper {
     public PhotonPoseEstimator photonPoseEstimator;
     
     public PhotonCameraWrapper() {
-        final AprilTag tag6 = new AprilTag(6, 
-        new Pose3d(new Pose2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19), 
-        Rotation2d.fromDegrees(0))));
-        final AprilTag tag7 = new AprilTag(7, 
-        new Pose3d(new Pose2d(Units.inchesToMeters(40.45), Units.inchesToMeters(108.19), 
-        Rotation2d.fromDegrees(0))));
-        final AprilTag tag8 = new AprilTag(8, 
-        new Pose3d(new Pose2d(Units.inchesToMeters(40.45), Units.inchesToMeters(42.19), 
-        Rotation2d.fromDegrees(0))));
-
-        ArrayList<AprilTag> atList = new ArrayList<AprilTag>();
-        atList.add(tag6);
-        atList.add(tag7);
-        atList.add(tag8);
-
-        AprilTagFieldLayout atfl = new AprilTagFieldLayout(atList, 
-        FieldConstants.length, FieldConstants.width);
 
         photonCamera = new PhotonCamera(VisionConstants.cameraName);
+        
+        try{
+            AprilTagFieldLayout fieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
 
-        var camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-        camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.robotToCam));
-
-        photonPoseEstimator = new PhotonPoseEstimator(atfl, 
-        PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT, photonCamera, VisionConstants.robotToCam);
+            photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, 
+                PoseStrategy.MULTI_TAG_PNP, photonCamera, VisionConstants.robotToCam);
+            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+        } catch(IOException e){
+            DriverStation.reportError("Failed to load ApriltagFieldLayout", e.getStackTrace());
+            photonPoseEstimator = null;
+        }
     }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedPose){
+        if(photonPoseEstimator == null){
+            return Optional.empty();
+        }
         photonPoseEstimator.setReferencePose(prevEstimatedPose);
         return photonPoseEstimator.update();
     }

@@ -29,7 +29,7 @@ public class IntakePieces extends CommandBase {
   @Override
   public void execute() {
     //m_intake.setIntakePose(LinkageConstants.intakeExtended);
-    m_intake.setIntakePower(-0.15);
+    m_intake.setIntakePower(-0.3);
   }
 
   // Called once the command ends or is interrupted.
