@@ -33,9 +33,9 @@ public class ShooterTrigger extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     m_shooter.goToDashboardVelocity();
-    m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
-    m_feeder.setFeederPower(0);
+    //m_shooter.goToDashboardVelocity();
+    //m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
+    m_feeder.setFeederPower(-0.15);
     /*if(m_shooter.isOnTarget()){
       m_feeder.setFeederPose(Constants.LinkageConstants.feederShooting);
       m_feeder.setFeederPower(1.0);

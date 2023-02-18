@@ -84,7 +84,7 @@ public class RobotContainer {
 
    new JoystickButton(joy1, 2).whileTrue(new ConeShooter(m_shooter));
 
-   new JoystickButton(joy1, 5).whileTrue(new ShooterTrigger(m_feeder, m_shooter));
+   new JoystickButton(joy0, 5).whileTrue(new ShooterTrigger(m_feeder, m_shooter));
    
    new JoystickButton(joy0, 6).whileTrue(new IntakePieces(m_intake));
 
