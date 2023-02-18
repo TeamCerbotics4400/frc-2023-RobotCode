@@ -10,6 +10,7 @@ import frc.robot.commands.ResetImuCommand;
 import frc.robot.commands.ShooterTrigger;
 //import frc.robot.commands.ShooterTrigger;
 import frc.robot.commands.TeleOpControl;
+import frc.robot.commands.AutoCommands.AlignWithTag;
 import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.IntakePieces;
@@ -20,11 +21,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AutoBalance;
-import frc.robot.commands.ResetImuCommand;
-import frc.robot.commands.ShooterTrigger;
-import frc.robot.commands.TeleOpControl;
-import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.FeederLinkage;
@@ -78,7 +74,7 @@ public class RobotContainer {
    new JoystickButton(joy1, 7).toggleOnTrue(new AutoBalance(m_drive));
 
    //Reset Imu
-   new JoystickButton(joy1, 8).onTrue(new ResetImuCommand(m_drive));
+   new JoystickButton(joy0, 1).onTrue(new AlignWithTag(m_drive));
 
    new JoystickButton(joy1, 1).whileTrue(new CubeShooter(m_shooter));
 

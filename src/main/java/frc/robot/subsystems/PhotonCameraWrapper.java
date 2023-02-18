@@ -5,12 +5,15 @@
 package frc.robot.subsystems;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -33,7 +36,7 @@ public class PhotonCameraWrapper {
 
             photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, 
                 PoseStrategy.MULTI_TAG_PNP, photonCamera, VisionConstants.robotToCam);
-            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         } catch(IOException e){
             DriverStation.reportError("Failed to load ApriltagFieldLayout", e.getStackTrace());
             photonPoseEstimator = null;
@@ -50,5 +53,13 @@ public class PhotonCameraWrapper {
 
     public double getTargetYaw(){
         return photonCamera.getLatestResult().getBestTarget().getYaw();
+    }
+
+    public PhotonPipelineResult getLatestResult(){
+        return photonCamera.getLatestResult();
+    }
+
+    public List<PhotonTrackedTarget> getTargets(){
+        return getLatestResult().getTargets();
     }
 }

@@ -20,10 +20,14 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -166,6 +170,11 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Odometry Rotation", 
     odometry.getPoseMeters().getRotation().getDegrees());
 
+    SmartDashboard.putNumber("Estimated X", m_poseEstimator.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("Estimated Y", m_poseEstimator.getEstimatedPosition().getY());
+
+    SmartDashboard.putNumber("Estimated Angle", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+
     //SmartDashboard.putNumber("RobotPitch", getPitch());
 
     //SmartDashboard.putNumber("Pose Error", balancePID.getPositionError());
@@ -240,16 +249,22 @@ public class DriveTrain extends SubsystemBase {
     return odometry.getPoseMeters();
   }
 
+  public Pose3d get3dPose(){
+    Pose2d robotPose2d = getPose();
+
+    return new Pose3d(robotPose2d.getX(), robotPose2d.getY(), 0.0, 
+    new Rotation3d(0.0, 0.0, robotPose2d.getRotation().getDegrees()));
+  }
+
   public double getPitch(){
     return imu.getPitch();
   }
 
-  public double getYaw(){
-    return imu.getYaw();
-  }
+  public TrapezoidProfile.Constraints getDriveConstraints(){
+    double maxSpeed = 5.2;
+    double maxAcc = 9.0;
 
-  public double getRoll(){
-    return imu.getRoll();
+    return new TrapezoidProfile.Constraints(maxSpeed, maxAcc);
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -278,6 +293,14 @@ public class DriveTrain extends SubsystemBase {
     differentialDrive.feed();
   }
 
+  public Translation2d getEstimationTranslation(){
+    return m_poseEstimator.getEstimatedPosition().getTranslation();
+  }
+
+  public Rotation2d getEstimatioRotation(){
+    return m_poseEstimator.getEstimatedPosition().getRotation();
+  }
+
   //Metodo de prueba
   public void updateOdometryWVisionCorrectionPhoton(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
@@ -298,6 +321,10 @@ public class DriveTrain extends SubsystemBase {
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
 
+  }
+
+  public void getEstimatedPose(){
+    m_poseEstimator.getEstimatedPosition();
   }
 
   public void getLimeFieldPose(){
@@ -349,15 +376,6 @@ public class DriveTrain extends SubsystemBase {
     return ramseteCommand;
 
   }
-
-  
-
-  public void updateOdometry() {
-
-    // Also apply vision measurements. We use 0.3 seconds in the past as an example
-    }
-
-    
 
   public void log(){
     SmartDashboard.putNumber("Distancia X", odometry.getPoseMeters().getTranslation().getX());

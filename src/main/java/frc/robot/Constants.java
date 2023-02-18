@@ -152,13 +152,13 @@ public final class Constants {
     public static final int RightLeader_ID = 3; //1
     public static final int RightFollower_ID = 4;  //2
 
-    public static final double kP = 0.013687//3.9356
+    public static final double kP = 0.0019356//0.013687
     ,  kI = 0
-    , kD = 0.0010903;
+    , kD = 0;//0.20844;//0.0010903
 
-    public static final double kS = 0.15862,//0.15862
-                               kV = 2.8101,//2.8101, 
-                               kA = 0.39782;//0.64907;
+    public static final double kS = 0.18404,//0.15862
+                               kV = 2.7305,//2.8101, 
+                               kA = 0.83198;//0.64907;
 
     public static final double WHEEL_DIAMETER = 0.1524;
     public static final double GEAR_RATIO = 0;//7 : 1
@@ -177,8 +177,8 @@ public final class Constants {
 }
 
 public static final class AutoConstants{
-  public static final double kMaxSpeedMetersPerSecond = 2.0;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;
+  public static final double kMaxSpeedMetersPerSecond = 0.5;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
 }
 
 public static final class FieldConstants{
