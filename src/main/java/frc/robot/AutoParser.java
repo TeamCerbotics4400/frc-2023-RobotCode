@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.autoCommands.FollowTrajectory;
 import frc.robot.commands.AutoCommands.DriveToPoseTest;
 import frc.robot.subsystems.DriveTrain;
 
@@ -161,7 +162,7 @@ public class AutoParser {
                                         AutoConstants.kMaxAccelerationMetersPerSecondSquared));
                 try {
                     trajectory = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectory, currentAlliance);
-                    return null;//new FollowTrajectory(m_drive, trajectory, Boolean.valueOf(parameters[1]));
+                    return new FollowTrajectory(m_drive, trajectory, Boolean.valueOf(parameters[1]));
                 } catch (NullPointerException e) {
                     // FollowTrajectory throws a NullPointerException if the trajectory is null, which occurs if the import fails.
                     throw new AutoParseException("FollowTrajectory", "Path file not found", e);
