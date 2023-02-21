@@ -11,12 +11,15 @@ import frc.robot.commands.ShooterTrigger;
 //import frc.robot.commands.ShooterTrigger;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.AlignWithTag;
+import frc.robot.commands.AutoCommands.DriveToPoseTest;
 import frc.robot.commands.AutoCommands.StraightLineAutoCommand;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.IntakePieces;
 import frc.robot.commands.DefaultIndexer;
+import edu.wpi.first.wpilibj.DriverStation;
 //import frc.robot.commands.IntakePieces;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -42,6 +45,8 @@ public class RobotContainer {
   private FeederLinkage m_feeder = new FeederLinkage();
   private FalconShooter m_shooter = new FalconShooter();
   private IndexerSubsystem m_indexer = new IndexerSubsystem();
+
+  private AutoParser autoParser = new AutoParser(m_drive);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -74,7 +79,7 @@ public class RobotContainer {
    new JoystickButton(joy1, 7).toggleOnTrue(new AutoBalance(m_drive));
 
    //Reset Imu
-   new JoystickButton(joy0, 1).onTrue(new AlignWithTag(m_drive));
+   //new JoystickButton(joy0, 1).onTrue(new DriveToPoseTest(m_drive));
 
    new JoystickButton(joy1, 1).whileTrue(new CubeShooter(m_shooter));
 
@@ -105,7 +110,20 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new StraightLineAutoCommand(m_drive);
+    return autoParser.getAutoCommand();
+  }
+
+  public void parseAuto() {
+    String autoText = SmartDashboard.getString("AutoCode", "");
+    String parserOutput = "";
+    try {
+      parserOutput = autoParser.parse(autoText, DriverStation.getAlliance());
+    } catch (Exception e) {
+      parserOutput = e.getMessage();
+      e.printStackTrace();
+    } finally {
+      SmartDashboard.putString("Compiler Message", parserOutput);
+    }
   }
 
   /*public DrivetrainSim getSimDrive(){

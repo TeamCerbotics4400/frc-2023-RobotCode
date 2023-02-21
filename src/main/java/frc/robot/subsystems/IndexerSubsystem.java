@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -62,10 +59,10 @@ public class IndexerSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Iz", ShooterConstants.kIz);
     SmartDashboard.putNumber("Shooter FF", ShooterConstants.kFF);*/
 
-    SmartDashboard.putNumber("Lower P", ShooterConstants.LkP);
+    /*SmartDashboard.putNumber("Lower P", ShooterConstants.LkP);
     SmartDashboard.putNumber("Lower I", ShooterConstants.LkI);
     SmartDashboard.putNumber("Lower D", ShooterConstants.LkD);
-    SmartDashboard.putNumber("Lower FF", ShooterConstants.LkFF);
+    SmartDashboard.putNumber("Lower FF", ShooterConstants.LkFF);*/
 
   }
 
@@ -79,7 +76,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
     if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
 
-    double lP = SmartDashboard.getNumber("Lower P", ShooterConstants.LkP);
+    /*double lP = SmartDashboard.getNumber("Lower P", ShooterConstants.LkP);
     double lI = SmartDashboard.getNumber("Lower I", ShooterConstants.LkI);
     double lD = SmartDashboard.getNumber("Lower D", ShooterConstants.LkD);
     double lFF = SmartDashboard.getNumber("Lower FF", ShooterConstants.LkFF);
@@ -91,7 +88,7 @@ public class IndexerSubsystem extends SubsystemBase {
     if((lD != ShooterConstants.LkD)){lowerLeftController.setD(lD); lowerRightController.setD(lD);
                                       ShooterConstants.LkD = lD;}
     if((lFF != ShooterConstants.LkFF)){lowerLeftController.setFF(lFF); lowerRightController.setFF(lFF);
-                                        ShooterConstants.LkFF = lFF;}
+                                        ShooterConstants.LkFF = lFF;}*/
     
 
   /* 

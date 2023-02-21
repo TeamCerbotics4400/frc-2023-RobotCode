@@ -82,16 +82,18 @@ public class DriveTrain extends SubsystemBase {
 
   private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
-  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
-  Rotation2d.fromDegrees(getAngle()),
-  encoderCountsToMeters(leftEncoder.getPosition()), encoderCountsToMeters(rightEncoder.getPosition()), 
-  mPosition);
+  
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
             new DifferentialDrivePoseEstimator(
                     DriveConstants.kDriveKinematics, 
                     Rotation2d.fromDegrees(getAngle()), 
                     0.0, 0.0, new Pose2d());
+  
+  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
+                      new Rotation2d(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), 
+                      m_poseEstimator.getEstimatedPosition().getX(),
+                       m_poseEstimator.getEstimatedPosition().getY());
 
 
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
@@ -161,9 +163,11 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
     log();
 
-    odometry.update(Rotation2d.fromDegrees(getAngle()), 
-    encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition())); 
+    odometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
+    .getRotation().getDegrees()), 
+    encoderCountsToMeters(leftEncoder.getPosition()),
+    encoderCountsToMeters(rightEncoder.getPosition()),
+     m_poseEstimator.getEstimatedPosition());
 
     SmartDashboard.putNumber("Odometry X", odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Odometry Y", odometry.getPoseMeters().getY());
@@ -265,6 +269,14 @@ public class DriveTrain extends SubsystemBase {
     double maxAcc = 9.0;
 
     return new TrapezoidProfile.Constraints(maxSpeed, maxAcc);
+  }
+
+  public void resetPoseWVision(){
+    odometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
+    .getRotation().getDegrees()), 
+    encoderCountsToMeters(leftEncoder.getPosition()),
+    encoderCountsToMeters(rightEncoder.getPosition()),
+     m_poseEstimator.getEstimatedPosition());
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -378,15 +390,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void log(){
-    SmartDashboard.putNumber("Distancia X", odometry.getPoseMeters().getTranslation().getX());
-    SmartDashboard.putNumber("Distancia Y", odometry.getPoseMeters().getTranslation().getY());
-    SmartDashboard.putNumber("Angle", odometry.getPoseMeters().getRotation().getDegrees());
-
     //field2d.setRobotPose(limelight.getRobotPose().toPose2d());
-
-    m_field.setRobotPose(odometry.getPoseMeters().getTranslation().getX(),
-    odometry.getPoseMeters().getTranslation().getY(),
-    odometry.getPoseMeters().getRotation());
     
     double p = SmartDashboard.getNumber("kP", 0);
     double i = SmartDashboard.getNumber("kI", 0);

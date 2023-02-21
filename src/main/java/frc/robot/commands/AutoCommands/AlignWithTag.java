@@ -18,7 +18,7 @@ public class AlignWithTag extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     var ResetOdometry = new InstantCommand(() -> 
-      m_drive.resetOdometry(TestAlignTrajectory.generatedTrajectory(m_drive).getInitialPose()));
+      m_drive.resetPoseWVision());
 
     addCommands(ResetOdometry, 
     m_drive.createCommandForTrajectory(TestAlignTrajectory.generatedTrajectory(m_drive),

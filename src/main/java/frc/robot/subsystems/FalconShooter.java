@@ -7,12 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -68,9 +62,9 @@ public class FalconShooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    SmartDashboard.putNumber("Average RPM", getAverageRPM());
-    SmartDashboard.putNumber("Left RPM", getLeftRPM());
-    SmartDashboard.putNumber("Right RPM", getRightRPM());
+    //SmartDashboard.putNumber("Average RPM", getAverageRPM());
+    //SmartDashboard.putNumber("Left RPM", getLeftRPM());
+    //SmartDashboard.putNumber("Right RPM", getRightRPM());
 
     double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
