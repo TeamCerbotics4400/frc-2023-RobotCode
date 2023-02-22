@@ -13,8 +13,10 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -44,6 +46,11 @@ public class Robot extends TimedRobot {
     DataLog log = DataLogManager.getLog();
     DriverStation.startDataLog(log);
     PathPlannerServer.startServer(5811);
+
+    if (SmartDashboard.getString("AutoCode", null) == null) {
+      SmartDashboard.putString("AutoCode", "");
+    }
+    SmartDashboard.putData("Compile", new InstantCommand(m_robotContainer::parseAuto).ignoringDisable(true));
 
     /*myBooleanLogEntry = new BooleanLogEntry(log, "/my/boolean");
     myDoubleLogEntry = new DoubleLogEntry(log, "/my/double");

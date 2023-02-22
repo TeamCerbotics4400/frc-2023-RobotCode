@@ -4,44 +4,50 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Constants.LinkageConstants;
-import frc.robot.subsystems.FalconShooter;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.DriveTrain;
 
-public class IntakePieces extends CommandBase {
-  /** Creates a new DefaultIntake. */
-  FalconShooter m_shooter;
+public class AutoAlign extends CommandBase {
+  /** Creates a new AutoAlign. */
+  DriveTrain m_drive;
+  PIDController turnPID;
 
-  public IntakePieces(FalconShooter m_shooter) {
+  public AutoAlign(DriveTrain m_drive) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_shooter = m_shooter;
+    this.m_drive = m_drive;
+    this.turnPID = m_drive.getAlignController();
+    turnPID.setTolerance(1);
+    turnPID.enableContinuousInput(-180, 180);
 
-    addRequirements(m_shooter);
+    addRequirements(m_drive);
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    turnPID.setSetpoint(179);
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_intake.setIntakePose(LinkageConstants.intakeExtended);
-    m_shooter.setMotorsPower(0.5, 0.5);
+    
+    m_drive.drive(0, turnPID.calculate(m_drive.getPose().getRotation().getDegrees()));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_intake.setIntakePose(0);
-    m_shooter.setMotorsPower(0, 0);
-
+    m_drive.tankDriveVolts(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return turnPID.atSetpoint();
   }
 }

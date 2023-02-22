@@ -44,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.LimelightHelpers.LimelightResults;
 
 public class DriveTrain extends SubsystemBase {
@@ -59,7 +60,7 @@ public class DriveTrain extends SubsystemBase {
 
   private PIDController balancePID = new PIDController(0.0001, 0, 0); 
 
-  private PIDController alignPID = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+  private PIDController alignPID = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
 
   //LimelightSubsystem limelight;
 
@@ -154,6 +155,10 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
+    SmartDashboard.putNumber("Turn P", DriveConstants.TkP);
+    SmartDashboard.putNumber("Turn I", DriveConstants.TkI);
+    SmartDashboard.putNumber("Turn D", DriveConstants.TkD);
+
     resetImu();
     resetEncoders();
   }
@@ -192,6 +197,14 @@ public class DriveTrain extends SubsystemBase {
     /*Shuffleboard.getTab("Debugging Tab").addPersistent("Pitch", getPitch());
     Shuffleboard.getTab("Debugging Tab").addPersistent("Yaw", getYaw());
     Shuffleboard.getTab("Debugging Tab").addPersistent("Roll", getRoll());*/
+
+    double tP = SmartDashboard.getNumber("Turn P", DriveConstants.TkP);
+    double tI = SmartDashboard.getNumber("Turn I", DriveConstants.TkI);
+    double tD = SmartDashboard.getNumber("Turn D", DriveConstants.TkD);
+
+    if((tP != DriveConstants.TkP)){DriveConstants.TkP = tP; alignPID.setP(tP);}
+    if((tI != DriveConstants.TkI)){DriveConstants.TkI = tI; alignPID.setI(tI);}
+    if((tD != DriveConstants.TkD)){DriveConstants.TkD = tD; alignPID.setD(tD);}
 
   
   
@@ -349,6 +362,10 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public PIDController getAlignController(){
+    return alignPID;
+  }
+
+  public PIDController getTurnPID(){
     return alignPID;
   }
 

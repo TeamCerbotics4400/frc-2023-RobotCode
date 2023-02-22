@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.AutoAlign;
 import frc.robot.subsystems.DriveTrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -32,7 +33,7 @@ public class DriveToPoseTest extends SequentialCommandGroup {
 
     addRequirements(m_drive);
 
-    addCommands(m_drive.createCommandForTrajectory(generateTrajectory(), false)
+    addCommands(new FollowTrajectory(m_drive, this::generateTrajectory, false), new AutoAlign(m_drive)
     .andThen(() -> m_drive.tankDriveVolts(0, 0)));
   }
 

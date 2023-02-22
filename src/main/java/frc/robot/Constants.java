@@ -157,6 +157,10 @@ public final class Constants {
     public static final int RightLeader_ID = 3; //1
     public static final int RightFollower_ID = 4;  //2
 
+    public static double TkP = 0.03,
+                               TkI = 0.0,
+                               TkD = 0.004;
+
     public static final double kP = 0.0019356//0.013687
     ,  kI = 0
     , kD = 0;//0.20844;//0.0010903
@@ -184,19 +188,19 @@ public final class Constants {
 public static final class AutoConstants{
   public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
   
-  public static final double kMaxSpeedMetersPerSecond = 0.12;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 0.12;
+  public static final double kMaxSpeedMetersPerSecond = 0.5;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
 
   private static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
-            Map.entry("Node1High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(19.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node2High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(41.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node3High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(63.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node4High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(85.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node5High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(107.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node6High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(129.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node7High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(151.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node8High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(173.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node9High", new Pose2d(new Translation2d(1.582 + 1, Units.inchesToMeters(195.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node1High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(19.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node2High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(41.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node3High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(63.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node4High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(85.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node5High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(107.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node6High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(129.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node7High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(151.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node8High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(173.875)), Rotation2d.fromDegrees(180))),
+            Map.entry("Node9High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(195.875)), Rotation2d.fromDegrees(180))),
             Map.entry("Node1Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
             Map.entry("Node2Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
             Map.entry("Node3Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),

@@ -1,4 +1,4 @@
-package frc.robot.autoCommands;
+package frc.robot.commands.AutoCommands;
 
 import java.util.function.Supplier;
 

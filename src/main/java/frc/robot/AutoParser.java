@@ -8,11 +8,10 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.autoCommands.FollowTrajectory;
 import frc.robot.commands.AutoCommands.DriveToPoseTest;
+import frc.robot.commands.AutoCommands.FollowTrajectory;
 import frc.robot.subsystems.DriveTrain;
 
 public class AutoParser {
