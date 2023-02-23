@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.commands.AutoAlign;
 import frc.robot.subsystems.DriveTrain;
 
@@ -29,7 +30,7 @@ public class DriveToPoseTest extends SequentialCommandGroup {
   private Pose2d m_pose;
   public DriveToPoseTest(String m_pose, Alliance alliance, DriveTrain m_drive) {
     this.m_drive = m_drive;
-    this.m_pose = AutoConstants.POSE_MAP.get(alliance).get(m_pose);
+    this.m_pose = FieldConstants.POSE_MAP.get(alliance).get(m_pose);
 
     addRequirements(m_drive);
 

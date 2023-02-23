@@ -186,10 +186,34 @@ public final class Constants {
 }
 
 public static final class AutoConstants{
-  public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
+  
   
   public static final double kMaxSpeedMetersPerSecond = 0.5;
   public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+
+  private static final Map<String, Pose2d> SAFE_POSITIONS = Map.ofEntries(
+            Map.entry("", null),
+            Map.entry("", null)
+  );
+
+  
+}
+
+public static final class FieldConstants{
+  public static final double length = 16.54175;
+  public static final double width = 8.0137;
+
+  public static final Translation2d SAFE_TRANSLATION = new Translation2d(3.00, 4.58);
+
+  public static final double GRID_CENTER = 2.75;
+
+  public static final double CHARGING_STATION_CLEARENCE = 3.00;
+
+  public static final Pose2d TEST_TAG = 
+  new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(173.875)), 
+  Rotation2d.fromDegrees(180));
+
+  public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
 
   private static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
             Map.entry("Node1High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(19.875)), Rotation2d.fromDegrees(180))),
@@ -233,11 +257,6 @@ public static final class AutoConstants{
             Alliance.Blue, BLUE_MAP,
             Alliance.Red, RED_MAP
         );
-}
-
-public static final class FieldConstants{
-  public static final double length = 16.54175;
-  public static final double width = 8.0137;
 }
 
 public static final class VisionConstants {

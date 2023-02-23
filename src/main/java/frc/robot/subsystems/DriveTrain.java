@@ -44,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.LimelightHelpers.LimelightResults;
 
@@ -206,6 +207,10 @@ public class DriveTrain extends SubsystemBase {
     if((tI != DriveConstants.TkI)){DriveConstants.TkI = tI; alignPID.setI(tI);}
     if((tD != DriveConstants.TkD)){DriveConstants.TkD = tD; alignPID.setD(tD);}
 
+    SmartDashboard.putBoolean("Cleared CS", isChargingSCleared());
+
+    SmartDashboard.putBoolean("Is on right", isOnRight());
+
   
   
   }
@@ -367,6 +372,22 @@ public class DriveTrain extends SubsystemBase {
 
   public PIDController getTurnPID(){
     return alignPID;
+  }
+
+  public boolean isChargingSCleared(){
+    if(getPose().getX() <= FieldConstants.CHARGING_STATION_CLEARENCE){
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  public boolean isOnRight(){
+    if(getPose().getY() >= FieldConstants.GRID_CENTER){
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /*public void updateOdometryWVisionCorrectionLimelight(){

@@ -9,6 +9,7 @@ import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ConeShooter;
 //import frc.robot.commands.ShooterTrigger;
 import frc.robot.commands.TeleOpControl;
+import frc.robot.commands.AutoCommands.DriveToTargetTest;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.IntakePieces;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -63,11 +64,12 @@ public class RobotContainer {
    m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    joy0));
 
+   new JoystickButton(joy0, 1).whileTrue(new DriveToTargetTest(m_drive, joy0));
    //Autobalance
    new JoystickButton(joy1, 7).toggleOnTrue(new AutoBalance(m_drive));
 
    //Reset Imu
-   new JoystickButton(joy0, 1).whileTrue(new AutoAlign(m_drive));
+   new JoystickButton(joy0, 2).whileTrue(new AutoAlign(m_drive));
 
    new JoystickButton(joy1, 1).whileTrue(new CubeShooter(m_shooter));
 
