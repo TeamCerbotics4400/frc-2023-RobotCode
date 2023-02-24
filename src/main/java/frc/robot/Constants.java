@@ -82,42 +82,6 @@ public final class Constants {
 
   public static final boolean tuningMode = false;
 
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
-
-  public static final class LinkageConstants {
-
-    public static final boolean linkageTuningMode = true;
-
-    public static final byte INTAKE_LINKAGE_ID = 12;
-    public static final byte INTAKE_WHEEL_ID = 9;
-    public static final byte FEEDER_LINKAGE_ID = 5;
-    public static final byte FEEDER_WHEEL_ID = 8;
-
-    public static final double intakeExtended = -7.0476284;
-
-    public static final double feederIntaking = 0.28571423;
-    public static final double feederShooting = 5.07142257;
-
-    public static double IkP= 0,
-                         IkI = 0,
-                         IkIz = 0,
-                         IkD = 0, 
-                         IkFF = 0.7,
-                         IMaxAcc = 10;
-    
-    public static double FkP= 0,
-                         FkI = 0,
-                         FkIz = 0,
-                         FkD = 0, 
-                         FkFF = 0.3,
-                         FkMaxOutput = 1,
-                         FkMinOutput = -1,
-                         FMaxAcc = 1500;
-                         
-  }
-
   public static final class ShooterConstants{
     /** ---PROTOTYPE--- */
     public static final byte LEFT_FLYWHEEL_ID = 10; 
@@ -138,12 +102,6 @@ public final class Constants {
                          minVel = 0, //---------
                          maxAcc = 0, 
                          allowedErr = 0;
-
-    public static double LkP = 6.6882E-11,
-                         LkI = 0,
-                         LkD = 0,
-                         LkIz = 0,
-                         LkFF = 0.000189;
 
     public static double targetVelocity = 0;
 
@@ -186,17 +144,10 @@ public final class Constants {
 }
 
 public static final class AutoConstants{
-  
-  
+    
   public static final double kMaxSpeedMetersPerSecond = 0.5;
   public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
 
-  private static final Map<String, Pose2d> SAFE_POSITIONS = Map.ofEntries(
-            Map.entry("", null),
-            Map.entry("", null)
-  );
-
-  
 }
 
 public static final class FieldConstants{
@@ -263,29 +214,23 @@ public static final class FieldConstants{
             Alliance.Blue, BLUE_MAP,
             Alliance.Red, RED_MAP
         );
-}
+  }
 
-public static final class VisionConstants {
-  /** ---PROTOTYPE--- */
-  public static double HEIGHT_OF_OUTER_PORT = 2.64;//Altura del target
-  public static double LIMELIGHT_FLOOR_CLEREANCE= 0.79;//Altura de la limelight
-  public static double LIMELIGHT_VERTICAL_ANGLE = 36; //Angulo de la limelight
+  public static final class VisionConstants {
+    /** ---PROTOTYPE--- */
+    public static double HEIGHT_OF_OUTER_PORT = 2.64;//Altura del target
+    public static double LIMELIGHT_FLOOR_CLEREANCE= 0.79;//Altura de la limelight
+    public static double LIMELIGHT_VERTICAL_ANGLE = 36; //Angulo de la limelight
 
-  public static final Transform3d robotToCam =
+    public static final Transform3d robotToCam =
           new Transform3d(
                   new Translation3d(0.2444, 0, 0.454),
                   new Rotation3d(
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
-  // from center.
-  public static final String cameraName = "OV9281";
-}
-  /* vDelCodigo = "1.5"; */
-  /* Cosas Por Hacer:
-  *  boolean PID_Intake = false ;
-   * boolean Sim = false;
-   * 
-   */
+    // from center.
+    public static final String cameraName = "OV9281";
+  }
 }
   
 

@@ -69,13 +69,7 @@ public class FalconShooter extends SubsystemBase {
     double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
     if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
-
-    double lP = SmartDashboard.getNumber("Lower P", ShooterConstants.LkP);
-    double lI = SmartDashboard.getNumber("Lower I", ShooterConstants.LkI);
-    double lD = SmartDashboard.getNumber("Lower D", ShooterConstants.LkD);
-    double lFF = SmartDashboard.getNumber("Lower FF", ShooterConstants.LkFF);
     
-
   /* 
     double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);
     double i = SmartDashboard.getNumber("Shooter I", ShooterConstants.kI);
