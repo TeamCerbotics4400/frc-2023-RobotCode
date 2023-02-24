@@ -56,7 +56,7 @@ public class DriveTrain extends SubsystemBase {
   PIDController leftPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
 
-  private PIDController balancePID = new PIDController(0.0001, 0, 0); 
+  private PIDController balancePID = new PIDController(0.029, 0, 0.0001); 
 
   private PIDController alignPID = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
 
@@ -79,7 +79,7 @@ public class DriveTrain extends SubsystemBase {
 
   //Rotation2d rotacionChasis = new Rotation2d(getAngle());
 
-  private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
+  //private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
             new DifferentialDrivePoseEstimator(
@@ -88,9 +88,10 @@ public class DriveTrain extends SubsystemBase {
                     0.0, 0.0, new Pose2d());
   
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
-                      new Rotation2d(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), 
+                      new Rotation2d(m_poseEstimator.getEstimatedPosition()
+                                      .getRotation().getDegrees()), 
                       m_poseEstimator.getEstimatedPosition().getX(),
-                       m_poseEstimator.getEstimatedPosition().getY());
+                      m_poseEstimator.getEstimatedPosition().getY());
 
 
   double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
@@ -151,9 +152,9 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    SmartDashboard.putNumber("Turn P", DriveConstants.TkP);
-    SmartDashboard.putNumber("Turn I", DriveConstants.TkI);
-    SmartDashboard.putNumber("Turn D", DriveConstants.TkD);
+    SmartDashboard.putNumber("Balance P", balancePID.getP());
+    SmartDashboard.putNumber("Balance I", balancePID.getI());
+    SmartDashboard.putNumber("Balance D", balancePID.getD());
 
     resetImu();
     resetEncoders();
@@ -194,13 +195,13 @@ public class DriveTrain extends SubsystemBase {
     Shuffleboard.getTab("Debugging Tab").addPersistent("Yaw", getYaw());
     Shuffleboard.getTab("Debugging Tab").addPersistent("Roll", getRoll());*/
 
-    double tP = SmartDashboard.getNumber("Turn P", DriveConstants.TkP);
-    double tI = SmartDashboard.getNumber("Turn I", DriveConstants.TkI);
-    double tD = SmartDashboard.getNumber("Turn D", DriveConstants.TkD);
+    double bP = SmartDashboard.getNumber("Balance P", alignPID.getP());
+    double bI = SmartDashboard.getNumber("Balance I", alignPID.getI());
+    double bD = SmartDashboard.getNumber("Balance D", alignPID.getD());
 
-    if((tP != DriveConstants.TkP)){DriveConstants.TkP = tP; alignPID.setP(tP);}
-    if((tI != DriveConstants.TkI)){DriveConstants.TkI = tI; alignPID.setI(tI);}
-    if((tD != DriveConstants.TkD)){DriveConstants.TkD = tD; alignPID.setD(tD);}
+    if((bP != DriveConstants.TkP)){balancePID.setP(bP);}
+    if((bI != DriveConstants.TkI)){balancePID.setI(bI);}
+    if((bD != DriveConstants.TkD)){balancePID.setD(bD);}
   
   }
 

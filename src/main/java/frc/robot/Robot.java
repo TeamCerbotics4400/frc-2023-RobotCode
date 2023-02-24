@@ -6,10 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
 
-import edu.wpi.first.networktables.DoubleEntry;
 //import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DataLogEntry;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 //import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -19,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.AutoCommands.DriveToPoseTest;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

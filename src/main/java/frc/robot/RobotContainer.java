@@ -7,13 +7,10 @@ package frc.robot;
 import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ConeShooter;
-//import frc.robot.commands.ShooterTrigger;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.DriveToTargetTest;
 import frc.robot.commands.CubeShooter;
-import frc.robot.commands.IntakePieces;
 import edu.wpi.first.wpilibj.DriverStation;
-//import frc.robot.commands.IntakePieces;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,8 +39,6 @@ public class RobotContainer {
     // Configure the trigger bindings
     
     configureBindings();
-
-    
   }
 
   public DriveTrain getDrivetrain(){
@@ -66,7 +61,7 @@ public class RobotContainer {
 
    new JoystickButton(joy0, 1).whileTrue(new DriveToTargetTest(m_drive, joy0));
    //Autobalance
-   new JoystickButton(joy1, 7).toggleOnTrue(new AutoBalance(m_drive));
+   new JoystickButton(joy0, 6).whileTrue(new AutoBalance(m_drive));
 
    //Reset Imu
    new JoystickButton(joy0, 2).whileTrue(new AutoAlign(m_drive));
@@ -82,14 +77,6 @@ public class RobotContainer {
    //new JoystickButton(joy1, 3).whileTrue(new DefaultIndexer(m_indexer));
    //Shooter
    //new JoystickButton(joy0, 2).whileTrue(new ShooterTrigger(m_feeder));
-
-   //Intake y feeder
-
-  
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
   }    
   
 
@@ -115,8 +102,4 @@ public class RobotContainer {
       SmartDashboard.putString("Compiler Message", parserOutput);
     }
   }
-
-  /*public DrivetrainSim getSimDrive(){
-    return driveSim;
-  }*/
 }
