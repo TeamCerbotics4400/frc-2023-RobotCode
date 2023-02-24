@@ -29,7 +29,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -77,8 +76,6 @@ public class DriveTrain extends SubsystemBase {
   SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
   SparkMaxPIDController controladorDer = rightLeader.getPIDController();
 
-  //Rotation2d rotacionChasis = new Rotation2d(getAngle());
-
   //private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
@@ -98,10 +95,6 @@ public class DriveTrain extends SubsystemBase {
 
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
-
-  private GenericEntry yawEntry;
-
-  //private NetworkTableEntry yawEntry;
 
   public PhotonCameraWrapper pcw;
 
@@ -146,8 +139,6 @@ public class DriveTrain extends SubsystemBase {
     debuggingTab = Shuffleboard.getTab("Debugging Tab");
     competitionTab = Shuffleboard.getTab("Competition Tab");
 
-    yawEntry = debuggingTab.add("Imu Yaw", 0).withWidget("Text View").getEntry();
-
     pcw = new PhotonCameraWrapper();
 
     PortForwarder.add(5800, "photonvision.local", 5800);
@@ -163,7 +154,6 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    log();
 
     odometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
     .getRotation().getDegrees()), 
@@ -180,20 +170,6 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Estimated Y", m_poseEstimator.getEstimatedPosition().getY());
 
     SmartDashboard.putNumber("Estimated Angle", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
-
-    //SmartDashboard.putNumber("RobotPitch", getPitch());
-
-    //SmartDashboard.putNumber("Pose Error", balancePID.getPositionError());
-    //SmartDashboard.putNumber("Velo Error", balancePID.getVelocityError());
-
-    yawEntry.setDouble(getAngle());
-
-    //SmartDashboard.putNumber("Left Encoder", encoderCountsToMeters(leftEncoder.getPosition()));
-    //SmartDashboard.putNumber("Right Encoder", encoderCountsToMeters(rightEncoder.getPosition()));
-
-    /*Shuffleboard.getTab("Debugging Tab").addPersistent("Pitch", getPitch());
-    Shuffleboard.getTab("Debugging Tab").addPersistent("Yaw", getYaw());
-    Shuffleboard.getTab("Debugging Tab").addPersistent("Roll", getRoll());*/
 
     double bP = SmartDashboard.getNumber("Balance P", alignPID.getP());
     double bI = SmartDashboard.getNumber("Balance I", alignPID.getI());
@@ -399,37 +375,5 @@ public class DriveTrain extends SubsystemBase {
 
     return ramseteCommand;
 
-  }
-
-  public void log(){
-    //field2d.setRobotPose(limelight.getRobotPose().toPose2d());
-    
-    double p = SmartDashboard.getNumber("kP", 0);
-    double i = SmartDashboard.getNumber("kI", 0);
-    double d = SmartDashboard.getNumber("kD", 0);
-    double ff = SmartDashboard.getNumber("kFF", 0);
-
-    double targetAngle = SmartDashboard.getNumber("Target Angle", 0);
-
-    if((p != kP)) { 
-      controladorDer.setP(p); kP = p;
-      controladorIzq.setP(p); kP = p;
-     }
-    if((i != kI)) { 
-      controladorDer.setI(i); kI = i;
-      controladorIzq.setI(i); kI = i;
-     }
-    if((d != kD)) { 
-      controladorDer.setD(d); kD = d;
-      controladorIzq.setD(d); kD = d;
-     }
-    if((ff != kFF)) { 
-      controladorDer.setFF(ff); kFF = ff; 
-      controladorIzq.setFF(ff); kFF = ff;
-    }
-    if(anguloObjetivo != targetAngle){
-      anguloObjetivo = targetAngle;
-    }
-    
   }
 }
