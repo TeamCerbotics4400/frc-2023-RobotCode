@@ -9,7 +9,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
@@ -28,7 +30,9 @@ public class DriveToTargetTest extends CommandBase {
 
   Rotation2d closestRotation = new Rotation2d();
 
-  double convergenceFactor = 0.75;
+  double convergenceFactor = -0.60;
+
+  DoubleLogEntry intermediatePoseLog;
 
   private PIDController angularController = 
   new PIDController(DriveConstants.TkP, DriveConstants.TkI,DriveConstants.TkD);
@@ -38,43 +42,43 @@ public class DriveToTargetTest extends CommandBase {
     this.m_drive = m_drive;
     this.joy = joy;
 
+    angularController.enableContinuousInput(-180, 180);
+
     addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    angularController.enableContinuousInput(-180, 180);
     angularController.reset();
 
     double testTarget = Double.POSITIVE_INFINITY;
     double distance = 
     FieldConstants.TEST_TAG.getTranslation().getDistance(m_drive.getEstimationTranslation());
     if(distance < testTarget){
-      closestRotation = FieldConstants.TEST_TAG.getRotation();
+      closestRotation = FieldConstants.INTERMEDIATE_REFERENCE.getRotation();
       testTarget = distance;
     }
-
-    Translation2d intermediatePose = determineIntermediatePoint(m_drive.getPose());
-
-    Rotation2d targetRotation = GeomUtil.direction(intermediatePose
-    .minus(m_drive.getEstimationTranslation()));
-
-    angularController.setSetpoint(targetRotation.getDegrees());
-
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.getPose());
+    Rotation2d targetRotation = GeomUtil.direction(intermediatePoint
+    .minus(m_drive.getEstimationTranslation()));
 
+    angularController.setSetpoint(targetRotation.getDegrees());
     double angularSpeed = angularController.calculate(m_drive.getEstimatioRotation()
-    .plus(Rotation2d.fromDegrees(180)).getDegrees());
-
+      .plus(Rotation2d.fromDegrees(0)).getDegrees());
     angularSpeed = MathUtil.clamp(angularSpeed, -0.5, 0.5);
 
     m_drive.drive(-joy.getRawAxis(1), angularSpeed);
+
+    SmartDashboard.putNumberArray("Intermediate pose", 
+        new double[] {intermediatePoint.getX(), intermediatePoint.getY(), 
+        closestRotation.getDegrees()});
+
   }
 
   // Called once the command ends or is interrupted.
@@ -104,15 +108,21 @@ public class DriveToTargetTest extends CommandBase {
   }
 
   public Translation2d determineIntermediatePoint(Pose2d robotPose){
-    double safeDistance = 
-    FieldConstants.SAFE_TRANSLATION.getDistance(m_drive.getEstimationTranslation());
-
+    double intermediateDistance = 
+        FieldConstants.TEST_TAG.getTranslation().getDistance(m_drive.getEstimationTranslation());
+    Pose2d intermediatePose = new Pose2d(FieldConstants.TEST_TAG.getTranslation(), closestRotation)
+        .transformBy(GeomUtil.transformFromTranslation(intermediateDistance * convergenceFactor, 0.0));
+    return intermediatePose.getTranslation();
+    //double safeDistance = 
+    //FieldConstants.SAFE_TRANSLATION.getDistance(m_drive.getEstimationTranslation());
     //Pose2d intermediatePose = 
     //new Pose2d(FieldConstants.SAFE_TRANSLATION, closestRotation)
     //.transformBy(GeomUtil.transformFromTranslation(safeDistance * convergenceFactor, 0.0));
 
-    return new Translation2d(3.00, 4.58);//intermediatePose.getTranslation();
+    //return new Translation2d(3.00, 4.58);//intermediatePose.getTranslation();
   }
+
+  
     /*if(!isChargingSCleared() && isOnRight()){
       return new Translation2d(2.60, 4.57);
     } else if(isChargingSCleared() && isOnRight()){

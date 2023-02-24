@@ -203,14 +203,20 @@ public static final class FieldConstants{
   public static final double length = 16.54175;
   public static final double width = 8.0137;
 
-  public static final Translation2d SAFE_TRANSLATION = new Translation2d(3.00, 4.58);
+  public static final Translation2d SAFE_TRANSLATION = new Translation2d(2.65, 4.75);
 
   public static final double GRID_CENTER = 2.75;
 
+  public static final Translation2d GRID_CENTER_TRANSLATION = new Translation2d(2.30, 2.75);
+
   public static final double CHARGING_STATION_CLEARENCE = 3.00;
 
+  public static final Pose2d INTERMEDIATE_REFERENCE = 
+  new Pose2d(new Translation2d(0.50, Units.inchesToMeters(173.875)), 
+  Rotation2d.fromDegrees(180));
+
   public static final Pose2d TEST_TAG = 
-  new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(173.875)), 
+  new Pose2d(new Translation2d(1.15, 3.30), 
   Rotation2d.fromDegrees(180));
 
   public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
