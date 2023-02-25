@@ -10,15 +10,20 @@ import frc.robot.commands.ConeShooter;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.DriveToTargetTest;
 import frc.robot.commands.CubeShooter;
+import frc.robot.commands.NodeSelectionLeft;
+import frc.robot.commands.NodeSelectionRight;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.NodeSelector;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -31,12 +36,23 @@ public class RobotContainer {
   Joystick joy1 = new Joystick(1);
   private DriveTrain m_drive = new DriveTrain();
   private FalconShooter m_shooter = new FalconShooter();
+  private NodeSelector m_nodeSelector = new NodeSelector(joy0);
+  
+
+  private static final String defaultNode = "NO NODE";
+  private final String[] nodeStrings = {"NODE 2", "NODE 5", "NODE 8"};
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();  
 
   private AutoParser autoParser = new AutoParser(m_drive);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+
+    m_chooser.setDefaultOption("No node", defaultNode);
+    m_chooser.addOption("Node 2", nodeStrings[0]);
+    m_chooser.addOption("Node 5", nodeStrings[1]);
+    m_chooser.addOption("Node 8", nodeStrings[2]);
     
     configureBindings();
   }
@@ -69,6 +85,10 @@ public class RobotContainer {
    new JoystickButton(joy1, 1).whileTrue(new CubeShooter(m_shooter));
 
    new JoystickButton(joy1, 2).whileTrue(new ConeShooter(m_shooter));
+
+   new POVButton(joy0, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
+
+   new POVButton(joy0, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
 
    //new JoystickButton(joy0, 5).whileTrue(new ShooterTrigger(m_feeder, m_shooter));
    

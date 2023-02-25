@@ -16,7 +16,7 @@ public class AutoAlign extends CommandBase {
   public AutoAlign(DriveTrain m_drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
-    this.turnPID = m_drive.getAlignController();
+    this.turnPID = m_drive.getTurnPID();
     turnPID.setTolerance(1);
     turnPID.enableContinuousInput(-180, 180);
 

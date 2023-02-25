@@ -69,7 +69,7 @@ public class DriveToTargetTest extends CommandBase {
     .minus(m_drive.getEstimationTranslation()));
 
     angularController.setSetpoint(targetRotation.getDegrees());
-    double angularSpeed = angularController.calculate(m_drive.getEstimatioRotation()
+    double angularSpeed = angularController.calculate(m_drive.getEstimationRotation()
       .plus(Rotation2d.fromDegrees(0)).getDegrees());
     angularSpeed = MathUtil.clamp(angularSpeed, -0.5, 0.5);
 
@@ -112,14 +112,7 @@ public class DriveToTargetTest extends CommandBase {
         FieldConstants.TEST_TAG.getTranslation().getDistance(m_drive.getEstimationTranslation());
     Pose2d intermediatePose = new Pose2d(FieldConstants.TEST_TAG.getTranslation(), closestRotation)
         .transformBy(GeomUtil.transformFromTranslation(intermediateDistance * convergenceFactor, 0.0));
-    return intermediatePose.getTranslation();
-    //double safeDistance = 
-    //FieldConstants.SAFE_TRANSLATION.getDistance(m_drive.getEstimationTranslation());
-    //Pose2d intermediatePose = 
-    //new Pose2d(FieldConstants.SAFE_TRANSLATION, closestRotation)
-    //.transformBy(GeomUtil.transformFromTranslation(safeDistance * convergenceFactor, 0.0));
-
-    //return new Translation2d(3.00, 4.58);//intermediatePose.getTranslation();
+    return intermediatePose.getTranslation(); 
   }
 
   

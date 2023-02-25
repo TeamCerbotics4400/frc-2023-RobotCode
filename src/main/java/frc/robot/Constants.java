@@ -172,7 +172,7 @@ public static final class FieldConstants{
 
   public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
 
-  private static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
+  public static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
             Map.entry("Node1High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(19.875)), Rotation2d.fromDegrees(180))),
             Map.entry("Node2High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(41.875)), Rotation2d.fromDegrees(180))),
             Map.entry("Node3High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(63.875)), Rotation2d.fromDegrees(180))),
@@ -181,8 +181,8 @@ public static final class FieldConstants{
             Map.entry("Node6High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(129.875)), Rotation2d.fromDegrees(180))),
             Map.entry("Node7High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(151.875)), Rotation2d.fromDegrees(180))),
             Map.entry("Node8High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(173.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node9High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(195.875)), Rotation2d.fromDegrees(180))),
-            Map.entry("Node1Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+            Map.entry("Node9High", new Pose2d(new Translation2d(1.582 + 0.5, Units.inchesToMeters(195.875)), Rotation2d.fromDegrees(180)))
+            /*Map.entry("Node1Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
             Map.entry("Node2Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
             Map.entry("Node3Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
             Map.entry("Node4Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
@@ -199,7 +199,7 @@ public static final class FieldConstants{
             Map.entry("Node6Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
             Map.entry("Node7Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
             Map.entry("Node8Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node9Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180)))
+            Map.entry("Node9Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180)))*/
         );
         private static final Map<String, Pose2d> RED_MAP =
             BLUE_MAP.entrySet().stream().collect(Collectors.toMap(
@@ -214,6 +214,10 @@ public static final class FieldConstants{
             Alliance.Blue, BLUE_MAP,
             Alliance.Red, RED_MAP
         );
+
+        public static Map<String, Pose2d> getMap(){
+          return BLUE_MAP;
+        }
   }
 
   public static final class VisionConstants {

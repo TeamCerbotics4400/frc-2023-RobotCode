@@ -30,7 +30,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -41,7 +41,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimelightHelpers;
+//import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveTrain extends SubsystemBase {
@@ -91,7 +91,7 @@ public class DriveTrain extends SubsystemBase {
                       m_poseEstimator.getEstimatedPosition().getY());
 
 
-  double kP = 0, kI = 0, kD = 0, kFF = 0, anguloObjetivo = 0;
+  double kP = 0, kI = 0, kD = 0, kFF = 0.5, anguloObjetivo = 0;
 
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
@@ -130,7 +130,7 @@ public class DriveTrain extends SubsystemBase {
     controladorDer.setP(kP);
     controladorDer.setD(kD);
     controladorDer.setI(kI);
-    controladorDer.setFF(0.5);
+    controladorDer.setFF(kFF);
 
     imu.configFactoryDefault();
     
@@ -169,7 +169,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Estimated X", m_poseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Estimated Y", m_poseEstimator.getEstimatedPosition().getY());
 
-    SmartDashboard.putNumber("Estimated Angle", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    SmartDashboard.putNumber("Estimated Angle",
+         m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
     double bP = SmartDashboard.getNumber("Balance P", alignPID.getP());
     double bI = SmartDashboard.getNumber("Balance I", alignPID.getI());
@@ -212,9 +213,6 @@ public class DriveTrain extends SubsystemBase {
   public double getDistance(){
     return (encoderCountsToMeters(leftEncoder.getPosition()) + 
           encoderCountsToMeters(rightEncoder.getPosition())) / 2;
-  }
-
-  public void setDistance(double distancia){
   }
 
   public void resetSensors(){
@@ -293,7 +291,7 @@ public class DriveTrain extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition().getTranslation();
   }
 
-  public Rotation2d getEstimatioRotation(){
+  public Rotation2d getEstimationRotation(){
     return m_poseEstimator.getEstimatedPosition().getRotation();
   }
 
@@ -323,34 +321,13 @@ public class DriveTrain extends SubsystemBase {
     m_poseEstimator.getEstimatedPosition();
   }
 
-  public void getLimeFieldPose(){
-    m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d("limelight-cerbo"), Timer.getFPGATimestamp());
-    m_field.setRobotPose(LimelightHelpers.getBotPose2d("limelight-cerbo"));
-  }
-
   public PIDController getBalanceController(){
     return balancePID;
-  }
-
-  public PIDController getAlignController(){
-    return alignPID;
   }
 
   public PIDController getTurnPID(){
     return alignPID;
   }
-
-  /*public void updateOdometryWVisionCorrectionLimelight(){
-    m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
-    encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition()));
-
-    m_poseEstimator.addVisionMeasurement(limelight.getRobotPose().toPose2d(),
-    Timer.getFPGATimestamp());
-    m_field.getObject("Cam est Pose Lime").setPose(limelight.getRobotPose().toPose2d());
-
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-  }*/
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
     if (initPose) {
