@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.NodeSelector;
 import team4400.Util.GeomUtil;
 
 /*Dividir cancha en 4 cuadrantes: Izquierda y Derecha (Con relacion al centro) y Charging Station
@@ -25,6 +26,7 @@ import team4400.Util.GeomUtil;
 public class DriveToTargetTest extends CommandBase {
   /** Creates a new DriveToTargetTest. */
   DriveTrain m_drive;
+  NodeSelector m_nodeSelector;
 
   Joystick joy;
 
@@ -37,14 +39,15 @@ public class DriveToTargetTest extends CommandBase {
   private PIDController angularController = 
   new PIDController(DriveConstants.TkP, DriveConstants.TkI,DriveConstants.TkD);
 
-  public DriveToTargetTest(DriveTrain m_drive, Joystick joy) {
+  public DriveToTargetTest(DriveTrain m_drive, NodeSelector m_nodeSelector, Joystick joy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
+    this.m_nodeSelector = m_nodeSelector;
     this.joy = joy;
 
     angularController.enableContinuousInput(-180, 180);
 
-    addRequirements(m_drive);
+    addRequirements(m_drive, m_nodeSelector);
   }
 
   // Called when the command is initially scheduled.

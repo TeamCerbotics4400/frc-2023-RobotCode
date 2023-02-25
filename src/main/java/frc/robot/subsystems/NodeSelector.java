@@ -5,10 +5,10 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import edu.wpi.first.math.geometry.Pose2d;
+//import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,15 +17,26 @@ import frc.robot.Constants.FieldConstants;
 public class NodeSelector extends SubsystemBase {
   /** Creates a new NodeSelector. */
   private Map<String, Pose2d> pose_map;
-  private List<Map.Entry<String, Pose2d>> entryList;
   private int currentSelection;
+  private ArrayList<String> nodeNames = new ArrayList<String>();
   Joystick joy;
 
   public NodeSelector(Joystick joy) {
     this.joy = joy;
     this.pose_map = FieldConstants.getMap();
     this.currentSelection = 0;
-    entryList = new ArrayList<>(pose_map.entrySet());
+
+    nodeNames.add("No Node");
+    nodeNames.add("Node 1");
+    nodeNames.add("Node 2");
+    nodeNames.add("Node 3");
+    nodeNames.add("Node 4");
+    nodeNames.add("Node 5");
+    nodeNames.add("Node 6");
+    nodeNames.add("Node 7");
+    nodeNames.add("Node 8");
+    nodeNames.add("Node 9");
+
   }
 
   @Override
@@ -39,7 +50,7 @@ public class NodeSelector extends SubsystemBase {
 
     if(pov == 90){
       currentSelection++;
-      if(currentSelection >= entryList.size()){
+      if(currentSelection >= nodeNames.size()){
         currentSelection = 0;
       }
     }
@@ -51,25 +62,32 @@ public class NodeSelector extends SubsystemBase {
     if(pov == 270){
       currentSelection--;
       if(currentSelection < 0){
-        currentSelection = entryList.size() - 1;
+        currentSelection = nodeNames.size() - 1;
       }
     }  
   }
 
-
-
   public void displaySelection(){
     
-    String currentKey = (String) pose_map.keySet().toArray()[currentSelection];
+    String currentKey = nodeNames.get(currentSelection);
 
     if (currentKey != null) {
       // Get the string representation of the selected entry
   
       // Display the selected entry on the SmartDashboard
       SmartDashboard.putString("Selected Node", currentKey);
-  } else {
+      FieldConstants.TEST_TAG = pose_map.get(currentKey);
+    } else {
       // Display a message indicating that the selected entry is null
       SmartDashboard.putString("Selected Entry", "No node selected");
+    }
   }
+  /* 
+  public double getNodeToAlignDistance(Translation2d currentRobotTranslation){
+    return pose_map.get(currentKey).getTranslation().getDistance(currentRobotTranslation);
   }
+
+  public Translation2d getNodeToAlignTranslation(){
+    return pose_map.get(currentKey).getTranslation();
+  }*/
 }

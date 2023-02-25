@@ -75,7 +75,8 @@ public class RobotContainer {
    m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    joy0));
 
-   new JoystickButton(joy0, 1).whileTrue(new DriveToTargetTest(m_drive, joy0));
+   new JoystickButton(joy0, 1).whileTrue(new 
+                                            DriveToTargetTest(m_drive, m_nodeSelector, joy0));
    //Autobalance
    new JoystickButton(joy0, 6).whileTrue(new AutoBalance(m_drive));
 
