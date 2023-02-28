@@ -21,6 +21,8 @@ public class NodeSelector extends SubsystemBase {
   private ArrayList<String> nodeNames = new ArrayList<String>();
   Joystick joy;
 
+  public static Pose2d nodeToAlign = new Pose2d();
+
   public NodeSelector(Joystick joy) {
     this.joy = joy;
     this.pose_map = FieldConstants.getMap();
@@ -36,6 +38,7 @@ public class NodeSelector extends SubsystemBase {
     nodeNames.add("Node 7");
     nodeNames.add("Node 8");
     nodeNames.add("Node 9");
+    nodeNames.add("Charging Station");
 
   }
 
@@ -76,11 +79,15 @@ public class NodeSelector extends SubsystemBase {
   
       // Display the selected entry on the SmartDashboard
       SmartDashboard.putString("Selected Node", currentKey);
-      FieldConstants.TEST_TAG = pose_map.get(currentKey);
+      nodeToAlign = pose_map.get(currentKey);
     } else {
       // Display a message indicating that the selected entry is null
       SmartDashboard.putString("Selected Entry", "No node selected");
     }
+  }
+
+  public Pose2d getNodeToAlign(){
+    return nodeToAlign;
   }
   /* 
   public double getNodeToAlignDistance(Translation2d currentRobotTranslation){

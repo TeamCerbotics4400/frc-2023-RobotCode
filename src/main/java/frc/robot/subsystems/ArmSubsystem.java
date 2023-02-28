@@ -4,11 +4,24 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
-  public ArmSubsystem() {}
+  CANSparkMax armMotor = new CANSparkMax(ArmConstants.ARM_ID, MotorType.kBrushless);
+
+  public ArmSubsystem() {
+    armMotor.restoreFactoryDefaults();
+
+    armMotor.setInverted(false);
+
+    armMotor.setIdleMode(IdleMode.kBrake);
+  }
 
   @Override
   public void periodic() {

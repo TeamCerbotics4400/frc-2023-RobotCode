@@ -8,7 +8,7 @@ import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ConeShooter;
 import frc.robot.commands.TeleOpControl;
-import frc.robot.commands.AutoCommands.DriveToTargetTest;
+import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.NodeSelectionLeft;
 import frc.robot.commands.NodeSelectionRight;
@@ -38,10 +38,10 @@ public class RobotContainer {
   private FalconShooter m_shooter = new FalconShooter();
   private NodeSelector m_nodeSelector = new NodeSelector(joy0);
   
-
-  private static final String defaultNode = "NO NODE";
-  private final String[] nodeStrings = {"NODE 2", "NODE 5", "NODE 8"};
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();  
+  private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
+  private final String m_DefaultAuto = "NO AUTO";
+  private String m_autoSelected;
+  private final String[] m_autoNames = {"NO AUTO", "STRAIGH LINE"};
 
   private AutoParser autoParser = new AutoParser(m_drive);
 
@@ -49,10 +49,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
-    m_chooser.setDefaultOption("No node", defaultNode);
-    m_chooser.addOption("Node 2", nodeStrings[0]);
-    m_chooser.addOption("Node 5", nodeStrings[1]);
-    m_chooser.addOption("Node 8", nodeStrings[2]);
+    m_autoChooser.setDefaultOption("Default Auto", m_DefaultAuto);
     
     configureBindings();
   }
@@ -76,7 +73,7 @@ public class RobotContainer {
    joy0));
 
    new JoystickButton(joy0, 1).whileTrue(new 
-                                            DriveToTargetTest(m_drive, m_nodeSelector, joy0));
+                                            DriveToNode(m_drive, m_nodeSelector, joy0));
    //Autobalance
    new JoystickButton(joy0, 6).whileTrue(new AutoBalance(m_drive));
 
@@ -108,19 +105,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return autoParser.getAutoCommand();
-  }
+    Command autoCommand = null;
+    m_autoSelected = m_autoChooser.getSelected();
 
-  public void parseAuto() {
-    String autoText = SmartDashboard.getString("AutoCode", "");
-    String parserOutput = "";
-    try {
-      parserOutput = autoParser.parse(autoText, DriverStation.getAlliance());
-    } catch (Exception e) {
-      parserOutput = e.getMessage();
-      e.printStackTrace();
-    } finally {
-      SmartDashboard.putString("Compiler Message", parserOutput);
-    }
+    return autoCommand;
   }
 }

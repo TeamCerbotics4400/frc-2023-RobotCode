@@ -172,6 +172,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Estimated Angle",
          m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
+    SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
+
     double bP = SmartDashboard.getNumber("Balance P", alignPID.getP());
     double bI = SmartDashboard.getNumber("Balance I", alignPID.getI());
     double bD = SmartDashboard.getNumber("Balance D", alignPID.getD());
@@ -179,6 +181,8 @@ public class DriveTrain extends SubsystemBase {
     if((bP != DriveConstants.TkP)){balancePID.setP(bP);}
     if((bI != DriveConstants.TkI)){balancePID.setI(bI);}
     if((bD != DriveConstants.TkD)){balancePID.setD(bD);}
+
+    get3dPose();
   
   }
 
@@ -239,7 +243,7 @@ public class DriveTrain extends SubsystemBase {
     Pose2d robotPose2d = getPose();
 
     return new Pose3d(robotPose2d.getX(), robotPose2d.getY(), 0.0, 
-    new Rotation3d(0.0, 0.0, robotPose2d.getRotation().getDegrees()));
+    new Rotation3d(imu.getRoll(), getPitch(), robotPose2d.getRotation().getDegrees()));
   }
 
   public double getPitch(){

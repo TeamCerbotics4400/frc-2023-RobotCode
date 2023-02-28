@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.commands.AutoCommands.DriveToPoseTest;
 import frc.robot.commands.AutoCommands.FollowTrajectory;
 import frc.robot.subsystems.DriveTrain;
 
@@ -174,12 +173,6 @@ public class AutoParser {
                     return new WaitCommand(Double.parseDouble(parameters[0]));
                 } catch (NumberFormatException e) {
                     throw new AutoParseException("Wait", "Argument must be a number", e);
-                }
-            case "drivetopose":
-                try {
-                    return new DriveToPoseTest(parameters[0], currentAlliance, m_drive);
-                } catch (NullPointerException e) {
-                    throw new AutoParseException("DriveToPose", "Pose not recognized", e);
                 }
             default:
                 // If none of the preceeding cases apply, the command is invalid.

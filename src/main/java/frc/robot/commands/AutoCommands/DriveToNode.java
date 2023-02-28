@@ -23,7 +23,7 @@ import team4400.Util.GeomUtil;
  * pasada o no. Con esa informacion determinar cual es el punto intermiedo mas adecuado y asignarlo.
  * Despues de eso continuar con la posicion del nodo seleccionada
  */
-public class DriveToTargetTest extends CommandBase {
+public class DriveToNode extends CommandBase {
   /** Creates a new DriveToTargetTest. */
   DriveTrain m_drive;
   NodeSelector m_nodeSelector;
@@ -39,7 +39,7 @@ public class DriveToTargetTest extends CommandBase {
   private PIDController angularController = 
   new PIDController(DriveConstants.TkP, DriveConstants.TkI,DriveConstants.TkD);
 
-  public DriveToTargetTest(DriveTrain m_drive, NodeSelector m_nodeSelector, Joystick joy) {
+  public DriveToNode(DriveTrain m_drive, NodeSelector m_nodeSelector, Joystick joy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
     this.m_nodeSelector = m_nodeSelector;
@@ -57,9 +57,9 @@ public class DriveToTargetTest extends CommandBase {
 
     double testTarget = Double.POSITIVE_INFINITY;
     double distance = 
-    FieldConstants.TEST_TAG.getTranslation().getDistance(m_drive.getEstimationTranslation());
+    m_nodeSelector.getNodeToAlign().getTranslation().getDistance(m_drive.getEstimationTranslation());
     if(distance < testTarget){
-      closestRotation = FieldConstants.INTERMEDIATE_REFERENCE.getRotation();
+      closestRotation = m_nodeSelector.getNodeToAlign().getRotation();
       testTarget = distance;
     }
   }
@@ -112,8 +112,8 @@ public class DriveToTargetTest extends CommandBase {
 
   public Translation2d determineIntermediatePoint(Pose2d robotPose){
     double intermediateDistance = 
-        FieldConstants.TEST_TAG.getTranslation().getDistance(m_drive.getEstimationTranslation());
-    Pose2d intermediatePose = new Pose2d(FieldConstants.TEST_TAG.getTranslation(), closestRotation)
+        m_nodeSelector.getNodeToAlign().getTranslation().getDistance(m_drive.getEstimationTranslation());
+    Pose2d intermediatePose = new Pose2d(m_nodeSelector.getNodeToAlign().getTranslation(), closestRotation)
         .transformBy(GeomUtil.transformFromTranslation(intermediateDistance * convergenceFactor, 0.0));
     return intermediatePose.getTranslation(); 
   }

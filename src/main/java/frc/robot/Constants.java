@@ -82,32 +82,7 @@ public final class Constants {
 
   public static final boolean tuningMode = false;
 
-  public static final class ShooterConstants{
-    /** ---PROTOTYPE--- */
-    public static final byte LEFT_FLYWHEEL_ID = 10; 
-    public static final byte RIGHT_FLYWHEEL_ID = 11;
-
-    public static final byte LOWER_LEFT_FLY = 6;
-    public static final byte LOWER_RIGHT_FLY = 7;
-
-    public static double kP= 0.096, //con bandas = 0.098
-                         kI = 0.001,
-                         kD = 0.001,
-                         kIz = 300,
-                         kFF = 0.40,//con bandas = 0.42
-                         kMaxOutput = 1,
-                         kMinOutput = -1, 
-                         maxRPM = 0, 
-                         maxVel = 0, //---------
-                         minVel = 0, //---------
-                         maxAcc = 0, 
-                         allowedErr = 0;
-
-    public static double targetVelocity = 0;
-
-    public static final double shooterTreshold = 300;
-
-}
+  
   public static final class DriveConstants{
     public static final int LeftLeader_ID = 1; //3
     public static final int LeftFollower_ID = 2; //4
@@ -143,82 +118,46 @@ public final class Constants {
     
 }
 
-public static final class AutoConstants{
+  public static final class ShooterConstants {
+    /** ---PROTOTYPE--- */
+    public static final byte LEFT_FLYWHEEL_ID = 10; 
+    public static final byte RIGHT_FLYWHEEL_ID = 11;
+
+    public static final byte LOWER_LEFT_FLY = 6;
+    public static final byte LOWER_RIGHT_FLY = 7;
+
+    public static double kP= 0.096, //con bandas = 0.098
+                        kI = 0.001,
+                        kD = 0.001,
+                        kIz = 300,
+                        kFF = 0.40,//con bandas = 0.42
+                        kMaxOutput = 1,
+                        kMinOutput = -1, 
+                        maxRPM = 0, 
+                        maxVel = 0, //---------
+                        minVel = 0, //---------
+                        maxAcc = 0, 
+                        allowedErr = 0;
+
+    public static double targetVelocity = 0;
+
+    public static final double shooterTreshold = 300;
+
+  }
+
+  public static final class ArmConstants {
+    public static byte ARM_ID = 0; //PlaceHolder
+  }
+
+  public static final class WristConstants {
+    public static byte WRIST_ID = 0; //PlaceHolder
+  }
+
+  public static final class AutoConstants{
     
-  public static final double kMaxSpeedMetersPerSecond = 0.5;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
-
-}
-
-public static final class FieldConstants{
-  public static final double length = 16.54175;
-  public static final double width = 8.0137;
-
-  public static final Translation2d SAFE_TRANSLATION = new Translation2d(2.65, 4.75);
-
-  public static final double GRID_CENTER = 2.75;
-
-  public static final Translation2d GRID_CENTER_TRANSLATION = new Translation2d(2.30, 2.75);
-
-  public static final double CHARGING_STATION_CLEARENCE = 3.00;
-
-  public static final Pose2d INTERMEDIATE_REFERENCE = 
-  new Pose2d(new Translation2d(0.50, Units.inchesToMeters(173.875)), 
-  Rotation2d.fromDegrees(180));
-
-  public static Pose2d TEST_TAG = 
-  new Pose2d(new Translation2d(1.15, 3.30), 
-  Rotation2d.fromDegrees(180));
-
-  public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
-
-  public static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
-            Map.entry("No Node", new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 1", new Pose2d(new Translation2d(1.15, 0.42), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 2", new Pose2d(new Translation2d(1.15, 1.06), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 3", new Pose2d(new Translation2d(1.15, 1.62), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 4", new Pose2d(new Translation2d(1.15, 2.19), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 5", new Pose2d(new Translation2d(1.15, 2.75), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 6", new Pose2d(new Translation2d(1.15, 3.30), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 7", new Pose2d(new Translation2d(1.15, 3.86), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 8", new Pose2d(new Translation2d(1.15, 4.42), Rotation2d.fromDegrees(180))),
-            Map.entry("Node 9", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180)))
-            /*Map.entry("Node1Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node2Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node3Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node4Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node5Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node6Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node7Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node8Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node9Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node1Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node2Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node3Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node4Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node5Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node6Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node7Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node8Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-            Map.entry("Node9Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180)))*/
-        );
-        private static final Map<String, Pose2d> RED_MAP =
-            BLUE_MAP.entrySet().stream().collect(Collectors.toMap(
-                entry -> entry.getKey(),
-                entry -> new Pose2d(
-                    new Translation2d(
-                        entry.getValue().getX(),
-                        FIELD_WIDTH - entry.getValue().getY()),
-                    entry.getValue().getRotation())));
-        
-        public static final Map<Alliance, Map<String, Pose2d>> POSE_MAP = Map.of(
-            Alliance.Blue, BLUE_MAP,
-            Alliance.Red, RED_MAP
-        );
-
-        public static Map<String, Pose2d> getMap(){
-          return BLUE_MAP;
-        }
+    public static final double kMaxSpeedMetersPerSecond = 0.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+  
   }
 
   public static final class VisionConstants {
@@ -236,6 +175,66 @@ public static final class FieldConstants{
     // from center.
     public static final String cameraName = "OV9281";
   }
+
+  public static final class FieldConstants{
+    public static final double length = 16.54175;
+    public static final double width = 8.0137;
+  
+    public static final double GRID_CENTER = 2.75;
+  
+    public static final double CHARGING_STATION_CLEARENCE = 3.00;
+  
+    public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
+  
+    public static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
+              Map.entry("No Node", new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 1", new Pose2d(new Translation2d(1.15, 0.42), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 2", new Pose2d(new Translation2d(1.15, 1.06), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 3", new Pose2d(new Translation2d(1.15, 1.62), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 4", new Pose2d(new Translation2d(1.15, 2.19), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 5", new Pose2d(new Translation2d(1.15, 2.75), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 6", new Pose2d(new Translation2d(1.15, 3.30), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 7", new Pose2d(new Translation2d(1.15, 3.86), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 8", new Pose2d(new Translation2d(1.15, 4.42), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 9", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180))),
+              Map.entry("Charging Station", new Pose2d(new Translation2d(3.90, 2.70), Rotation2d.fromDegrees(180)))
+              /*Map.entry("Node1Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node2Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node3Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node4Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node5Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node6Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node7Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node8Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node9Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node1Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node2Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node3Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node4Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node5Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node6Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node7Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node8Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
+              Map.entry("Node9Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180)))*/
+          );
+          private static final Map<String, Pose2d> RED_MAP =
+              BLUE_MAP.entrySet().stream().collect(Collectors.toMap(
+                  entry -> entry.getKey(),
+                  entry -> new Pose2d(
+                      new Translation2d(
+                          entry.getValue().getX(),
+                          FIELD_WIDTH - entry.getValue().getY()),
+                      entry.getValue().getRotation())));
+          
+          public static final Map<Alliance, Map<String, Pose2d>> POSE_MAP = Map.of(
+              Alliance.Blue, BLUE_MAP,
+              Alliance.Red, RED_MAP
+          );
+  
+          public static Map<String, Pose2d> getMap(){
+            return BLUE_MAP;
+          }
+    }
 }
   
 
