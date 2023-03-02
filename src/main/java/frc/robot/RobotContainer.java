@@ -9,10 +9,12 @@ import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ConeShooter;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.DriveToNode;
+import frc.robot.commands.AutoCommands.PIDTunerCommand;
+import frc.robot.commands.AutoCommands.PieceWBalance;
+import frc.robot.commands.AutoCommands.StraightLineAuto;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.NodeSelectionLeft;
 import frc.robot.commands.NodeSelectionRight;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,16 +43,20 @@ public class RobotContainer {
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "NO AUTO";
   private String m_autoSelected;
-  private final String[] m_autoNames = {"NO AUTO", "STRAIGH LINE"};
+  private final String[] m_autoNames = {"NO AUTO", "STRAIGHT LINE", "PIECE AND BALANCE", "PID TUNER"};
 
-  private AutoParser autoParser = new AutoParser(m_drive);
+  //private AutoParser autoParser = new AutoParser(m_drive);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
 
     m_autoChooser.setDefaultOption("Default Auto", m_DefaultAuto);
-    
+    m_autoChooser.addOption("Straight Line", m_autoNames[1]);
+    m_autoChooser.addOption("PID Tuner", m_autoNames[3]);
+
+    SmartDashboard.putData("Auto Choices", m_autoChooser);
+
     configureBindings();
   }
 
@@ -87,14 +93,6 @@ public class RobotContainer {
    new POVButton(joy0, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
 
    new POVButton(joy0, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
-
-   //new JoystickButton(joy0, 5).whileTrue(new ShooterTrigger(m_feeder, m_shooter));
-   
-   //new JoystickButton(joy0, 6).whileTrue(new IntakePieces(m_intake));
-
-   //new JoystickButton(joy1, 3).whileTrue(new DefaultIndexer(m_indexer));
-   //Shooter
-   //new JoystickButton(joy0, 2).whileTrue(new ShooterTrigger(m_feeder));
   }    
   
 
@@ -105,9 +103,25 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    Command autoCommand = null;
+    Command autonomousCommand = null;
     m_autoSelected = m_autoChooser.getSelected();
 
-    return autoCommand;
+    System.out.println("Auto Selected: " + m_autoSelected);
+    switch(m_autoSelected){
+
+      case "STRAIGHT LINE":
+        autonomousCommand = new StraightLineAuto(m_drive);
+      break;
+
+      case "PIECE AND BALANCE":
+        autonomousCommand = new PieceWBalance(m_drive);
+      break;
+
+      case "PID TUNER":
+        autonomousCommand = new PIDTunerCommand(m_drive);
+      break;
+    }
+
+    return autonomousCommand;
   }
 }

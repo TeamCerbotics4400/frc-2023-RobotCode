@@ -24,14 +24,14 @@ public class AutoBalance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drive.getBalanceController().setSetpoint(balancedX);
-    m_drive.getBalanceController().setTolerance(0.05);
+    m_drive.getBalanceController().setSetpoint(balancedAngle);
+    m_drive.getBalanceController().setTolerance(0.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.drive(m_drive.getBalanceController().calculate(m_drive.getPose().getX()), 0);
+    m_drive.drive(m_drive.getBalanceController().calculate(m_drive.getPitch()), 0);
   }
 
   // Called once the command ends or is interrupted.

@@ -76,6 +76,9 @@ public class DriveTrain extends SubsystemBase {
   SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
   SparkMaxPIDController controladorDer = rightLeader.getPIDController();
 
+  PIDController leftController = new PIDController(0.0, 0.0, 0.0);
+  PIDController rightController = new PIDController(0.0, 0.0, 0.0);
+
   //private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
@@ -84,19 +87,23 @@ public class DriveTrain extends SubsystemBase {
                     Rotation2d.fromDegrees(getAngle()), 
                     0.0, 0.0, new Pose2d());
   
-  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
+  DifferentialDriveOdometry visionOdometry = new DifferentialDriveOdometry(
                       new Rotation2d(m_poseEstimator.getEstimatedPosition()
                                       .getRotation().getDegrees()), 
                       m_poseEstimator.getEstimatedPosition().getX(),
                       m_poseEstimator.getEstimatedPosition().getY());
 
+  DifferentialDriveOdometry wheelOdometry = new DifferentialDriveOdometry(
+    Rotation2d.fromDegrees(getCorrectedAngle()), encoderCountsToMeters(leftEncoder.getPosition()), 
+    encoderCountsToMeters(rightEncoder.getPosition()));
 
-  double kP = 0, kI = 0, kD = 0, kFF = 0.5, anguloObjetivo = 0;
+
+  //double kP = 0, kI = 0, kD = 0, kFF = 0.5, anguloObjetivo = 0;
 
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
 
-  public PhotonCameraWrapper pcw;
+  //public PhotonCameraWrapper pcw;
 
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
 
@@ -127,10 +134,10 @@ public class DriveTrain extends SubsystemBase {
     leftEncoder.setPosition(0);
     rightEncoder.setPosition(0);
 
-    controladorDer.setP(kP);
-    controladorDer.setD(kD);
-    controladorDer.setI(kI);
-    controladorDer.setFF(kFF);
+    //controladorDer.setP(kP);
+    //controladorDer.setD(kD);
+    //controladorDer.setI(kI);
+    //controladorDer.setFF(kFF);
 
     imu.configFactoryDefault();
     
@@ -139,13 +146,15 @@ public class DriveTrain extends SubsystemBase {
     debuggingTab = Shuffleboard.getTab("Debugging Tab");
     competitionTab = Shuffleboard.getTab("Competition Tab");
 
-    pcw = new PhotonCameraWrapper();
+    //pcw = new PhotonCameraWrapper();
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    SmartDashboard.putNumber("Balance P", balancePID.getP());
-    SmartDashboard.putNumber("Balance I", balancePID.getI());
-    SmartDashboard.putNumber("Balance D", balancePID.getD());
+    SmartDashboard.putNumber("Left P", leftController.getP());
+    SmartDashboard.putNumber("Left D", leftController.getD());
+
+    SmartDashboard.putNumber("Right P", rightController.getP());
+    SmartDashboard.putNumber("Right D", rightController.getD());
 
     resetImu();
     resetEncoders();
@@ -155,32 +164,40 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    odometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
+    visionOdometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
     .getRotation().getDegrees()), 
     encoderCountsToMeters(leftEncoder.getPosition()),
     encoderCountsToMeters(rightEncoder.getPosition()),
      m_poseEstimator.getEstimatedPosition());
 
-    SmartDashboard.putNumber("Odometry X", odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Odometry Y", odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Odometry Rotation", 
-    odometry.getPoseMeters().getRotation().getDegrees());
+     wheelOdometry.update(Rotation2d.fromDegrees(getCorrectedAngle()), 
+     encoderCountsToMeters(leftEncoder.getPosition()), 
+     encoderCountsToMeters(rightEncoder.getPosition()));
 
-    SmartDashboard.putNumber("Estimated X", m_poseEstimator.getEstimatedPosition().getX());
-    SmartDashboard.putNumber("Estimated Y", m_poseEstimator.getEstimatedPosition().getY());
+     SmartDashboard.putNumber("Left Meters", encoderCountsToMeters(leftEncoder.getPosition()));
 
-    SmartDashboard.putNumber("Estimated Angle",
-         m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+     SmartDashboard.putNumber("Right Meters", encoderCountsToMeters(rightEncoder.getPosition()));
 
-    SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
+    /*SmartDashboard.putNumber("visionOdometry X", visionOdometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("visionOdometry Y", visionOdometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("visionOdometry Rotation", 
+    visionOdometry.getPoseMeters().getRotation().getDegrees());*/
 
-    double bP = SmartDashboard.getNumber("Balance P", alignPID.getP());
-    double bI = SmartDashboard.getNumber("Balance I", alignPID.getI());
-    double bD = SmartDashboard.getNumber("Balance D", alignPID.getD());
+    SmartDashboard.putNumber("Angle Yaw", getCorrectedAngle());
 
-    if((bP != DriveConstants.TkP)){balancePID.setP(bP);}
-    if((bI != DriveConstants.TkI)){balancePID.setI(bI);}
-    if((bD != DriveConstants.TkD)){balancePID.setD(bD);}
+    //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
+
+    double lCP = SmartDashboard.getNumber("Left P", leftController.getP());
+    double lCD = SmartDashboard.getNumber("Left D", leftController.getD());
+
+    double rCP = SmartDashboard.getNumber("Right P", rightController.getP());
+    double rCD = SmartDashboard.getNumber("Right D", rightController.getD());
+
+    if((lCP != leftController.getP())){leftController.setP(lCP);}
+    if((lCD != leftController.getD())){leftController.setD(lCD);}
+
+    if((rCP != rightController.getP())){rightController.setP(rCP);}
+    if((rCD != rightController.getD())){rightController.setD(rCD);}
 
     get3dPose();
   
@@ -200,8 +217,16 @@ public class DriveTrain extends SubsystemBase {
     differentialDrive.feed();
   }
 
+  public void straightDrive(double left, double right){
+    differentialDrive.tankDrive(left, right);
+  }
+
   public double getAngle(){
-    return  imu.getYaw();
+    return imu.getYaw();
+  }
+
+  public double getCorrectedAngle(){
+    return Math.IEEEremainder(getAngle(), 360);
   }
 
   public void resetImu(){
@@ -212,6 +237,12 @@ public class DriveTrain extends SubsystemBase {
     double wheelRotations = encoderCounts / 10.75;
     double distance = wheelRotations * (Math.PI * 0.1524);
     return distance;
+  }
+
+  public double metersToEncoderCounts(double distance){
+    double wheelRotations = distance / (Math.PI / 0.1524);
+    double encoderCounts = wheelRotations * 10.75;
+    return encoderCounts;
   }
 
   public double getDistance(){
@@ -231,12 +262,12 @@ public class DriveTrain extends SubsystemBase {
     controladorDer.setReference(target, ControlType.kPosition);
   }
 
-  public double getTargetAngle(){
+  /*public double getTargetAngle(){
     return anguloObjetivo;
-  }
+  }*/
 
   public Pose2d getPose() {
-    return odometry.getPoseMeters();
+    return visionOdometry.getPoseMeters();
   }
 
   public Pose3d get3dPose(){
@@ -258,7 +289,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void resetPoseWVision(){
-    odometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
+    visionOdometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
     .getRotation().getDegrees()), 
     encoderCountsToMeters(leftEncoder.getPosition()),
     encoderCountsToMeters(rightEncoder.getPosition()),
@@ -270,21 +301,34 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(rightEncoder.getPosition()));
   }
 
+  public void setEncodersPose(double leftMeters, double rightMeters){
+    leftEncoder.setPosition(metersToEncoderCounts(leftMeters));
+    rightEncoder.setPosition(metersToEncoderCounts(rightMeters));
+  }
+
   public void resetEncoders(){
     leftEncoder.setPosition(0);
     rightEncoder.setPosition(0);
   }
 
-  
   public void resetOdometry(Pose2d pose) {
-    resetEncoders();
-    resetImu();
-    odometry.resetPosition(Rotation2d.fromDegrees(getAngle()),
-    encoderCountsToMeters(leftEncoder.getPosition()), encoderCountsToMeters(rightEncoder.getPosition()),
-      pose);
+    //resetEncoders();
+    //resetImu();
+
+    setEncodersPose(3.73, 3.73);
+    wheelOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()),
+    encoderCountsToMeters(leftEncoder.getPosition()), 
+    encoderCountsToMeters(rightEncoder.getPosition()), pose);
   }
 
-  
+  public double getLeftDistance(){
+    return encoderCountsToMeters(leftEncoder.getPosition());
+  }
+
+  public double getRightDistance(){
+    return encoderCountsToMeters(rightEncoder.getPosition());
+  }
+
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftControllers.setVoltage(leftVolts);
     rightControllers.setVoltage(rightVolts);
@@ -300,7 +344,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   //Metodo de prueba
-  public void updateOdometryWVisionCorrectionPhoton(){
+  /*public void updateOdometryWVisionCorrectionPhoton(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
@@ -319,7 +363,7 @@ public class DriveTrain extends SubsystemBase {
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
 
-  }
+  }*/
 
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();
@@ -331,6 +375,14 @@ public class DriveTrain extends SubsystemBase {
 
   public PIDController getTurnPID(){
     return alignPID;
+  }
+
+  public PIDController getLeftController(){
+    return leftController;
+  }
+
+  public PIDController getRightController(){
+    return rightController;
   }
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {

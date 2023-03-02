@@ -15,20 +15,21 @@ import frc.robot.subsystems.DriveTrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class StraightLineAutoCommand extends SequentialCommandGroup {
+public class StraightLineAuto extends SequentialCommandGroup {
   /** Creates a new StraightLineAutoCommand. */
 
   Trajectory straightTrajectory = PathPlanner.loadPath("Straight Line", 
-  AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+  AutoConstants.kMaxSpeedMetersPerSecond, 
+  AutoConstants.kMaxAccelerationMetersPerSecondSquared, false);
 
-  public StraightLineAutoCommand(DriveTrain m_drive) {
+  public StraightLineAuto(DriveTrain m_drive) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     InstantCommand resetOdometry = new InstantCommand(
       () -> m_drive.resetOdometry(straightTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry, 
-    m_drive.createCommandForTrajectory(straightTrajectory, true).andThen(
+    addCommands(resetOdometry,
+    m_drive.createCommandForTrajectory(straightTrajectory, false).andThen(
       () -> m_drive.tankDriveVolts(0, 0)));
   }
 }

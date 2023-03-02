@@ -94,13 +94,13 @@ public final class Constants {
                                TkI = 0.0,
                                TkD = 0.004;
 
-    public static final double kP = 0.0019356//0.013687
+    public static final double kP = 0.0039666//0.0028046//4.068E-06,//0.0019356//0.013687
     ,  kI = 0
     , kD = 0;//0.20844;//0.0010903
 
-    public static final double kS = 0.18404,//0.15862
-                               kV = 2.7305,//2.8101, 
-                               kA = 0.83198;//0.64907;
+    public static final double kS = 0.15286,//0.33144,//0.18404,
+                               kV = 2.7025,//2.34,//2.7305,
+                               kA = 0.69047;//1.1089;//0.83198;
 
     public static final double WHEEL_DIAMETER = 0.1524;
     public static final double GEAR_RATIO = 0;//7 : 1
@@ -146,7 +146,8 @@ public final class Constants {
   }
 
   public static final class ArmConstants {
-    public static byte ARM_ID = 0; //PlaceHolder
+    public static byte LEFT_ARM_ID = 0; //PlaceHolder
+    public static byte RIGHT_ARM_ID = 0;
   }
 
   public static final class WristConstants {
@@ -155,8 +156,8 @@ public final class Constants {
 
   public static final class AutoConstants{
     
-    public static final double kMaxSpeedMetersPerSecond = 0.5;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+    public static final double kMaxSpeedMetersPerSecond = 0.2;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.2;
   
   }
 

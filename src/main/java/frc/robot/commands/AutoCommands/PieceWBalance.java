@@ -15,12 +15,12 @@ import frc.robot.subsystems.DriveTrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class OnlyBalanceAutoCommand extends SequentialCommandGroup {
+public class PieceWBalance extends SequentialCommandGroup {
   /** Creates a new OnlyBalanceAutoCommand. */
   Trajectory onlyBalanceTrajectory = PathPlanner.loadPath("Only Balance", 
     AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
-  public OnlyBalanceAutoCommand(DriveTrain m_drive) {
+  public PieceWBalance(DriveTrain m_drive) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(m_drive.createCommandForTrajectory(onlyBalanceTrajectory, true), 
