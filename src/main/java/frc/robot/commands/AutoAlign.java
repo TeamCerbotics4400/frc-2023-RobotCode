@@ -27,7 +27,7 @@ public class AutoAlign extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turnPID.setSetpoint(179);
+    turnPID.setSetpoint(0);
 
   }
 
@@ -35,7 +35,7 @@ public class AutoAlign extends CommandBase {
   @Override
   public void execute() {
     
-    m_drive.drive(0, turnPID.calculate(m_drive.getPose().getRotation().getDegrees()));
+    m_drive.drive(0, turnPID.calculate(m_drive.getCorrectedAngle()));
   }
 
   // Called once the command ends or is interrupted.

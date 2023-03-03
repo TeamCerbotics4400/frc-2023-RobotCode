@@ -67,7 +67,7 @@ public class DriveToNode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.getPose());
+    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.getVisionPose());
     Rotation2d targetRotation = GeomUtil.direction(intermediatePoint
     .minus(m_drive.getEstimationTranslation()));
 
@@ -95,7 +95,7 @@ public class DriveToNode extends CommandBase {
   }
 
   public boolean isChargingSCleared(){
-    if(m_drive.getPose().getX() <= FieldConstants.CHARGING_STATION_CLEARENCE){
+    if(m_drive.getVisionPose().getX() <= FieldConstants.CHARGING_STATION_CLEARENCE){
       return true;
     } else{
       return false;
@@ -103,7 +103,7 @@ public class DriveToNode extends CommandBase {
   }
 
   public boolean isOnRight(){
-    if(m_drive.getPose().getY() >= FieldConstants.GRID_CENTER){
+    if(m_drive.getVisionPose().getY() >= FieldConstants.GRID_CENTER){
       return true;
     } else {
       return false;

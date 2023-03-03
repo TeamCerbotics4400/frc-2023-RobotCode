@@ -12,6 +12,7 @@ import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.PIDTunerCommand;
 import frc.robot.commands.AutoCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.StraightLineAuto;
+import frc.robot.commands.AutoCommands.TwoPiecesCommand;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.NodeSelectionLeft;
 import frc.robot.commands.NodeSelectionRight;
@@ -43,7 +44,8 @@ public class RobotContainer {
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "NO AUTO";
   private String m_autoSelected;
-  private final String[] m_autoNames = {"NO AUTO", "STRAIGHT LINE", "PIECE AND BALANCE", "PID TUNER"};
+  private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT LINE", 
+          "PIECE AND BALANCE", "TWO PIECES" };
 
   //private AutoParser autoParser = new AutoParser(m_drive);
 
@@ -52,8 +54,10 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     m_autoChooser.setDefaultOption("Default Auto", m_DefaultAuto);
-    m_autoChooser.addOption("Straight Line", m_autoNames[1]);
-    m_autoChooser.addOption("PID Tuner", m_autoNames[3]);
+    m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
+    m_autoChooser.addOption("Straight Line", m_autoNames[2]);
+    m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
+    m_autoChooser.addOption("Two Pieces", m_autoNames[4]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -109,6 +113,10 @@ public class RobotContainer {
     System.out.println("Auto Selected: " + m_autoSelected);
     switch(m_autoSelected){
 
+      case "PID TUNER":
+        autonomousCommand = new PIDTunerCommand(m_drive);
+      break;
+
       case "STRAIGHT LINE":
         autonomousCommand = new StraightLineAuto(m_drive);
       break;
@@ -117,8 +125,8 @@ public class RobotContainer {
         autonomousCommand = new PieceWBalance(m_drive);
       break;
 
-      case "PID TUNER":
-        autonomousCommand = new PIDTunerCommand(m_drive);
+      case "TWO PIECES":
+        autonomousCommand = new TwoPiecesCommand(m_drive);
       break;
     }
 
