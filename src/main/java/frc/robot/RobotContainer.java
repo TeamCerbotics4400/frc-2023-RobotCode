@@ -13,6 +13,7 @@ import frc.robot.commands.AutoCommands.PIDTunerCommand;
 import frc.robot.commands.AutoCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.StraightLineAuto;
 import frc.robot.commands.AutoCommands.TwoPiecesCommand;
+import frc.robot.commands.AutoCommands.TwoPiecesWBalance;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.NodeSelectionLeft;
 import frc.robot.commands.NodeSelectionRight;
@@ -45,7 +46,7 @@ public class RobotContainer {
   private final String m_DefaultAuto = "NO AUTO";
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT LINE", 
-          "PIECE AND BALANCE", "TWO PIECES" };
+          "PIECE AND BALANCE", "TWO PIECES", "TWO PIECES AND BALANCE" };
 
   //private AutoParser autoParser = new AutoParser(m_drive);
 
@@ -58,6 +59,7 @@ public class RobotContainer {
     m_autoChooser.addOption("Straight Line", m_autoNames[2]);
     m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
     m_autoChooser.addOption("Two Pieces", m_autoNames[4]);
+    m_autoChooser.addOption("Two and Balance", m_autoNames[5]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -127,6 +129,10 @@ public class RobotContainer {
 
       case "TWO PIECES":
         autonomousCommand = new TwoPiecesCommand(m_drive);
+      break;
+
+      case "TWO PIECES AND BALANCE":
+        autonomousCommand = new TwoPiecesWBalance(m_drive);
       break;
     }
 
