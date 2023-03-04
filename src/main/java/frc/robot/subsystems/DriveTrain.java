@@ -70,7 +70,7 @@ public class DriveTrain extends SubsystemBase {
   RelativeEncoder leftEncoder = leftLeader.getEncoder();
   RelativeEncoder rightEncoder = rightLeader.getEncoder();
 
-  Pigeon2 imu = new Pigeon2(13);
+  Pigeon2 imu = new Pigeon2(DriveConstants.Gyro_ID);
 
   SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
   SparkMaxPIDController controladorDer = rightLeader.getPIDController();
@@ -160,10 +160,10 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    visionOdometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
-    .getRotation().getDegrees()), 
-    encoderCountsToMeters(leftEncoder.getPosition()),
-    encoderCountsToMeters(rightEncoder.getPosition()),
+     visionOdometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
+     .getRotation().getDegrees()), 
+     encoderCountsToMeters(leftEncoder.getPosition()),
+     encoderCountsToMeters(rightEncoder.getPosition()),
      m_poseEstimator.getEstimatedPosition());
 
      wheelOdometry.update(Rotation2d.fromDegrees(getCorrectedAngle()), 

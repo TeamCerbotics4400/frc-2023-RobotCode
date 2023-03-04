@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -17,12 +18,15 @@ public class FalconShooter extends SubsystemBase {
   TalonFX leftFlyWheel = new TalonFX(ShooterConstants.LEFT_FLYWHEEL_ID);
   TalonFX rightFlyWheel = new TalonFX(ShooterConstants.RIGHT_FLYWHEEL_ID);
 
+  DigitalInput beamSensor = new DigitalInput(0);
+
   boolean onTarget = false;
 
   double desiredVelo = 0;
 
   int pidSlot = 0;
 
+  //Beam DIO 0
   public FalconShooter() {
     leftFlyWheel.configFactoryDefault();
     rightFlyWheel.configFactoryDefault();

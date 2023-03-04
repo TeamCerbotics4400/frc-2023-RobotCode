@@ -84,11 +84,13 @@ public final class Constants {
 
   
   public static final class DriveConstants{
-    public static final int LeftLeader_ID = 1; //3
-    public static final int LeftFollower_ID = 2; //4
+    public static final int LeftLeader_ID = 2; //3
+    public static final int LeftFollower_ID = 1; //4
 
-    public static final int RightLeader_ID = 3; //1
-    public static final int RightFollower_ID = 4;  //2
+    public static final int RightLeader_ID = 4; //1
+    public static final int RightFollower_ID = 3;  //2
+
+    public static final byte Gyro_ID = 13;
 
     public static double TkP = 0.03,
                                TkI = 0.0,
@@ -112,19 +114,13 @@ public final class Constants {
     public static final double TRACK_WIDTH_INCHES = Units.metersToInches(TRACK_WIDTH);
 
     public static final double TRACK_SCRUB_FACTOR = 0;//Para un giro mas cerrado del cheezy drive
-
-    public static final int Solenoid_Shifter_ID = 0;
-
     
 }
 
   public static final class ShooterConstants {
     /** ---PROTOTYPE--- */
-    public static final byte LEFT_FLYWHEEL_ID = 10; 
-    public static final byte RIGHT_FLYWHEEL_ID = 11;
-
-    public static final byte LOWER_LEFT_FLY = 6;
-    public static final byte LOWER_RIGHT_FLY = 7;
+    public static final byte LEFT_FLYWHEEL_ID = 8; 
+    public static final byte RIGHT_FLYWHEEL_ID = 9;
 
     public static double kP= 0.096, //con bandas = 0.098
                         kI = 0.001,
@@ -146,12 +142,35 @@ public final class Constants {
   }
 
   public static final class ArmConstants {
-    public static byte LEFT_ARM_ID = 0; //PlaceHolder
-    public static byte RIGHT_ARM_ID = 0;
+    public static byte LEFT_ARM_ID = 5; //PlaceHolder
+    public static byte RIGHT_ARM_ID = 6;
+
+    public static double lkP = 0.0,
+                         lkI = 0.0,
+                         lkD = 0.0,
+                         lkFF = 0.0,
+                         lkMinOutput = -1,
+                         lAllowedError = 0.0,
+                         lmaxVel = 0.0,
+                         lmaxAcc = 0.0;
+
+    public static double rkP = 0.0,
+                         rkI = 0.0,
+                         rkD = 0.0,
+                         rkFF = 0.0,
+                         rkMinOutput = -1,
+                         rAllowedError = 0.0,
+                         rmaxVel = 0.0,
+                         rmaxAcc = 0.0;
   }
 
   public static final class WristConstants {
-    public static byte WRIST_ID = 0; //PlaceHolder
+    public static byte WRIST_ID = 7; //PlaceHolder
+
+    public static double kP = 0.0,
+                         kI = 0.0,
+                         kD = 0.0,
+                         kFF = 0.0;
   }
 
   public static final class AutoConstants{
@@ -165,7 +184,7 @@ public final class Constants {
     public static double LIMELIGHT_FLOOR_CLEREANCE= 0.79;//Altura de la limelight
     public static double LIMELIGHT_VERTICAL_ANGLE = 36; //Angulo de la limelight
 
-    public static final Transform3d robotToCam =
+    public static final Transform3d orangeCamPose =
           new Transform3d(
                   new Translation3d(0.2444, 0, 0.454),
                   new Rotation3d(
