@@ -142,26 +142,21 @@ public final class Constants {
   }
 
   public static final class ArmConstants {
-    public static byte LEFT_ARM_ID = 5; //PlaceHolder
+    public static byte LEFT_ARM_ID = 5; 
     public static byte RIGHT_ARM_ID = 6;
 
-    public static double lkP = 0.0,
-                         lkI = 0.0,
-                         lkD = 0.0,
-                         lkFF = 0.0,
-                         lkMinOutput = -1,
-                         lAllowedError = 0.0,
-                         lmaxVel = 0.0,
-                         lmaxAcc = 0.0;
-
-    public static double rkP = 0.0,
-                         rkI = 0.0,
-                         rkD = 0.0,
-                         rkFF = 0.0,
-                         rkMinOutput = -1,
-                         rAllowedError = 0.0,
-                         rmaxVel = 0.0,
-                         rmaxAcc = 0.0;
+    public static double kP = 0.012904,//4.3755E-09,
+                         kI = 0.0,
+                         kD = 0.0024401,//8.274E-10,
+                         //kFF = 0.000156,
+                         kMaxOutput = 1,
+                         kMinOutput = -1,
+                         AllowedError = 0.0,
+                         maxVel = 2000,
+                         maxAcc = 1500,
+                         kS = 0.82172,
+                         kV = 0.0047927,
+                         kG = 0.44033;
   }
 
   public static final class WristConstants {

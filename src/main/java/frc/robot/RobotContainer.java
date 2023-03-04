@@ -8,6 +8,7 @@ import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ConeShooter;
 import frc.robot.commands.TeleOpControl;
+import frc.robot.commands.TestArm;
 import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.PIDTunerCommand;
 import frc.robot.commands.AutoCommands.PieceWBalance;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.NodeSelector;
@@ -34,13 +36,17 @@ import frc.robot.subsystems.NodeSelector;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+import frc.robot.subsystems.WristSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Joystick joy0 = new Joystick(0);
   Joystick joy1 = new Joystick(1);
+  Joystick joy2 = new Joystick(2);
   private DriveTrain m_drive = new DriveTrain();
   private FalconShooter m_shooter = new FalconShooter();
   private NodeSelector m_nodeSelector = new NodeSelector(joy0);
+  private ArmSubsystem m_arm = new ArmSubsystem();
+  private WristSubsystem m_wrist = new WristSubsystem();
   
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "NO AUTO";
@@ -88,6 +94,8 @@ public class RobotContainer {
                                             DriveToNode(m_drive, m_nodeSelector, joy0));
    //Autobalance
    new JoystickButton(joy0, 6).whileTrue(new AutoBalance(m_drive));
+
+   new JoystickButton(joy2, 3).onTrue(new TestArm(m_arm));
 
    //Reset Imu
    new JoystickButton(joy0, 2).whileTrue(new AutoAlign(m_drive));
