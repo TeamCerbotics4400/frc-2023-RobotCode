@@ -30,7 +30,7 @@ public class TestArm extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_arm.setMotorsPower(0);
+    //m_arm.setMotorsPower(0);
   }
 
   // Returns true when the command should end.

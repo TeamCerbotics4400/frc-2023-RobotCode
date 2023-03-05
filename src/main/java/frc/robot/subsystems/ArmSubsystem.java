@@ -16,8 +16,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
@@ -26,42 +30,54 @@ public class ArmSubsystem extends SubsystemBase {
   CANSparkMax leftArm = new CANSparkMax(ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
   CANSparkMax rightArm = new CANSparkMax(ArmConstants.RIGHT_ARM_ID, MotorType.kBrushless);
 
-  SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
+  //SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
   //Checar en rev client
-  RelativeEncoder alternateEncoder = leftArm.getAlternateEncoder(kAltEncType, 8192);
+  //RelativeEncoder alternateEncoder = leftArm.getAlternateEncoder(kAltEncType, 8192);
+
+  DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(2);
   //RelativeEncoder leftEncoder = leftArm.getEncoder();
   //RelativeEncoder rightEncoder = rightArm.getEncoder();
   //AbsoluteEncoder leftAbsoluteEncoder = leftArm.getAbsoluteEncoder(Type.kDutyCycle);
   //AbsoluteEncoder rightAbsoluteEncoder = rightArm.getAbsoluteEncoder(Type.kDutyCycle);
 
-  SparkMaxPIDController leftArmController = leftArm.getPIDController();
-  SparkMaxPIDController rightArmController = rightArm.getPIDController();
+  ProfiledPIDController armController =  
+  new ProfiledPIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD,
+   new TrapezoidProfile.Constraints(ArmConstants.kMaxVelocityRadPerSecond, 
+   ArmConstants.kMaxAccelerationMetersPerSecondSquared));
+
+  SparkMaxPIDController leftController = leftArm.getPIDController();
+  SparkMaxPIDController rightController = rightArm.getPIDController();
+
+  RelativeEncoder leftEncoder = leftArm.getEncoder();
+  RelativeEncoder rightEncoder = rightArm.getEncoder();
+
+  //SparkMaxPIDController rightArmController = rightArm.getPIDController();
 
   ArmFeedforward armFeedforward;
 
-  private int smartMotionSlot = 0;
+  //private int smartMotionSlot = 0;
+
+  private double setPoint;
 
   private double armPosition = 0.0;
 
   double targetAngle = 0.0;
 
-  //Relacion 
+  //Relacion 32.89 : 1
   public ArmSubsystem() {
     leftArm.restoreFactoryDefaults();
     rightArm.restoreFactoryDefaults();
 
     leftArm.setInverted(false);
-    //rightArm.setInverted(true);
-
     rightArm.follow(leftArm, true);
 
     leftArm.setIdleMode(IdleMode.kBrake);
     rightArm.setIdleMode(IdleMode.kBrake);
 
-    leftArmController.setFeedbackDevice(alternateEncoder);
-    //rightArmController.setFeedbackDevice(alternateEncoder);
+    armFeedforward = new ArmFeedforward(ArmConstants.kA, ArmConstants.kG, ArmConstants.kV);
 
-    armFeedforward = new ArmFeedforward(ArmConstants.kS, ArmConstants.kV, ArmConstants.kV);
+    leftEncoder.setVelocityConversionFactor(ArmConstants.ARM_DEGREES_PER_MOTOR_ROTATION / 60);
+
     
     leftArm.setSoftLimit(SoftLimitDirection.kForward, softLimit(Rotation2d.fromDegrees(45)));
     leftArm.setSoftLimit(SoftLimitDirection.kReverse, softLimit(Rotation2d.fromDegrees(-45)));
@@ -73,30 +89,23 @@ public class ArmSubsystem extends SubsystemBase {
     rightArm.enableSoftLimit(SoftLimitDirection.kForward, true);
     rightArm.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    leftArmController.setP(ArmConstants.kP);
-    leftArmController.setI(ArmConstants.kI);
-    leftArmController.setD(ArmConstants.kD);
-    //leftArmController.setFF(ArmConstants.kFF);
-    leftArmController.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
+    leftController.setFeedbackDevice(leftEncoder);
+    rightController.setFeedbackDevice(rightEncoder);
 
-    rightArmController.setP(ArmConstants.kP);
-    rightArmController.setI(ArmConstants.kI);
-    rightArmController.setD(ArmConstants.kD);
-    //rightArmController.setFF(ArmConstants.kFF);
-    rightArmController.setOutputRange(ArmConstants.kMinOutput, ArmConstants.kMaxOutput);
+    leftController.setP(ArmConstants.kP);
+    leftController.setI(ArmConstants.kI);
+    leftController.setD(ArmConstants.kD);
+    leftController.setFF(ArmConstants.kFF);
 
-    leftArmController.setSmartMotionMaxVelocity(ArmConstants.maxVel, smartMotionSlot);
-    leftArmController.setSmartMotionMinOutputVelocity(ArmConstants.kMinOutput, smartMotionSlot);
-    leftArmController.setSmartMotionMaxAccel(ArmConstants.maxAcc, smartMotionSlot);
-    leftArmController.setSmartMotionAccelStrategy(AccelStrategy.kSCurve, smartMotionSlot);
-    leftArmController.setSmartMotionAllowedClosedLoopError(ArmConstants.AllowedError, smartMotionSlot);
+    rightController.setP(ArmConstants.kD);
+    rightController.setI(ArmConstants.kI);
+    rightController.setD(ArmConstants.kD);
+    rightController.setFF(ArmConstants.kFF);
+    //absoluteEncoder.setDutyCycleRange(1/1024, 1023/1024)
 
-    rightArmController.setSmartMotionMaxVelocity(ArmConstants.maxVel, smartMotionSlot);
-    rightArmController.setSmartMotionMinOutputVelocity(ArmConstants.kMinOutput, smartMotionSlot);
-    rightArmController.setSmartMotionMaxAccel(ArmConstants.maxAcc, smartMotionSlot);
-    rightArmController.setSmartMotionAccelStrategy(AccelStrategy.kSCurve, smartMotionSlot);
-    rightArmController.setSmartMotionAllowedClosedLoopError(ArmConstants.AllowedError, smartMotionSlot);
-
+    absoluteEncoder.setDistancePerRotation(360);
+    absoluteEncoder.setPositionOffset(ArmConstants.OFFSET_DEGREES);
+    
     SmartDashboard.putNumber("Desired arm angle", targetAngle);
     SmartDashboard.putNumber("Desired arm rotation", armPosition);
 
@@ -115,8 +124,13 @@ public class ArmSubsystem extends SubsystemBase {
     //SmartDashboard.putNumber("Left Arm Encoder", leftAbsoluteEncoder.getPosition());
     //SmartDashboard.putNumber("Right Arm Encoder", rightAbsoluteEncoder.getPosition());
 
-    SmartDashboard.putNumber("Encoder angle", getAngle(alternateEncoder).getDegrees());
-    SmartDashboard.putNumber("Raw Encoder", alternateEncoder.getPosition());
+    //SmartDashboard.putNumber("Encoder angle", getAngle(alternateEncoder).getDegrees());
+    SmartDashboard.putNumber("Raw Encoder", absoluteEncoder.getDistance());
+
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.getPosition());
+    SmartDashboard.putNumber("Right Encoder", leftEncoder.getPosition());
+
+    SmartDashboard.putNumber("Angle encoder", getAngle().getDegrees());
     //SmartDashboard.putNumber("Controller setpoint", leftArmController.get);
     //SmartDashboard.putNumber("Right Encoder", getAngle(rightEncoder).getDegrees());
 
@@ -131,11 +145,11 @@ public class ArmSubsystem extends SubsystemBase {
     double kD = SmartDashboard.getNumber("Arm D", ArmConstants.kD);
     //double kFF = SmartDashboard.getNumber("Arm FF", ArmConstants.kFF);
 
-    if((kP != ArmConstants.kP)){leftArmController.setP(kP); rightArmController.setP(kP); 
+    if((kP != ArmConstants.kP)){armController.setP(kP);; /*rightArmController.setP(kP);*/ 
                                   ArmConstants.kP = kP;}
-    if((kI != ArmConstants.kI)){leftArmController.setP(kI); rightArmController.setP(kI); 
+    if((kI != ArmConstants.kI)){armController.setP(kI); /*rightArmController.setP(kI)*/; 
                                   ArmConstants.kI = kI;}
-    if((kD != ArmConstants.kD)){leftArmController.setP(kD); rightArmController.setP(kD); 
+    if((kD != ArmConstants.kD)){armController.setP(kD); /*rightArmController.setP(kD)*/; 
                                   ArmConstants.kD = kD;}
     //if((kFF != ArmConstants.kFF)){leftArmController.setP(kFF); rightArmController.setP(kFF); 
                                   //ArmConstants.kP = kFF;}
@@ -150,11 +164,18 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void resetEncoder(){
-    alternateEncoder.setPosition(0);
+    //alternateEncoder.setPosition(0);
     //rightEncoder.setPosition(0);
+    leftEncoder.setPosition(0);
+    rightEncoder.setPosition(0);
   }
 
-  public void armToPosition(double setPoint){
+  public void setArmAngle(double angle){
+    leftController.setReference(angle, ControlType.kPosition, 
+    0, armFeedforward.calculate(Math.toRadians(angle), 0));
+  }
+
+  /*public void armToPosition(double setPoint){
     leftArmController.setReference(setPoint, ControlType.kSmartMotion);
     //rightArmController.setReference(setPoint, ControlType.);
   }
@@ -164,30 +185,21 @@ public class ArmSubsystem extends SubsystemBase {
       angle.getDegrees() / 180,
       ControlType.kSmartMotion);
       targetAngle = angle.getDegrees();
-
-    rightArmController.setReference(
-      angle.getDegrees() / 180,
-      ControlType.kSmartMotion);
-      targetAngle = angle.getDegrees();
-  }
+  }*/
 
   public void dashboardPositionAngle(){
-    leftArmController.setReference(
-      targetAngle / 180,
-      ControlType.kSmartMotion, 0, 
-      armFeedforward.calculate(Math.toRadians(targetAngle), 0.2));
-
-    rightArmController.setReference(
-      targetAngle / 180,
-      ControlType.kSmartMotion, 0, 
-      armFeedforward.calculate(Math.toRadians(targetAngle), 0.2));
+    setArmAngle(targetAngle);
+    //setAngle(targetAngle);
+    //setAngle(targetAngle);
   }
 
   public void dashboardPosition(){
-    leftArmController.setReference(armPosition, ControlType.kPosition, 
-    0, armFeedforward.calculate(armPosition, 0));
 
     //rightArmController.setReference(armPosition, ControlType.kPosition);
+  }
+
+  public synchronized Rotation2d getAngle(){
+    return Rotation2d.fromRadians(leftEncoder.getPosition() / 32.89 * 2 * Math.PI);
   }
 
   public void setMotorsPower(double power){

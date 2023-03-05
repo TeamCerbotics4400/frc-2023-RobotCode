@@ -95,7 +95,7 @@ public class RobotContainer {
    //Autobalance
    new JoystickButton(joy0, 6).whileTrue(new AutoBalance(m_drive));
 
-   new JoystickButton(joy2, 3).onTrue(new TestArm(m_arm));
+   new JoystickButton(joy2, 1).onTrue(new TestArm(m_arm));
 
    //Reset Imu
    new JoystickButton(joy0, 2).whileTrue(new AutoAlign(m_drive));
