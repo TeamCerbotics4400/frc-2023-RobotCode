@@ -42,6 +42,7 @@ public class RobotContainer {
   Joystick joy0 = new Joystick(0);
   Joystick joy1 = new Joystick(1);
   Joystick joy2 = new Joystick(2);
+  Joystick joy3 = new Joystick(3);
   private DriveTrain m_drive = new DriveTrain();
   private FalconShooter m_shooter = new FalconShooter();
   private NodeSelector m_nodeSelector = new NodeSelector(joy0);
@@ -90,25 +91,28 @@ public class RobotContainer {
    m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    joy0));
 
-   new JoystickButton(joy0, 1).whileTrue(new 
+   new JoystickButton(joy1, 1).whileTrue(new 
                                             DriveToNode(m_drive, m_nodeSelector, joy0));
    //Autobalance
-   new JoystickButton(joy0, 6).whileTrue(new AutoBalance(m_drive));
+   new JoystickButton(joy1, 6).whileTrue(new AutoBalance(m_drive));
 
    //Reset Imu
-   new JoystickButton(joy0, 2).whileTrue(new AutoAlign(m_drive));
+   new JoystickButton(joy1, 2).whileTrue(new AutoAlign(m_drive));
 
    new JoystickButton(joy1, 1).whileTrue(new CubeShooter(m_shooter));
 
    new JoystickButton(joy1, 2).whileTrue(new ConeShooter(m_shooter));
 
-   new POVButton(joy0, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
+   new POVButton(joy1, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
 
-   new POVButton(joy0, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
+   new POVButton(joy1, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
 
-   new JoystickButton(joy2, 4).onTrue(m_arm.goToPosition(160.5));
-   new JoystickButton(joy2, 3).onTrue(m_arm.goToPosition(110.5));
-   new JoystickButton(joy2, 2).onTrue(m_arm.goToPosition(210.5));
+   new JoystickButton(joy2, 4).onTrue(m_arm.goToPosition(160.5))
+   .whileTrue(m_wrist.goToPosition(0));
+   new JoystickButton(joy2, 3).onTrue(m_arm.goToPosition(110.5))
+   .whileTrue(m_wrist.goToPosition(-85));
+   new JoystickButton(joy2, 2).onTrue(m_arm.goToPosition(210.5))
+   .whileTrue(m_wrist.goToPosition(85));
   }    
   
 

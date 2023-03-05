@@ -53,6 +53,9 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     leftMotor.setInverted(false);
     rightMotor.follow(leftMotor, true);
 
+    leftMotor.setSmartCurrentLimit(40);
+    rightMotor.setSmartCurrentLimit(40);
+
     SmartDashboard.putNumber("Desired Angle", targetAngle);
 
     SmartDashboard.putNumber("Arm P", this.m_controller.getP());

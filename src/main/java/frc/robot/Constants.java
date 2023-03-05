@@ -164,11 +164,20 @@ public final class Constants {
   public static final class WristConstants {
     public static byte WRIST_ID = 7; //PlaceHolder
 
-    public static double kP = 0.0,
+    public static double kP = 0.14578,
                          kI = 0.0,
-                         kD = 0.0,
-                         kFF = 0.0;
+                         kD = 0.050361,
+                         kFF = 0.0,
+                         kMaxVelocityRadPerSecond = 150,
+                         kMaxAccelerationMetersPerSecondSquared = 150,
+                         kS = 0.46147,
+                         kV = 0.020646,
+                         kA = 0.008245,
+                         kG = 0.45406;
+
+
   }
+
 
   public static final class AutoConstants{
     public static final double kMaxSpeedMetersPerSecond = 1.0;
