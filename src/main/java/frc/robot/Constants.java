@@ -147,13 +147,13 @@ public final class Constants {
 
     public static double ARM_DEGREES_PER_MOTOR_ROTATION = 32.89;
 
-    public static double kP = 0.0011773,//0.012904,//4.3755E-09,
+    public static double kP = 0.13821,//0.0011773,//0.012904,//4.3755E-09,
                          kI = 0.0,
-                         kD = 0.00017643,//0.0024401,//8.274E-10,
+                         kD = 0.021835,//0.00017643,//0.0024401,//8.274E-10,
                          kFF = 0.0,//0.000156,
                          kMaxVelocityRadPerSecond = 3,
                          kMaxAccelerationMetersPerSecondSquared = 10,
-                         //kS = //0.94615,//0.82172,
+                         kS = 0.94615,//0.82172,
                          kV = 0.0021715,//0.0047927,
                          kA = 0.0019641,//0.003212,
                          kG = 0.12588;//0.44033;

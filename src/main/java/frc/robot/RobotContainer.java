@@ -8,7 +8,6 @@ import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ConeShooter;
 import frc.robot.commands.TeleOpControl;
-import frc.robot.commands.TestArm;
 import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.PIDTunerCommand;
 import frc.robot.commands.AutoCommands.PieceWBalance;
@@ -45,8 +44,8 @@ public class RobotContainer {
   private DriveTrain m_drive = new DriveTrain();
   private FalconShooter m_shooter = new FalconShooter();
   private NodeSelector m_nodeSelector = new NodeSelector(joy0);
-  private ArmSubsystem m_arm = new ArmSubsystem();
   private WristSubsystem m_wrist = new WristSubsystem();
+  private ArmSubsystem m_arm = new ArmSubsystem();
   
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "NO AUTO";
@@ -95,8 +94,6 @@ public class RobotContainer {
    //Autobalance
    new JoystickButton(joy0, 6).whileTrue(new AutoBalance(m_drive));
 
-   new JoystickButton(joy2, 1).onTrue(new TestArm(m_arm));
-
    //Reset Imu
    new JoystickButton(joy0, 2).whileTrue(new AutoAlign(m_drive));
 
@@ -107,6 +104,8 @@ public class RobotContainer {
    new POVButton(joy0, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
 
    new POVButton(joy0, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
+
+   new JoystickButton(joy2, 1).whileTrue(m_arm.goToPosition(160.5));
   }    
   
 

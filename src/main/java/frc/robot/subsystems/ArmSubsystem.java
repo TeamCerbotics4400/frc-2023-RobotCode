@@ -5,182 +5,86 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants.ArmConstants;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 
-public class ArmSubsystem extends SubsystemBase {
-  /** Creates a new ArmSubsystem. */
-  CANSparkMax leftArm = new CANSparkMax(ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
-  CANSparkMax rightArm = new CANSparkMax(ArmConstants.RIGHT_ARM_ID, MotorType.kBrushless);
+/** A robot arm subsystem that moves with a motion profile. */
+public class ArmSubsystem extends ProfiledPIDSubsystem {
+  private final CANSparkMax leftMotor = new CANSparkMax(ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
+  private final CANSparkMax rightMotor = new CANSparkMax(ArmConstants.RIGHT_ARM_ID, MotorType.kBrushless);
+  private final DutyCycleEncoder m_encoder =
+      new DutyCycleEncoder(2);
+  private final ArmFeedforward m_feedforward =
+      new ArmFeedforward(
+          ArmConstants.kS, ArmConstants.kG,
+          ArmConstants.kV, ArmConstants.kA);
 
-  //SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
-  //Checar en rev client
-  //RelativeEncoder alternateEncoder = leftArm.getAlternateEncoder(kAltEncType, 8192);
-
-  PIDController armController = new PIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
-
-  DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(2);
-  //RelativeEncoder leftEncoder = leftArm.getEncoder();
-  //RelativeEncoder rightEncoder = rightArm.getEncoder();
-  //AbsoluteEncoder leftAbsoluteEncoder = leftArm.getAbsoluteEncoder(Type.kDutyCycle);
-  //AbsoluteEncoder rightAbsoluteEncoder = rightArm.getAbsoluteEncoder(Type.kDutyCycle);
-
-  /*ProfiledPIDController armController =  
-  new ProfiledPIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD,
-   new TrapezoidProfile.Constraints(ArmConstants.kMaxVelocityRadPerSecond, 
-   ArmConstants.kMaxAccelerationMetersPerSecondSquared));*/
-
-  SparkMaxPIDController leftController = leftArm.getPIDController();
-  SparkMaxPIDController rightController = rightArm.getPIDController();
-
-  //SparkMaxPIDController rightArmController = rightArm.getPIDController();
-
-  ArmFeedforward armFeedforward;
-
-  //private int smartMotionSlot = 0;
-
-  
-  private double setPoint;
-
-  private double armPosition = 0.0;
-
-  double targetAngle = 0.0;
-
-  //Relacion 32.89 : 1
-
+  /** Create a new ArmSubsystem. */
   public ArmSubsystem() {
+    super(
+        new ProfiledPIDController(
+            ArmConstants.kP,
+            0,
+            0,
+            new TrapezoidProfile.Constraints(
+                ArmConstants.kMaxVelocityRadPerSecond,
+                ArmConstants.kMaxAccelerationMetersPerSecondSquared)),
+        0);
+    m_encoder.setDistancePerRotation(360.0);
+    // Start arm at rest in neutral position
+    setGoal(160.5);
 
-    leftArm.restoreFactoryDefaults();
-    rightArm.restoreFactoryDefaults();
+    leftMotor.restoreFactoryDefaults();
+    rightMotor.restoreFactoryDefaults();
 
-    leftArm.setInverted(false);
-    rightArm.follow(leftArm, true);
-
-    leftArm.setIdleMode(IdleMode.kBrake);
-    rightArm.setIdleMode(IdleMode.kBrake);
-
-    armFeedforward = new ArmFeedforward(ArmConstants.kA, ArmConstants.kG, ArmConstants.kV);
-    
-    leftArm.setSoftLimit(SoftLimitDirection.kForward, softLimit(Rotation2d.fromDegrees(45)));
-    leftArm.setSoftLimit(SoftLimitDirection.kReverse, softLimit(Rotation2d.fromDegrees(-45)));
-    leftArm.enableSoftLimit(SoftLimitDirection.kForward, true);
-    leftArm.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    rightArm.setSoftLimit(SoftLimitDirection.kForward, softLimit(Rotation2d.fromDegrees(45)));
-    rightArm.setSoftLimit(SoftLimitDirection.kReverse, softLimit(Rotation2d.fromDegrees(-45)));
-    rightArm.enableSoftLimit(SoftLimitDirection.kForward, true);
-    rightArm.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    //160.5 90 grados real 
-    //70.5 Diff
-    //71.6 0 grados real
-    // 71.6 Diff
-    //252.5 180 grados real
-    //72.5 Diff
-    absoluteEncoder.setDistancePerRotation(360);
-    
-    SmartDashboard.putNumber("Desired arm angle", targetAngle);
-    SmartDashboard.putNumber("Desired arm rotation", armPosition);
-
-    SmartDashboard.putNumber("Arm P", ArmConstants.kP);
-    SmartDashboard.putNumber("Arm I", ArmConstants.kI);
-    SmartDashboard.putNumber("Arm D", ArmConstants.kD);
-    //SmartDashboard.putNumber("Arm FF", ArmConstants.kFF);
-    
+    leftMotor.setInverted(false);
+    rightMotor.follow(leftMotor, true);
   }
+
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    //SmartDashboard.putNumber("Left Arm Encoder", leftAbsoluteEncoder.getPosition());
-    //SmartDashboard.putNumber("Right Arm Encoder", rightAbsoluteEncoder.getPosition());
-
-    //SmartDashboard.putNumber("Encoder angle", getAngle(alternateEncoder).getDegrees());
-    SmartDashboard.putNumber("Raw Encoder", absoluteEncoder.getDistance());
-
-    //SmartDashboard.putNumber("Controller setpoint", leftArmController.get);
-    //SmartDashboard.putNumber("Right Encoder", getAngle(rightEncoder).getDegrees());
-
-    double desiredPosition = SmartDashboard.getNumber("Desired arm angle", targetAngle);
-    double desiredRotation = SmartDashboard.getNumber("Desired arm rotation", armPosition);
-
-    if((desiredPosition != targetAngle)){desiredPosition = targetAngle;}
-    if((desiredRotation != armPosition)){desiredRotation = armPosition;}
-
-    double kP = SmartDashboard.getNumber("Arm P", ArmConstants.kP);
-    double kI = SmartDashboard.getNumber("Arm I", ArmConstants.kI);
-    double kD = SmartDashboard.getNumber("Arm D", ArmConstants.kD);
-    //double kFF = SmartDashboard.getNumber("Arm FF", ArmConstants.kFF);
-
-    if((kP != ArmConstants.kP)){armController.setP(kP); /*rightArmController.setP(kP);*/ 
-                                  ArmConstants.kP = kP;}
-    if((kI != ArmConstants.kI)){armController.setP(kI); /*rightArmController.setP(kI)*/; 
-                                  ArmConstants.kI = kI;}
-    if((kD != ArmConstants.kD)){armController.setP(kD); /*rightArmController.setP(kD)*/; 
-                                  ArmConstants.kD = kD;}
-    //if((kFF != ArmConstants.kFF)){leftArmController.setP(kFF); rightArmController.setP(kFF); 
-                                  //ArmConstants.kP = kFF;}
+      // TODO Auto-generated method stub
+      super.periodic();
+      SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
+      SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
+      SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
+      SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
+      SmartDashboard.putNumber("Error Velocidad", this.getController().getVelocityError());
+      SmartDashboard.putNumber("Control Efford Actual", leftMotor.get());
   }
 
-  public float softLimit(Rotation2d limit){
-    return (float)(limit.getDegrees() / 180);
+  @Override
+  public void useOutput(double output, TrapezoidProfile.State setpoint) {
+    // Calculate the feedforward from the sepoint
+    double feedforward = m_feedforward.calculate(setpoint.position, setpoint.velocity);
+    // Add the feedforward to the PID output to get the motor output
+    leftMotor.setVoltage(output + feedforward);
   }
 
-  public synchronized Rotation2d getAngle(RelativeEncoder encoder) {
-    return Rotation2d.fromDegrees(encoder.getPosition() * 180);
+  @Override
+  public double getMeasurement() {
+    return m_encoder.getDistance();
   }
 
-  public void setArmAngle(double angle){
-    leftController.setReference(angle, ControlType.kPosition, 
-    0, armFeedforward.calculate(Math.toRadians(angle), 0));
-  }
-
-  public PIDController getArmController(){
-    return armController;
-  }
-
-  public double getEncoderAngle(){
-    return absoluteEncoder.getDistance();
-  }
-
-  /*public void armToPosition(double setPoint){
-    leftArmController.setReference(setPoint, ControlType.kSmartMotion);
-    //rightArmController.setReference(setPoint, ControlType.);
-  }
-
-  public void setAngle(Rotation2d angle){
-    leftArmController.setReference(
-      angle.getDegrees() / 180,
-      ControlType.kSmartMotion);
-      targetAngle = angle.getDegrees();
-  }*/
-
-  public void dashboardPositionAngle(){
-    setArmAngle(targetAngle);
-    //setAngle(targetAngle);
-    //setAngle(targetAngle);
-  }
-
-  public void dashboardPosition(){
-
-    //rightArmController.setReference(armPosition, ControlType.kPosition);
-  }
-
-  public void setMotorsPower(double power){
-    leftArm.set(power);
-    //rightArm.set(power);
-
+  public Command goToPosition(double position){
+    return Commands.runOnce(
+                () -> {
+                  this.setGoal(position);
+                  this.enable();
+                },
+                this);
   }
 }
+
