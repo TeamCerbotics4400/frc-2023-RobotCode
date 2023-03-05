@@ -30,13 +30,15 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
           ArmConstants.kS, ArmConstants.kG,
           ArmConstants.kV, ArmConstants.kA);
 
+  double targetAngle = 0.0;
+
   /** Create a new ArmSubsystem. */
   public ArmSubsystem() {
     super(
         new ProfiledPIDController(
             ArmConstants.kP,
             0,
-            0,
+            ArmConstants.kD,
             new TrapezoidProfile.Constraints(
                 ArmConstants.kMaxVelocityRadPerSecond,
                 ArmConstants.kMaxAccelerationMetersPerSecondSquared)),
@@ -50,6 +52,11 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
     leftMotor.setInverted(false);
     rightMotor.follow(leftMotor, true);
+
+    SmartDashboard.putNumber("Desired Angle", targetAngle);
+
+    SmartDashboard.putNumber("Arm P", this.m_controller.getP());
+    SmartDashboard.putNumber("Arm D", this.m_controller.getD());
   }
 
 
@@ -61,8 +68,15 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
       SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
       SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
-      SmartDashboard.putNumber("Error Velocidad", this.getController().getVelocityError());
-      SmartDashboard.putNumber("Control Efford Actual", leftMotor.get());
+
+      double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
+      if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}
+
+      double p = SmartDashboard.getNumber("Arm P", this.m_controller.getP());
+      double d = SmartDashboard.getNumber("Arm D", this.m_controller.getD());
+
+      if((p != ArmConstants.kP)){this.m_controller.setP(p); p = ArmConstants.kP;}
+      if((d != ArmConstants.kD)){this.m_controller.setD(d); d = ArmConstants.kD;}
   }
 
   @Override
@@ -79,12 +93,17 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
   }
 
   public Command goToPosition(double position){
-    return Commands.runOnce(
+    Command ejecutable = Commands.runOnce(
                 () -> {
                   this.setGoal(position);
                   this.enable();
                 },
                 this);
+    return ejecutable;
+  }
+
+  public void dashboardAngle(){
+    goToPosition(targetAngle);
   }
 }
 

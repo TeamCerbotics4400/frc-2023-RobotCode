@@ -8,6 +8,7 @@ import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ConeShooter;
 import frc.robot.commands.TeleOpControl;
+//import frc.robot.commands.TestArm;
 import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.PIDTunerCommand;
 import frc.robot.commands.AutoCommands.PieceWBalance;
@@ -105,7 +106,9 @@ public class RobotContainer {
 
    new POVButton(joy0, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
 
-   new JoystickButton(joy2, 1).whileTrue(m_arm.goToPosition(160.5));
+   new JoystickButton(joy2, 4).onTrue(m_arm.goToPosition(160.5));
+   new JoystickButton(joy2, 3).onTrue(m_arm.goToPosition(110.5));
+   new JoystickButton(joy2, 2).onTrue(m_arm.goToPosition(210.5));
   }    
   
 
