@@ -26,7 +26,7 @@ public class IntakePieces extends CommandBase {
   @Override
   public void execute() {
     //m_intake.setIntakePose(LinkageConstants.intakeExtended);
-    m_shooter.setMotorsPower(0.5, 0.5);
+    m_shooter.setMotorsPower(-0.5, -0.5);
   }
 
   // Called once the command ends or is interrupted.

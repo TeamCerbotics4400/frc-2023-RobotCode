@@ -159,6 +159,10 @@ public final class Constants {
                          kG = 0.12588;//0.44033;
 
     public static double OFFSET_DEGREES = 0.0;
+
+    public static double IDLE_POSITION = 160.5;
+    public static double SUBSTATION_POSITION = 189.5;
+    public static double SCORING_POSITION = 199.5;
   }
 
   public static final class WristConstants {
@@ -174,6 +178,10 @@ public final class Constants {
                          kV = 0.020646,
                          kA = 0.008245,
                          kG = 0.45406;
+
+    public static double LEFT_POSITION = -90.0;
+    public static double IDLE_POSITION = 0.0;
+    public static double RIGHT_POSITION = 90.0;
 
 
   }
