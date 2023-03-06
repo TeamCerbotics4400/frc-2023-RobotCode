@@ -42,7 +42,7 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
             new TrapezoidProfile.Constraints(
                 ArmConstants.kMaxVelocityRadPerSecond,
                 ArmConstants.kMaxAccelerationMetersPerSecondSquared)),
-        0);
+        90.3);
     
     m_encoder.setDistancePerRotation(360.0);
     // Start arm at rest in neutral position
@@ -69,12 +69,13 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       // TODO Auto-generated method stub
       super.periodic();
       SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
-      SmartDashboard.putNumber("Target Verdadero ", targetAngle);
-      SmartDashboard.putNumber("Setpoint Objetivo",this.getController().getGoal().position);
-      SmartDashboard.putNumber("Setpoint Velocidad", this.getController().getGoal().velocity);
-      SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
-      SmartDashboard.putNumber("Consumo motor derecho:", rightMotor.getOutputCurrent());
-      SmartDashboard.putNumber("Consumo motor izq:", leftMotor.getOutputCurrent());
+      //SmartDashboard.putNumber("Target Verdadero ", targetAngle);
+      //SmartDashboard.putNumber("Goal Objetivo",this.getController().getGoal().position);
+      //SmartDashboard.putNumber("Goal Velocidad", this.getController().getGoal().velocity);
+      //SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
+      //SmartDashboard.putNumber("Velocidad ErrorBrazo", this.m_controller.getVelocityError());
+      //SmartDashboard.putNumber("Consumo motor derecho:", rightMotor.getOutputCurrent());
+      //SmartDashboard.putNumber("Consumo motor izq:", leftMotor.getOutputCurrent());
 
       /*double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
       if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}
@@ -100,18 +101,28 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
   }
 
   public Command goToPosition(double position){
-    
-    
     Command ejecutable = Commands.runOnce(
                 () -> {
                   this.setGoal(position);
                   this.enable();
                 },
                 this);
-                targetAngle = position;
     return ejecutable;
   }
 
+  public void gotoPositionMethod(double position){
+    this.setGoal(position);
+    this.enable();
+  }
+
+  public boolean isReady(){
+    if(getMeasurement() > getController().getGoal().position - ArmConstants.ARM_THRESHOLD 
+    && getMeasurement() < getController().getGoal().position + ArmConstants.ARM_THRESHOLD){
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   public double getTargetAngle(){
     return targetAngle;

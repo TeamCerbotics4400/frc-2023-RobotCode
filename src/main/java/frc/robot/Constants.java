@@ -92,17 +92,17 @@ public final class Constants {
 
     public static final byte Gyro_ID = 13;
 
-    public static double TkP = 0.03,
+    public static double TkP = 0.02,
                                TkI = 0.0,
-                               TkD = 0.004;
+                               TkD = 0.0017;
 
-    public static final double kP = 0.0039666//0.0028046//4.068E-06,//0.0019356//0.013687
+    public static final double kP = -0.307//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
     ,  kI = 0
-    , kD = 0;//0.20844;//0.0010903
+    , kD = 0;//0.26741;//0.20844;//0.0010903
 
-    public static final double kS = 0.15286,//0.33144,//0.18404,
-                               kV = 2.7025,//2.34,//2.7305,
-                               kA = 0.69047;//1.1089;//0.83198;
+    public static final double kS = 0.15507,//0.33144,//0.18404,
+                               kV = 2.066,//2.34,//2.7305,
+                               kA = 0.84732;//1.1089;//0.83198;
 
     public static final double WHEEL_DIAMETER = 0.1524;
     public static final double GEAR_RATIO = 0;//7 : 1
@@ -189,6 +189,8 @@ public final class Constants {
     public static double LEFT_POSITION = 90.0;
     public static double IDLE_POSITION = 0.0;
     public static double RIGHT_POSITION = -90.0;
+
+    public static double WRIST_THRESHOLD = 2.0;
   }
 
 
@@ -205,15 +207,15 @@ public final class Constants {
 
     public static final Transform3d limelighCamPose =
           new Transform3d(
-                  new Translation3d(Units.inchesToMeters(Units.inchesToMeters(2.27)), 
-                  Units.inchesToMeters(5.37), Units.inchesToMeters(18.24)),
+                  new Translation3d(Units.inchesToMeters(Units.inchesToMeters(5.53)), 
+                  Units.inchesToMeters(-4.72), Units.inchesToMeters(17)),
                   new Rotation3d(
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
 
     public static final Transform3d orangeCamPose =
           new Transform3d(
-                  new Translation3d(Units.inchesToMeters(Units.inchesToMeters(2.27)), 
+                  new Translation3d(Units.inchesToMeters(Units.inchesToMeters(-2.27)), 
                   Units.inchesToMeters(5.37), Units.inchesToMeters(18.24)),
                   new Rotation3d(
                           0, 0,

@@ -71,8 +71,8 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
       // TODO Auto-generated method stub
       super.periodic();
       //SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
-      SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
-      SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
+      //SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
+      //SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
       SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
       SmartDashboard.putNumber("Wrist Angle", getDegrees().getDegrees());
       SmartDashboard.putNumber("Corriente Muñecona", wristMotor.getOutputCurrent());
@@ -116,6 +116,20 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
                 },
                 this);
     return ejecutable;
+  }
+
+  public void goToPositionMethod(double position){
+    this.setGoal(position);
+    this.enable();
+  }
+
+  public boolean isReady(){
+    if(getMeasurement() > getController().getGoal().position - WristConstants.WRIST_THRESHOLD
+    && getMeasurement() < getController().getGoal().position + WristConstants.WRIST_THRESHOLD){
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void dashboardAngle(){

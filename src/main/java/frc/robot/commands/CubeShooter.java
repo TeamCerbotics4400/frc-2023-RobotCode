@@ -6,17 +6,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.WristSubsystem;
 
 public class CubeShooter extends CommandBase {
   /** Creates a new DefaultShooter. */
   private FalconShooter shooter;
-  //private ArmSubsystem m_arm;
+  private ArmSubsystem m_arm;
+  private WristSubsystem m_wrist;
 
-  public CubeShooter(FalconShooter shooter){//ArmSubsystem m_arm) {
+  public CubeShooter(FalconShooter shooter, ArmSubsystem m_arm, WristSubsystem m_wrist) {
     this.shooter = shooter;
-    //this.m_arm = m_arm;
+    this.m_arm = m_arm;
+    this.m_wrist = m_wrist;
 
     addRequirements(shooter);
   }
@@ -29,12 +33,13 @@ public class CubeShooter extends CommandBase {
   @Override
   public void execute() {
     //shooter.goToDashboardVelocity();
-    /*if(m_arm.getMeasurement() < m_arm.getController().getGoal().position + ArmConstants.ARM_THRESHOLD && 
-    m_arm.getMeasurement() > m_arm.getController().getGoal().position - ArmConstants.ARM_THRESHOLD){*/
-    shooter.goToDashboardVelocity();
-    /* } else {
+    if(m_arm.isReady() && m_wrist.isReady()){
+    //shooter.goToDashboardVelocity();
+    shooter.leftSetpoint(1500);
+    shooter.rightSetpoint(1500);
+     } else {
       shooter.setMotorsPower(0, 0);
-    }*/
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -46,6 +51,10 @@ public class CubeShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(!shooter.isShooterOcuppied()){
+    return true;
+    } else{
+      return false;
+    }
   }
 }

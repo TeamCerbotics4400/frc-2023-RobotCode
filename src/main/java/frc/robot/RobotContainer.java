@@ -12,7 +12,6 @@ import frc.robot.commands.ConeShooter;
 import frc.robot.commands.TeleOpControl;
 //import frc.robot.commands.TestArm;
 import frc.robot.commands.AutoCommands.DriveToNode;
-import frc.robot.commands.AutoCommands.PIDTunerCommand;
 import frc.robot.commands.AutoCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.StraightLineAuto;
 import frc.robot.commands.AutoCommands.TwoPiecesCommand;
@@ -55,7 +54,7 @@ public class RobotContainer {
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "NO AUTO";
   private String m_autoSelected;
-  private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT LINE", 
+  private final String[] m_autoNames = {"NO AUTO", "STRAIGHT LINE", 
           "PIECE AND BALANCE", "TWO PIECES", "TWO PIECES AND BALANCE" };
 
   //private AutoParser autoParser = new AutoParser(m_drive);
@@ -65,11 +64,10 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     m_autoChooser.setDefaultOption("Default Auto", m_DefaultAuto);
-    m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
-    m_autoChooser.addOption("Straight Line", m_autoNames[2]);
-    m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
-    m_autoChooser.addOption("Two Pieces", m_autoNames[4]);
-    m_autoChooser.addOption("Two and Balance", m_autoNames[5]);
+    m_autoChooser.addOption("Straight Line", m_autoNames[1]);
+    m_autoChooser.addOption("Piece and balance", m_autoNames[2]);
+    m_autoChooser.addOption("Two Pieces", m_autoNames[3]);
+    m_autoChooser.addOption("Two and Balance", m_autoNames[4]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -78,6 +76,14 @@ public class RobotContainer {
 
   public DriveTrain getDrivetrain(){
     return m_drive;
+  }
+
+  public ArmSubsystem getArm(){
+    return m_arm;
+  }
+
+  public WristSubsystem getWrist(){
+    return m_wrist;
   }
 
   /**
@@ -99,10 +105,10 @@ public class RobotContainer {
    new JoystickButton(joy0, 1).whileTrue(new 
                                             DriveToNode(m_drive, m_nodeSelector, joy0));
    //Autobalance
-   new JoystickButton(joy1, 6).whileTrue(new AutoBalance(m_drive));
+   new JoystickButton(joy0, 2).whileTrue(new AutoBalance(m_drive));
 
    //Reset Imu
-   new JoystickButton(joy1, 2).whileTrue(new AutoAlign(m_drive));
+   new JoystickButton(joy0, 3).whileTrue(new AutoAlign(m_drive));
 
    new JoystickButton(joy1, 2).whileTrue(new ConeShooter(m_shooter));
 
@@ -114,19 +120,19 @@ public class RobotContainer {
    /*new JoystickButton(joy0, 4).onTrue(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
    //Intaking
-   new JoystickButton(joy0, 3).onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
+   new JoystickButton(joy0, 5).onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
    .whileTrue(new IntakePieces(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
    //Scoring
-   new JoystickButton(joy0, 2).whileTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
+   new JoystickButton(joy0, 6).whileTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   //.whileTrue(new CubeShooter(m_shooter, m_arm))
+   .whileTrue(new CubeShooter(m_shooter, m_arm, m_wrist))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(joy0, 6).whileTrue(new CubeShooter(m_shooter));
+   //new JoystickButton(joy0, 6).whileTrue(new CubeShooter(m_shooter, m_arm));
 
   }    
   
@@ -143,17 +149,12 @@ public class RobotContainer {
 
     System.out.println("Auto Selected: " + m_autoSelected);
     switch(m_autoSelected){
-
-      case "PID TUNER":
-        autonomousCommand = new PIDTunerCommand(m_drive);
-      break;
-
       case "STRAIGHT LINE":
-        autonomousCommand = new StraightLineAuto(m_drive);
+        autonomousCommand = new StraightLineAuto(m_drive, m_arm, m_wrist);
       break;
 
       case "PIECE AND BALANCE":
-        autonomousCommand = new PieceWBalance(m_drive);
+        autonomousCommand = new PieceWBalance(m_drive, m_arm, m_wrist, m_shooter);
       break;
 
       case "TWO PIECES":

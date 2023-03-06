@@ -8,11 +8,18 @@ import com.pathplanner.lib.PathPlanner;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.CubeShooter;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -23,14 +30,18 @@ public class PieceWBalance extends SequentialCommandGroup {
     AutoConstants.kMaxSpeedMetersPerSecond, 
     AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
-  public PieceWBalance(DriveTrain m_drive) {
+  public PieceWBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, FalconShooter m_shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
     InstantCommand resetOdometry = 
     new InstantCommand(() -> m_drive.resetOdometry(onlyBalanceTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry,
+    addCommands(resetOdometry, 
+    new ParallelRaceGroup(m_arm.goToPosition(ArmConstants.SCORING_POSITION)
+    .alongWith(m_wrist.goToPosition(WristConstants.RIGHT_POSITION), new CubeShooter(m_shooter, m_arm, m_wrist))),
+          new ParallelRaceGroup(m_arm.goToPosition(ArmConstants.IDLE_POSITION), 
+          m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
       m_drive.createCommandForTrajectory(onlyBalanceTrajectory, false), 
       new AutoBalance(m_drive).andThen(() -> m_drive.tankDriveVolts(0, 0)));
   }

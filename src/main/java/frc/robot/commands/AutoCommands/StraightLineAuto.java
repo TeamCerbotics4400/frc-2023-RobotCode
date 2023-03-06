@@ -9,8 +9,13 @@ import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.WristConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,13 +27,14 @@ public class StraightLineAuto extends SequentialCommandGroup {
   AutoConstants.kMaxSpeedMetersPerSecond, 
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, false);
 
-  public StraightLineAuto(DriveTrain m_drive) {
+  public StraightLineAuto(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     InstantCommand resetOdometry = new InstantCommand(
       () -> m_drive.resetOdometry(straightTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry,
+    addCommands(resetOdometry, m_arm.goToPosition(ArmConstants.IDLE_POSITION), 
+    m_wrist.goToPosition(WristConstants.IDLE_POSITION),
     m_drive.createCommandForTrajectory(straightTrajectory, false).andThen(
       () -> m_drive.tankDriveVolts(0, 0)));
   }

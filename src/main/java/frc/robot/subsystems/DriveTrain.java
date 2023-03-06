@@ -57,7 +57,7 @@ public class DriveTrain extends SubsystemBase {
   PIDController leftPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
 
-  private PIDController balancePID = new PIDController(0.029, 0, 0.0001); 
+  private PIDController balancePID = new PIDController(-0.02, 0, -0.001); 
 
   private PIDController alignPID = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
 
@@ -77,9 +77,6 @@ public class DriveTrain extends SubsystemBase {
 
   SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
   SparkMaxPIDController controladorDer = rightLeader.getPIDController();
-
-  PIDController leftController = new PIDController(0.0, 0.0, 0.0);
-  PIDController rightController = new PIDController(0.0, 0.0, 0.0);
 
   //private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
@@ -107,6 +104,9 @@ public class DriveTrain extends SubsystemBase {
 
   public PhotonCameraWrapper pcw;
 
+  //Relacion: 8.41 : 1
+  //Diametro de llantas: 6 in
+  //Units per Rotation : 0.4788
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
 
     //this.limelight = limelightSubsystem;
@@ -117,11 +117,11 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.restoreFactoryDefaults();
     rightFollower.restoreFactoryDefaults();
 
-    rightLeader.setInverted(true);
-    rightFollower.setInverted(true);
+    rightLeader.setInverted(false);
+    rightFollower.setInverted(false);
 
-    leftLeader.setInverted(false);
-    leftFollower.setInverted(false);
+    leftLeader.setInverted(true);
+    leftFollower.setInverted(true);
 
     SmartDashboard.putData("Field", m_field);
     
@@ -149,11 +149,11 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    //SmartDashboard.putNumber("Left P", leftController.getP());
-    //SmartDashboard.putNumber("Left D", leftController.getD());
+    SmartDashboard.putNumber("Turn P", alignPID.getP());
+    SmartDashboard.putNumber("Turn D", alignPID.getD());
 
-    //SmartDashboard.putNumber("Right P", rightController.getP());
-    //SmartDashboard.putNumber("Right D", rightController.getD());
+    SmartDashboard.putNumber("Balance P", balancePID.getP());
+    SmartDashboard.putNumber("Balance D", balancePID.getD());
 
     resetImu();
     resetEncoders();
@@ -177,6 +177,9 @@ public class DriveTrain extends SubsystemBase {
 
      SmartDashboard.putNumber("Odometry Y", wheelOdometry.getPoseMeters().getY());
 
+     SmartDashboard.putNumber("Left Encoder meters", encoderCountsToMeters(leftEncoder.getPosition()));
+     SmartDashboard.putNumber("Right Encoder Meters", encoderCountsToMeters(rightEncoder.getPosition()));
+
     /*SmartDashboard.putNumber("visionOdometry X", visionOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("visionOdometry Y", visionOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("visionOdometry Rotation", 
@@ -185,19 +188,21 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Odometry Angle", 
     wheelOdometry.getPoseMeters().getRotation().getDegrees());
 
+    SmartDashboard.putNumber("Current Angle", getCorrectedAngle());
+
     //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
 
-    //double lCP = SmartDashboard.getNumber("Left P", leftController.getP());
-    //double lCD = SmartDashboard.getNumber("Left D", leftController.getD());
+    double lCP = SmartDashboard.getNumber("Turn P", alignPID.getP());
+    double lCD = SmartDashboard.getNumber("Turn D", alignPID.getD());
 
-    //double rCP = SmartDashboard.getNumber("Right P", rightController.getP());
-    //double rCD = SmartDashboard.getNumber("Right D", rightController.getD());
+    double rCP = SmartDashboard.getNumber("Balance P", balancePID.getP());
+    double rCD = SmartDashboard.getNumber("Balance D", balancePID.getD());
 
-    //if((lCP != leftController.getP())){leftController.setP(lCP);}
-    //if((lCD != leftController.getD())){leftController.setD(lCD);}
+    if((lCP != alignPID.getP())){alignPID.setP(lCP);}
+    if((lCD != alignPID.getD())){alignPID.setD(lCD);}
 
-    //if((rCP != rightController.getP())){rightController.setP(rCP);}
-    //if((rCD != rightController.getD())){rightController.setD(rCD);}
+    if((rCP != balancePID.getP())){balancePID.setP(rCP);}
+    if((rCD != balancePID.getD())){balancePID.setD(rCD);}
 
     get3dPose();
   
@@ -212,11 +217,15 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
+  public void drive(double speed, double turn){
+    differentialDrive.arcadeDrive(speed, turn);
+  }
+
   public void setOpenLoop(DriveSignal signal){
     leftLeader.set(signal.getLeft());
     rightLeader.set(signal.getRight());
   }
-  
+
   public static boolean epsilonEquals(double a, double b, double epsilon) {
     return (a - epsilon <= b) && (a + epsilon >= b);
   }
@@ -230,7 +239,7 @@ public class DriveTrain extends SubsystemBase {
   }
   
   public void setCheesyishDrive(Joystick joystick){
-    setCheesyishDrive(-0.8 * setJoyDeadBand(-joystick.getRawAxis(1), 0.2) ,0.8 * setJoyDeadBand(joystick.getRawAxis(4), 0.2) , joystick.getRawButton(10));
+    setCheesyishDrive(0.8 * setJoyDeadBand(-joystick.getRawAxis(1), 0.15) ,0.8 * setJoyDeadBand(-joystick.getRawAxis(4), 0.15) , joystick.getRawButton(10));
   }
   
   public static double setJoyDeadBand(double joystickValue, double deadBand) {
@@ -281,7 +290,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double encoderCountsToMeters(double encoderCounts){
-    double wheelRotations = encoderCounts / 10.75;
+    double wheelRotations = encoderCounts / 8.41;
     double distance = wheelRotations * (Math.PI * 0.1524);
     return distance;
   }
@@ -424,14 +433,6 @@ public class DriveTrain extends SubsystemBase {
 
   public PIDController getTurnPID(){
     return alignPID;
-  }
-
-  public PIDController getLeftController(){
-    return leftController;
-  }
-
-  public PIDController getRightController(){
-    return rightController;
   }
   
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
