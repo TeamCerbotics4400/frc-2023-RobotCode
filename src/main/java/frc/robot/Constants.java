@@ -122,18 +122,22 @@ public final class Constants {
     public static final byte LEFT_FLYWHEEL_ID = 8; 
     public static final byte RIGHT_FLYWHEEL_ID = 9;
 
-    public static double kP= 0.096, //con bandas = 0.098
-                        kI = 0.001,
-                        kD = 0.001,
-                        kIz = 300,
-                        kFF = 0.40,//con bandas = 0.42
+
+    public static double kP= 0.078061, //con bandas = 0.098
+                        kI = 0.0,
+                        kD = 0.0,
+                        kIz = 0,
+                        kFF = 0.049,//con bandas = 0.42
                         kMaxOutput = 1,
                         kMinOutput = -1, 
                         maxRPM = 0, 
                         maxVel = 0, //---------
                         minVel = 0, //---------
                         maxAcc = 0, 
-                        allowedErr = 0;
+                        allowedErr = 0,
+                        kS = 0.093193,
+                        kV = 0.33252,
+                        kA = 0.011115;
 
     public static double targetVelocity = 0;
 
@@ -168,22 +172,20 @@ public final class Constants {
   public static final class WristConstants {
     public static byte WRIST_ID = 7; //PlaceHolder
 
-    public static double kP = 0.14578,
+    public static double kP = 0.15221,
                          kI = 0.0,
-                         kD = 0.050361,
+                         kD = 0.0151835,
                          kFF = 0.0,
-                         kMaxVelocityRadPerSecond = 150,
-                         kMaxAccelerationMetersPerSecondSquared = 150,
+                         kMaxVelocityRadPerSecond = 200,
+                         kMaxAccelerationMetersPerSecondSquared = 200,
                          kS = 0.46147,
                          kV = 0.020646,
                          kA = 0.008245,
                          kG = 0.45406;
 
-    public static double LEFT_POSITION = -90.0;
+    public static double LEFT_POSITION = 90.0;
     public static double IDLE_POSITION = 0.0;
-    public static double RIGHT_POSITION = 90.0;
-
-
+    public static double RIGHT_POSITION = -90.0;
   }
 
 

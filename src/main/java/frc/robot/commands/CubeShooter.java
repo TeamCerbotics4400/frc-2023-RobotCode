@@ -25,7 +25,7 @@ public class CubeShooter extends CommandBase {
   @Override
   public void execute() {
     //shooter.goToDashboardVelocity();
-    shooter.setMotorsPower(0.5, 0.5);
+    shooter.goToDashboardVelocity();
   }
 
   // Called once the command ends or is interrupted.

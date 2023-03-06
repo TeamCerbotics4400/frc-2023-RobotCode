@@ -11,9 +11,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants.ArmConstants;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -71,6 +69,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
       SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
       SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
+      SmartDashboard.putNumber("Consumo motor derecho:", rightMotor.getOutputCurrent());
+      SmartDashboard.putNumber("Consumo motor izq:", leftMotor.getOutputCurrent());
 
       double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
       if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}

@@ -55,7 +55,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
 
     wristMotor.setInverted(false); //Mirandolo desde un lado gira a la derecha
 
-    wristMotor.setSmartCurrentLimit(10);
+    wristMotor.setSmartCurrentLimit(5);
 
     SmartDashboard.putNumber("Desired Angle", targetAngle);
 
@@ -75,6 +75,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
       SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
       SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
       SmartDashboard.putNumber("Wrist Angle", getDegrees().getDegrees());
+      SmartDashboard.putNumber("Corriente Muñecona", wristMotor.getOutputCurrent());
 
       double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
       if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}

@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -53,12 +55,12 @@ public class FalconShooter extends SubsystemBase {
     rightFlyWheel.config_kF(pidSlot, ShooterConstants.kFF);
     
     SmartDashboard.putNumber("Target Velo", desiredVelo);
-/* 
+
     SmartDashboard.putNumber("Shooter P", ShooterConstants.kP);
     SmartDashboard.putNumber("Shooter I", ShooterConstants.kI);
     SmartDashboard.putNumber("Shooter D", ShooterConstants.kD);
-    SmartDashboard.putNumber("Shooter Iz", ShooterConstants.kIz);
-    SmartDashboard.putNumber("Shooter FF", ShooterConstants.kFF);*/
+    //SmartDashboard.putNumber("Shooter Iz", ShooterConstants.kIz);
+    SmartDashboard.putNumber("Shooter FF", ShooterConstants.kFF);
 
   }
 
@@ -66,31 +68,35 @@ public class FalconShooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    //SmartDashboard.putNumber("Average RPM", getAverageRPM());
-    //SmartDashboard.putNumber("Left RPM", getLeftRPM());
-    //SmartDashboard.putNumber("Right RPM", getRightRPM());
+    SmartDashboard.putNumber("Average RPM", getAverageRPM());
+    SmartDashboard.putNumber("Left RPM", getLeftRPM());
+    SmartDashboard.putNumber("Right RPM", getRightRPM());
 
     double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
     if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
     
-  /* 
+  
     double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);
     double i = SmartDashboard.getNumber("Shooter I", ShooterConstants.kI);
-    double iz = SmartDashboard.getNumber("Shooter Iz", ShooterConstants.kIz);
+    //double iz = SmartDashboard.getNumber("Shooter Iz", ShooterConstants.kIz);
     double d = SmartDashboard.getNumber("Shooter D", ShooterConstants.kD);
     double ff = SmartDashboard.getNumber("Shooter FF", ShooterConstants.kFF);
+
+    SmartDashboard.putBoolean("Is Beam Sensor Active", beamSensor.get());
 
     if((p != ShooterConstants.kP)){leftFlyWheel.config_kP(pidSlot, p); 
                                     rightFlyWheel.config_kP(pidSlot,p); ShooterConstants.kP = p;}
     if((i != ShooterConstants.kI)){leftFlyWheel.config_kI(pidSlot, i); 
                                     rightFlyWheel.config_kI(pidSlot, i); ShooterConstants.kI = i;}
-    if((iz != ShooterConstants.kIz)){leftFlyWheel.config_IntegralZone(pidSlot, iz); 
-                                    rightFlyWheel.config_IntegralZone(pidSlot, iz); ShooterConstants.kIz = iz;}                                
+    //if((iz != ShooterConstants.kIz)){leftFlyWheel.config_IntegralZone(pidSlot, iz); 
+      //                              rightFlyWheel.config_IntegralZone(pidSlot, iz); ShooterConstants.kIz = iz;}                                
     if((d != ShooterConstants.kD)){leftFlyWheel.config_kD(pidSlot, d); 
                                     rightFlyWheel.config_kD(pidSlot,d); ShooterConstants.kD = d;}
     if((ff != ShooterConstants.kFF)){leftFlyWheel.config_kF(pidSlot, ff); 
-                                    rightFlyWheel.config_kF(pidSlot,ff); ShooterConstants.kFF = ff;}*/
+                                    rightFlyWheel.config_kF(pidSlot,ff); ShooterConstants.kFF = ff;}
+
+                                  
   }
 
   public double falconUnitsToRPM(double sensorUnits) {
@@ -128,11 +134,11 @@ public class FalconShooter extends SubsystemBase {
   }
 
   public void leftSetpoint(double setPoint){
-    leftFlyWheel.set(TalonFXControlMode.Velocity, setPoint);
+    leftFlyWheel.set(TalonFXControlMode.Velocity, RPMtoFalconUnits(setPoint));
   }
 
   public void rightSetpoint(double setPoint){
-    rightFlyWheel.set(TalonFXControlMode.Velocity, setPoint);
+    rightFlyWheel.set(TalonFXControlMode.Velocity, RPMtoFalconUnits(setPoint));
   }
 
   public void goToDashboardVelocity(){
