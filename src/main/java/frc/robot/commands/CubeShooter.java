@@ -5,14 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
 
 public class CubeShooter extends CommandBase {
   /** Creates a new DefaultShooter. */
   private FalconShooter shooter;
+  //private ArmSubsystem m_arm;
 
-  public CubeShooter(FalconShooter shooter) {
+  public CubeShooter(FalconShooter shooter){//ArmSubsystem m_arm) {
     this.shooter = shooter;
+    //this.m_arm = m_arm;
 
     addRequirements(shooter);
   }
@@ -25,7 +29,12 @@ public class CubeShooter extends CommandBase {
   @Override
   public void execute() {
     //shooter.goToDashboardVelocity();
+    /*if(m_arm.getMeasurement() < m_arm.getController().getGoal().position + ArmConstants.ARM_THRESHOLD && 
+    m_arm.getMeasurement() > m_arm.getController().getGoal().position - ArmConstants.ARM_THRESHOLD){*/
     shooter.goToDashboardVelocity();
+    /* } else {
+      shooter.setMotorsPower(0, 0);
+    }*/
   }
 
   // Called once the command ends or is interrupted.

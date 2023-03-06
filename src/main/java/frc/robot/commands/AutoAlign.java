@@ -35,7 +35,7 @@ public class AutoAlign extends CommandBase {
   @Override
   public void execute() {
     
-    m_drive.drive(0, turnPID.calculate(m_drive.getCorrectedAngle()));
+    m_drive.setCheesyishDrive(0, turnPID.calculate(m_drive.getCorrectedAngle()), true);
   }
 
   // Called once the command ends or is interrupted.

@@ -31,7 +31,7 @@ public class AutoBalance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.drive(m_drive.getBalanceController().calculate(m_drive.getPitch()), 0);
+    m_drive.setCheesyishDrive(m_drive.getBalanceController().calculate(m_drive.getPitch()), 0, false);
   }
 
   // Called once the command ends or is interrupted.

@@ -30,6 +30,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
   double targetAngle = 0.0;
 
+  boolean onTarget;
+
   /** Create a new ArmSubsystem. */
   public ArmSubsystem() {
     super(
@@ -41,9 +43,10 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
                 ArmConstants.kMaxVelocityRadPerSecond,
                 ArmConstants.kMaxAccelerationMetersPerSecondSquared)),
         0);
+    
     m_encoder.setDistancePerRotation(360.0);
     // Start arm at rest in neutral position
-    setGoal(160.5);
+    setGoal(90.3);
 
     leftMotor.restoreFactoryDefaults();
     rightMotor.restoreFactoryDefaults();
@@ -54,10 +57,10 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     leftMotor.setSmartCurrentLimit(40);
     rightMotor.setSmartCurrentLimit(40);
 
-    SmartDashboard.putNumber("Desired Angle", targetAngle);
+    //SmartDashboard.putNumber("Desired Angle", targetAngle);
 
-    SmartDashboard.putNumber("Arm P", this.m_controller.getP());
-    SmartDashboard.putNumber("Arm D", this.m_controller.getD());
+    /*SmartDashboard.putNumber("Arm P", this.m_controller.getP());
+    SmartDashboard.putNumber("Arm D", this.m_controller.getD());*/
   }
 
 
@@ -66,20 +69,21 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       // TODO Auto-generated method stub
       super.periodic();
       SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
-      SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
-      SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
+      SmartDashboard.putNumber("Target Verdadero ", targetAngle);
+      SmartDashboard.putNumber("Setpoint Objetivo",this.getController().getGoal().position);
+      SmartDashboard.putNumber("Setpoint Velocidad", this.getController().getGoal().velocity);
       SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
       SmartDashboard.putNumber("Consumo motor derecho:", rightMotor.getOutputCurrent());
       SmartDashboard.putNumber("Consumo motor izq:", leftMotor.getOutputCurrent());
 
-      double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
+      /*double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
       if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}
 
       double p = SmartDashboard.getNumber("Arm P", this.m_controller.getP());
       double d = SmartDashboard.getNumber("Arm D", this.m_controller.getD());
 
       if((p != ArmConstants.kP)){this.m_controller.setP(p); p = ArmConstants.kP;}
-      if((d != ArmConstants.kD)){this.m_controller.setD(d); d = ArmConstants.kD;}
+      if((d != ArmConstants.kD)){this.m_controller.setD(d); d = ArmConstants.kD;}*/
   }
 
   @Override
@@ -92,21 +96,25 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
   @Override
   public double getMeasurement() {
-    return m_encoder.getDistance();
+    return m_encoder.getDistance() - 70.5;
   }
 
   public Command goToPosition(double position){
+    
+    
     Command ejecutable = Commands.runOnce(
                 () -> {
                   this.setGoal(position);
                   this.enable();
                 },
                 this);
+                targetAngle = position;
     return ejecutable;
   }
 
-  public void dashboardAngle(){
-    goToPosition(targetAngle);
+
+  public double getTargetAngle(){
+    return targetAngle;
   }
 }
 

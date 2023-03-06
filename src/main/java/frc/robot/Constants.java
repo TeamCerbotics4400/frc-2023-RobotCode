@@ -106,14 +106,14 @@ public final class Constants {
 
     public static final double WHEEL_DIAMETER = 0.1524;
     public static final double GEAR_RATIO = 0;//7 : 1
-    public static final double TRACK_WIDTH = 0.69; 
+    public static final double TRACK_WIDTH = 0.504; 
     public static final double ENCODER_CPR = 0;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(TRACK_WIDTH);
 
     public static final double TRACK_WIDTH_INCHES = Units.metersToInches(TRACK_WIDTH);
 
-    public static final double TRACK_SCRUB_FACTOR = 0;//Para un giro mas cerrado del cheezy drive
+    public static final double TRACK_SCRUB_FACTOR = 0.5;//Para un giro mas cerrado del cheezy drive
     
 }
 
@@ -164,9 +164,12 @@ public final class Constants {
 
     public static double OFFSET_DEGREES = 0.0;
 
-    public static double IDLE_POSITION = 160.5;
-    public static double SUBSTATION_POSITION = 189.5;
-    public static double SCORING_POSITION = 199.5;
+    public static double IDLE_POSITION = 160.5 - 70.5;
+    public static double SUBSTATION_POSITION = 189.5 - 70.5;
+    public static double SCORING_POSITION = 191.79 - 70.5;//199.5 - 70.5;
+    public static double BACK_FLOOR_POSITION = 1.15;
+
+    public static double ARM_THRESHOLD = 6.0;
   }
 
   public static final class WristConstants {
@@ -200,9 +203,18 @@ public final class Constants {
     public static double LIMELIGHT_FLOOR_CLEREANCE= 0.79;//Altura de la limelight
     public static double LIMELIGHT_VERTICAL_ANGLE = 36; //Angulo de la limelight
 
+    public static final Transform3d limelighCamPose =
+          new Transform3d(
+                  new Translation3d(Units.inchesToMeters(Units.inchesToMeters(2.27)), 
+                  Units.inchesToMeters(5.37), Units.inchesToMeters(18.24)),
+                  new Rotation3d(
+                          0, 0,
+                          0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
+
     public static final Transform3d orangeCamPose =
           new Transform3d(
-                  new Translation3d(0.2444, 0, 0.454),
+                  new Translation3d(Units.inchesToMeters(Units.inchesToMeters(2.27)), 
+                  Units.inchesToMeters(5.37), Units.inchesToMeters(18.24)),
                   new Rotation3d(
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up

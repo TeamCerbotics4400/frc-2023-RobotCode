@@ -24,12 +24,14 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -42,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import team4400.Util.DriveSignal;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
@@ -102,7 +105,7 @@ public class DriveTrain extends SubsystemBase {
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
 
-  //public PhotonCameraWrapper pcw;
+  public PhotonCameraWrapper pcw;
 
   public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
 
@@ -142,7 +145,7 @@ public class DriveTrain extends SubsystemBase {
     debuggingTab = Shuffleboard.getTab("Debugging Tab");
     competitionTab = Shuffleboard.getTab("Competition Tab");
 
-    //pcw = new PhotonCameraWrapper();
+    pcw = new PhotonCameraWrapper();
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
@@ -209,8 +212,55 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  public void drive(double speed, double turn){
-    differentialDrive.arcadeDrive(speed, turn);
+  public void setOpenLoop(DriveSignal signal){
+    leftLeader.set(signal.getLeft());
+    rightLeader.set(signal.getRight());
+  }
+  
+  public static boolean epsilonEquals(double a, double b, double epsilon) {
+    return (a - epsilon <= b) && (a + epsilon >= b);
+  }
+  private static final double kEpsilon = 1E-9;//-------
+  public static DriveSignal inverseKinematics(Twist2d velocity) {
+    if (Math.abs(velocity.dtheta) < kEpsilon) {
+      return new DriveSignal(velocity.dx, velocity.dx);
+    }
+    double delta_v = DriveConstants.TRACK_WIDTH_INCHES * velocity.dtheta / (2 * DriveConstants.TRACK_SCRUB_FACTOR);
+    return new DriveSignal(velocity.dx - delta_v, velocity.dx + delta_v);
+  }
+  
+  public void setCheesyishDrive(Joystick joystick){
+    setCheesyishDrive(-0.8 * setJoyDeadBand(-joystick.getRawAxis(1), 0.2) ,0.8 * setJoyDeadBand(joystick.getRawAxis(4), 0.2) , joystick.getRawButton(10));
+  }
+  
+  public static double setJoyDeadBand(double joystickValue, double deadBand) {
+    return joystickValue < deadBand && joystickValue > -deadBand ? 0 : joystickValue;
+  }
+
+  public void setCheesyishDrive(double throttle, double wheel, boolean quickTurn){
+    
+    if (epsilonEquals(throttle, 0.0, 0.075)) {
+      throttle = 0.0;
+    }
+    
+    if (epsilonEquals(wheel, 0.0, 0.075)) {
+      wheel = 0.0;
+    }
+
+    final double kWheelGain = 0.05;
+    final double kWheelNonlinearity = 0.05;
+    final double denominator = Math.sin(Math.PI / 2.0 * kWheelNonlinearity);
+    // Apply a sin function that's scaled to make it feel better.
+    if (!quickTurn) {
+      wheel = Math.sin(Math.PI / 2.0 * kWheelNonlinearity * wheel);
+      wheel = Math.sin(Math.PI / 2.0 * kWheelNonlinearity * wheel);
+      wheel = wheel / (denominator * denominator) * Math.abs(throttle);
+    }
+       
+    wheel *= kWheelGain;
+    DriveSignal signal = inverseKinematics(new Twist2d(throttle, 0.0, wheel));
+    double scaling_factor = Math.max(1.0, Math.max(Math.abs(signal.getLeft()), Math.abs(signal.getRight())));
+    setOpenLoop(new DriveSignal(signal.getLeft() / scaling_factor, signal.getRight() / scaling_factor));
     differentialDrive.feed();
   }
 
@@ -344,8 +394,7 @@ public class DriveTrain extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition().getRotation();
   }
 
-  //Metodo de prueba
-  /*public void updateOdometryWVisionCorrectionPhoton(){
+  public void updateOdometryWVisionCorrectionPhoton(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
@@ -363,8 +412,7 @@ public class DriveTrain extends SubsystemBase {
     }
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-
-  }*/
+  }
 
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();

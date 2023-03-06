@@ -29,6 +29,7 @@ public class FalconShooter extends SubsystemBase {
   int pidSlot = 0;
 
   //Beam DIO 0
+  //Beam 2 DIO 3
   public FalconShooter() {
     leftFlyWheel.configFactoryDefault();
     rightFlyWheel.configFactoryDefault();
@@ -36,8 +37,8 @@ public class FalconShooter extends SubsystemBase {
     leftFlyWheel.setInverted(false);
     rightFlyWheel.setInverted(true);
 
-    leftFlyWheel.setNeutralMode(NeutralMode.Coast);
-    rightFlyWheel.setNeutralMode(NeutralMode.Coast);
+    leftFlyWheel.setNeutralMode(NeutralMode.Brake);
+    rightFlyWheel.setNeutralMode(NeutralMode.Brake);
 
     leftFlyWheel.configVoltageCompSaturation(12);
     rightFlyWheel.configVoltageCompSaturation(12);
@@ -56,11 +57,11 @@ public class FalconShooter extends SubsystemBase {
     
     SmartDashboard.putNumber("Target Velo", desiredVelo);
 
-    SmartDashboard.putNumber("Shooter P", ShooterConstants.kP);
+    /*SmartDashboard.putNumber("Shooter P", ShooterConstants.kP);
     SmartDashboard.putNumber("Shooter I", ShooterConstants.kI);
     SmartDashboard.putNumber("Shooter D", ShooterConstants.kD);
     //SmartDashboard.putNumber("Shooter Iz", ShooterConstants.kIz);
-    SmartDashboard.putNumber("Shooter FF", ShooterConstants.kFF);
+    SmartDashboard.putNumber("Shooter FF", ShooterConstants.kFF);*/
 
   }
 
@@ -71,13 +72,14 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putNumber("Average RPM", getAverageRPM());
     SmartDashboard.putNumber("Left RPM", getLeftRPM());
     SmartDashboard.putNumber("Right RPM", getRightRPM());
+    SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppied());
 
     double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
     if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
     
   
-    double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);
+    /*double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);
     double i = SmartDashboard.getNumber("Shooter I", ShooterConstants.kI);
     //double iz = SmartDashboard.getNumber("Shooter Iz", ShooterConstants.kIz);
     double d = SmartDashboard.getNumber("Shooter D", ShooterConstants.kD);
@@ -94,7 +96,7 @@ public class FalconShooter extends SubsystemBase {
     if((d != ShooterConstants.kD)){leftFlyWheel.config_kD(pidSlot, d); 
                                     rightFlyWheel.config_kD(pidSlot,d); ShooterConstants.kD = d;}
     if((ff != ShooterConstants.kFF)){leftFlyWheel.config_kF(pidSlot, ff); 
-                                    rightFlyWheel.config_kF(pidSlot,ff); ShooterConstants.kFF = ff;}
+                                    rightFlyWheel.config_kF(pidSlot,ff); ShooterConstants.kFF = ff;}*/
 
                                   
   }
@@ -154,6 +156,20 @@ public class FalconShooter extends SubsystemBase {
   public void setMotorsPower(double leftPower, double rightPower){
     leftFlyWheel.set(TalonFXControlMode.PercentOutput, leftPower);
     rightFlyWheel.set(TalonFXControlMode.PercentOutput, rightPower);
+  }
+
+  public void stopShooterSensor(){
+    if(isShooterOcuppied()){
+      setMotorsPower(0, 0);
+    }
+  }
+
+  public boolean isShooterOcuppied(){
+    if(beamSensor.get() != true){
+      return true;
+    } else{
+      return false;
+    }
   }
 }
 

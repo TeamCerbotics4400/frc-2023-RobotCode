@@ -5,11 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
 
 public class IntakePieces extends CommandBase {
   /** Creates a new DefaultIntake. */
   FalconShooter m_shooter;
+  ArmSubsystem m_arm;
 
   public IntakePieces(FalconShooter m_shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,7 +28,10 @@ public class IntakePieces extends CommandBase {
   @Override
   public void execute() {
     //m_intake.setIntakePose(LinkageConstants.intakeExtended);
+    
     m_shooter.setMotorsPower(-0.5, -0.5);
+
+    m_shooter.stopShooterSensor();
   }
 
   // Called once the command ends or is interrupted.

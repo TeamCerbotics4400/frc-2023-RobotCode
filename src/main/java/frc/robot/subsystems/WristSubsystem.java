@@ -57,10 +57,10 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
 
     wristMotor.setSmartCurrentLimit(5);
 
-    SmartDashboard.putNumber("Desired Angle", targetAngle);
+    /*SmartDashboard.putNumber("Desired Angle", targetAngle);
 
     SmartDashboard.putNumber("Arm P", this.m_controller.getP());
-    SmartDashboard.putNumber("Arm D", this.m_controller.getD());
+    SmartDashboard.putNumber("Arm D", this.m_controller.getD());*/
 
     resetEncoder();
   }
@@ -77,14 +77,14 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
       SmartDashboard.putNumber("Wrist Angle", getDegrees().getDegrees());
       SmartDashboard.putNumber("Corriente Muñecona", wristMotor.getOutputCurrent());
 
-      double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
+      /*double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
       if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}
 
       double p = SmartDashboard.getNumber("Arm P", this.m_controller.getP());
       double d = SmartDashboard.getNumber("Arm D", this.m_controller.getD());
 
       if((p != ArmConstants.kP)){this.m_controller.setP(p); p = ArmConstants.kP;}
-      if((d != ArmConstants.kD)){this.m_controller.setD(d); d = ArmConstants.kD;}
+      if((d != ArmConstants.kD)){this.m_controller.setD(d); d = ArmConstants.kD;}*/
   }
 
   @Override

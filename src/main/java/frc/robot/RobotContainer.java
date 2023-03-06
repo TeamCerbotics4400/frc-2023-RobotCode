@@ -94,9 +94,9 @@ public class RobotContainer {
    m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    joy0));
 
-   new JoystickButton(joy0, 6).whileTrue(new IntakePieces(m_shooter));
+   //new JoystickButton(joy0, 6).whileTrue(new IntakePieces(m_shooter));
 
-   new JoystickButton(joy1, 1).whileTrue(new 
+   new JoystickButton(joy0, 1).whileTrue(new 
                                             DriveToNode(m_drive, m_nodeSelector, joy0));
    //Autobalance
    new JoystickButton(joy1, 6).whileTrue(new AutoBalance(m_drive));
@@ -104,22 +104,30 @@ public class RobotContainer {
    //Reset Imu
    new JoystickButton(joy1, 2).whileTrue(new AutoAlign(m_drive));
 
-   new JoystickButton(joy1, 1).whileTrue(new CubeShooter(m_shooter));
-
    new JoystickButton(joy1, 2).whileTrue(new ConeShooter(m_shooter));
 
    new POVButton(joy1, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
 
    new POVButton(joy1, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
 
-   new JoystickButton(joy2, 4).onTrue(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
-   .whileTrue(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
-   new JoystickButton(joy2, 3).onTrue(m_arm.goToPosition(ArmConstants.SUBSTATION_POSITION))
-   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION));
-   new JoystickButton(joy2, 2).onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
-   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION));
+   //Idle
+   /*new JoystickButton(joy0, 4).onTrue(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
+   //Intaking
+   new JoystickButton(joy0, 3).onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
+   .whileTrue(new IntakePieces(m_shooter))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+   //Scoring
+   new JoystickButton(joy0, 2).whileTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   //.whileTrue(new CubeShooter(m_shooter, m_arm))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(joy2, 1).whileTrue(new CubeShooter(m_shooter));
+   new JoystickButton(joy0, 6).whileTrue(new CubeShooter(m_shooter));
+
   }    
   
 
