@@ -121,13 +121,13 @@ public class RobotContainer {
    //Intaking
    new JoystickButton(joy0, 5).onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
-   .whileTrue(new IntakeCones(m_shooter))
+   .whileTrue(new IntakeCubes(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
    //Scoring
    new JoystickButton(joy0, 6).whileTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   .whileTrue(new ConeShooter(m_shooter, m_arm, m_wrist))
+   .whileTrue(new CubeShooter(m_shooter, m_arm, m_wrist))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
@@ -158,7 +158,7 @@ public class RobotContainer {
       break;
 
       case "TWO PIECES":
-        autonomousCommand = new TwoPiecesCommand(m_drive);
+        autonomousCommand = new TwoPiecesCommand(m_drive, m_arm, m_wrist, m_shooter);
       break;
 
       case "TWO PIECES AND BALANCE":

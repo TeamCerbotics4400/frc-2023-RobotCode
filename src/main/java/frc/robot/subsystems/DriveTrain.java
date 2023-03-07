@@ -132,6 +132,7 @@ public class DriveTrain extends SubsystemBase {
     leftFollower.setIdleMode(IdleMode.kBrake);
     rightLeader.setIdleMode(IdleMode.kBrake);
     rightFollower.setIdleMode(IdleMode.kBrake);
+    
 
     //controladorDer.setP(kP);
     //controladorDer.setD(kD);

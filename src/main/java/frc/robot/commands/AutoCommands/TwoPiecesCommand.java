@@ -8,9 +8,14 @@ import com.pathplanner.lib.PathPlanner;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,7 +26,12 @@ public class TwoPiecesCommand extends SequentialCommandGroup {
   AutoConstants.kMaxSpeedMetersPerSecond,
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
-  public TwoPiecesCommand(DriveTrain m_drive) {
+  DriveTrain m_drive;
+  ArmSubsystem m_arm;
+  WristSubsystem m_wrist;
+
+  public TwoPiecesCommand(DriveTrain m_drive, ArmSubsystem m_arm, 
+  WristSubsystem m_wrist, FalconShooter m_shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -29,7 +39,9 @@ public class TwoPiecesCommand extends SequentialCommandGroup {
      m_drive.resetOdometry(twoPiecesTrajectory.getInitialPose()));
 
     addCommands(resetOdometry,
-     m_drive.createCommandForTrajectory(twoPiecesTrajectory, false)
-     .andThen(() -> m_drive.tankDriveVolts(0, 0)));
+    new ParallelRaceGroup(m_drive.createCommandForTrajectory(twoPiecesTrajectory, false), 
+    new IntakeCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)))
+     .andThen(() -> m_drive.tankDriveVolts(0, 0)), 
+     new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)));
   }
 }
