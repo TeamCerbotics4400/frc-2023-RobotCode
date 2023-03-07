@@ -57,20 +57,15 @@ public class CombinedShooter extends CommandBase {
   @Override
   public void execute() {
     if(cubeNodes.contains(m_selector.getAlignName())){
-      if(m_arm.isReady() && m_wrist.isReady()){
+      
         m_shooter.leftSetpoint(1500);
         m_shooter.rightSetpoint(1500);
-         } else {
-          m_shooter.setMotorsPower(0, 0);
-        }
+        
     } else{
-      if(m_arm.isReady() && m_wrist.isReady() /*&& suitableToShoot()*/){
-        m_shooter.leftSetpoint(1075);
-      m_shooter.rightSetpoint(1075);
-         } else {
-          m_shooter.setMotorsPower(0, 0);
-        }
-    }
+      
+        m_shooter.leftSetpoint(1045);
+      m_shooter.rightSetpoint(1045);
+     }
   }
 
   // Called once the command ends or is interrupted.

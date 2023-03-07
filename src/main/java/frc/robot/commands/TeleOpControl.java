@@ -30,11 +30,12 @@ public class TeleOpControl extends CommandBase {
     m_drive.setCheesyishDrive(joy);
 
     if(joy.getRawAxis(2) > 0.3){
-      m_drive.setCheesyishDrive(0.0, 0.5, true);
+      m_drive.setCheesyishDrive(0.0, 0.3
+      , true);
     }
 
     if(joy.getRawAxis(3) > 0.3){
-      m_drive.setCheesyishDrive(0.0, 0.5, true);
+      m_drive.setCheesyishDrive(0.0, -0.3, true);
     }
   }
 
