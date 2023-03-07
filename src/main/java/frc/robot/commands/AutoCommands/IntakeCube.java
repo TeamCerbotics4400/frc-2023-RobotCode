@@ -7,6 +7,7 @@ package frc.robot.commands.AutoCommands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.IntakeCubes;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.WristSubsystem;
@@ -28,6 +29,6 @@ public class IntakeCube extends ParallelCommandGroup {
     this.m_wrist = m_wrist;
 
     addCommands(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION), 
-    m_wrist.goToPosition(WristConstants.RIGHT_POSITION), new IntakeCube(m_shooter, m_arm, m_wrist));
+    m_wrist.goToPosition(WristConstants.RIGHT_POSITION), new IntakeCubes(m_shooter));
   }
 }

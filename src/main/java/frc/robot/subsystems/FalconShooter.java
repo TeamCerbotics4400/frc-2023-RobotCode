@@ -71,7 +71,7 @@ public class FalconShooter extends SubsystemBase {
     //SmartDashboard.putNumber("Average RPM", getAverageRPM());
     //SmartDashboard.putNumber("Left RPM", getLeftRPM());
     //SmartDashboard.putNumber("Right RPM", getRightRPM());
-    //SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppied());
+    SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
 
     SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
     SmartDashboard.putBoolean("Shooter w cone", isShooterOcuppiedCone());
