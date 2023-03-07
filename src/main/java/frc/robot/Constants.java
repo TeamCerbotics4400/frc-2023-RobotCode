@@ -221,7 +221,8 @@ public final class Constants {
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
     // from center.
-    public static final String cameraName = "OV9281";
+    public static final String orangeName = "OV9281";
+    public static final String limelightName = "limelight-cerbo";
   }
 
   public static final class FieldConstants{

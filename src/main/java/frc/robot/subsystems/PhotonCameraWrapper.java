@@ -29,7 +29,7 @@ public class PhotonCameraWrapper {
     
     public PhotonCameraWrapper() {
 
-        photonCamera = new PhotonCamera(VisionConstants.cameraName);
+        photonCamera = new PhotonCamera(VisionConstants.orangeName);
         
         try{
             AprilTagFieldLayout fieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();

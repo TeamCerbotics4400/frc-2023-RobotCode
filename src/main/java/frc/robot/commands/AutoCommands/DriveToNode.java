@@ -76,7 +76,7 @@ public class DriveToNode extends CommandBase {
       .plus(Rotation2d.fromDegrees(0)).getDegrees());
     angularSpeed = MathUtil.clamp(angularSpeed, -0.5, 0.5);
 
-    m_drive.setCheesyishDrive(-joy.getRawAxis(1), angularSpeed, true);
+    m_drive.drive(-joy.getRawAxis(1), angularSpeed);
 
     SmartDashboard.putNumberArray("Intermediate pose", 
         new double[] {intermediatePoint.getX(), intermediatePoint.getY(), 

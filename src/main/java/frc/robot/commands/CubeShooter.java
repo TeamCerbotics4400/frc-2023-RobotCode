@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.ArmConstants;
@@ -53,10 +54,13 @@ public class CubeShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!shooter.isShooterOcuppiedCube()){
-    return true;
-    } else{
-      return false;
-    }
+    if(DriverStation.isAutonomous()){
+      if(!shooter.isShooterOcuppiedCube()){
+        return true;
+      } else{
+        return false;
+      }
+    } 
+    return false;
   }
 }
