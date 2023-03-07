@@ -21,6 +21,7 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.IntakeCones;
 import frc.robot.commands.IntakeCubes;
+import frc.robot.commands.LowShoot;
 import frc.robot.commands.NodeSelectionLeft;
 import frc.robot.commands.NodeSelectionRight;
 import edu.wpi.first.wpilibj.Joystick;
@@ -115,9 +116,9 @@ public class RobotContainer {
 
    new JoystickButton(joy0, 4).whileTrue(new AutoBalance(m_drive));
 
-   new POVButton(joy0, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
+   new POVButton(joy1, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
 
-   new POVButton(joy0, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
+   new POVButton(joy1, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
 
    //Idle
    /*new JoystickButton(joy0, 4).onTrue(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
@@ -128,12 +129,44 @@ public class RobotContainer {
    .whileTrue(new IntakeCones(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+
+   new JoystickButton(joy1, 5).onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
+   .whileTrue(new IntakeCones(m_shooter))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+
+   new JoystickButton(joy1, 3).onTrue(m_arm.goToPosition(ArmConstants.SUBSTATION_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   .whileTrue(new IntakeCones(m_shooter))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+
+   new JoystickButton(joy0, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   .whileTrue(new IntakeCones(m_shooter))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+
+   new JoystickButton(joy1, 1).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   .whileTrue(new LowShoot(m_shooter))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+
+   new JoystickButton(joy1, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   .whileTrue(new IntakeCones(m_shooter))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+
    //Scoring
-   new JoystickButton(joy0, 6).whileTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
+   new JoystickButton(joy1, 2).whileTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileTrue(new CombinedShooter(m_arm, m_wrist, m_shooter, m_nodeSelector))//new ConeShooter(m_shooter, m_arm, m_wrist))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+
 
 
    //new JoystickButton(joy0, 6).whileTrue(new CubeShooter(m_shooter, m_arm));

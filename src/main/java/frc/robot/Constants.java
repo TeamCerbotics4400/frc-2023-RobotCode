@@ -168,6 +168,7 @@ public final class Constants {
     public static double SUBSTATION_POSITION = 189.5 - 70.5;
     public static double SCORING_POSITION = 191.79 - 70.5;//199.5 - 70.5;
     public static double BACK_FLOOR_POSITION = 1.15;
+    public static double FRONT_FLOOR_POSITION = 173.0;
 
     public static double ARM_THRESHOLD = 6.0;
   }

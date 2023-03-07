@@ -4,20 +4,17 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.FalconShooter;
 
-public class TeleOpControl extends CommandBase {
-  /** Creates a new TeleOpControl. */
-  DriveTrain m_drive;
-  Joystick joy;
-  public TeleOpControl(DriveTrain m_drive, Joystick joy) {
+public class LowShoot extends CommandBase {
+  /** Creates a new IntakeCones. */
+  FalconShooter m_shooter;
+  public LowShoot(FalconShooter m_shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_drive = m_drive;
-    this.joy = joy;
+    this.m_shooter = m_shooter;
 
-    addRequirements(m_drive);
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -27,21 +24,15 @@ public class TeleOpControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.setCheesyishDrive(joy);
+    m_shooter.setMotorsPower(0.35, 0.35);
 
-    if(joy.getRawAxis(2) > 0.3){
-      m_drive.setCheesyishDrive(0.0, 0.5, true);
-    }
-
-    if(joy.getRawAxis(3) > 0.3){
-      m_drive.setCheesyishDrive(0.0, 0.5, true);
-    }
+    //m_shooter.stopShooterSensorCone();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.tankDriveVolts(0, 0);
+    m_shooter.setMotorsPower(0, 0);
   }
 
   // Returns true when the command should end.
