@@ -132,6 +132,7 @@ public class RobotContainer {
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
+
    //new JoystickButton(joy0, 6).whileTrue(new CubeShooter(m_shooter, m_arm));
 
   }    

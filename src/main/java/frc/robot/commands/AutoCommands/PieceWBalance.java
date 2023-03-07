@@ -4,6 +4,8 @@
 
 package frc.robot.commands.AutoCommands;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.PathPlanner;
 
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -16,6 +18,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.CubeShooter;
+import frc.robot.commands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
@@ -29,19 +32,32 @@ public class PieceWBalance extends SequentialCommandGroup {
   Trajectory onlyBalanceTrajectory = PathPlanner.loadPath("Only Balance", 
     AutoConstants.kMaxSpeedMetersPerSecond, 
     AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
+    DriveTrain m_drive;
+    ArmSubsystem m_arm;
+    WristSubsystem m_wrist;
+    FalconShooter m_shooter;
 
   public PieceWBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, FalconShooter m_shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    this.m_drive = m_drive;
+    this.m_arm = m_arm;
+    this.m_wrist = m_wrist;
+    this.m_shooter = m_shooter;
+
+    BooleanSupplier noPiece = new BooleanSupplier() {
+      @Override
+      public boolean getAsBoolean() {
+          return m_shooter.isShooterOcuppied();
+      }
+  };
 
     InstantCommand resetOdometry = 
     new InstantCommand(() -> m_drive.resetOdometry(onlyBalanceTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry, 
-    new ParallelRaceGroup(m_arm.goToPosition(ArmConstants.SCORING_POSITION)
-    .alongWith(m_wrist.goToPosition(WristConstants.RIGHT_POSITION), new CubeShooter(m_shooter, m_arm, m_wrist))),
-          new ParallelRaceGroup(m_arm.goToPosition(ArmConstants.IDLE_POSITION), 
-          m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
+    addCommands(resetOdometry,
+    new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)), m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
+    m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
       m_drive.createCommandForTrajectory(onlyBalanceTrajectory, false), 
       new AutoBalance(m_drive).andThen(() -> m_drive.tankDriveVolts(0, 0)));
   }

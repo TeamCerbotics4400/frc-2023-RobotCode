@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -21,7 +22,7 @@ public class CubeShooter extends CommandBase {
     this.shooter = shooter;
     this.m_arm = m_arm;
     this.m_wrist = m_wrist;
-
+    
     addRequirements(shooter);
   }
 
@@ -33,6 +34,7 @@ public class CubeShooter extends CommandBase {
   @Override
   public void execute() {
     //shooter.goToDashboardVelocity();
+    
     if(m_arm.isReady() && m_wrist.isReady()){
     //shooter.goToDashboardVelocity();
     shooter.leftSetpoint(1500);

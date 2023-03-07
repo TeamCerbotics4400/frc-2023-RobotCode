@@ -110,6 +110,14 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     return ejecutable;
   }
 
+  public void goToPositionMethod(double goalPosition) {
+    double pidVal = m_controller.calculate(getMeasurement(), goalPosition);
+    double acceleration = (m_controller.getSetpoint().velocity );
+    leftMotor.setVoltage(
+        pidVal
+        + m_controller.calculate(m_controller.getSetpoint().velocity, acceleration));
+  }
+
   public void gotoPositionMethod(double position){
     this.setGoal(position);
     this.enable();

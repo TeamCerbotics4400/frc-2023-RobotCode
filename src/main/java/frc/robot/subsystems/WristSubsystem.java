@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants.ArmConstants;
@@ -28,6 +29,8 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   private final CANSparkMax wristMotor = new CANSparkMax(WristConstants.WRIST_ID, MotorType.kBrushless);
   
   private RelativeEncoder wristEncoder = wristMotor.getEncoder();
+
+  private DigitalInput hallEffectSensor = new DigitalInput(1);
 
   private final ArmFeedforward m_feedforward =
       new ArmFeedforward(
@@ -77,6 +80,12 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
       SmartDashboard.putNumber("Wrist Angle", getDegrees().getDegrees());
       SmartDashboard.putNumber("Corriente Muñecona", wristMotor.getOutputCurrent());
 
+      SmartDashboard.putBoolean("Hall effect activado", hallEffectSensor.get());
+
+      SmartDashboard.putNumber("Current Motor", wristMotor.getOutputCurrent());
+
+      //resetEncoderSensor();
+
       /*double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
       if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}
 
@@ -101,6 +110,12 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
 
   public void resetEncoder(){
     wristEncoder.setPosition(0);
+  }
+
+  public void resetEncoderSensor(){
+    if(!hallEffectSensor.get() && wristEncoder.getVelocity() < 0.1){
+      wristEncoder.setPosition(0);
+    }
   }
 
   @Override

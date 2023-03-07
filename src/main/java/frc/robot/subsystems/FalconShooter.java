@@ -4,16 +4,13 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ShooterConstants;
 
 public class FalconShooter extends SubsystemBase {
@@ -22,6 +19,7 @@ public class FalconShooter extends SubsystemBase {
   TalonFX rightFlyWheel = new TalonFX(ShooterConstants.RIGHT_FLYWHEEL_ID);
 
   DigitalInput beamSensor = new DigitalInput(0);
+  DigitalInput beamSensor2 = new DigitalInput(3);
 
   boolean onTarget = false;
 
@@ -74,6 +72,9 @@ public class FalconShooter extends SubsystemBase {
     //SmartDashboard.putNumber("Left RPM", getLeftRPM());
     //SmartDashboard.putNumber("Right RPM", getRightRPM());
     SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppied());
+
+    SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
+    SmartDashboard.putBoolean("Sensor 2", beamSensor2.get());
 
     double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
@@ -166,7 +167,7 @@ public class FalconShooter extends SubsystemBase {
   }
 
   public boolean isShooterOcuppied(){
-    if(beamSensor.get() != true){
+    if(beamSensor2.get() != true){
       return true;
     } else{
       return false;
