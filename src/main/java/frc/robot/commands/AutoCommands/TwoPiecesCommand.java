@@ -45,6 +45,6 @@ public class TwoPiecesCommand extends SequentialCommandGroup {
     m_drive.createCommandForTrajectory(twoPiecesTrajectory, false).alongWith(
     new IntakeCube(m_shooter, m_arm, m_wrist))
      .andThen(() -> m_drive.tankDriveVolts(0, 0)), 
-     new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)));
+     new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)).andThen(new IdleArm(m_arm, m_wrist)));
   }
 }

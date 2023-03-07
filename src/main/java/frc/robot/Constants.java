@@ -195,8 +195,8 @@ public final class Constants {
 
 
   public static final class AutoConstants{
-    public static final double kMaxSpeedMetersPerSecond = 2.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;
+    public static final double kMaxSpeedMetersPerSecond = 1.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.0;
   }
 
   public static final class VisionConstants {
