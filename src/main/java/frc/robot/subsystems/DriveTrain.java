@@ -149,11 +149,11 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    /*SmartDashboard.putNumber("Turn P", alignPID.getP());
+    SmartDashboard.putNumber("Turn P", alignPID.getP());
     SmartDashboard.putNumber("Turn D", alignPID.getD());
 
-    SmartDashboard.putNumber("Balance P", balancePID.getP());
-    SmartDashboard.putNumber("Balance D", balancePID.getD());*/
+    //SmartDashboard.putNumber("Balance P", balancePID.getP());
+    //SmartDashboard.putNumber("Balance D", balancePID.getD());
 
     resetImu();
     resetEncoders();
@@ -192,17 +192,17 @@ public class DriveTrain extends SubsystemBase {
 
     //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
 
-    /*double lCP = SmartDashboard.getNumber("Turn P", alignPID.getP());
+    double lCP = SmartDashboard.getNumber("Turn P", alignPID.getP());
     double lCD = SmartDashboard.getNumber("Turn D", alignPID.getD());
 
-    double rCP = SmartDashboard.getNumber("Balance P", balancePID.getP());
-    double rCD = SmartDashboard.getNumber("Balance D", balancePID.getD());
+    //double rCP = SmartDashboard.getNumber("Balance P", balancePID.getP());
+    //double rCD = SmartDashboard.getNumber("Balance D", balancePID.getD());
 
     if((lCP != alignPID.getP())){alignPID.setP(lCP);}
     if((lCD != alignPID.getD())){alignPID.setD(lCD);}
 
-    if((rCP != balancePID.getP())){balancePID.setP(rCP);}
-    if((rCD != balancePID.getD())){balancePID.setD(rCD);}*/
+    //if((rCP != balancePID.getP())){balancePID.setP(rCP);}
+    //if((rCD != balancePID.getD())){balancePID.setD(rCD);}
   
   }
 

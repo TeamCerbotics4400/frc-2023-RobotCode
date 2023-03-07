@@ -34,7 +34,7 @@ public class CubeShooter extends CommandBase {
   @Override
   public void execute() {
     //shooter.goToDashboardVelocity();
-    
+    //1500 RPM HIGH
     if(m_arm.isReady() && m_wrist.isReady()){
     //shooter.goToDashboardVelocity();
     shooter.leftSetpoint(1500);
@@ -53,7 +53,7 @@ public class CubeShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!shooter.isShooterOcuppied()){
+    if(!shooter.isShooterOcuppiedCube()){
     return true;
     } else{
       return false;

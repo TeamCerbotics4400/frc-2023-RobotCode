@@ -48,7 +48,7 @@ public class PieceWBalance extends SequentialCommandGroup {
     BooleanSupplier noPiece = new BooleanSupplier() {
       @Override
       public boolean getAsBoolean() {
-          return m_shooter.isShooterOcuppied();
+          return m_shooter.isShooterOcuppiedCube();
       }
   };
 

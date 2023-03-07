@@ -71,10 +71,11 @@ public class FalconShooter extends SubsystemBase {
     //SmartDashboard.putNumber("Average RPM", getAverageRPM());
     //SmartDashboard.putNumber("Left RPM", getLeftRPM());
     //SmartDashboard.putNumber("Right RPM", getRightRPM());
-    SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppied());
+    //SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppied());
 
     SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
-    SmartDashboard.putBoolean("Sensor 2", beamSensor2.get());
+    SmartDashboard.putBoolean("Shooter w cone", isShooterOcuppiedCone());
+    //SmartDashboard.putBoolean("Sensor 2", beamSensor2.get());
 
     double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
@@ -160,14 +161,28 @@ public class FalconShooter extends SubsystemBase {
     rightFlyWheel.set(TalonFXControlMode.PercentOutput, rightPower);
   }
 
-  public void stopShooterSensor(){
-    if(isShooterOcuppied()){
+  public void stopShooterSensorCube(){
+    if(isShooterOcuppiedCube()){
       setMotorsPower(0, 0);
     }
   }
 
-  public boolean isShooterOcuppied(){
+  public void stopShooterSensorCone(){
+    if(isShooterOcuppiedCone()){
+      setMotorsPower(0, 0);
+    }
+  }
+
+  public boolean isShooterOcuppiedCube(){
     if(beamSensor2.get() != true){
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  public boolean isShooterOcuppiedCone(){
+    if(beamSensor.get() != true){
       return true;
     } else{
       return false;

@@ -5,15 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
 
-public class IntakePieces extends CommandBase {
-  /** Creates a new DefaultIntake. */
+public class IntakeCones extends CommandBase {
+  /** Creates a new IntakeCones. */
   FalconShooter m_shooter;
-  ArmSubsystem m_arm;
-
-  public IntakePieces(FalconShooter m_shooter) {
+  public IntakeCones(FalconShooter m_shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_shooter = m_shooter;
 
@@ -27,19 +24,15 @@ public class IntakePieces extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_intake.setIntakePose(LinkageConstants.intakeExtended);
-    
     m_shooter.setMotorsPower(-0.5, -0.5);
 
-    m_shooter.stopShooterSensor();
+    m_shooter.stopShooterSensorCone();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_intake.setIntakePose(0);
     m_shooter.setMotorsPower(0, 0);
-
   }
 
   // Returns true when the command should end.

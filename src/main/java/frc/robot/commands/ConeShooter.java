@@ -5,16 +5,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.WristConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.WristSubsystem;
 
 public class ConeShooter extends CommandBase {
   /** Creates a new ConeShooter. */
-  FalconShooter m_Shooter;
-  public ConeShooter(FalconShooter m_Shooter) {
+  FalconShooter m_shooter;
+  ArmSubsystem m_arm;
+  WristSubsystem m_wrist;
+  public ConeShooter(FalconShooter m_shooter, ArmSubsystem m_arm, WristSubsystem m_wrist) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_Shooter = m_Shooter;
+    this.m_shooter = m_shooter;
+    this.m_arm = m_arm;
+    this.m_wrist = m_wrist;
 
-    addRequirements(m_Shooter);
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -24,15 +31,19 @@ public class ConeShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //1500 RPM HIGH
-    
-    m_Shooter.coneDashboardVelo();
+    if(m_arm.isReady() && m_wrist.isReady()){
+      //shooter.goToDashboardVelocity();
+      m_shooter.leftSetpoint(1150);
+    m_shooter.rightSetpoint(1150);
+       } else {
+        m_shooter.setMotorsPower(0, 0);
+      }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Shooter.setMotorsPower(0, 0);
+    m_shooter.setMotorsPower(0, 0);
   }
 
   // Returns true when the command should end.
