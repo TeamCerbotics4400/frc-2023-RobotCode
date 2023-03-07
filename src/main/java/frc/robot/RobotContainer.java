@@ -8,15 +8,16 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.CombinedShooter;
 import frc.robot.commands.ConeShooter;
 import frc.robot.commands.TeleOpControl;
 //import frc.robot.commands.TestArm;
 import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.LimelightAutoAlign;
-import frc.robot.commands.AutoCommands.PieceWBalance;
-import frc.robot.commands.AutoCommands.StraightLineAuto;
-import frc.robot.commands.AutoCommands.TwoPiecesCommand;
-import frc.robot.commands.AutoCommands.TwoPiecesWBalance;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightLineAuto;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesCommand;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
 import frc.robot.commands.CubeShooter;
 import frc.robot.commands.IntakeCones;
 import frc.robot.commands.IntakeCubes;
@@ -112,6 +113,8 @@ public class RobotContainer {
    //Reset Imu
    new JoystickButton(joy0, 3).whileTrue(new AutoAlign(m_drive));
 
+   new JoystickButton(joy0, 4).whileTrue(new AutoBalance(m_drive));
+
    new POVButton(joy0, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
 
    new POVButton(joy0, 270).onTrue(new NodeSelectionLeft(m_nodeSelector));
@@ -128,7 +131,7 @@ public class RobotContainer {
    //Scoring
    new JoystickButton(joy0, 6).whileTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   .whileTrue(new ConeShooter(m_shooter, m_arm, m_wrist))
+   .whileTrue(new CombinedShooter(m_arm, m_wrist, m_shooter, m_nodeSelector))//new ConeShooter(m_shooter, m_arm, m_wrist))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 

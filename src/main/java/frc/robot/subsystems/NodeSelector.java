@@ -89,6 +89,11 @@ public class NodeSelector extends SubsystemBase {
   public Pose2d getNodeToAlign(){
     return nodeToAlign;
   }
+
+  public String getAlignName(){
+    String currentKey = nodeNames.get(currentSelection);
+    return currentKey;
+  }
   /* 
   public double getNodeToAlignDistance(Translation2d currentRobotTranslation){
     return pose_map.get(currentKey).getTranslation().getDistance(currentRobotTranslation);

@@ -190,7 +190,7 @@ public final class Constants {
     public static double IDLE_POSITION = 0.0;
     public static double RIGHT_POSITION = -90.0;
 
-    public static double WRIST_THRESHOLD = 2.3;
+    public static double WRIST_THRESHOLD = 2.8;
   }
 
 

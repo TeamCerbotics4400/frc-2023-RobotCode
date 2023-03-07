@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.AutoCommands;
+package frc.robot.commands.AutoCommands.AutoRoutinesCommands;
 
 import java.util.function.BooleanSupplier;
 
@@ -18,6 +18,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.CubeShooter;
+import frc.robot.commands.AutoCommands.ShootCone;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
@@ -55,7 +56,7 @@ public class PieceWBalance extends SequentialCommandGroup {
     new InstantCommand(() -> m_drive.resetOdometry(onlyBalanceTrajectory.getInitialPose()));
 
     addCommands(resetOdometry,
-    new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)), m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
+    new ShootCone(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)), m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
     m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
       m_drive.createCommandForTrajectory(onlyBalanceTrajectory, false), 
       new AutoBalance(m_drive).andThen(() -> m_drive.tankDriveVolts(0, 0)));

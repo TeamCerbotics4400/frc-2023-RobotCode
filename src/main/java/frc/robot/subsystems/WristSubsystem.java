@@ -76,13 +76,9 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
       //SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
       //SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
       //SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
-      SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
       SmartDashboard.putNumber("Wrist Angle", getDegrees().getDegrees());
-      SmartDashboard.putNumber("Corriente Muñecona", wristMotor.getOutputCurrent());
 
-      SmartDashboard.putBoolean("Hall effect activado", hallEffectSensor.get());
-
-      SmartDashboard.putNumber("Current Motor", wristMotor.getOutputCurrent());
+      //SmartDashboard.putBoolean("Hall effect activado", hallEffectSensor.get());
 
       //resetEncoderSensor();
 

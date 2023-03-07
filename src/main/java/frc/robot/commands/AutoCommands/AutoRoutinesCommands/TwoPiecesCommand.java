@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.AutoCommands;
+package frc.robot.commands.AutoCommands.AutoRoutinesCommands;
 
 import com.pathplanner.lib.PathPlanner;
 
@@ -14,6 +14,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.AutoCommands.IdleArm;
+import frc.robot.commands.AutoCommands.IntakeCube;
+import frc.robot.commands.AutoCommands.ShootCone;
+import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
@@ -40,7 +44,7 @@ public class TwoPiecesCommand extends SequentialCommandGroup {
     InstantCommand resetOdometry = new InstantCommand(() ->
      m_drive.resetOdometry(twoPiecesTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry, new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)),
+    addCommands(resetOdometry, new ShootCone(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)),
      m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
     m_drive.createCommandForTrajectory(twoPiecesTrajectory, false).alongWith(
     new IntakeCube(m_shooter, m_arm, m_wrist))
