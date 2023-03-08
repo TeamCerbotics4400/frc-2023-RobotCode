@@ -49,7 +49,7 @@ public class RobotContainer {
   Joystick joy3 = new Joystick(3);
   private DriveTrain m_drive = new DriveTrain();
   private FalconShooter m_shooter = new FalconShooter();
-  private NodeSelector m_nodeSelector = new NodeSelector(joy0);
+  private NodeSelector m_nodeSelector = new NodeSelector(joy1);
   private WristSubsystem m_wrist = new WristSubsystem();
   private ArmSubsystem m_arm = new ArmSubsystem();
   
