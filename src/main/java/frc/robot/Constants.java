@@ -190,16 +190,15 @@ public final class Constants {
   
     public static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
               Map.entry("No Node", new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 1", new Pose2d(new Translation2d(1.15, 0.42), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 2", new Pose2d(new Translation2d(1.15, 1.06), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 3", new Pose2d(new Translation2d(1.15, 1.62), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 4", new Pose2d(new Translation2d(1.15, 2.19), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 5", new Pose2d(new Translation2d(1.15, 2.75), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 6", new Pose2d(new Translation2d(1.15, 3.30), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 7", new Pose2d(new Translation2d(1.15, 3.86), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 8", new Pose2d(new Translation2d(1.15, 4.42), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 9", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180))),
-              Map.entry("Charging Station", new Pose2d(new Translation2d(3.90, 2.70), Rotation2d.fromDegrees(180)))
+              Map.entry("Node 1 Cone", new Pose2d(new Translation2d(1.15, 0.42), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 2 Cube", new Pose2d(new Translation2d(1.15, 1.06), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 3 Cone", new Pose2d(new Translation2d(1.15, 1.62), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 4 Cone", new Pose2d(new Translation2d(1.15, 2.19), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 5 Cube", new Pose2d(new Translation2d(1.15, 2.75), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 6 Cone", new Pose2d(new Translation2d(1.15, 3.30), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 7 Cone", new Pose2d(new Translation2d(1.15, 3.86), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 8 Cube", new Pose2d(new Translation2d(1.15, 4.42), Rotation2d.fromDegrees(180))),
+              Map.entry("Node 9 Cone", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180)))
               /*Map.entry("Node1Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
               Map.entry("Node2Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
               Map.entry("Node3Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),

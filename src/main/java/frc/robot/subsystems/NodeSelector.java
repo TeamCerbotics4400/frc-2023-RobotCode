@@ -35,16 +35,15 @@ public class NodeSelector extends SubsystemBase {
     this.currentSelectionLevels = 0;
 
     nodeNames.add("No Node");
-    nodeNames.add("Node 1");
-    nodeNames.add("Node 2");
-    nodeNames.add("Node 3");
-    nodeNames.add("Node 4");
-    nodeNames.add("Node 5");
-    nodeNames.add("Node 6");
-    nodeNames.add("Node 7");
-    nodeNames.add("Node 8");
-    nodeNames.add("Node 9");
-    nodeNames.add("Charging Station");
+    nodeNames.add("Node 1 Cone");
+    nodeNames.add("Node 2 Cube");
+    nodeNames.add("Node 3 Cone");
+    nodeNames.add("Node 4 Cone");
+    nodeNames.add("Node 5 Cube");
+    nodeNames.add("Node 6 Cone");
+    nodeNames.add("Node 7 Cone");
+    nodeNames.add("Node 8 Cube");
+    nodeNames.add("Node 9 Cone");
 
     scoringLevels.add("Low");
     scoringLevels.add("Mid");
