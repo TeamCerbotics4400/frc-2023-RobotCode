@@ -15,10 +15,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import team4400.Alert;
-import team4400.Alert.AlertType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -30,57 +27,9 @@ import team4400.Alert.AlertType;
  */
 public final class Constants {
 
-
-  private static final RobotType robot = RobotType.ROBOT_2023P;
-  public static final double loopPeriodSecs = 0.02;
-
-  private static final Alert invalidRobotAlert =
-      new Alert("Invalid robot selected, using competition robot as default.", AlertType.ERROR);
-
-  public static RobotType getRobot() {
-    if (RobotBase.isReal()) {
-      if (robot == RobotType.ROBOT_SIMBOT) { // Invalid robot selected
-        invalidRobotAlert.set(true);
-        return RobotType.ROBOT_2023C;
-      } else {
-        return robot;
-      }
-    } else {
-      return robot;
-    }
-  }
-
-  public static Mode getMode() {
-    switch (getRobot()) {
-      case ROBOT_2023C:
-      case ROBOT_2023P:
-        return RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
-
-      case ROBOT_SIMBOT:
-        return Mode.SIM;
-
-      default:
-        return Mode.REAL;
-    }
-  }
-
-  public static final Map<RobotType, String> logFolders =
-      Map.of(RobotType.ROBOT_2023P, "/media/sda2/");
-
-  public static enum RobotType {
-    ROBOT_2023C,
-    ROBOT_2023P,
-    ROBOT_SIMBOT
-  }
-
-  public static enum Mode {
-    REAL,
-    REPLAY,
-    SIM
-  }
-
-
   public static final boolean tuningMode = false;
+
+  public static final boolean twoControllerMode = false;
 
   
   public static final class DriveConstants{
@@ -166,11 +115,13 @@ public final class Constants {
 
     public static double IDLE_POSITION = 160.5 - 70.5;
     public static double SUBSTATION_POSITION = 189.5 - 70.5;
-    public static double SCORING_POSITION = 191.79 - 70.5;//199.5 - 70.5;
+    public static double SCORING_POSITION = 195.79 - 70.5;//199.5 - 70.5;
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
 
     public static double ARM_THRESHOLD = 6.0;
+
+    public static String LEVEL_TO_SHOOT = "LOW";
   }
 
   public static final class WristConstants {

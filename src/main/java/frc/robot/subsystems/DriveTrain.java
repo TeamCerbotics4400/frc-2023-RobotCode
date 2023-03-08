@@ -11,7 +11,6 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -20,15 +19,12 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -60,8 +56,6 @@ public class DriveTrain extends SubsystemBase {
   private PIDController balancePID = new PIDController(-0.024, 0, -0.0016); 
 
   private PIDController alignPID = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
-
-  //LimelightSubsystem limelight;
 
   MotorControllerGroup leftControllers = new MotorControllerGroup(leftLeader, leftFollower);
   MotorControllerGroup rightControllers = new MotorControllerGroup(rightLeader, rightFollower);
@@ -96,9 +90,6 @@ public class DriveTrain extends SubsystemBase {
     Rotation2d.fromDegrees(getCorrectedAngle()), encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
 
-
-  //double kP = 0, kI = 0, kD = 0, kFF = 0.5, anguloObjetivo = 0;
-
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
 
@@ -107,9 +98,7 @@ public class DriveTrain extends SubsystemBase {
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
   //Units per Rotation : 0.4788
-  public DriveTrain(/*LimelightSubsystem limelightSubsystem*/) {
-
-    //this.limelight = limelightSubsystem;
+  public DriveTrain() {
 
     leftLeader.restoreFactoryDefaults();
     leftFollower.restoreFactoryDefaults();
@@ -169,11 +158,11 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-     visionOdometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
+     /*visionOdometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
      .getRotation().getDegrees()), 
      encoderCountsToMeters(leftEncoder.getPosition()),
      encoderCountsToMeters(rightEncoder.getPosition()),
-     m_poseEstimator.getEstimatedPosition());
+     m_poseEstimator.getEstimatedPosition());*/
 
      wheelOdometry.update(Rotation2d.fromDegrees(getCorrectedAngle()), 
      encoderCountsToMeters(leftEncoder.getPosition()), 
@@ -277,10 +266,6 @@ public class DriveTrain extends SubsystemBase {
     differentialDrive.feed();
   }
 
-  public void straightDrive(double left, double right){
-    differentialDrive.tankDrive(left, right);
-  }
-
   public double getAngle(){
     return imu.getYaw();
   }
@@ -299,12 +284,6 @@ public class DriveTrain extends SubsystemBase {
     return distance;
   }
 
-  public double metersToEncoderCounts(double distance){
-    double wheelRotations = distance / (Math.PI / 0.1524);
-    double encoderCounts = wheelRotations * 10.75;
-    return encoderCounts;
-  }
-
   public double getDistance(){
     return (encoderCountsToMeters(leftEncoder.getPosition()) + 
           encoderCountsToMeters(rightEncoder.getPosition())) / 2;
@@ -313,18 +292,7 @@ public class DriveTrain extends SubsystemBase {
   public void resetSensors(){
     rightEncoder.setPosition(0);
     leftEncoder.setPosition(0);
-    //imu.setYaw(0);
   }
-  
-  public void goToAngle(double setpoint){
-    double target = 0.1051 * setpoint;
-    controladorIzq.setReference(-target, ControlType.kPosition);
-    controladorDer.setReference(target, ControlType.kPosition);
-  }
-
-  /*public double getTargetAngle(){
-    return anguloObjetivo;
-  }*/
 
   public Pose2d getVisionPose() {
     return visionOdometry.getPoseMeters();
@@ -333,24 +301,9 @@ public class DriveTrain extends SubsystemBase {
   public Pose2d getWheelPose(){
     return wheelOdometry.getPoseMeters();
   }
-    
-
-  public Pose3d get3dPose(){
-    Pose2d robotPose2d = getVisionPose();
-
-    return new Pose3d(robotPose2d.getX(), robotPose2d.getY(), 0.0, 
-    new Rotation3d(imu.getRoll(), getPitch(), robotPose2d.getRotation().getDegrees()));
-  }
 
   public double getPitch(){
     return imu.getPitch();
-  }
-
-  public TrapezoidProfile.Constraints getDriveConstraints(){
-    double maxSpeed = 5.2;
-    double maxAcc = 9.0;
-
-    return new TrapezoidProfile.Constraints(maxSpeed, maxAcc);
   }
 
   /*public void resetPoseWVision(){
@@ -364,11 +317,6 @@ public class DriveTrain extends SubsystemBase {
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(encoderCountsToMeters(leftEncoder.getPosition()),
     encoderCountsToMeters(rightEncoder.getPosition()));
-  }
-
-  public void setEncodersPose(double leftMeters, double rightMeters){
-    leftEncoder.setPosition(metersToEncoderCounts(leftMeters));
-    rightEncoder.setPosition(metersToEncoderCounts(rightMeters));
   }
 
   public void resetEncoders(){
@@ -461,6 +409,5 @@ public class DriveTrain extends SubsystemBase {
             this);
 
     return ramseteCommand;
-
   }
 }

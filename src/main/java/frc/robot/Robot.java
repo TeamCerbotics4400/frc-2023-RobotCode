@@ -6,16 +6,12 @@ package frc.robot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
 
-//import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
-//import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.WristConstants;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

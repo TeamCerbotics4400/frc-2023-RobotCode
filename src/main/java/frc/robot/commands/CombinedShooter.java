@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
@@ -56,16 +55,40 @@ public class CombinedShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(cubeNodes.contains(m_selector.getAlignName())){
+    switch(m_selector.getLevelName()){
+      case "Low":
+        m_shooter.setMotorsPower(0.35, 0.35);
+      break;
+
+      case "Mid":
+        if(cubeNodes.contains(m_selector.getAlignName())){
+      
+          m_shooter.leftSetpoint(1150);
+          m_shooter.rightSetpoint(1150);
+        
+        } else{
+      
+          m_shooter.leftSetpoint(1045);
+          m_shooter.rightSetpoint(1045);
+        }
+      break;
+
+      case "High":
+      if(cubeNodes.contains(m_selector.getAlignName())){
       
         m_shooter.leftSetpoint(1500);
         m_shooter.rightSetpoint(1500);
-        
-    } else{
       
+      } else{
+    
         m_shooter.leftSetpoint(1045);
-      m_shooter.rightSetpoint(1045);
-     }
+        m_shooter.rightSetpoint(1045);
+      }
+      break;
+    }
+
+
+    
   }
 
   // Called once the command ends or is interrupted.

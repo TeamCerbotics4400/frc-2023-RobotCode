@@ -11,14 +11,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -36,8 +31,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
       new ArmFeedforward(
           WristConstants.kS, WristConstants.kG,
           WristConstants.kV, WristConstants.kA);
-
-  double targetAngle = 0.0;
 
   /** Create a new ArmSubsystem. */
   //Relacion: 210.0 : 1.00
@@ -60,9 +53,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
 
     wristMotor.setSmartCurrentLimit(5);
 
-    /*SmartDashboard.putNumber("Desired Angle", targetAngle);
-
-    SmartDashboard.putNumber("Arm P", this.m_controller.getP());
+    /*SmartDashboard.putNumber("Arm P", this.m_controller.getP());
     SmartDashboard.putNumber("Arm D", this.m_controller.getD());*/
 
     resetEncoder();
@@ -141,9 +132,5 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
     } else {
       return false;
     }
-  }
-
-  public void dashboardAngle(){
-    goToPosition(targetAngle);
   }
 }

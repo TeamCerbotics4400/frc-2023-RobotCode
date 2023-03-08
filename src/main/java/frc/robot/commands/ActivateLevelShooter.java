@@ -5,11 +5,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.NodeSelector;
+import frc.robot.subsystems.WristSubsystem;
 
-public class CombinedIntake extends CommandBase {
-  /** Creates a new CombinedIntake. */
-  public CombinedIntake() {
+public class ActivateLevelShooter extends CommandBase {
+  /** Creates a new ActivateLevelShooter. */
+  ArmSubsystem m_arm;
+  WristSubsystem m_wrist;
+  NodeSelector m_nodeSelector;
+
+  public ActivateLevelShooter(ArmSubsystem m_arm, WristSubsystem m_wrist, NodeSelector m_nodeSelector) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.m_arm = m_arm;
+    this.m_wrist = m_wrist;
+    this.m_nodeSelector = m_nodeSelector;
+
+    addRequirements(m_arm, m_wrist, m_nodeSelector);
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +30,9 @@ public class CombinedIntake extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    new ShootLevelSelection(m_arm, m_wrist, m_nodeSelector);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

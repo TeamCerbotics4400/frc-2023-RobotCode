@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.AutoCommands.ShootCone;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -27,14 +29,16 @@ public class StraightLineAuto extends SequentialCommandGroup {
   AutoConstants.kMaxSpeedMetersPerSecond, 
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, false);
 
-  public StraightLineAuto(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist) {
+  public StraightLineAuto(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, FalconShooter m_shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     InstantCommand resetOdometry = new InstantCommand(
       () -> m_drive.resetOdometry(straightTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry, m_arm.goToPosition(ArmConstants.IDLE_POSITION), 
-    m_wrist.goToPosition(WristConstants.IDLE_POSITION),
+    addCommands(resetOdometry, new ShootCone(m_shooter, m_arm, m_wrist)
+    .raceWith(new WaitCommand(4)), 
+    m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
+      m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
     m_drive.createCommandForTrajectory(straightTrajectory, false).andThen(
       () -> m_drive.tankDriveVolts(0, 0)));
   }

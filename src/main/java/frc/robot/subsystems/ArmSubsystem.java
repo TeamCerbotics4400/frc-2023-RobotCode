@@ -28,8 +28,6 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
           ArmConstants.kS, ArmConstants.kG,
           ArmConstants.kV, ArmConstants.kA);
 
-  double targetAngle = 0.0;
-
   boolean onTarget;
 
   /** Create a new ArmSubsystem. */
@@ -57,8 +55,6 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     leftMotor.setSmartCurrentLimit(40);
     rightMotor.setSmartCurrentLimit(40);
 
-    //SmartDashboard.putNumber("Desired Angle", targetAngle);
-
     /*SmartDashboard.putNumber("Arm P", this.m_controller.getP());
     SmartDashboard.putNumber("Arm D", this.m_controller.getD());*/
   }
@@ -66,7 +62,6 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
   @Override
   public void periodic() {
-      // TODO Auto-generated method stub
       super.periodic();
       SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
       //SmartDashboard.putNumber("Target Verdadero ", targetAngle);
@@ -130,10 +125,6 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     } else {
       return false;
     }
-  }
-
-  public double getTargetAngle(){
-    return targetAngle;
   }
 }
 
