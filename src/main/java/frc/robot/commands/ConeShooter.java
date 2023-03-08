@@ -33,8 +33,8 @@ public class ConeShooter extends CommandBase {
   public void execute() {
     if(m_arm.isReady() && m_wrist.isReady()){
       //shooter.goToDashboardVelocity();
-      m_shooter.leftSetpoint(1075);
-    m_shooter.rightSetpoint(1075);
+      m_shooter.leftSetpoint(1025);
+    m_shooter.rightSetpoint(1025);
        } else {
         m_shooter.setMotorsPower(0, 0);
       }

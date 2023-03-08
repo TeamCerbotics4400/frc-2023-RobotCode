@@ -25,7 +25,7 @@ public class AutoBalance extends CommandBase {
   @Override
   public void initialize() {
     m_drive.getBalanceController().setSetpoint(balancedAngle);
-    m_drive.getBalanceController().setTolerance(0.5);
+    m_drive.getBalanceController().setTolerance(0.37);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

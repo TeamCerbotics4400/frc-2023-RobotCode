@@ -140,20 +140,19 @@ public class RobotContainer {
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(joy1, 2).onTrue(new ActivateLevelShooter(m_arm, m_wrist, m_nodeSelector))
-   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
-   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
-
-   //Ver esta madre
-   /*new JoystickButton(joy0, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
-   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
-   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
-
-   new JoystickButton(joy0, 6).onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
-   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   /*new JoystickButton(joy1, 2).onTrue(new ActivateLevelShooter(m_arm, m_wrist, m_nodeSelector))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
+
+   new JoystickButton(joy1, 5).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+
+   new JoystickButton(joy1, 6).onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
    new JoystickButton(joy1, 4).whileTrue(new CombinedShooter(m_arm, m_wrist, m_shooter, m_nodeSelector));
 

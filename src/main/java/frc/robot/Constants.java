@@ -29,7 +29,7 @@ public final class Constants {
 
   public static final boolean tuningMode = false;
 
-  public static final boolean twoControllerMode = false;
+  public static final boolean twoControllerMode = true;
 
   public static final boolean needToLog = false;
   
@@ -116,7 +116,7 @@ public final class Constants {
 
     public static double IDLE_POSITION = 160.5 - 70.5;
     public static double SUBSTATION_POSITION = 189.5 - 70.5;
-    public static double SCORING_POSITION = 195.79 - 70.5;//199.5 - 70.5;
+    public static double SCORING_POSITION = 121.5;//199.5 - 70.5;
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
 
