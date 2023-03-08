@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 /** A robot arm subsystem that moves with a motion profile. */
 public class WristSubsystem extends ProfiledPIDSubsystem {
   private final CANSparkMax wristMotor = new CANSparkMax(WristConstants.WRIST_ID, MotorType.kBrushless);
-  
+
   private RelativeEncoder wristEncoder = wristMotor.getEncoder();
 
   private DigitalInput hallEffectSensor = new DigitalInput(1);
@@ -64,10 +64,11 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   public void periodic() {
       // TODO Auto-generated method stub
       super.periodic();
+      SmartDashboard.putBoolean("Wrist ready", isReady());
       //SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
       //SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
       //SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
-      SmartDashboard.putNumber("Wrist Angle", getDegrees().getDegrees());
+      //SmartDashboard.putNumber("Wrist Angle", getDegrees().getDegrees());
 
       //SmartDashboard.putBoolean("Hall effect activado", hallEffectSensor.get());
 

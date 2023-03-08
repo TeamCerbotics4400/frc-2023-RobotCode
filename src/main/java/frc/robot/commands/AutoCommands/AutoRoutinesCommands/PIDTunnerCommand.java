@@ -25,12 +25,13 @@ public class PIDTunnerCommand extends SequentialCommandGroup {
   WristSubsystem m_wrist;
 
   Trajectory pidTunerTrajectory = PathPlanner.loadPath("PIDTuner", AutoConstants.kMaxSpeedMetersPerSecond, 
-  AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+  AutoConstants.kMaxAccelerationMetersPerSecondSquared, false);
 
   public PIDTunnerCommand(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    InstantCommand resetOdometry = new InstantCommand(() -> m_drive.resetOdometry(pidTunerTrajectory.getInitialPose()));
+    InstantCommand resetOdometry = new InstantCommand(() -> 
+    m_drive.resetOdometry(pidTunerTrajectory.getInitialPose()));
 
     addCommands(resetOdometry, new IdleArm(m_arm, m_wrist), 
     m_drive.createCommandForTrajectory(pidTunerTrajectory, false)

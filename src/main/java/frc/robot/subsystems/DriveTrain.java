@@ -26,6 +26,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -71,7 +72,7 @@ public class DriveTrain extends SubsystemBase {
 
   SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
   SparkMaxPIDController controladorDer = rightLeader.getPIDController();
-
+  
   //private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
@@ -144,8 +145,8 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    SmartDashboard.putNumber("Balance P", balancePID.getP());
-    SmartDashboard.putNumber("Balance D", balancePID.getD());
+    SmartDashboard.putNumber("balance P", balancePID.getP());
+    SmartDashboard.putNumber("balance D", balancePID.getD());
 
     //SmartDashboard.putNumber("Balance P", balancePID.getP());
     //SmartDashboard.putNumber("Balance D", balancePID.getD());
@@ -187,17 +188,14 @@ public class DriveTrain extends SubsystemBase {
 
     //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
 
-    double lCP = SmartDashboard.getNumber("Balance P", balancePID.getP());
-    double lCD = SmartDashboard.getNumber("Balance D", balancePID.getD());
-
-    //double rCP = SmartDashboard.getNumber("Balance P", balancePID.getP());
-    //double rCD = SmartDashboard.getNumber("Balance D", balancePID.getD());
+    double lCP = SmartDashboard.getNumber("balance P", balancePID.getP());
+    double lCD = SmartDashboard.getNumber("balance D", balancePID.getD());
 
     if((lCP != balancePID.getP())){balancePID.setP(lCP);}
     if((lCD != balancePID.getD())){balancePID.setD(lCD);}
 
-    //if((rCP != balancePID.getP())){balancePID.setP(rCP);}
-    //if((rCD != balancePID.getD())){balancePID.setD(rCD);}
+    /*if((rCP != rightPIDController.getP())){rightPIDController.setP(rCP);}
+    if((rCD != rightPIDController.getD())){rightPIDController.setD(rCD);}*/
   
   }
 
@@ -209,6 +207,8 @@ public class DriveTrain extends SubsystemBase {
       Shuffleboard.getTab("Debugging Tab");
     }
   }
+
+  /*********** Drive Methods ***********/
 
   public void drive(double speed, double turn){
     differentialDrive.arcadeDrive(speed, turn);

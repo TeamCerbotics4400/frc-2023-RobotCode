@@ -31,6 +31,7 @@ public final class Constants {
 
   public static final boolean twoControllerMode = false;
 
+  public static final boolean needToLog = false;
   
   public static final class DriveConstants{
     public static final int LeftLeader_ID = 2; //3
@@ -49,9 +50,9 @@ public final class Constants {
     ,  kI = 0
     , kD = 0;//0.26741;//0.20844;//0.0010903
 
-    public static final double kS = 0.15507,//0.33144,//0.18404,
-                               kV = 2.066,//2.34,//2.7305,
-                               kA = 0.84732;//1.1089;//0.83198;
+    public static final double kS = 0.16361,//0.33144,//0.18404,
+                               kV = 2.0757,//2.34,//2.7305,
+                               kA = 0.86207;//1.1089;//0.83198;
 
     public static final double WHEEL_DIAMETER = 0.1524;
     public static final double GEAR_RATIO = 0;//7 : 1
@@ -119,7 +120,7 @@ public final class Constants {
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
 
-    public static double ARM_THRESHOLD = 6.0;
+    public static double ARM_THRESHOLD = 8.5;
 
     public static String LEVEL_TO_SHOOT = "LOW";
   }
@@ -142,7 +143,7 @@ public final class Constants {
     public static double IDLE_POSITION = 0.0;
     public static double RIGHT_POSITION = -90.0;
 
-    public static double WRIST_THRESHOLD = 2.8;
+    public static double WRIST_THRESHOLD = 3.0;
   }
 
 

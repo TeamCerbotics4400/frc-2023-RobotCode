@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.ActivateLevelShooter;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.CombinedShooter;
 import frc.robot.commands.TeleOpControl;
 import frc.robot.commands.AutoCommands.DriveToNode;
@@ -111,7 +112,7 @@ public class RobotContainer {
     new JoystickButton(joy0, 1).whileTrue(new 
                                             DriveToNode(m_drive, m_nodeSelector, joy0));
    //Autobalance
-   new JoystickButton(joy0, 10).whileTrue(new LimelightAutoAlign(m_drive, joy0));
+   new JoystickButton(joy0, 2).whileTrue(new LimelightAutoAlign(m_drive, joy0));
 
     new POVButton(joy1, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
 
@@ -139,7 +140,7 @@ public class RobotContainer {
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(joy1, 2).whileTrue(new ActivateLevelShooter(m_arm, m_wrist, m_nodeSelector))
+   new JoystickButton(joy1, 2).onTrue(new ActivateLevelShooter(m_arm, m_wrist, m_nodeSelector))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
@@ -161,7 +162,7 @@ public class RobotContainer {
     new JoystickButton(joy0, 1).whileTrue(new 
                                             DriveToNode(m_drive, m_nodeSelector, joy0));
    //Autobalance
-   new JoystickButton(joy0, 10).whileTrue(new LimelightAutoAlign(m_drive, joy0));
+   new JoystickButton(joy0, 9).whileTrue(new LimelightAutoAlign(m_drive, joy0));
 
     new POVButton(joy0, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
 
@@ -177,11 +178,11 @@ public class RobotContainer {
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(joy0, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
+   /*new JoystickButton(joy0, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileTrue(new IntakeCones(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
-   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
 
    new JoystickButton(joy0, 3).onTrue(m_arm.goToPosition(ArmConstants.SUBSTATION_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
@@ -189,7 +190,14 @@ public class RobotContainer {
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(joy0, 2).whileTrue(new ActivateLevelShooter(m_arm, m_wrist, m_nodeSelector))
+   //new JoystickButton(joy0, 3).whileTrue(new AutoBalance(m_drive));
+
+   /*new JoystickButton(joy0, 2).whileTrue(new ActivateLevelShooter(m_arm, m_wrist, m_nodeSelector))
+   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
+
+   new JoystickButton(joy0, 6).onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
+   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 

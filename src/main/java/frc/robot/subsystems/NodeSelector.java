@@ -85,8 +85,8 @@ public class NodeSelector extends SubsystemBase {
 
     if(pov == 0){
       currentSelectionLevels++;
-      if(currentSelectionLevels < 0){
-        currentSelectionLevels = scoringLevels.size() - 1;
+      if(currentSelectionLevels >= scoringLevels.size()){
+        currentSelectionLevels = 0;
       }
     }  
   }

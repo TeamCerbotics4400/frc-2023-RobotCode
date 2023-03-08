@@ -64,6 +64,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
   public void periodic() {
       super.periodic();
       SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
+
+      SmartDashboard.putBoolean("Arm ready", isReady());
       //SmartDashboard.putNumber("Target Verdadero ", targetAngle);
       //SmartDashboard.putNumber("Goal Objetivo",this.getController().getGoal().position);
       //SmartDashboard.putNumber("Goal Velocidad", this.getController().getGoal().velocity);
