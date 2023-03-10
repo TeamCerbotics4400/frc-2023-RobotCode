@@ -26,7 +26,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -39,7 +38,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
 import team4400.Util.DriveSignal;
 
@@ -51,15 +49,15 @@ public class DriveTrain extends SubsystemBase {
   CANSparkMax rightLeader = new CANSparkMax(DriveConstants.RightLeader_ID, MotorType.kBrushless);
   CANSparkMax rightFollower = new CANSparkMax(DriveConstants.RightFollower_ID, MotorType.kBrushless);
 
+  MotorControllerGroup leftControllers = new MotorControllerGroup(leftLeader, leftFollower);
+  MotorControllerGroup rightControllers = new MotorControllerGroup(rightLeader, rightFollower);
+
   PIDController leftPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
   PIDController rightPIDController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
 
   private PIDController balancePID = new PIDController(-0.024, 0, -0.0016); 
 
   private PIDController alignPID = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
-
-  MotorControllerGroup leftControllers = new MotorControllerGroup(leftLeader, leftFollower);
-  MotorControllerGroup rightControllers = new MotorControllerGroup(rightLeader, rightFollower);
 
   DifferentialDrive differentialDrive = new DifferentialDrive(leftControllers, rightControllers);
 
@@ -72,8 +70,6 @@ public class DriveTrain extends SubsystemBase {
 
   SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
   SparkMaxPIDController controladorDer = rightLeader.getPIDController();
-  
-  //private Pose2d mPosition = new Pose2d(0, 0, Rotation2d.fromDegrees(getAngle()));
 
   private final DifferentialDrivePoseEstimator m_poseEstimator =
             new DifferentialDrivePoseEstimator(
@@ -81,6 +77,15 @@ public class DriveTrain extends SubsystemBase {
                     Rotation2d.fromDegrees(getAngle()), 
                     0.0, 0.0, new Pose2d());
   
+  /* 
+   * We decided that having two types of odometry would work better than just having one of them.
+   * The visionOdometry is used for the TeleOp period, it helps us find our way on the field
+   * using vision correction (hence the name *VISION*Odometry)
+   * 
+   * On the other hand the wheelOdometry class helps us use the classical encoder getPosition() to
+   * get measurements and avoid having lots of noise on our measurements for more accurate path
+   * following 
+   */
   DifferentialDriveOdometry visionOdometry = new DifferentialDriveOdometry(
                       new Rotation2d(m_poseEstimator.getEstimatedPosition()
                                       .getRotation().getDegrees()), 
@@ -127,16 +132,8 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setSmartCurrentLimit(60);
     leftFollower.setSmartCurrentLimit(60);
     rightFollower.setSmartCurrentLimit(60);
-    
-
-    //controladorDer.setP(kP);
-    //controladorDer.setD(kD);
-    //controladorDer.setI(kI);
-    //controladorDer.setFF(kFF);
 
     imu.configFactoryDefault();
-    
-    //SmartDashboard.putNumber("Target Angle", 0);
 
     debuggingTab = Shuffleboard.getTab("Debugging Tab");
     competitionTab = Shuffleboard.getTab("Competition Tab");
@@ -210,10 +207,18 @@ public class DriveTrain extends SubsystemBase {
 
   /*********** Drive Methods ***********/
 
+  //Normal arcadeDrive method for miscellaneous things
   public void drive(double speed, double turn){
     differentialDrive.arcadeDrive(speed, turn);
   }
 
+  /* 
+   * These methods below are for the Cheesyish Drive method, a smoother and more precise way
+   * to drive the robot, depending on the axis of the robot it calculates a smoother turn
+   * with some parameters that are given. This is similar to the curvatureDrive method of the 
+   * DifferentialDrive class but we are using this one because we feel like we have more control
+   * of every parameter needed. 
+   */
   public void setOpenLoop(DriveSignal signal){
     leftLeader.set(signal.getLeft());
     rightLeader.set(signal.getRight());
@@ -266,6 +271,8 @@ public class DriveTrain extends SubsystemBase {
     differentialDrive.feed();
   }
 
+  /*********** Odometry ***********/
+
   public double getAngle(){
     return imu.getYaw();
   }
@@ -306,14 +313,6 @@ public class DriveTrain extends SubsystemBase {
     return imu.getPitch();
   }
 
-  /*public void resetPoseWVision(){
-    visionOdometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
-    .getRotation().getDegrees()), 
-    encoderCountsToMeters(leftEncoder.getPosition()),
-    encoderCountsToMeters(rightEncoder.getPosition()),
-     m_poseEstimator.getEstimatedPosition());
-  }*/
-
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(encoderCountsToMeters(leftEncoder.getPosition()),
     encoderCountsToMeters(rightEncoder.getPosition()));
@@ -327,7 +326,6 @@ public class DriveTrain extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     resetImu();
-    //setEncodersPose(3.73, 3.73);
     wheelOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()),
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()), pose);
@@ -355,6 +353,17 @@ public class DriveTrain extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition().getRotation();
   }
 
+  /* 
+   * On board we have two cameras, a Limelight 2+ for use on retroreflective targets and a 
+   * OV9281 Raspicam connected to an Orange pi co-processor. The relevant camera in this method
+   * is the Raspicam, where we have installed photonvision for use on fudicial targets.
+   * 
+   * In this method we call our co-processor and camera, get what it detects and send that data
+   * to the pose estimator to correct our odometry. If no apriltag is detected, the robot will
+   * continue using the motor encoders and the mounted gyro to change it's position on the field.
+   * 
+   * All of this data is then sent to a Fied2d() widget on the Shuffleboard.
+  */
   public void updateOdometryWVisionCorrectionPhoton(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(leftEncoder.getPosition()), 
@@ -379,14 +388,23 @@ public class DriveTrain extends SubsystemBase {
     m_poseEstimator.getEstimatedPosition();
   }
 
+  //Gets the Balance PID Controller for use in other classes
   public PIDController getBalanceController(){
     return balancePID;
   }
 
+  //Gets the Balance PID Controller for use in other classes
   public PIDController getTurnPID(){
     return alignPID;
   }
-  
+
+  /* 
+   * We do this to have the ability to send our current PID controller values to our Shuffleboard 
+   * and using a tool called TunableNumber we can fine-tune our PID controllers without the need to be
+   * deploying code after every change.
+   */
+
+  //Ramsete Command for following created Trajectories
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
     if (initPose) {
       new InstantCommand(() -> {resetOdometry(trajectory.getInitialPose());}); 

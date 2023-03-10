@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.TeleOpCommands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.NodeSelector;
@@ -10,19 +10,19 @@ import frc.robot.subsystems.NodeSelector;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class NodeSelectionUp extends InstantCommand {
+public class NodeSelectionLeft extends InstantCommand {
   NodeSelector m_nodeSelector;
 
-  public NodeSelectionUp(NodeSelector m_nodeSelector) {
+  public NodeSelectionLeft(NodeSelector m_nodeSelector) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_nodeSelector = m_nodeSelector;
-    
+
     addRequirements(m_nodeSelector);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_nodeSelector.updateSelectionUp();
+     m_nodeSelector.updateSelectionLeft();
   }
 }

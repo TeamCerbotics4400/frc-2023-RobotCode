@@ -27,7 +27,7 @@ public class StraightLineAuto extends SequentialCommandGroup {
 
   Trajectory straightTrajectory = PathPlanner.loadPath("Straight Line", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
-  AutoConstants.kMaxAccelerationMetersPerSecondSquared, false);
+  AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
   public StraightLineAuto(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, FalconShooter m_shooter) {
     // Add your commands in the addCommands() call, e.g.

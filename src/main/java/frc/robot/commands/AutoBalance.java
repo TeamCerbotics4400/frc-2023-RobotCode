@@ -12,7 +12,7 @@ public class AutoBalance extends CommandBase {
   private final DriveTrain m_drive;
 
   private double balancedAngle = 0.0;
-  private double balancedX = 3.85;
+  //private double balancedX = 3.85;
   
   public AutoBalance(DriveTrain m_drive) {
     // Use addRequirements() here to declare subsystem dependencies.

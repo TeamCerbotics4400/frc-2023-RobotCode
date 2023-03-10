@@ -55,9 +55,7 @@ public final class Constants {
                                kA = 0.86207;//1.1089;//0.83198;
 
     public static final double WHEEL_DIAMETER = 0.1524;
-    public static final double GEAR_RATIO = 0;//7 : 1
     public static final double TRACK_WIDTH = 0.504; 
-    public static final double ENCODER_CPR = 0;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(TRACK_WIDTH);
 
@@ -73,18 +71,11 @@ public final class Constants {
     public static final byte RIGHT_FLYWHEEL_ID = 9;
 
 
-    public static double kP= 0.078061, //con bandas = 0.098
+    public static double kP= 0.078061,
                         kI = 0.0,
                         kD = 0.0,
                         kIz = 0,
-                        kFF = 0.049,//con bandas = 0.42
-                        kMaxOutput = 1,
-                        kMinOutput = -1, 
-                        maxRPM = 0, 
-                        maxVel = 0, //---------
-                        minVel = 0, //---------
-                        maxAcc = 0, 
-                        allowedErr = 0,
+                        kFF = 0.049,
                         kS = 0.093193,
                         kV = 0.33252,
                         kA = 0.011115;
@@ -112,17 +103,13 @@ public final class Constants {
                          kA = 0.0019641,//0.003212,
                          kG = 0.12588;//0.44033;
 
-    public static double OFFSET_DEGREES = 0.0;
-
     public static double IDLE_POSITION = 160.5 - 70.5;
     public static double SUBSTATION_POSITION = 189.5 - 70.5;
     public static double SCORING_POSITION = 121.5;//199.5 - 70.5;
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
 
-    public static double ARM_THRESHOLD = 8.5;
-
-    public static String LEVEL_TO_SHOOT = "LOW";
+    public static double ARM_THRESHOLD = 8.1;
   }
 
   public static final class WristConstants {
@@ -143,7 +130,7 @@ public final class Constants {
     public static double IDLE_POSITION = 0.0;
     public static double RIGHT_POSITION = -90.0;
 
-    public static double WRIST_THRESHOLD = 3.0;
+    public static double WRIST_THRESHOLD = 2.8;
   }
 
 
@@ -199,25 +186,8 @@ public final class Constants {
               Map.entry("Node 7 Cone", new Pose2d(new Translation2d(1.15, 3.86), Rotation2d.fromDegrees(180))),
               Map.entry("Node 8 Cube", new Pose2d(new Translation2d(1.15, 4.42), Rotation2d.fromDegrees(180))),
               Map.entry("Node 9 Cone", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180)))
-              /*Map.entry("Node1Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node2Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node3Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node4Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node5Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node6Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node7Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node8Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node9Mid", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node1Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node2Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node3Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node4Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node5Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node6Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node7Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node8Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180))),
-              Map.entry("Node9Low", new Pose2d(new Translation2d(), Rotation2d.fromDegrees(180)))*/
           );
+
           private static final Map<String, Pose2d> RED_MAP =
               BLUE_MAP.entrySet().stream().collect(Collectors.toMap(
                   entry -> entry.getKey(),
@@ -232,11 +202,11 @@ public final class Constants {
               Alliance.Red, RED_MAP
           );
   
-          public static Map<String, Pose2d> getMap(){
+          public static Map<String, Pose2d> getBlueMap(){
             return BLUE_MAP;
+          }
+          public static Map<String, Pose2d> getRedMap(){
+            return RED_MAP;
           }
     }
 }
-  
-
-

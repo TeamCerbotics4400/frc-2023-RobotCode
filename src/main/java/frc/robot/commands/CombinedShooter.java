@@ -63,8 +63,8 @@ public class CombinedShooter extends CommandBase {
       case "Mid":
         if(cubeNodes.contains(m_selector.getAlignName())){
       
-          m_shooter.leftSetpoint(1050);
-          m_shooter.rightSetpoint(1050);
+          m_shooter.leftSetpoint(950);
+          m_shooter.rightSetpoint(950);
         
         } else {
       
