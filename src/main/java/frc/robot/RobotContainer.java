@@ -20,6 +20,7 @@ import frc.robot.commands.TeleOpCommands.NodeSelectionUp;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
 //import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
 import frc.robot.commands.IntakeCones;
+import frc.robot.commands.LimelightToggle;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -140,6 +141,8 @@ public class RobotContainer {
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
    new JoystickButton(subsystemsDriver, 4).whileTrue(new CombinedShooter(m_arm, m_wrist, m_shooter, m_nodeSelector));
+
+   new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
 
    } else {
 

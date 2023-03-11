@@ -142,8 +142,8 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    SmartDashboard.putNumber("balance P", balancePID.getP());
-    SmartDashboard.putNumber("balance D", balancePID.getD());
+    //SmartDashboard.putNumber("balance P", balancePID.getP());
+    //SmartDashboard.putNumber("balance D", balancePID.getD());
 
     //SmartDashboard.putNumber("Balance P", balancePID.getP());
     //SmartDashboard.putNumber("Balance D", balancePID.getD());
@@ -166,12 +166,12 @@ public class DriveTrain extends SubsystemBase {
      encoderCountsToMeters(leftEncoder.getPosition()), 
      encoderCountsToMeters(rightEncoder.getPosition()));
 
-     SmartDashboard.putNumber("Odometry X", wheelOdometry.getPoseMeters().getX());
+     //SmartDashboard.putNumber("Odometry X", wheelOdometry.getPoseMeters().getX());
 
-     SmartDashboard.putNumber("Odometry Y", wheelOdometry.getPoseMeters().getY());
+     //SmartDashboard.putNumber("Odometry Y", wheelOdometry.getPoseMeters().getY());
 
-     SmartDashboard.putNumber("Left Encoder meters", encoderCountsToMeters(leftEncoder.getPosition()));
-     SmartDashboard.putNumber("Right Encoder Meters", encoderCountsToMeters(rightEncoder.getPosition()));
+     //SmartDashboard.putNumber("Left Encoder meters", encoderCountsToMeters(leftEncoder.getPosition()));
+     //SmartDashboard.putNumber("Right Encoder Meters", encoderCountsToMeters(rightEncoder.getPosition()));
 
     /*SmartDashboard.putNumber("visionOdometry X", visionOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("visionOdometry Y", visionOdometry.getPoseMeters().getY());
@@ -181,15 +181,15 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Odometry Angle", 
     wheelOdometry.getPoseMeters().getRotation().getDegrees());
 
-    SmartDashboard.putNumber("Current Angle", getCorrectedAngle());
+    //SmartDashboard.putNumber("Current Angle", getCorrectedAngle());
 
     //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
 
-    double lCP = SmartDashboard.getNumber("balance P", balancePID.getP());
-    double lCD = SmartDashboard.getNumber("balance D", balancePID.getD());
+    //double lCP = SmartDashboard.getNumber("balance P", balancePID.getP());
+    //double lCD = SmartDashboard.getNumber("balance D", balancePID.getD());
 
-    if((lCP != balancePID.getP())){balancePID.setP(lCP);}
-    if((lCD != balancePID.getD())){balancePID.setD(lCD);}
+    //if((lCP != balancePID.getP())){balancePID.setP(lCP);}
+    //if((lCD != balancePID.getD())){balancePID.setD(lCD);}
 
     /*if((rCP != rightPIDController.getP())){rightPIDController.setP(rCP);}
     if((rCD != rightPIDController.getD())){rightPIDController.setD(rCD);}*/

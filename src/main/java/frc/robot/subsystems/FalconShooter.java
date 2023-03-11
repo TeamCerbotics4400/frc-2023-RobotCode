@@ -54,7 +54,7 @@ public class FalconShooter extends SubsystemBase {
     rightFlyWheel.config_IntegralZone(pidSlot, ShooterConstants.kIz);
     rightFlyWheel.config_kF(pidSlot, ShooterConstants.kFF);
     
-    //SmartDashboard.putNumber("Target Velo", desiredVelo);
+    SmartDashboard.putNumber("Target Velo", desiredVelo);
 
     /*SmartDashboard.putNumber("Shooter P", ShooterConstants.kP);
     SmartDashboard.putNumber("Shooter I", ShooterConstants.kI);
@@ -69,17 +69,17 @@ public class FalconShooter extends SubsystemBase {
     // This method will be called once per scheduler run
 
     //SmartDashboard.putNumber("Average RPM", getAverageRPM());
-    //SmartDashboard.putNumber("Left RPM", getLeftRPM());
-    //SmartDashboard.putNumber("Right RPM", getRightRPM());
-    SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
+    SmartDashboard.putNumber("Left RPM", getLeftRPM());
+    SmartDashboard.putNumber("Right RPM", getRightRPM());
+    //SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
 
     //SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
     //SmartDashboard.putBoolean("Shooter w cone", isShooterOcuppiedCone());
     //SmartDashboard.putBoolean("Sensor 2", beamSensor2.get());
 
-    //double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
+    double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
-    //if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
+    if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
     
   
     /*double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);

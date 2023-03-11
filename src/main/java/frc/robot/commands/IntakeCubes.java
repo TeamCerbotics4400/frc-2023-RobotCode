@@ -27,7 +27,7 @@ public class IntakeCubes extends CommandBase {
   public void execute() {
     //m_intake.setIntakePose(LinkageConstants.intakeExtended);
     
-    m_shooter.setMotorsPower(-0.5, -0.5);
+    m_shooter.setMotorsPower(-1.0, -1.0);
 
     m_shooter.stopShooterSensorCube();
   }

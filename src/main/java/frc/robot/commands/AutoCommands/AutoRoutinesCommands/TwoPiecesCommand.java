@@ -5,8 +5,10 @@
 package frc.robot.commands.AutoCommands.AutoRoutinesCommands;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -27,7 +29,7 @@ import frc.robot.subsystems.WristSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TwoPiecesCommand extends SequentialCommandGroup {
   /** Creates a new TwoPiecesWBalanceCommand. */
-  Trajectory twoPiecesTrajectory = PathPlanner.loadPath("TwoPieces", 
+  PathPlannerTrajectory twoPiecesTrajectory = PathPlanner.loadPath("TwoPieces", 
   AutoConstants.kMaxSpeedMetersPerSecond,
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
@@ -39,6 +41,8 @@ public class TwoPiecesCommand extends SequentialCommandGroup {
   WristSubsystem m_wrist, FalconShooter m_shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+
+    PathPlannerTrajectory.transformTrajectoryForAlliance(twoPiecesTrajectory, DriverStation.getAlliance());
 
     InstantCommand resetOdometry = new InstantCommand(() ->
      m_drive.resetOdometry(twoPiecesTrajectory.getInitialPose()));

@@ -31,7 +31,7 @@ public final class Constants {
 
   public static final boolean twoControllerMode = true;
 
-  public static final boolean needToLog = false;
+  public static final boolean needToLog = true;
   
   public static final class DriveConstants{
     public static final int LeftLeader_ID = 2; //3
@@ -42,10 +42,12 @@ public final class Constants {
 
     public static final byte Gyro_ID = 13;
 
+    //Turn PID values, for auto-aligning
     public static double TkP = 0.02,
                                TkI = 0.0,
                                TkD = 0.0017;
 
+    //
     public static final double kP = -0.307//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
     ,  kI = 0
     , kD = 0;//0.26741;//0.20844;//0.0010903
@@ -104,8 +106,8 @@ public final class Constants {
                          kG = 0.12588;//0.44033;
 
     public static double IDLE_POSITION = 160.5 - 70.5;
-    public static double SUBSTATION_POSITION = 189.5 - 70.5;
-    public static double SCORING_POSITION = 121.5;//199.5 - 70.5;
+    public static double SUBSTATION_POSITION = 130.5;
+    public static double SCORING_POSITION = 115;//199.5 - 70.5;
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
 
@@ -135,8 +137,8 @@ public final class Constants {
 
 
   public static final class AutoConstants{
-    public static final double kMaxSpeedMetersPerSecond = 1.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1.0;
+    public static final double kMaxSpeedMetersPerSecond = 2.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;
   }
 
   public static final class VisionConstants {
@@ -175,6 +177,7 @@ public final class Constants {
   
     public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
   
+    //Single Substation around = X 14.01 Y 6.83
     public static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
               Map.entry("No Node", new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(180))),
               Map.entry("Node 1 Cone", new Pose2d(new Translation2d(1.15, 0.42), Rotation2d.fromDegrees(180))),
@@ -185,7 +188,8 @@ public final class Constants {
               Map.entry("Node 6 Cone", new Pose2d(new Translation2d(1.15, 3.30), Rotation2d.fromDegrees(180))),
               Map.entry("Node 7 Cone", new Pose2d(new Translation2d(1.15, 3.86), Rotation2d.fromDegrees(180))),
               Map.entry("Node 8 Cube", new Pose2d(new Translation2d(1.15, 4.42), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 9 Cone", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180)))
+              Map.entry("Node 9 Cone", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180))),
+              Map.entry("Single Substation", new Pose2d(new Translation2d(2.35, 9.50), Rotation2d.fromDegrees(90)))
           );
 
           private static final Map<String, Pose2d> RED_MAP =

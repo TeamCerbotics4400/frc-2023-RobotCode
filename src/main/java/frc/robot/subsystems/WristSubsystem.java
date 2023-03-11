@@ -64,7 +64,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   public void periodic() {
       // TODO Auto-generated method stub
       super.periodic();
-      SmartDashboard.putBoolean("Wrist ready", isReady());
+      //SmartDashboard.putBoolean("Wrist ready", isReady());
       //SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
       //SmartDashboard.putNumber("Angulo Objetivo",this.getController().getSetpoint().position);
       //SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);

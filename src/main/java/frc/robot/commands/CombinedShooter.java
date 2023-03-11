@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import java.util.ArrayList;
 
+import org.opencv.features2d.Feature2D;
+
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
@@ -21,7 +23,6 @@ public class CombinedShooter extends CommandBase {
   NodeSelector m_selector;
 
   private ArrayList<String> cubeNodes;
-  private ArrayList<String> coneNodes;
 
   public CombinedShooter(ArmSubsystem m_arm, WristSubsystem m_wrist, FalconShooter m_shooter, 
   NodeSelector m_selector) {
@@ -32,18 +33,10 @@ public class CombinedShooter extends CommandBase {
     this.m_selector = m_selector;
 
     cubeNodes = new ArrayList<String>();
-    coneNodes = new ArrayList<String>();
 
-    cubeNodes.add("Node 2");
-    cubeNodes.add("Node 5");
-    cubeNodes.add("Node 8");
-
-    coneNodes.add("Node 1");
-    coneNodes.add("Node 3");
-    coneNodes.add("Node 4");
-    coneNodes.add("Node 6");
-    coneNodes.add("Node 7");
-    coneNodes.add("Node 9");
+    cubeNodes.add("Node 2 Cube");
+    cubeNodes.add("Node 5 Cube");
+    cubeNodes.add("Node 8 Cube");
 
     addRequirements(m_shooter);
   }
@@ -55,21 +48,24 @@ public class CombinedShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    switch(m_selector.getLevelName()){
+    m_shooter.goToDashboardVelocity();
+    /*switch(m_selector.getLevelName()){
       case "Low":
-        m_shooter.setMotorsPower(0.35, 0.35);
+          m_shooter.leftSetpoint(500);
+          m_shooter.rightSetpoint(500);
       break;
 
       case "Mid":
-        if(cubeNodes.contains(m_selector.getAlignName())){
-      
-          m_shooter.leftSetpoint(950);
-          m_shooter.rightSetpoint(950);
+        if(cubeNodes.contain(m_selector.getAlignName)){
+          //800 RPM for cube
+          m_shooter.goToDashboardVelocity();
+          //m_shooter.leftSetpoint(500);
+          //m_shooter.rightSetpoint(500);
         
         } else {
       
-          m_shooter.leftSetpoint(1025);
-          m_shooter.rightSetpoint(1025);
+          m_shooter.leftSetpoint(950);
+          m_shooter.rightSetpoint(950);
         }
       break;
 
@@ -84,8 +80,8 @@ public class CombinedShooter extends CommandBase {
         m_shooter.leftSetpoint(1045);
         m_shooter.rightSetpoint(1045);
       }
-      break;
-    }
+      break;*/
+    //}
 
 
     

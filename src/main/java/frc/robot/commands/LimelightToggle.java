@@ -5,16 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.FalconShooter;
+import frc.robot.LimelightHelpers;
+import frc.robot.Constants.VisionConstants;
 
-public class IntakeCones extends CommandBase {
-  /** Creates a new IntakeCones. */
-  FalconShooter m_shooter;
-  public IntakeCones(FalconShooter m_shooter) {
+public class LimelightToggle extends CommandBase {
+  /** Creates a new LimelightToggle. */
+  public LimelightToggle() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_shooter = m_shooter;
-
-    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -24,15 +21,13 @@ public class IntakeCones extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.setMotorsPower(-1.0, -1.0);
-
-    m_shooter.stopShooterSensorCone();
+    LimelightHelpers.setLEDMode_ForceOn(VisionConstants.limelightName);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setMotorsPower(0, 0);
+    LimelightHelpers.setLEDMode_ForceOff(VisionConstants.limelightName);
   }
 
   // Returns true when the command should end.

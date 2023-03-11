@@ -18,6 +18,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 
 /** A robot arm subsystem that moves with a motion profile. */
+
+/*
+ * Why not use Rev's motion profiling if we have Neo 500 motors?
+ * Well we have an Absolute Encoder that returns the current Arm angle but is not connected to the
+ * Spark Max data port but to the RoboRIO DIO port 2, so we decided that it was better to use the
+ * ProfiedPIDSubsystem class for our Arm so we can have a Motion Profiling PID with the absolute
+ * Encoder as a feedback Device.
+ */
 public class ArmSubsystem extends ProfiledPIDSubsystem {
   private final CANSparkMax leftMotor = new CANSparkMax(ArmConstants.LEFT_ARM_ID, MotorType.kBrushless);
   private final CANSparkMax rightMotor = new CANSparkMax(ArmConstants.RIGHT_ARM_ID, MotorType.kBrushless);
@@ -42,6 +50,7 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
                 ArmConstants.kMaxAccelerationMetersPerSecondSquared)),
         90.3);
     
+    //Makes the Arm absolute Encoder return every rotation as angles
     m_encoder.setDistancePerRotation(360.0);
     // Start arm at rest in neutral position
     setGoal(90.3);
@@ -52,8 +61,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     leftMotor.setInverted(false);
     rightMotor.follow(leftMotor, true);
 
-    leftMotor.setSmartCurrentLimit(40);
-    rightMotor.setSmartCurrentLimit(40);
+    leftMotor.setSmartCurrentLimit(80);
+    rightMotor.setSmartCurrentLimit(80);
 
     /*SmartDashboard.putNumber("Arm P", this.m_controller.getP());
     SmartDashboard.putNumber("Arm D", this.m_controller.getD());*/
@@ -65,7 +74,7 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       super.periodic();
       SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
 
-      SmartDashboard.putBoolean("Arm ready", isReady());
+      //SmartDashboard.putBoolean("Arm ready", isReady());
       //SmartDashboard.putNumber("Target Verdadero ", targetAngle);
       //SmartDashboard.putNumber("Goal Objetivo",this.getController().getGoal().position);
       //SmartDashboard.putNumber("Goal Velocidad", this.getController().getGoal().velocity);
@@ -94,6 +103,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
   @Override
   public double getMeasurement() {
+    //Minus 70.5 because that gives us a range betwueen 0-180 degrees, 0 being the left position
+    //and 180 the right position while 90 degrees is the idle vertical position
     return m_encoder.getDistance() - 70.5;
   }
 
@@ -115,11 +126,7 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
         + m_controller.calculate(m_controller.getSetpoint().velocity, acceleration));
   }
 
-  public void gotoPositionMethod(double position){
-    this.setGoal(position);
-    this.enable();
-  }
-
+  //For use in autonomous methods to shoot after the Arm is in position
   public boolean isReady(){
     if(getMeasurement() > getController().getGoal().position - ArmConstants.ARM_THRESHOLD 
     && getMeasurement() < getController().getGoal().position + ArmConstants.ARM_THRESHOLD){
