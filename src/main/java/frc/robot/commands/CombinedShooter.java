@@ -6,8 +6,6 @@ package frc.robot.commands;
 
 import java.util.ArrayList;
 
-import org.opencv.features2d.Feature2D;
-
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
@@ -48,19 +46,19 @@ public class CombinedShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.goToDashboardVelocity();
-    /*switch(m_selector.getLevelName()){
+    //m_shooter.goToDashboardVelocity();
+    switch(m_selector.getLevelName()){
       case "Low":
           m_shooter.leftSetpoint(500);
           m_shooter.rightSetpoint(500);
       break;
 
       case "Mid":
-        if(cubeNodes.contain(m_selector.getAlignName)){
+        if(cubeNodes.contains(m_selector.getAlignName())){
           //800 RPM for cube
-          m_shooter.goToDashboardVelocity();
-          //m_shooter.leftSetpoint(500);
-          //m_shooter.rightSetpoint(500);
+          //m_shooter.goToDashboardVelocity();
+          m_shooter.leftSetpoint(800);
+          m_shooter.rightSetpoint(800);
         
         } else {
       
@@ -80,8 +78,8 @@ public class CombinedShooter extends CommandBase {
         m_shooter.leftSetpoint(1045);
         m_shooter.rightSetpoint(1045);
       }
-      break;*/
-    //}
+      break;
+    }
 
 
     

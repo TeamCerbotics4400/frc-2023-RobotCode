@@ -59,7 +59,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    m_autoChooser.setDefaultOption("Default Auto", m_DefaultAuto);
+    m_autoChooser.setDefaultOption("No Auto", m_DefaultAuto);
     m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Line", m_autoNames[2]);
     m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
