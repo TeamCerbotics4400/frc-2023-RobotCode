@@ -28,8 +28,8 @@ public class ShootCube extends ParallelCommandGroup {
     this.m_shooter = m_shooter;
     this.m_wrist = m_wrist;
 
-    addCommands(m_arm.goToPosition(ArmConstants.SCORING_POSITION), 
-    m_wrist.goToPosition(WristConstants.LEFT_POSITION), 
+    addCommands(m_arm.goToPosition(115), 
+    m_wrist.goToPosition(90), 
     new CubeShooter(m_shooter, m_arm, m_wrist));
   }
 }

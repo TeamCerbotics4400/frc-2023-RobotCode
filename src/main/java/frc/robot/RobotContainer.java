@@ -51,7 +51,7 @@ public class RobotContainer {
   private ArmSubsystem m_arm = new ArmSubsystem();
   
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
-  private final String m_DefaultAuto = "NO AUTO";
+  private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT LINE", 
       "PIECE AND BALANCE", "TWO PIECES"/* , "TWO PIECES AND BALANCE" */};
@@ -59,7 +59,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    m_autoChooser.setDefaultOption("No Auto", m_DefaultAuto);
+    m_autoChooser.setDefaultOption("PieceBalance Default", m_DefaultAuto);
     m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Line", m_autoNames[2]);
     m_autoChooser.addOption("Piece and balance", m_autoNames[3]);

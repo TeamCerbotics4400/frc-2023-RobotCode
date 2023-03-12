@@ -38,7 +38,7 @@ public class NodeSelector extends SubsystemBase {
     this.pose_map = FieldConstants.getRedMap();
     }
     this.currentSelectionNodes = 0;
-    this.currentSelectionLevels = 1;
+    this.currentSelectionLevels = 2;
 
     nodeNames.add("No Node");
     nodeNames.add("Node 1 Cone");

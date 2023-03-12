@@ -70,8 +70,9 @@ public class CombinedShooter extends CommandBase {
       case "High":
       if(cubeNodes.contains(m_selector.getAlignName())){
       
-        m_shooter.leftSetpoint(1500);
-        m_shooter.rightSetpoint(1500);
+        //m_shooter.goToDashboardVelocity();
+        m_shooter.leftSetpoint(1200);
+        m_shooter.rightSetpoint(1200);
       
       } else {
     

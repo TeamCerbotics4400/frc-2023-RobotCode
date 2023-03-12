@@ -26,7 +26,7 @@ public class IntakeCones extends CommandBase {
   public void execute() {
     m_shooter.setMotorsPower(-1.0, -1.0);
 
-    m_shooter.stopShooterSensorCone();
+    m_shooter.stopShooterSensorCube();
   }
 
   // Called once the command ends or is interrupted.

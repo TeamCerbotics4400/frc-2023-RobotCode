@@ -111,7 +111,7 @@ public final class Constants {
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
 
-    public static double ARM_THRESHOLD = 8.1;
+    public static double ARM_THRESHOLD = 9.5;
   }
 
   public static final class WristConstants {
@@ -132,7 +132,7 @@ public final class Constants {
     public static double IDLE_POSITION = 0.0;
     public static double RIGHT_POSITION = -90.0;
 
-    public static double WRIST_THRESHOLD = 2.8;
+    public static double WRIST_THRESHOLD = 4;
   }
 
 

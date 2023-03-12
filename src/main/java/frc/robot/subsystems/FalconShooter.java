@@ -71,7 +71,7 @@ public class FalconShooter extends SubsystemBase {
     //SmartDashboard.putNumber("Average RPM", getAverageRPM());
     SmartDashboard.putNumber("Left RPM", getLeftRPM());
     SmartDashboard.putNumber("Right RPM", getRightRPM());
-    //SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
+    SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
 
     //SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
     //SmartDashboard.putBoolean("Shooter w cone", isShooterOcuppiedCone());
@@ -174,7 +174,7 @@ public class FalconShooter extends SubsystemBase {
   }
 
   public boolean isShooterOcuppiedCube(){
-    if(beamSensor2.get() != true){
+    if(beamSensor.get() != true){
       return true;
     } else{
       return false;
@@ -182,7 +182,7 @@ public class FalconShooter extends SubsystemBase {
   }
 
   public boolean isShooterOcuppiedCone(){
-    if(beamSensor.get() != true){
+    if(beamSensor2.get() != true){
       return true;
     } else{
       return false;

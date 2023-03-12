@@ -4,17 +4,21 @@
 
 package frc.robot.commands.AutoCommands.AutoRoutinesCommands;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.PathPlanner;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoBalance;
-import frc.robot.commands.AutoCommands.ShootCone;
+import frc.robot.commands.CubeShooter;
+import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
@@ -41,14 +45,20 @@ public class PieceWBalance extends SequentialCommandGroup {
     this.m_wrist = m_wrist;
     this.m_shooter = m_shooter;
 
+    BooleanSupplier noPiece = new BooleanSupplier() {
+      @Override
+      public boolean getAsBoolean() {
+          return m_shooter.isShooterOcuppiedCube();
+      }
+  };
+
     InstantCommand resetOdometry = 
     new InstantCommand(() -> m_drive.resetOdometry(onlyBalanceTrajectory.getInitialPose()));
 
     addCommands(resetOdometry,
-    new ShootCone(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)), 
-    m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
-    m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
-      m_drive.createCommandForTrajectory(onlyBalanceTrajectory, false), 
-      new AutoBalance(m_drive).andThen(() -> m_drive.tankDriveVolts(0, 0)));
+    new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)), m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
+      m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
+      m_drive.createCommandForTrajectory(onlyBalanceTrajectory, false) , 
+      new AutoBalance(m_drive));
   }
 }
