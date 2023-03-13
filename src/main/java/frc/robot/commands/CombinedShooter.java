@@ -49,8 +49,8 @@ public class CombinedShooter extends CommandBase {
     //m_shooter.goToDashboardVelocity();
     switch(m_selector.getLevelName()){
       case "Low":
-          m_shooter.leftSetpoint(500);
-          m_shooter.rightSetpoint(500);
+          m_shooter.leftSetpoint(550);
+          m_shooter.rightSetpoint(550);
       break;
 
       case "Mid":
