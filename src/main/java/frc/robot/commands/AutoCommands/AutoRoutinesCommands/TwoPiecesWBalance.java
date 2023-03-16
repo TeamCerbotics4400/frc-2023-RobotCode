@@ -9,47 +9,30 @@ import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.commands.AutoBalance;
+import frc.robot.commands.AutoCommands.IdleArm;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TwoPiecesWBalance extends SequentialCommandGroup {
   /** Creates a new TwoPiecesWBalance. */
-  Trajectory firstTrajectory = PathPlanner.loadPath("TwoPiecesBalanceOne", 
+  Trajectory piecesBalance = PathPlanner.loadPath("TwoPiecesCharging", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
-  Trajectory secondTrajectory = PathPlanner.loadPath("TwoPiecesBalanceTwo", 
-  AutoConstants.kMaxSpeedMetersPerSecond, 
-  AutoConstants.kMaxAccelerationMetersPerSecondSquared, false);
-
-  Trajectory thirdTrajectory = PathPlanner.loadPath("TwoPiecesBalanceThree", 
-  2.0, 2.0, false);
-
-  public TwoPiecesWBalance(DriveTrain m_drive) {
+  public TwoPiecesWBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
-    InstantCommand resetOdometry1 = new InstantCommand(() -> 
-    m_drive.resetOdometry(firstTrajectory.getInitialPose()));
+    InstantCommand resetOdometry = new InstantCommand(() -> 
+    m_drive.resetOdometry(piecesBalance.getInitialPose()));
 
-    InstantCommand resetOdometry2 = new InstantCommand(() -> 
-    m_drive.resetOdometry(secondTrajectory.getInitialPose()));
-
-    InstantCommand resetOdometry3 = new InstantCommand(() -> 
-    m_drive.resetOdometry(thirdTrajectory.getInitialPose()));
-
-    addCommands(resetOdometry1, 
-    m_drive.createCommandForTrajectory(firstTrajectory, false).andThen(() -> 
-    m_drive.tankDriveVolts(0, 0)), new WaitCommand(2), 
-    resetOdometry2, 
-    m_drive.createCommandForTrajectory(secondTrajectory, false).andThen(() -> 
-    m_drive.tankDriveVolts(0, 0)), new WaitCommand(2), 
-    resetOdometry3,
-    m_drive.createCommandForTrajectory(thirdTrajectory, false), new AutoBalance(m_drive));
+    addCommands(resetOdometry, new IdleArm(m_arm, m_wrist),
+    m_drive.createCommandForTrajectory(piecesBalance, false).andThen(() -> 
+    m_drive.tankDriveVolts(0, 0)));
   }
 }

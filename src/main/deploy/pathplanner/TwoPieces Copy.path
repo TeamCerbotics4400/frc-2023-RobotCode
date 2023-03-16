@@ -73,5 +73,32 @@
   "maxVelocity": null,
   "maxAcceleration": null,
   "isReversed": true,
-  "markers": []
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "ShootPiece",
+        "Idle"
+      ]
+    },
+    {
+      "position": 0.7878787878787568,
+      "names": [
+        "Intake"
+      ]
+    },
+    {
+      "position": 2.0,
+      "names": [
+        "ShootPiece",
+        "Idle"
+      ]
+    },
+    {
+      "position": 1.3454545454545244,
+      "names": [
+        "event"
+      ]
+    }
+  ]
 }

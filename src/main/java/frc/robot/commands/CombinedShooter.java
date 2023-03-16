@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
@@ -81,9 +80,6 @@ public class CombinedShooter extends CommandBase {
       }
       break;
     }
-
-
-    
   }
 
   // Called once the command ends or is interrupted.
@@ -96,14 +92,6 @@ public class CombinedShooter extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  public boolean suitableToShoot(){
-    if(RobotController.getBatteryVoltage() <= 12.0){
-      return false;
-    } else {
-      return true;
-    }
   }
 }
 

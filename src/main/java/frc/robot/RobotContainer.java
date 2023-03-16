@@ -13,12 +13,12 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightLineAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesCommand;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
 import frc.robot.commands.TeleOpCommands.NodeSelectionDown;
 import frc.robot.commands.TeleOpCommands.NodeSelectionLeft;
 import frc.robot.commands.TeleOpCommands.NodeSelectionRight;
 import frc.robot.commands.TeleOpCommands.NodeSelectionUp;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
-//import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
 import frc.robot.commands.IntakeCones;
 import frc.robot.commands.LimelightToggle;
 import edu.wpi.first.wpilibj.Joystick;
@@ -54,7 +54,7 @@ public class RobotContainer {
   private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT LINE", 
-      "PIECE AND BALANCE", "TWO PIECES"/* , "TWO PIECES AND BALANCE" */};
+      "PIECE AND BALANCE", "TWO PIECES", "TWO PIECES AND BALANCE"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -64,7 +64,7 @@ public class RobotContainer {
     m_autoChooser.addOption("Straight Line", m_autoNames[2]);
     m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
     m_autoChooser.addOption("Two Pieces", m_autoNames[4]);
-    //m_autoChooser.addOption("Two and Balance", m_autoNames[5]);
+    m_autoChooser.addOption("Two and Balance", m_autoNames[5]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -207,9 +207,9 @@ public class RobotContainer {
         autonomousCommand = new TwoPiecesCommand(m_drive, m_arm, m_wrist, m_shooter);
       break;
 
-      /*case "TWO PIECES AND BALANCE":
-        autonomousCommand = new TwoPiecesWBalance(m_drive);
-      break;*/
+      case "TWO PIECES AND BALANCE":
+        autonomousCommand = new TwoPiecesWBalance(m_drive, m_arm, m_wrist);
+      break;
     }
 
     return autonomousCommand;
