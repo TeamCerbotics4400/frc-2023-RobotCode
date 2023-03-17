@@ -5,6 +5,7 @@
 package frc.robot.commands.AutoCommands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
@@ -17,17 +18,22 @@ public class LimelightAutoAlign extends CommandBase {
 
   Joystick joy;
 
-  PIDController alignPID;
+  ProfiledPIDController profiledAlignPID;
+  //PIDController alignPID;
 
   public LimelightAutoAlign(DriveTrain m_drive, Joystick joy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
     this.joy = joy;
 
-    alignPID = m_drive.getTurnPID();
+    //alignPID = m_drive.getTurnPID();
+    profiledAlignPID = m_drive.getProfiledAlign();
 
-    alignPID.enableContinuousInput(-180, 180);
-    alignPID.setTolerance(0.05);
+    profiledAlignPID.enableContinuousInput(-180, 180);
+    profiledAlignPID.setTolerance(0.05);
+
+    //alignPID.enableContinuousInput(-180, 180);
+    //alignPID.setTolerance(0.05);
 
     addRequirements(m_drive);
   }
@@ -35,16 +41,18 @@ public class LimelightAutoAlign extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    alignPID.reset();
-    
+    //alignPID.reset();
+    profiledAlignPID.reset(m_drive.getCorrectedAngle());
     LimelightHelpers.setLEDMode_ForceOn(VisionConstants.limelightName);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    alignPID.setSetpoint(LimelightHelpers.getTY(VisionConstants.limelightName));
-    m_drive.drive(-joy.getRawAxis(1), alignPID.calculate(m_drive.getCorrectedAngle()));
+    profiledAlignPID.setGoal(LimelightHelpers.getTY(VisionConstants.limelightName));
+    m_drive.drive(-joy.getRawAxis(1), profiledAlignPID.calculate(m_drive.getCorrectedAngle()));
+    //alignPID.setSetpoint(LimelightHelpers.getTY(VisionConstants.limelightName));
+    //m_drive.drive(-joy.getRawAxis(1), alignPID.calculate(m_drive.getCorrectedAngle()));
   }
 
   // Called once the command ends or is interrupted.
@@ -57,6 +65,6 @@ public class LimelightAutoAlign extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return alignPID.atSetpoint();
+    return profiledAlignPID.atGoal();//alignPID.atSetpoint();
   }
 }

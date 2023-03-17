@@ -45,7 +45,9 @@ public final class Constants {
     //Turn PID values, for auto-aligning
     public static double TkP = 0.02,
                                TkI = 0.0,
-                               TkD = 0.0017;
+                               TkD = 0.0017,
+                               turnMaxVel = 2,
+                               turnMaxAcc = 2;
 
     //
     public static final double kP = -0.307//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
@@ -98,8 +100,8 @@ public final class Constants {
                          kI = 0.0,
                          kD = 0.021835,//0.00017643,//0.0024401,//8.274E-10,
                          kFF = 0.0,//0.000156,
-                         kMaxVelocityRadPerSecond = 150,
-                         kMaxAccelerationMetersPerSecondSquared = 150,
+                         kMaxVelocityRadPerSecond = 210,
+                         kMaxAccelerationMetersPerSecondSquared = 210,
                          kS = 0.94615,//0.82172,
                          kV = 0.0021715,//0.0047927,
                          kA = 0.0019641,//0.003212,
@@ -121,8 +123,8 @@ public final class Constants {
                          kI = 0.0,
                          kD = 0.0151835,
                          kFF = 0.0,
-                         kMaxVelocityRadPerSecond = 200,
-                         kMaxAccelerationMetersPerSecondSquared = 200,
+                         kMaxVelocityRadPerSecond = 250,
+                         kMaxAccelerationMetersPerSecondSquared = 250,
                          kS = 0.46147,
                          kV = 0.020646,
                          kA = 0.008245,

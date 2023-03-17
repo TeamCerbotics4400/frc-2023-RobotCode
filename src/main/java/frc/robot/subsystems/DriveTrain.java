@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
@@ -25,6 +26,7 @@ import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -58,6 +60,10 @@ public class DriveTrain extends SubsystemBase {
   private PIDController balancePID = new PIDController(-0.024, 0, -0.0016); 
 
   private PIDController alignPID = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
+
+  private ProfiledPIDController profiledAlignPID = new 
+  ProfiledPIDController(DriveConstants.TkP, 0, DriveConstants.TkD, 
+  new TrapezoidProfile.Constraints(DriveConstants.turnMaxVel, DriveConstants.turnMaxAcc));
 
   DifferentialDrive differentialDrive = new DifferentialDrive(leftControllers, rightControllers);
 
@@ -331,6 +337,12 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(rightEncoder.getPosition()), pose);
   }
 
+  public void resetVisionOdo(Pose2d pose){
+    visionOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()), 
+    encoderCountsToMeters(leftEncoder.getPosition()), 
+    encoderCountsToMeters(rightEncoder.getPosition()), pose);
+  }
+
   public double getLeftDistance(){
     return encoderCountsToMeters(leftEncoder.getPosition());
   }
@@ -398,6 +410,10 @@ public class DriveTrain extends SubsystemBase {
     return alignPID;
   }
 
+  public ProfiledPIDController getProfiledAlign(){
+    return profiledAlignPID;
+  }
+
   /* 
    * We do this to have the ability to send our current PID controller values to our Shuffleboard 
    * and using a tool called TunableNumber we can fine-tune our PID controllers without the need to be
@@ -413,6 +429,30 @@ public class DriveTrain extends SubsystemBase {
         new RamseteCommand(
             trajectory,
             this::getWheelPose,
+            new RamseteController(2, 0.7),
+            new SimpleMotorFeedforward(
+                DriveConstants.kS,
+                DriveConstants.kV,
+                DriveConstants.kA),
+                DriveConstants.kDriveKinematics,
+            this::getWheelSpeeds,
+            leftPIDController,
+            rightPIDController,
+            // RamseteCommand passes volts to the callback
+            this::tankDriveVolts,
+            this);
+
+    return ramseteCommand;
+  }
+
+  public Command createCommandForTrajectoryVision(Trajectory trajectory, Boolean initPose) {
+    if (initPose) {
+      new InstantCommand(() -> {resetOdometry(trajectory.getInitialPose());}); 
+    }
+    RamseteCommand ramseteCommand =
+        new RamseteCommand(
+            trajectory,
+            this::getVisionPose,
             new RamseteController(2, 0.7),
             new SimpleMotorFeedforward(
                 DriveConstants.kS,

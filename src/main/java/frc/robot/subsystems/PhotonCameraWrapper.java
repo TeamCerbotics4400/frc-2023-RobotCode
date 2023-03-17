@@ -21,7 +21,6 @@ import frc.robot.Constants.VisionConstants;
 /** Add your docs here. */
 public class PhotonCameraWrapper {
     public PhotonCamera photonCamera;
-    //public RobotPoseEstimator poseEstimator;
     public PhotonPoseEstimator photonPoseEstimator;
     
     public PhotonCameraWrapper() {
@@ -33,7 +32,7 @@ public class PhotonCameraWrapper {
 
             photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, 
                 PoseStrategy.MULTI_TAG_PNP, photonCamera, VisionConstants.orangeCamPose);
-            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_LAST_POSE);
         } catch(IOException e){
             DriverStation.reportError("Failed to load ApriltagFieldLayout", e.getStackTrace());
             photonPoseEstimator = null;
