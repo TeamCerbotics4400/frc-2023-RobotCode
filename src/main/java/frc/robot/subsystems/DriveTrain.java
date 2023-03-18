@@ -14,6 +14,9 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -81,7 +84,9 @@ public class DriveTrain extends SubsystemBase {
             new DifferentialDrivePoseEstimator(
                     DriveConstants.kDriveKinematics, 
                     Rotation2d.fromDegrees(getAngle()), 
-                    0.0, 0.0, new Pose2d());
+                    0.0, 0.0, new Pose2d(), 
+                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.02, 0.01), 
+                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01));
   
   /* 
    * We decided that having two types of odometry would work better than just having one of them.
@@ -162,19 +167,17 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-     /*visionOdometry.resetPosition(new Rotation2d(m_poseEstimator.getEstimatedPosition()
-     .getRotation().getDegrees()), 
-     encoderCountsToMeters(leftEncoder.getPosition()),
-     encoderCountsToMeters(rightEncoder.getPosition()),
-     m_poseEstimator.getEstimatedPosition());*/
-
      wheelOdometry.update(Rotation2d.fromDegrees(getCorrectedAngle()), 
      encoderCountsToMeters(leftEncoder.getPosition()), 
      encoderCountsToMeters(rightEncoder.getPosition()));
 
-     //SmartDashboard.putNumber("Odometry X", wheelOdometry.getPoseMeters().getX());
+     visionOdometry.update(Rotation2d.fromDegrees(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), 
+     m_poseEstimator.getEstimatedPosition().getX(), 
+     m_poseEstimator.getEstimatedPosition().getY());
 
-     //SmartDashboard.putNumber("Odometry Y", wheelOdometry.getPoseMeters().getY());
+     SmartDashboard.putNumber("vision X", m_poseEstimator.getEstimatedPosition().getX());
+
+     SmartDashboard.putNumber("vision Y", m_poseEstimator.getEstimatedPosition().getY());
 
      //SmartDashboard.putNumber("Left Encoder meters", encoderCountsToMeters(leftEncoder.getPosition()));
      //SmartDashboard.putNumber("Right Encoder Meters", encoderCountsToMeters(rightEncoder.getPosition()));
@@ -184,8 +187,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("visionOdometry Rotation", 
     visionOdometry.getPoseMeters().getRotation().getDegrees());*/
 
-    SmartDashboard.putNumber("Odometry Angle", 
-    wheelOdometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("vision Angle", 
+    m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
     //SmartDashboard.putNumber("Current Angle", getCorrectedAngle());
 
