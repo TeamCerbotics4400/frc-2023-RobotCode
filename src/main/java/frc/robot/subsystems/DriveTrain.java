@@ -84,7 +84,7 @@ public class DriveTrain extends SubsystemBase {
             new DifferentialDrivePoseEstimator(
                     DriveConstants.kDriveKinematics, 
                     Rotation2d.fromDegrees(getAngle()), 
-                    0.0, 0.0, new Pose2d(), 
+                    0.0, 0.0, new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)), 
                     new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.02, 0.01), 
                     new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01));
   
@@ -189,6 +189,9 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("vision Angle", 
     m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+
+    SmartDashboard.putNumber("Corrected estimated angle", getCorrectedEstimatedAngle());
+    SmartDashboard.putNumber("Gyro angle", getCorrectedAngle());
 
     //SmartDashboard.putNumber("Current Angle", getCorrectedAngle());
 
@@ -401,6 +404,10 @@ public class DriveTrain extends SubsystemBase {
 
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();
+  }
+
+  public double getCorrectedEstimatedAngle(){
+    return m_poseEstimator.getEstimatedPosition().getRotation().getDegrees() + 180;
   }
 
   //Gets the Balance PID Controller for use in other classes
