@@ -50,7 +50,7 @@ public final class Constants {
                                turnMaxAcc = 2;
 
     //
-    public static final double kP = -0.307//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
+    public static final double kP = -0.295//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
     ,  kI = 0
     , kD = 0;//0.26741;//0.20844;//0.0010903
 
@@ -139,7 +139,7 @@ public final class Constants {
 
 
   public static final class AutoConstants{
-    public static final double kMaxSpeedMetersPerSecond = 2.0;
+    public static final double kMaxSpeedMetersPerSecond = 3.0;
     public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;
   }
 

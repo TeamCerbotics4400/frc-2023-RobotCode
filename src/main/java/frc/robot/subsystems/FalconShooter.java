@@ -74,7 +74,7 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
 
     //SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
-    //SmartDashboard.putBoolean("Shooter w cone", isShooterOcuppiedCone());
+    SmartDashboard.putBoolean("Shooter w cone", isShooterOcuppiedCone());
     //SmartDashboard.putBoolean("Sensor 2", beamSensor2.get());
 
     double targetVelo = SmartDashboard.getNumber("Target Velo", 0);

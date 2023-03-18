@@ -24,7 +24,7 @@ public class IntakeCones extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.setMotorsPower(-1.0, -1.0);
+    m_shooter.setMotorsPower(1.0, 1.0);
 
     m_shooter.stopShooterSensorCone();
   }
