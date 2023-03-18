@@ -134,10 +134,10 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setIdleMode(IdleMode.kBrake);
     rightFollower.setIdleMode(IdleMode.kBrake);
 
-    leftLeader.setSmartCurrentLimit(60);
-    rightLeader.setSmartCurrentLimit(60);
-    leftFollower.setSmartCurrentLimit(60);
-    rightFollower.setSmartCurrentLimit(60);
+    leftLeader.setSmartCurrentLimit(75);
+    rightLeader.setSmartCurrentLimit(75);
+    leftFollower.setSmartCurrentLimit(75);
+    rightFollower.setSmartCurrentLimit(75);
 
     imu.configFactoryDefault();
 

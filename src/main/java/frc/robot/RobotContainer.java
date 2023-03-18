@@ -208,7 +208,7 @@ public class RobotContainer {
       break;
 
       case "TWO PIECES AND BALANCE":
-        autonomousCommand = new TwoPiecesWBalance(m_drive, m_arm, m_wrist);
+        autonomousCommand = new TwoPiecesWBalance(m_drive, m_arm, m_wrist, m_shooter);
       break;
     }
 
