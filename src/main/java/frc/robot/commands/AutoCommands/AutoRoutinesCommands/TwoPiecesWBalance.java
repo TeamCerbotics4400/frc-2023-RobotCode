@@ -28,7 +28,7 @@ import frc.robot.subsystems.WristSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TwoPiecesWBalance extends SequentialCommandGroup {
   /** Creates a new TwoPiecesWBalance. */
-  PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("TwoPiecesCharging", 
+  PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("TwoPiecesTesting", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
