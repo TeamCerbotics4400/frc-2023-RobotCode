@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.CombinedShooter;
+import frc.robot.commands.DebuggingAutoAlign;
 import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
@@ -20,6 +21,7 @@ import frc.robot.commands.TeleOpCommands.NodeSelectionRight;
 import frc.robot.commands.TeleOpCommands.NodeSelectionUp;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
 import frc.robot.commands.IntakeCones;
+import frc.robot.commands.IntakeCubes;
 import frc.robot.commands.LimelightToggle;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -120,13 +122,13 @@ public class RobotContainer {
 
    new JoystickButton(chassisDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   .whileTrue(new IntakeCones(m_shooter))
+   .whileTrue(new IntakeCubes(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
    new JoystickButton(subsystemsDriver, 3).onTrue(m_arm.goToPosition(ArmConstants.SUBSTATION_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   .whileTrue(new IntakeCones(m_shooter))
+   .whileTrue(new IntakeCubes(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 

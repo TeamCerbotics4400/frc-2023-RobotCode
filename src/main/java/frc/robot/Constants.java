@@ -43,11 +43,11 @@ public final class Constants {
     public static final byte Gyro_ID = 13;
 
     //Turn PID values, for auto-aligning
-    public static double TkP = 0.02,
+    public static double TkP = 0.03,
                                TkI = 0.0,
-                               TkD = 0.0017,
-                               turnMaxVel = 2,
-                               turnMaxAcc = 2;
+                               TkD = 0.00245,
+                               turnMaxVel = 200,
+                               turnMaxAcc = 200;
 
     //
     public static final double kP = -0.295//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
@@ -123,8 +123,8 @@ public final class Constants {
                          kI = 0.0,
                          kD = 0.0151835,
                          kFF = 0.0,
-                         kMaxVelocityRadPerSecond = 415,
-                         kMaxAccelerationMetersPerSecondSquared = 415,
+                         kMaxVelocityRadPerSecond = 800,
+                         kMaxAccelerationMetersPerSecondSquared = 800,
                          kS = 0.46147,
                          kV = 0.020646,
                          kA = 0.008245,

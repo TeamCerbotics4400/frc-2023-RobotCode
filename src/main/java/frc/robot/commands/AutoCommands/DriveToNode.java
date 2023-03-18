@@ -32,7 +32,7 @@ public class DriveToNode extends CommandBase {
 
   Rotation2d closestRotation = new Rotation2d();
 
-  double convergenceFactor = -0.60;
+  double convergenceFactor = -0.65;
 
   DoubleLogEntry intermediatePoseLog;
 

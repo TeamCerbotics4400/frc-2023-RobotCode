@@ -33,8 +33,8 @@ public class FalconShooter extends SubsystemBase {
     leftFlyWheel.configFactoryDefault();
     rightFlyWheel.configFactoryDefault();
 
-    leftFlyWheel.setInverted(false);
-    rightFlyWheel.setInverted(true);
+    leftFlyWheel.setInverted(true);
+    rightFlyWheel.setInverted(false);
 
     leftFlyWheel.setNeutralMode(NeutralMode.Brake);
     rightFlyWheel.setNeutralMode(NeutralMode.Brake);

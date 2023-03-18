@@ -153,8 +153,8 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    //SmartDashboard.putNumber("balance P", balancePID.getP());
-    //SmartDashboard.putNumber("balance D", balancePID.getD());
+    SmartDashboard.putNumber("turn P", alignPID.getP());
+    SmartDashboard.putNumber("turn D", alignPID.getD());
 
     //SmartDashboard.putNumber("Balance P", balancePID.getP());
     //SmartDashboard.putNumber("Balance D", balancePID.getD());
@@ -197,11 +197,11 @@ public class DriveTrain extends SubsystemBase {
 
     //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
 
-    //double lCP = SmartDashboard.getNumber("balance P", balancePID.getP());
-    //double lCD = SmartDashboard.getNumber("balance D", balancePID.getD());
+    double tP = SmartDashboard.getNumber("turn P", alignPID.getP());
+    double tD = SmartDashboard.getNumber("turn D", alignPID.getD());
 
-    //if((lCP != balancePID.getP())){balancePID.setP(lCP);}
-    //if((lCD != balancePID.getD())){balancePID.setD(lCD);}
+    if((tP != alignPID.getP())){alignPID.setP(tP);}
+    if((tD != alignPID.getD())){alignPID.setD(tD);}
 
     /*if((rCP != rightPIDController.getP())){rightPIDController.setP(rCP);}
     if((rCD != rightPIDController.getD())){rightPIDController.setD(rCD);}*/
@@ -369,6 +369,10 @@ public class DriveTrain extends SubsystemBase {
 
   public Rotation2d getEstimationRotation(){
     return m_poseEstimator.getEstimatedPosition().getRotation();
+  }
+
+  public double getEstimationAngle(){
+    return m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
   }
 
   /* 

@@ -51,8 +51,9 @@ public class TwoPiecesWBalance extends SequentialCommandGroup {
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCone(m_shooter, m_arm, m_wrist));
 
-    addCommands(resetOdometry, 
-    new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
-    false), piecesBalance.getMarkers(), eventMap));
+    addCommands(resetOdometry, new ShootCone(m_shooter, m_arm, m_wrist).andThen(new IdleArm(m_arm, m_wrist)),
+    m_drive.createCommandForTrajectory(piecesBalance, false));
+    //new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
+    //false), piecesBalance.getMarkers(), eventMap));
   }
 }

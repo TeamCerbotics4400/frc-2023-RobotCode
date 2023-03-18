@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
@@ -32,8 +33,8 @@ public class ConeShooter extends CommandBase {
   public void execute() {
     if(m_arm.isReady() && m_wrist.isReady()){
       //shooter.goToDashboardVelocity();
-      m_shooter.leftSetpoint(950);
-    m_shooter.rightSetpoint(950);
+      m_shooter.leftSetpoint(1050);
+    m_shooter.rightSetpoint(1050);
        } else {
         m_shooter.setMotorsPower(0, 0);
       }
@@ -48,13 +49,13 @@ public class ConeShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //if(DriverStation.isAutonomous()){
+    if(DriverStation.isAutonomous()){
       if(!m_shooter.isShooterOcuppiedCube()){
         return true;
         } else{
           return false;
         }
-   // }
-    //return false;
+    }
+   return false;
   }
 }
