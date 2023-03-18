@@ -5,6 +5,7 @@
 package frc.robot.commands.AutoCommands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.ConeShooter;
@@ -29,6 +30,6 @@ public class ShootCone extends ParallelCommandGroup {
 
     addCommands(m_arm.goToPosition(ArmConstants.SCORING_POSITION), 
     m_wrist.goToPosition(WristConstants.LEFT_POSITION), 
-    new ConeShooter(m_shooter, m_arm, m_wrist));
+    new ConeShooter(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)));
   }
 }
