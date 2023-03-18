@@ -32,7 +32,7 @@ public class PhotonCameraWrapper {
 
             photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, 
                 PoseStrategy.MULTI_TAG_PNP, photonCamera, VisionConstants.orangeCamPose);
-            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_LAST_POSE);
+            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         } catch(IOException e){
             DriverStation.reportError("Failed to load ApriltagFieldLayout", e.getStackTrace());
             photonPoseEstimator = null;

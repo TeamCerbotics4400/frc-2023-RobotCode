@@ -42,17 +42,17 @@ public class TwoPiecesWBalance extends SequentialCommandGroup {
     InstantCommand resetOdometry = new InstantCommand(() -> 
     m_drive.resetOdometry(piecesBalance.getInitialPose()));
 
-    /*addCommands(resetOdometry, new IdleArm(m_arm, m_wrist),
+    addCommands(resetOdometry, new IdleArm(m_arm, m_wrist),
     m_drive.createCommandForTrajectory(piecesBalance, false).andThen(() -> 
-    m_drive.tankDriveVolts(0, 0)));*/
+    m_drive.tankDriveVolts(0, 0)));
 
-    eventMap.clear();
+    /*eventMap.clear();
     eventMap.put("Shoot", new ShootCone(m_shooter, m_arm, m_wrist));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCone(m_shooter, m_arm, m_wrist));
 
     addCommands(resetOdometry, 
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
-    false), piecesBalance.getMarkers(), eventMap));
+    false), piecesBalance.getMarkers(), eventMap));*/
   }
 }
