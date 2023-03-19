@@ -31,7 +31,7 @@ public final class Constants {
 
   public static final boolean twoControllerMode = true;
 
-  public static final boolean needToLog = false;
+  public static final boolean needToLog = false; 
   
   public static final class DriveConstants{
     public static final int LeftLeader_ID = 2; //3
