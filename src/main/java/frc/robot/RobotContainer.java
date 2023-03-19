@@ -116,7 +116,7 @@ public class RobotContainer {
 
     new JoystickButton(chassisDriver, 5).onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
-   .whileTrue(new IntakeCones(m_shooter))
+   .whileTrue(new IntakeCubes(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
@@ -163,13 +163,13 @@ public class RobotContainer {
 
     new JoystickButton(chassisDriver, 5).onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
-   .whileTrue(new IntakeCones(m_shooter))
+   .whileTrue(new IntakeCubes(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
    new JoystickButton(chassisDriver, 3).onTrue(m_arm.goToPosition(ArmConstants.SUBSTATION_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   .whileTrue(new IntakeCones(m_shooter))
+   .whileTrue(new IntakeCubes(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 

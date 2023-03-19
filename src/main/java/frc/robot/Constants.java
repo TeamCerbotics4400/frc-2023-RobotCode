@@ -31,7 +31,7 @@ public final class Constants {
 
   public static final boolean twoControllerMode = true;
 
-  public static final boolean needToLog = true;
+  public static final boolean needToLog = false;
   
   public static final class DriveConstants{
     public static final int LeftLeader_ID = 2; //3
@@ -100,8 +100,8 @@ public final class Constants {
                          kI = 0.0,
                          kD = 0.021835,//0.00017643,//0.0024401,//8.274E-10,
                          kFF = 0.0,//0.000156,
-                         kMaxVelocityRadPerSecond = 400,
-                         kMaxAccelerationMetersPerSecondSquared = 400,
+                         kMaxVelocityRadPerSecond = 320,
+                         kMaxAccelerationMetersPerSecondSquared = 320,
                          kS = 0.94615,//0.82172,
                          kV = 0.0021715,//0.0047927,
                          kA = 0.0019641,//0.003212,
@@ -123,8 +123,8 @@ public final class Constants {
                          kI = 0.0,
                          kD = 0.0151835,
                          kFF = 0.0,
-                         kMaxVelocityRadPerSecond = 800,
-                         kMaxAccelerationMetersPerSecondSquared = 800,
+                         kMaxVelocityRadPerSecond = 440,
+                         kMaxAccelerationMetersPerSecondSquared = 440,
                          kS = 0.46147,
                          kV = 0.020646,
                          kA = 0.008245,
@@ -139,8 +139,8 @@ public final class Constants {
 
 
   public static final class AutoConstants{
-    public static final double kMaxSpeedMetersPerSecond = 3.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;
+    public static final double kMaxSpeedMetersPerSecond = 2.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
   }
 
   public static final class VisionConstants {

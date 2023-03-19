@@ -35,8 +35,8 @@ public class CubeShooter extends CommandBase {
     //1500 RPM HIGH
     if(m_arm.isReady() && m_wrist.isReady()){
     //shooter.goToDashboardVelocity();
-    shooter.leftSetpoint(1200);
-    shooter.rightSetpoint(1200);
+    shooter.leftSetpoint(500);
+    shooter.rightSetpoint(500);
      } else {
       shooter.setMotorsPower(0, 0);
     }

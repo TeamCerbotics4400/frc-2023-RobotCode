@@ -83,7 +83,7 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDrivePoseEstimator m_poseEstimator =
             new DifferentialDrivePoseEstimator(
                     DriveConstants.kDriveKinematics, 
-                    Rotation2d.fromDegrees(getAngle()), 
+                    Rotation2d.fromDegrees(-getAngle()), 
                     0.0, 0.0, new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)), 
                     new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.02, 0.01), 
                     new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01));
@@ -139,10 +139,18 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setIdleMode(IdleMode.kBrake);
     rightFollower.setIdleMode(IdleMode.kBrake);
 
-    leftLeader.setSmartCurrentLimit(75);
-    rightLeader.setSmartCurrentLimit(75);
-    leftFollower.setSmartCurrentLimit(75);
-    rightFollower.setSmartCurrentLimit(75);
+    if(DriverStation.isAutonomous()){
+      leftLeader.setSmartCurrentLimit(30);
+      rightLeader.setSmartCurrentLimit(30);
+      leftFollower.setSmartCurrentLimit(30);
+      rightFollower.setSmartCurrentLimit(30);
+    } else{
+      leftLeader.setSmartCurrentLimit(75);
+      rightLeader.setSmartCurrentLimit(75);
+      leftFollower.setSmartCurrentLimit(75);
+      rightFollower.setSmartCurrentLimit(75);
+    }
+    
 
     imu.configFactoryDefault();
 
@@ -175,9 +183,11 @@ public class DriveTrain extends SubsystemBase {
      m_poseEstimator.getEstimatedPosition().getX(), 
      m_poseEstimator.getEstimatedPosition().getY());
 
-     SmartDashboard.putNumber("vision X", m_poseEstimator.getEstimatedPosition().getX());
+     SmartDashboard.putNumber("Odo X", wheelOdometry.getPoseMeters().getX());
 
-     SmartDashboard.putNumber("vision Y", m_poseEstimator.getEstimatedPosition().getY());
+     SmartDashboard.putNumber("Odo Y", wheelOdometry.getPoseMeters().getY());
+
+     SmartDashboard.putNumber("Vision angle", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
      //SmartDashboard.putNumber("Left Encoder meters", encoderCountsToMeters(leftEncoder.getPosition()));
      //SmartDashboard.putNumber("Right Encoder Meters", encoderCountsToMeters(rightEncoder.getPosition()));
@@ -187,10 +197,9 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("visionOdometry Rotation", 
     visionOdometry.getPoseMeters().getRotation().getDegrees());*/
 
-    SmartDashboard.putNumber("vision Angle", 
-    m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
-
-    SmartDashboard.putNumber("Corrected estimated angle", getCorrectedEstimatedAngle());
+    SmartDashboard.putNumber("Odo Angle", 
+    wheelOdometry.getPoseMeters().getRotation().getDegrees());
+    
     SmartDashboard.putNumber("Gyro angle", getCorrectedAngle());
 
     //SmartDashboard.putNumber("Current Angle", getCorrectedAngle());
@@ -343,6 +352,16 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(rightEncoder.getPosition()), pose);
   }
 
+  public Pose2d estimatedPose2d(){
+    return m_poseEstimator.getEstimatedPosition();
+  }
+
+  public void correctOdo(){
+    wheelOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()), 
+    encoderCountsToMeters(leftEncoder.getPosition()), 
+    encoderCountsToMeters(rightEncoder.getPosition()), estimatedPose2d());
+  }
+
   public void resetVisionOdo(Pose2d pose){
     visionOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(leftEncoder.getPosition()), 
@@ -408,10 +427,6 @@ public class DriveTrain extends SubsystemBase {
 
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();
-  }
-
-  public double getCorrectedEstimatedAngle(){
-    return m_poseEstimator.getEstimatedPosition().getRotation().getDegrees() + 180;
   }
 
   //Gets the Balance PID Controller for use in other classes

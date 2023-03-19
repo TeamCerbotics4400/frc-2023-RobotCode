@@ -69,8 +69,8 @@ public class FalconShooter extends SubsystemBase {
     // This method will be called once per scheduler run
 
     //SmartDashboard.putNumber("Average RPM", getAverageRPM());
-    SmartDashboard.putNumber("Left RPM", getLeftRPM());
-    SmartDashboard.putNumber("Right RPM", getRightRPM());
+    SmartDashboard.putNumber("Left Current", leftFlyWheel.getStatorCurrent());
+    SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
     SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
 
     //SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
