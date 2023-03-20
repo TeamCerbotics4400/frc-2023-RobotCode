@@ -9,11 +9,10 @@ import java.util.HashMap;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.server.PathPlannerServer;
 
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
@@ -26,6 +25,7 @@ import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.NodeSelector;
 import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -40,26 +40,27 @@ public class TwoPiecesWBalance extends SequentialCommandGroup {
   HashMap<String, Command> eventMap = new HashMap<>();
 
   public TwoPiecesWBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, 
-  FalconShooter m_shooter) {
+  FalconShooter m_shooter, NodeSelector m_node) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
     InstantCommand resetOdometry = new InstantCommand(() -> 
     m_drive.resetOdometry(piecesBalance.getInitialPose()));
 
-    /*addCommands(resetOdometry, new IdleArm(m_arm, m_wrist),
-    m_drive.createCommandForTrajectory(piecesBalance, false).andThen(() -> 
-    m_drive.tankDriveVolts(0, 0)));*/
+    /*
+     * 0 Low
+     * 1 Mid
+     * 2 High
+     */
+    InstantCommand setLevelLow = new InstantCommand(() -> m_node.selectLevel(0));
+    InstantCommand setLevelMid = new InstantCommand(() -> m_node.selectLevel(1));
 
-    eventMap.put("Shoot", new ShootCube(m_shooter, m_arm, m_wrist));
+    eventMap.put("Shoot", new ShootCube(m_shooter, m_arm, m_wrist, m_node));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
-    eventMap.put("Wait", new WaitCommand(2));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
-    //eventMap.put("Balance", new AutoBalance(m_drive));
 
-    addCommands(resetOdometry, 
-    new ShootCube(m_shooter, m_arm, m_wrist).andThen(new IdleArm(m_arm, m_wrist)),
-    //m_drive.createCommandForTrajectory(piecesBalance, false));
+    addCommands(resetOdometry, setLevelLow, 
+    new ShootCube(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
     false), piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));
   }

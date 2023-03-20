@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.NodeSelector;
 import frc.robot.subsystems.WristSubsystem;
 
 public class CubeShooter extends CommandBase {
@@ -15,11 +16,14 @@ public class CubeShooter extends CommandBase {
   private FalconShooter shooter;
   private ArmSubsystem m_arm;
   private WristSubsystem m_wrist;
+  private NodeSelector m_selector;
 
-  public CubeShooter(FalconShooter shooter, ArmSubsystem m_arm, WristSubsystem m_wrist) {
+  public CubeShooter(FalconShooter shooter, ArmSubsystem m_arm, WristSubsystem m_wrist, 
+  NodeSelector m_selector) {
     this.shooter = shooter;
     this.m_arm = m_arm;
     this.m_wrist = m_wrist;
+    this.m_selector = m_selector;
     
     addRequirements(shooter);
   }
@@ -34,9 +38,21 @@ public class CubeShooter extends CommandBase {
     //shooter.goToDashboardVelocity();
     //1500 RPM HIGH
     if(m_arm.isReady() && m_wrist.isReady()){
-    //shooter.goToDashboardVelocity();
-    shooter.leftSetpoint(500);
-    shooter.rightSetpoint(500);
+      switch(m_selector.getLevelName()){
+        case "Low":
+          shooter.leftSetpoint(500);
+          shooter.rightSetpoint(500);
+        break;
+        
+        case "Mid":
+          shooter.leftSetpoint(800);
+          shooter.rightSetpoint(800);
+        break;
+        
+        case "High":
+          shooter.leftSetpoint(1200);
+          shooter.rightSetpoint(1200);
+      }
      } else {
       shooter.setMotorsPower(0, 0);
     }

@@ -75,13 +75,6 @@
   "isReversed": true,
   "markers": [
     {
-      "position": 0.0,
-      "names": [
-        "ShootPiece",
-        "Idle"
-      ]
-    },
-    {
       "position": 0.7878787878787568,
       "names": [
         "Intake"

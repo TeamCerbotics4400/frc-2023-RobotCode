@@ -202,15 +202,15 @@ public class RobotContainer {
       break;
 
       case "PIECE AND BALANCE":
-        autonomousCommand = new PieceWBalance(m_drive, m_arm, m_wrist, m_shooter);
+        autonomousCommand = new PieceWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       case "TWO PIECES":
-        autonomousCommand = new TwoPiecesCommand(m_drive, m_arm, m_wrist, m_shooter);
+        autonomousCommand = new TwoPiecesCommand(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       case "TWO PIECES AND BALANCE":
-        autonomousCommand = new TwoPiecesWBalance(m_drive, m_arm, m_wrist, m_shooter);
+        autonomousCommand = new TwoPiecesWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
     }
 

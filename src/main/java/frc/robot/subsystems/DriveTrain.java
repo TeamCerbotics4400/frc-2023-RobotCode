@@ -123,6 +123,12 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.restoreFactoryDefaults();
     rightFollower.restoreFactoryDefaults();
 
+    leftLeader.clearFaults();
+    leftFollower.clearFaults();
+
+    rightLeader.clearFaults();
+    rightFollower.clearFaults();
+
     rightLeader.setInverted(false);
     rightFollower.setInverted(false);
 
@@ -139,17 +145,11 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setIdleMode(IdleMode.kBrake);
     rightFollower.setIdleMode(IdleMode.kBrake);
 
-    if(DriverStation.isAutonomous()){
       leftLeader.setSmartCurrentLimit(30);
       rightLeader.setSmartCurrentLimit(30);
       leftFollower.setSmartCurrentLimit(30);
       rightFollower.setSmartCurrentLimit(30);
-    } else{
-      leftLeader.setSmartCurrentLimit(75);
-      rightLeader.setSmartCurrentLimit(75);
-      leftFollower.setSmartCurrentLimit(75);
-      rightFollower.setSmartCurrentLimit(75);
-    }
+   
     
 
     imu.configFactoryDefault();

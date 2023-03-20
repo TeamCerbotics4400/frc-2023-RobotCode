@@ -143,4 +143,12 @@ public class NodeSelector extends SubsystemBase {
     String currentKey = scoringLevels.get(currentSelectionLevels);
     return currentKey;
   }
+
+  public void selectNode(int node){
+    currentSelectionNodes = node;
+  }
+
+  public void selectLevel(int level){
+    currentSelectionLevels = level;
+  }
 }

@@ -4,10 +4,14 @@
 
 package frc.robot.commands.AutoCommands.AutoRoutinesCommands;
 
+import java.util.HashMap;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -21,6 +25,7 @@ import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.NodeSelector;
 import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -32,25 +37,27 @@ public class TwoPiecesCommand extends SequentialCommandGroup {
   AutoConstants.kMaxSpeedMetersPerSecond,
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
-  DriveTrain m_drive;
-  ArmSubsystem m_arm;
-  WristSubsystem m_wrist;
+  HashMap<String, Command> eventMap = new HashMap<>();
 
   public TwoPiecesCommand(DriveTrain m_drive, ArmSubsystem m_arm, 
-  WristSubsystem m_wrist, FalconShooter m_shooter) {
+  WristSubsystem m_wrist, FalconShooter m_shooter, NodeSelector m_selector) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-
-    PathPlannerTrajectory.transformTrajectoryForAlliance(twoPiecesTrajectory, DriverStation.getAlliance());
 
     InstantCommand resetOdometry = new InstantCommand(() ->
      m_drive.resetOdometry(twoPiecesTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry, new ShootCone(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)),
-     m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
-    m_drive.createCommandForTrajectory(twoPiecesTrajectory, false).alongWith(
-    new IntakeCube(m_shooter, m_arm, m_wrist))
-     .andThen(() -> m_drive.tankDriveVolts(0, 0)), 
-     new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)).andThen(new IdleArm(m_arm, m_wrist)));
+    InstantCommand setLevelLow = new InstantCommand(() -> m_selector.selectLevel(0));
+    InstantCommand setLevelMid = new InstantCommand(() -> m_selector.selectLevel(1));
+
+    eventMap.put("Shoot", new ShootCube(m_shooter, m_arm, m_wrist, m_selector));
+    eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
+    eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
+    eventMap.put("Mid", setLevelMid);
+
+    addCommands(resetOdometry, 
+     new ShootCone(m_shooter, m_arm, m_wrist).andThen(new IdleArm(m_arm, m_wrist)), 
+     new FollowPathWithEvents(m_drive.createCommandForTrajectory(twoPiecesTrajectory, 
+     false), twoPiecesTrajectory.getMarkers(), eventMap).andThen(new ShootCube(m_shooter, m_arm, m_wrist, m_selector)));
   }
 }

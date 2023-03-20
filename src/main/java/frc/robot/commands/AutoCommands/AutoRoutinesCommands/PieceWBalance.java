@@ -18,6 +18,7 @@ import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.NodeSelector;
 import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -32,20 +33,23 @@ public class PieceWBalance extends SequentialCommandGroup {
     ArmSubsystem m_arm;
     WristSubsystem m_wrist;
     FalconShooter m_shooter;
+    NodeSelector m_selector;
 
-  public PieceWBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, FalconShooter m_shooter) {
+  public PieceWBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist,
+   FalconShooter m_shooter, NodeSelector m_selector) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     this.m_drive = m_drive;
     this.m_arm = m_arm;
     this.m_wrist = m_wrist;
     this.m_shooter = m_shooter;
+    this.m_selector = m_selector;
 
     InstantCommand resetOdometry = 
     new InstantCommand(() -> m_drive.resetOdometry(onlyBalanceTrajectory.getInitialPose()));
 
     addCommands(resetOdometry,
-    new ShootCube(m_shooter, m_arm, m_wrist).raceWith(new WaitCommand(4)), 
+    new ShootCube(m_shooter, m_arm, m_wrist, m_selector).raceWith(new WaitCommand(4)), 
       m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
       m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
       m_drive.createCommandForTrajectory(onlyBalanceTrajectory, false) , 
