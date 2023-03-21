@@ -3,12 +3,12 @@
     {
       "anchorPoint": {
         "x": 4.410962487686819,
-        "y": 1.05
+        "y": 0.45
       },
       "prevControl": null,
       "nextControl": {
         "x": 5.843134984772199,
-        "y": 1.05
+        "y": 0.44999999999999996
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -24,16 +24,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.705585743767204,
-        "y": 0.9283235309247551
+        "x": 6.7,
+        "y": 0.8872955150490464
       },
       "prevControl": {
-        "x": 5.859874150773157,
-        "y": 0.9283235309247551
+        "x": 6.362822089744255,
+        "y": 0.8872955150490464
       },
       "nextControl": {
-        "x": 5.859874150773157,
-        "y": 0.9283235309247551
+        "x": 6.362822089744255,
+        "y": 0.8872955150490464
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -49,12 +49,37 @@
     },
     {
       "anchorPoint": {
-        "x": 4.220004021356289,
-        "y": 0.45
+        "x": 3.9,
+        "y": 1.060675098449435
       },
       "prevControl": {
-        "x": 5.892390456522077,
-        "y": 0.44999999999999973
+        "x": 5.572386435165788,
+        "y": 1.0606750984494346
+      },
+      "nextControl": {
+        "x": 5.572386435165788,
+        "y": 1.0606750984494346
+      },
+      "holonomicAngle": 0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.801629481121557,
+        "y": 1.886777819357166
+      },
+      "prevControl": {
+        "x": 6.108111147520005,
+        "y": 1.3258438730617914
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -73,5 +98,30 @@
   "maxVelocity": null,
   "maxAcceleration": null,
   "isReversed": true,
-  "markers": []
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "Intake"
+      ]
+    },
+    {
+      "position": 1.2,
+      "names": [
+        "Idle"
+      ]
+    },
+    {
+      "position": 1.45,
+      "names": [
+        "Shoot"
+      ]
+    },
+    {
+      "position": 2.25,
+      "names": [
+        "Idle"
+      ]
+    }
+  ]
 }

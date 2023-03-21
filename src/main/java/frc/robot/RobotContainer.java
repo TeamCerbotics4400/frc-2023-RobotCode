@@ -12,7 +12,7 @@ import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightLineAuto;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesCommand;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
 import frc.robot.commands.TeleOpCommands.NodeSelectionDown;
@@ -55,7 +55,7 @@ public class RobotContainer {
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
   private String m_autoSelected;
-  private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT LINE", 
+  private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "TWO WORKING", 
       "PIECE AND BALANCE", "TWO PIECES", "TWO PIECES AND BALANCE"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -63,7 +63,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     m_autoChooser.setDefaultOption("PieceBalance Default", m_DefaultAuto);
     m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
-    m_autoChooser.addOption("Straight Line", m_autoNames[2]);
+    m_autoChooser.addOption("Two Working", m_autoNames[2]);
     m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
     m_autoChooser.addOption("Two Pieces", m_autoNames[4]);
     m_autoChooser.addOption("Two and Balance", m_autoNames[5]);
@@ -197,8 +197,8 @@ public class RobotContainer {
        autonomousCommand = new PIDTunnerCommand(m_drive, m_arm, m_wrist);
       break;
 
-      case "STRAIGHT LINE":
-        autonomousCommand = new StraightLineAuto(m_drive, m_arm, m_wrist, m_shooter);
+      case "TWO WORKING":
+        autonomousCommand = new TwoWorking(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       case "PIECE AND BALANCE":

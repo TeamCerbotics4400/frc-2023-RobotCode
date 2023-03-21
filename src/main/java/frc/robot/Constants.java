@@ -50,7 +50,7 @@ public final class Constants {
                                turnMaxAcc = 200;
 
     //
-    public static final double kP = -0.295//-2.402//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
+    public static final double kP = -0.250//-2.402//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
     ,  kI = 0
     , kD = 0;//0.26741;//-0.2671;//0.20844;//0.0010903
 
