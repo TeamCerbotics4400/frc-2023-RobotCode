@@ -74,16 +74,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.801629481121557,
-        "y": 1.886777819357166
+        "x": 6.8424246772157655,
+        "y": 1.9989646086162416
       },
       "prevControl": {
-        "x": 6.108111147520005,
-        "y": 1.3258438730617914
+        "x": 6.2814907309203925,
+        "y": 1.7031994369332257
       },
       "nextControl": {
-        "x": 6.108111147520005,
-        "y": 1.3258438730617914
+        "x": 6.2814907309203925,
+        "y": 1.7031994369332257
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -99,12 +99,37 @@
     },
     {
       "anchorPoint": {
-        "x": 3.9,
-        "y": 1.06
+        "x": 5.2514120295416165,
+        "y": 2.131548995922419
       },
       "prevControl": {
-        "x": 5.7851025430731,
-        "y": 1.0599999999999998
+        "x": 5.725298695782487,
+        "y": 2.004571446399301
+      },
+      "nextControl": {
+        "x": 4.778067463105926,
+        "y": 2.2583812902405223
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": 1.5,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.15,
+        "y": 2.498705760770301
+      },
+      "prevControl": {
+        "x": 3.8928488265992987,
+        "y": 2.3943051666223436
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -120,9 +145,6 @@
       }
     }
   ],
-  "maxVelocity": null,
-  "maxAcceleration": 1.25,
-  "isReversed": true,
   "markers": [
     {
       "position": 0.0,
@@ -131,19 +153,13 @@
       ]
     },
     {
-      "position": 1.2,
-      "names": [
-        "Idle"
-      ]
-    },
-    {
-      "position": 1.45,
+      "position": 1.25,
       "names": [
         "Shoot"
       ]
     },
     {
-      "position": 2.01,
+      "position": 2.02,
       "names": [
         "Intake"
       ]
@@ -155,9 +171,9 @@
       ]
     },
     {
-      "position": 0.0,
+      "position": 4.5,
       "names": [
-        "Intake"
+        "Shoot"
       ]
     }
   ]

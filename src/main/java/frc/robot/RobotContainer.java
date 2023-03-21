@@ -14,6 +14,7 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePieces;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePiecesBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
 import frc.robot.commands.TeleOpCommands.NodeSelectionDown;
 import frc.robot.commands.TeleOpCommands.NodeSelectionLeft;
@@ -55,7 +56,7 @@ public class RobotContainer {
   private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT AUTO", 
-      "PIECE AND BALANCE", "TWO WORKING", "TWO PIECES AND BALANCE", "THREE PIECES"};
+      "PIECE AND BALANCE", "TWO WORKING", "TWO PIECES AND BALANCE", "THREE PIECES", "THREE BALANCE"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -66,7 +67,8 @@ public class RobotContainer {
     m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
     m_autoChooser.addOption("Two Working", m_autoNames[4]);
     m_autoChooser.addOption("Two and Balance", m_autoNames[5]);
-    m_autoChooser.addOption("Three pieces", m_autoNames[5]);
+    m_autoChooser.addOption("Three pieces", m_autoNames[6]);
+    m_autoChooser.addOption("Three and Balance", m_autoNames[7]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -216,6 +218,10 @@ public class RobotContainer {
 
       case "THREE PIECES":
        autonomousCommand = new ThreePieces(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      break;
+
+      case "THREE BALANCE":
+       autonomousCommand = new ThreePiecesBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
     }
 
