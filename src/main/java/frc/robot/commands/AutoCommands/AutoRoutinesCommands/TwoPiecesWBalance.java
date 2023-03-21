@@ -9,18 +9,14 @@ import java.util.HashMap;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
-import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoCommands.IdleArm;
-import frc.robot.commands.AutoCommands.IntakeCone;
 import frc.robot.commands.AutoCommands.IntakeCube;
-import frc.robot.commands.AutoCommands.ShootCone;
 import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
@@ -33,9 +29,9 @@ import frc.robot.subsystems.WristSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TwoPiecesWBalance extends SequentialCommandGroup {
   /** Creates a new TwoPiecesWBalance. */
-  PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("TwoPiecesTesting", 
+  PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("TwoBalance",//"TwoPiecesTesting", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
-  AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
+  2.0, true);//AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
   HashMap<String, Command> eventMap = new HashMap<>();
 
@@ -51,15 +47,15 @@ public class TwoPiecesWBalance extends SequentialCommandGroup {
      * 0 Low
      * 1 Mid
      * 2 High
+     * 3 Ave Maria
      */
-    InstantCommand setLevelLow = new InstantCommand(() -> m_node.selectLevel(0));
-    InstantCommand setLevelMid = new InstantCommand(() -> m_node.selectLevel(1));
+    InstantCommand aveMaria = new InstantCommand(() -> m_node.selectLevel(3));
 
     eventMap.put("Shoot", new ShootCube(m_shooter, m_arm, m_wrist, m_node));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
 
-    addCommands(resetOdometry, setLevelLow, 
+    addCommands(resetOdometry, aveMaria, 
     new ShootCube(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
     false), piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));

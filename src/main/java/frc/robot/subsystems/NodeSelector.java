@@ -55,6 +55,7 @@ public class NodeSelector extends SubsystemBase {
     scoringLevels.add("Low");
     scoringLevels.add("Mid");
     scoringLevels.add("High");
+    scoringLevels.add("Ave Maria");
 
   }
 

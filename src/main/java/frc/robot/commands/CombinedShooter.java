@@ -79,6 +79,10 @@ public class CombinedShooter extends CommandBase {
         m_shooter.rightSetpoint(1045);
       }
       break;
+
+      case "Ave Maria":
+        m_shooter.leftSetpoint(6000);
+        m_shooter.rightSetpoint(6000);
     }
   }
 

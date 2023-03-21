@@ -7,20 +7,19 @@ package frc.robot;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.CombinedShooter;
-import frc.robot.commands.DebuggingAutoAlign;
 import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoWorking;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesCommand;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePieces;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
 import frc.robot.commands.TeleOpCommands.NodeSelectionDown;
 import frc.robot.commands.TeleOpCommands.NodeSelectionLeft;
 import frc.robot.commands.TeleOpCommands.NodeSelectionRight;
 import frc.robot.commands.TeleOpCommands.NodeSelectionUp;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
-import frc.robot.commands.IntakeCones;
 import frc.robot.commands.IntakeCubes;
 import frc.robot.commands.LimelightToggle;
 import edu.wpi.first.wpilibj.Joystick;
@@ -55,18 +54,19 @@ public class RobotContainer {
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
   private String m_autoSelected;
-  private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "TWO WORKING", 
-      "PIECE AND BALANCE", "TWO PIECES", "TWO PIECES AND BALANCE"};
+  private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT AUTO", 
+      "PIECE AND BALANCE", "TWO WORKING", "TWO PIECES AND BALANCE", "THREE PIECES"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     m_autoChooser.setDefaultOption("PieceBalance Default", m_DefaultAuto);
     m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
-    m_autoChooser.addOption("Two Working", m_autoNames[2]);
+    m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
     m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
-    m_autoChooser.addOption("Two Pieces", m_autoNames[4]);
+    m_autoChooser.addOption("Two Working", m_autoNames[4]);
     m_autoChooser.addOption("Two and Balance", m_autoNames[5]);
+    m_autoChooser.addOption("Three pieces", m_autoNames[5]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -181,6 +181,7 @@ public class RobotContainer {
    new JoystickButton(chassisDriver, 4).whileTrue(new CombinedShooter(m_arm, m_wrist, m_shooter, m_nodeSelector));
    }
   }    
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -197,20 +198,24 @@ public class RobotContainer {
        autonomousCommand = new PIDTunnerCommand(m_drive, m_arm, m_wrist);
       break;
 
-      case "TWO WORKING":
-        autonomousCommand = new TwoWorking(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      case "STRAIGHT AUTO":
+        autonomousCommand = new StraightAuto(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       case "PIECE AND BALANCE":
         autonomousCommand = new PieceWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
-      case "TWO PIECES":
-        autonomousCommand = new TwoPiecesCommand(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      case "TWO WORKING":
+        autonomousCommand = new TwoWorking(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       case "TWO PIECES AND BALANCE":
         autonomousCommand = new TwoPiecesWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      break;
+
+      case "THREE PIECES":
+       autonomousCommand = new ThreePieces(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
     }
 

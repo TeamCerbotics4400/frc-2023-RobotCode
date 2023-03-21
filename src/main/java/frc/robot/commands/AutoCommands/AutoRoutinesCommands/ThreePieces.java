@@ -10,6 +10,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -26,16 +27,16 @@ import frc.robot.subsystems.WristSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TwoWorking extends SequentialCommandGroup {
+public class ThreePieces extends SequentialCommandGroup {
   /** Creates a new StraightLineAutoCommand. */
 
-  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("TwoPiecesWorking", 
+  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("ThreePieces", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   1.25, true);
 
   HashMap<String, Command> eventMap = new HashMap<>();
 
-  public TwoWorking(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, 
+  public ThreePieces(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, 
   FalconShooter m_shooter, NodeSelector m_selector) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -48,12 +49,11 @@ public class TwoWorking extends SequentialCommandGroup {
     eventMap.put("Shoot", new ShootCube(m_shooter, m_arm, m_wrist, m_selector));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
-    //eventMap.put("Mid", setLevelMid);
 
     addCommands(resetOdometry, aveMaria,
     new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)),
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(straightTrajectory, 
-     false), straightTrajectory.getMarkers(), eventMap));
-    //new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)));
+     false), straightTrajectory.getMarkers(), eventMap),
+    new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)));
   }
 }

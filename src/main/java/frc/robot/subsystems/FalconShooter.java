@@ -23,6 +23,8 @@ public class FalconShooter extends SubsystemBase {
 
   boolean onTarget = false;
 
+  boolean intakeCone = false;
+
   double desiredVelo = 0;
 
   int pidSlot = 0;

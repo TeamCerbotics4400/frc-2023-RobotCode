@@ -145,10 +145,10 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setIdleMode(IdleMode.kBrake);
     rightFollower.setIdleMode(IdleMode.kBrake);
 
-      leftLeader.setSmartCurrentLimit(75);
-      rightLeader.setSmartCurrentLimit(75);
-      leftFollower.setSmartCurrentLimit(75);
-      rightFollower.setSmartCurrentLimit(75);
+    leftLeader.setSmartCurrentLimit(75);
+    rightLeader.setSmartCurrentLimit(75);
+    leftFollower.setSmartCurrentLimit(75);
+    rightFollower.setSmartCurrentLimit(75);
    
     
 
@@ -161,11 +161,11 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    SmartDashboard.putNumber("left P", leftPIDController.getP());
-    SmartDashboard.putNumber("left D", leftPIDController.getD());
+    //SmartDashboard.putNumber("left P", leftPIDController.getP());
+    //SmartDashboard.putNumber("left D", leftPIDController.getD());
 
-    SmartDashboard.putNumber("right P", rightPIDController.getP());
-    SmartDashboard.putNumber("right D", rightPIDController.getD());
+    //SmartDashboard.putNumber("right P", rightPIDController.getP());
+    //SmartDashboard.putNumber("right D", rightPIDController.getD());
 
     resetImu();
     resetEncoders();
@@ -206,17 +206,17 @@ public class DriveTrain extends SubsystemBase {
 
     //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
 
-    double lP = SmartDashboard.getNumber("left P", leftPIDController.getP());
-    double lD = SmartDashboard.getNumber("left D", leftPIDController.getD());
+    //double lP = SmartDashboard.getNumber("left P", leftPIDController.getP());
+    //double lD = SmartDashboard.getNumber("left D", leftPIDController.getD());
 
-    double rP = SmartDashboard.getNumber("right P", rightPIDController.getP());
-    double rD = SmartDashboard.getNumber("right D", rightPIDController.getD());
+    //double rP = SmartDashboard.getNumber("right P", rightPIDController.getP());
+    //double rD = SmartDashboard.getNumber("right D", rightPIDController.getD());
 
-    if((lP != leftPIDController.getP())){leftPIDController.setP(lP);}
-    if((lD != leftPIDController.getD())){leftPIDController.setD(lD);}
+    //if((lP != leftPIDController.getP())){leftPIDController.setP(lP);}
+    //if((lD != leftPIDController.getD())){leftPIDController.setD(lD);}
 
-    if((rP != rightPIDController.getP())){rightPIDController.setP(rP);}
-    if((rD != rightPIDController.getD())){rightPIDController.setD(rD);}
+    //if((rP != rightPIDController.getP())){rightPIDController.setP(rP);}
+    //if((rD != rightPIDController.getD())){rightPIDController.setD(rD);}
   
   }
 

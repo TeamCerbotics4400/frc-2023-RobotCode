@@ -38,9 +38,7 @@ public class CubeShooter extends CommandBase {
     //shooter.goToDashboardVelocity();
     //1500 RPM HIGH
     if(m_arm.isReady() && m_wrist.isReady()){
-      shooter.leftSetpoint(6000);
-      shooter.rightSetpoint(6000);
-      /*switch(m_selector.getLevelName()){
+      switch(m_selector.getLevelName()){
         case "Low":
           shooter.leftSetpoint(500);
           shooter.rightSetpoint(500);
@@ -54,7 +52,13 @@ public class CubeShooter extends CommandBase {
         case "High":
           shooter.leftSetpoint(1200);
           shooter.rightSetpoint(1200);
-      }*/
+        break;
+
+        case "Ave Maria":
+        shooter.leftSetpoint(6100);
+        shooter.rightSetpoint(6100);
+        break;
+      }
      } else {
       shooter.setMotorsPower(0, 0);
     }
