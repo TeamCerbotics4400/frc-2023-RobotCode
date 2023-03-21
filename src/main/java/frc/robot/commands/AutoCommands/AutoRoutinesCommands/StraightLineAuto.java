@@ -25,7 +25,7 @@ import frc.robot.subsystems.WristSubsystem;
 public class StraightLineAuto extends SequentialCommandGroup {
   /** Creates a new StraightLineAutoCommand. */
 
-  Trajectory straightTrajectory = PathPlanner.loadPath("Straight Line", 
+  Trajectory straightTrajectory = PathPlanner.loadPath("VisionTesting", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
@@ -35,8 +35,8 @@ public class StraightLineAuto extends SequentialCommandGroup {
     InstantCommand resetOdometry = new InstantCommand(
       () -> m_drive.resetOdometry(straightTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry, new ShootCone(m_shooter, m_arm, m_wrist)
-    .raceWith(new WaitCommand(4)), 
+    addCommands(resetOdometry, //new ShootCone(m_shooter, m_arm, m_wrist)
+    //.raceWith(new WaitCommand(4)), 
     m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
       m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
     m_drive.createCommandForTrajectory(straightTrajectory, false).andThen(

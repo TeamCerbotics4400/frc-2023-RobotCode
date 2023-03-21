@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.WristConstants;
@@ -58,6 +57,7 @@ public class TwoPiecesCommand extends SequentialCommandGroup {
     addCommands(resetOdometry, 
      new ShootCone(m_shooter, m_arm, m_wrist).andThen(new IdleArm(m_arm, m_wrist)), 
      new FollowPathWithEvents(m_drive.createCommandForTrajectory(twoPiecesTrajectory, 
-     false), twoPiecesTrajectory.getMarkers(), eventMap).andThen(new ShootCube(m_shooter, m_arm, m_wrist, m_selector)));
+     false), twoPiecesTrajectory.getMarkers(), eventMap), 
+     new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)));
   }
 }

@@ -25,7 +25,7 @@ public class PIDTunnerCommand extends SequentialCommandGroup {
   WristSubsystem m_wrist;
 
   Trajectory pidTunerTrajectory = PathPlanner.loadPath("PIDTuner", AutoConstants.kMaxSpeedMetersPerSecond, 
-  AutoConstants.kMaxAccelerationMetersPerSecondSquared, false);
+  AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
   public PIDTunnerCommand(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist) {
     // Add your commands in the addCommands() call, e.g.

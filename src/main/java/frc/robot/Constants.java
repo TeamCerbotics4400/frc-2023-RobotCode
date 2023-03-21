@@ -43,20 +43,20 @@ public final class Constants {
     public static final byte Gyro_ID = 13;
 
     //Turn PID values, for auto-aligning
-    public static double TkP = 0.03,
+    public static double TkP = 0.12294,//0.03,
                                TkI = 0.0,
-                               TkD = 0.00245,
+                               TkD = 0.010132,//0.00245,
                                turnMaxVel = 200,
                                turnMaxAcc = 200;
 
     //
-    public static final double kP = -0.295//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
+    public static final double kP = -0.295//-2.402//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
     ,  kI = 0
-    , kD = 0;//0.26741;//0.20844;//0.0010903
+    , kD = 0;//0.26741;//-0.2671;//0.20844;//0.0010903
 
-    public static final double kS = 0.16361,//0.33144,//0.18404,
-                               kV = 2.0757,//2.34,//2.7305,
-                               kA = 0.86207;//1.1089;//0.83198;
+    public static final double kS = 0.15756,//0.16361,
+                               kV = 2.0967,//2.0757,
+                               kA = 0.69012;//0.86207;
 
     public static final double WHEEL_DIAMETER = 0.1524;
     public static final double TRACK_WIDTH = 0.504; 
@@ -112,6 +112,7 @@ public final class Constants {
     public static double SCORING_POSITION = 115;//199.5 - 70.5;
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
+    public static double AVE_MARIA_SHOOT_POSITION = 155.0;
 
     public static double ARM_THRESHOLD = 9.5;
   }
@@ -139,8 +140,8 @@ public final class Constants {
 
 
   public static final class AutoConstants{
-    public static final double kMaxSpeedMetersPerSecond = 2.5;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2.0;
+    public static final double kMaxSpeedMetersPerSecond = 4.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;//2.0;
   }
 
   public static final class VisionConstants {

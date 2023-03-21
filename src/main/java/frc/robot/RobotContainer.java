@@ -137,7 +137,7 @@ public class RobotContainer {
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(subsystemsDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
+   new JoystickButton(subsystemsDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.AVE_MARIA_SHOOT_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));

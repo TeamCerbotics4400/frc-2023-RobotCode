@@ -85,8 +85,8 @@ public class DriveTrain extends SubsystemBase {
                     DriveConstants.kDriveKinematics, 
                     Rotation2d.fromDegrees(-getAngle()), 
                     0.0, 0.0, new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)), 
-                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.02, 0.01), 
-                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01));
+                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.005, 0.005, 0.001), 
+                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.2));
   
   /* 
    * We decided that having two types of odometry would work better than just having one of them.
@@ -145,10 +145,10 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setIdleMode(IdleMode.kBrake);
     rightFollower.setIdleMode(IdleMode.kBrake);
 
-      leftLeader.setSmartCurrentLimit(30);
-      rightLeader.setSmartCurrentLimit(30);
-      leftFollower.setSmartCurrentLimit(30);
-      rightFollower.setSmartCurrentLimit(30);
+      leftLeader.setSmartCurrentLimit(75);
+      rightLeader.setSmartCurrentLimit(75);
+      leftFollower.setSmartCurrentLimit(75);
+      rightFollower.setSmartCurrentLimit(75);
    
     
 
@@ -161,11 +161,11 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    SmartDashboard.putNumber("turn P", alignPID.getP());
-    SmartDashboard.putNumber("turn D", alignPID.getD());
+    SmartDashboard.putNumber("left P", leftPIDController.getP());
+    SmartDashboard.putNumber("left D", leftPIDController.getD());
 
-    //SmartDashboard.putNumber("Balance P", balancePID.getP());
-    //SmartDashboard.putNumber("Balance D", balancePID.getD());
+    SmartDashboard.putNumber("right P", rightPIDController.getP());
+    SmartDashboard.putNumber("right D", rightPIDController.getD());
 
     resetImu();
     resetEncoders();
@@ -206,14 +206,17 @@ public class DriveTrain extends SubsystemBase {
 
     //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
 
-    double tP = SmartDashboard.getNumber("turn P", alignPID.getP());
-    double tD = SmartDashboard.getNumber("turn D", alignPID.getD());
+    double lP = SmartDashboard.getNumber("left P", leftPIDController.getP());
+    double lD = SmartDashboard.getNumber("left D", leftPIDController.getD());
 
-    if((tP != alignPID.getP())){alignPID.setP(tP);}
-    if((tD != alignPID.getD())){alignPID.setD(tD);}
+    double rP = SmartDashboard.getNumber("right P", rightPIDController.getP());
+    double rD = SmartDashboard.getNumber("right D", rightPIDController.getD());
 
-    /*if((rCP != rightPIDController.getP())){rightPIDController.setP(rCP);}
-    if((rCD != rightPIDController.getD())){rightPIDController.setD(rCD);}*/
+    if((lP != leftPIDController.getP())){leftPIDController.setP(lP);}
+    if((lD != leftPIDController.getD())){leftPIDController.setD(lD);}
+
+    if((rP != rightPIDController.getP())){rightPIDController.setP(rP);}
+    if((rD != rightPIDController.getD())){rightPIDController.setD(rD);}
   
   }
 
@@ -303,7 +306,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void resetImu(){
-    imu.setYaw(0);
+    imu.setYaw(180);
   }
 
   public double encoderCountsToMeters(double encoderCounts){
@@ -481,7 +484,7 @@ public class DriveTrain extends SubsystemBase {
     RamseteCommand ramseteCommand =
         new RamseteCommand(
             trajectory,
-            this::getVisionPose,
+            this::estimatedPose2d,
             new RamseteController(2, 0.7),
             new SimpleMotorFeedforward(
                 DriveConstants.kS,

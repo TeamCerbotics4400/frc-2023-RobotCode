@@ -4,6 +4,12 @@
     "NetworkTables Settings": {
       "serverTeam": "4400"
     },
+    "Program Log": {
+      "window": {
+        "visible": false
+      }
+    },
+    "dsClient": false,
     "mode": "Client (NT4)",
     "serverTeam": "4400"
   }
