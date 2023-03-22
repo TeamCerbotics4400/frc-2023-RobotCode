@@ -11,11 +11,11 @@ import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePieces;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePiecesBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoWorking;
 import frc.robot.commands.TeleOpCommands.NodeSelectionDown;
 import frc.robot.commands.TeleOpCommands.NodeSelectionLeft;
 import frc.robot.commands.TeleOpCommands.NodeSelectionRight;
@@ -139,7 +139,7 @@ public class RobotContainer {
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(subsystemsDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.AVE_MARIA_SHOOT_POSITION))
+   new JoystickButton(subsystemsDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));

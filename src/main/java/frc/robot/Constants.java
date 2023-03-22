@@ -101,7 +101,7 @@ public final class Constants {
                          kD = 0.021835,//0.00017643,//0.0024401,//8.274E-10,
                          kFF = 0.0,//0.000156,
                          kMaxVelocityRadPerSecond = 320,
-                         kMaxAccelerationMetersPerSecondSquared = 320,
+                         kMaxAccelerationMetersPerSecondSquared = 280,//320,
                          kS = 0.94615,//0.82172,
                          kV = 0.0021715,//0.0047927,
                          kA = 0.0019641,//0.003212,
