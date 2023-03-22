@@ -32,7 +32,7 @@ public class TwoWorking extends SequentialCommandGroup {
 
   PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("TwoPiecesWorking", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
-  1.25, true);
+  1.5, true);
 
   HashMap<String, Command> eventMap = new HashMap<>();
 
