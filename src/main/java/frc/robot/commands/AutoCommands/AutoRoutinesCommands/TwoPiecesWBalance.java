@@ -12,10 +12,14 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoCommands.AveMariaShoot;
+import frc.robot.commands.AutoCommands.CounterBalance;
 import frc.robot.commands.AutoCommands.IdleArm;
 import frc.robot.commands.AutoCommands.IntakeCube;
 import frc.robot.commands.AutoCommands.ShootCube;
@@ -59,6 +63,6 @@ public class TwoPiecesWBalance extends SequentialCommandGroup {
     addCommands(resetOdometry, aveMaria, 
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
-    false), piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));
+    false), piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));//.alongWith(new CounterBalance(m_arm, m_wrist, m_node)));
   }
 }
