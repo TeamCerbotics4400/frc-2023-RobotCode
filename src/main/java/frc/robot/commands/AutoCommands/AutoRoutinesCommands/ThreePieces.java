@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.AutoCommands.AveMariaShoot;
 import frc.robot.commands.AutoCommands.IdleArm;
 import frc.robot.commands.AutoCommands.IntakeCube;
 import frc.robot.commands.AutoCommands.ShootCube;
@@ -46,12 +47,12 @@ public class ThreePieces extends SequentialCommandGroup {
     InstantCommand aveMaria = new InstantCommand(
       () -> m_selector.selectLevel(3));
 
-    eventMap.put("Shoot", new ShootCube(m_shooter, m_arm, m_wrist, m_selector));
+    eventMap.put("Shoot", new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
 
     addCommands(resetOdometry, aveMaria,
-    new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)),
+    new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)),
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(straightTrajectory, 
      false), straightTrajectory.getMarkers(), eventMap),
     new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)));

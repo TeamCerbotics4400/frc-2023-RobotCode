@@ -43,9 +43,9 @@ public final class Constants {
     public static final byte Gyro_ID = 13;
 
     //Turn PID values, for auto-aligning
-    public static double TkP = 0.12294,//0.03,
+    public static double TkP = 0.03,//0.02,
                                TkI = 0.0,
-                               TkD = 0.010132,//0.00245,
+                               TkD = 0.00245,//0.010132,
                                turnMaxVel = 200,
                                turnMaxAcc = 200;
 
@@ -191,8 +191,7 @@ public final class Constants {
               Map.entry("Node 6 Cone", new Pose2d(new Translation2d(1.15, 3.30), Rotation2d.fromDegrees(180))),
               Map.entry("Node 7 Cone", new Pose2d(new Translation2d(1.15, 3.86), Rotation2d.fromDegrees(180))),
               Map.entry("Node 8 Cube", new Pose2d(new Translation2d(1.15, 4.42), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 9 Cone", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180))),
-              Map.entry("Single Substation", new Pose2d(new Translation2d(2.35, 9.50), Rotation2d.fromDegrees(90)))
+              Map.entry("Node 9 Cone", new Pose2d(new Translation2d(1.15, 4.99), Rotation2d.fromDegrees(180)))
           );
 
           private static final Map<String, Pose2d> RED_MAP =

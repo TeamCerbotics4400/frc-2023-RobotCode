@@ -55,8 +55,8 @@ public class CubeShooter extends CommandBase {
         break;
 
         case "Ave Maria":
-        shooter.leftSetpoint(6100);
-        shooter.rightSetpoint(6100);
+        shooter.leftSetpoint(6300);
+        shooter.rightSetpoint(6300);
         break;
       }
      } else {

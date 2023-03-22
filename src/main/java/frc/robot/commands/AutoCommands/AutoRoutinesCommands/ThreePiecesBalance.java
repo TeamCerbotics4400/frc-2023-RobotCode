@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.AutoCommands.AveMariaShoot;
 import frc.robot.commands.AutoCommands.IdleArm;
 import frc.robot.commands.AutoCommands.IntakeCube;
 import frc.robot.commands.AutoCommands.ShootCube;
@@ -51,12 +52,12 @@ public class ThreePiecesBalance extends SequentialCommandGroup {
      */
     InstantCommand aveMaria = new InstantCommand(() -> m_node.selectLevel(3));
 
-    eventMap.put("Shoot", new ShootCube(m_shooter, m_arm, m_wrist, m_node));
+    eventMap.put("Shoot", new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
 
     addCommands(resetOdometry, aveMaria, 
-    new ShootCube(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
+    new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
     false), piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));
   }

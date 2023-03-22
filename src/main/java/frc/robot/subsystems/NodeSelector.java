@@ -50,7 +50,6 @@ public class NodeSelector extends SubsystemBase {
     nodeNames.add("Node 7 Cone");
     nodeNames.add("Node 8 Cube");
     nodeNames.add("Node 9 Cone");
-    nodeNames.add("Single Substation");
 
     scoringLevels.add("Low");
     scoringLevels.add("Mid");

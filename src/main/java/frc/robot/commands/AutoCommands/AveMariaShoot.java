@@ -17,14 +17,14 @@ import frc.robot.subsystems.WristSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShootCube extends ParallelCommandGroup {
+public class AveMariaShoot extends ParallelCommandGroup {
   /** Creates a new ShootCube. */
   FalconShooter m_shooter;
   ArmSubsystem m_arm;
   WristSubsystem m_wrist;
   NodeSelector m_selector;
 
-  public ShootCube(FalconShooter m_shooter, ArmSubsystem m_arm, WristSubsystem m_wrist, 
+  public AveMariaShoot(FalconShooter m_shooter, ArmSubsystem m_arm, WristSubsystem m_wrist, 
   NodeSelector m_selector) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -33,7 +33,7 @@ public class ShootCube extends ParallelCommandGroup {
     this.m_wrist = m_wrist;
     this.m_selector = m_selector;
 
-    addCommands(m_arm.goToPosition(ArmConstants.SCORING_POSITION), 
+    addCommands(m_arm.goToPosition(ArmConstants.AVE_MARIA_SHOOT_POSITION), 
     m_wrist.goToPosition(WristConstants.LEFT_POSITION), 
     new CubeShooter(m_shooter, m_arm, m_wrist, m_selector).raceWith(new WaitCommand(4)));
   }
