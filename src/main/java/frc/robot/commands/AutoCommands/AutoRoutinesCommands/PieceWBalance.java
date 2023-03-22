@@ -48,7 +48,9 @@ public class PieceWBalance extends SequentialCommandGroup {
     InstantCommand resetOdometry = 
     new InstantCommand(() -> m_drive.resetOdometry(onlyBalanceTrajectory.getInitialPose()));
 
-    addCommands(resetOdometry,
+    InstantCommand shootHigh = new InstantCommand(() -> m_selector.selectLevel(2));
+
+    addCommands(resetOdometry, shootHigh,
     new ShootCube(m_shooter, m_arm, m_wrist, m_selector).raceWith(new WaitCommand(4)), 
       m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
       m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
