@@ -61,8 +61,8 @@ public class CombinedShooter extends CommandBase {
         
         } else {
       
-          m_shooter.leftSetpoint(950);
-          m_shooter.rightSetpoint(950);
+          m_shooter.leftSetpoint(800);//950);
+          m_shooter.rightSetpoint(800);//950);
         }
       break;
 
@@ -75,8 +75,8 @@ public class CombinedShooter extends CommandBase {
       
       } else {
     
-        m_shooter.leftSetpoint(1045);
-        m_shooter.rightSetpoint(1045);
+        m_shooter.leftSetpoint(1200);//1045);
+        m_shooter.rightSetpoint(1200);//1045);
       }
       break;
 

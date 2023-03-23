@@ -35,7 +35,7 @@ import frc.robot.subsystems.WristSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class RedTwoBalance extends SequentialCommandGroup {
   /** Creates a new TwoPiecesWBalance. */
-  PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("TwoBalance",//"TwoPiecesTesting", 
+  PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("RedTwoBalance",//"TwoPiecesTesting", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   2.0, true);//AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
@@ -63,7 +63,7 @@ public class RedTwoBalance extends SequentialCommandGroup {
 
     addCommands(resetOdometry, aveMaria, 
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
-    new FollowPathWithEvents(m_drive.createCommandForTrajectory(PathPlannerTrajectory.transformTrajectoryForAlliance(piecesBalance, Alliance.Red), 
+    new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
     false), piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));//.alongWith(new CounterBalance(m_arm, m_wrist, m_node)));
   }
 }

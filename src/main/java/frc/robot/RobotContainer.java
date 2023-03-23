@@ -67,7 +67,7 @@ public class RobotContainer {
     m_autoChooser.setDefaultOption("PieceBalance Default", m_DefaultAuto);
     //m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
-    m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
+    //m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
     m_autoChooser.addOption("BLUE Two Working", m_autoNames[4]);
     m_autoChooser.addOption("BLUE Two and Balance", m_autoNames[5]);
     //m_autoChooser.addOption("Three pieces", m_autoNames[6]);

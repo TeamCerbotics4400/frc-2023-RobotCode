@@ -31,7 +31,7 @@ import frc.robot.subsystems.WristSubsystem;
 public class RedTwoWorking extends SequentialCommandGroup {
   /** Creates a new StraightLineAutoCommand. */
 
-  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("TwoPiecesWorking", 
+  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("RedTwo", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   1.5, true);
 
