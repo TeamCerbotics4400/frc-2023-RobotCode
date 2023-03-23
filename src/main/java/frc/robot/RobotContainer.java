@@ -14,8 +14,10 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePieces;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePiecesBalance;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoPiecesWBalance;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.TwoWorking;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoPiecesWBalance;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
 import frc.robot.commands.TeleOpCommands.NodeSelectionDown;
 import frc.robot.commands.TeleOpCommands.NodeSelectionLeft;
 import frc.robot.commands.TeleOpCommands.NodeSelectionRight;
@@ -56,19 +58,22 @@ public class RobotContainer {
   private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT AUTO", 
-      "PIECE AND BALANCE", "TWO WORKING", "TWO PIECES AND BALANCE", "THREE PIECES", "THREE BALANCE"};
+      "PIECE AND BALANCE", "BLUE TWO WORKING", "BLUE TWO AND BALANCE", "THREE PIECES", "THREE BALANCE", "RED TWO WORKING",
+      "RED TWO AND BALANCE"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     m_autoChooser.setDefaultOption("PieceBalance Default", m_DefaultAuto);
-    m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
+    //m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
     m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
-    m_autoChooser.addOption("Two Working", m_autoNames[4]);
-    m_autoChooser.addOption("Two and Balance", m_autoNames[5]);
-    m_autoChooser.addOption("Three pieces", m_autoNames[6]);
-    m_autoChooser.addOption("Three and Balance", m_autoNames[7]);
+    m_autoChooser.addOption("BLUE Two Working", m_autoNames[4]);
+    m_autoChooser.addOption("BLUE Two and Balance", m_autoNames[5]);
+    //m_autoChooser.addOption("Three pieces", m_autoNames[6]);
+    //m_autoChooser.addOption("Three and Balance", m_autoNames[7]);
+    m_autoChooser.addOption("RED Two Working", m_autoNames[8]);
+    m_autoChooser.addOption("RED Two and Balance", m_autoNames[9]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -196,9 +201,9 @@ public class RobotContainer {
 
     System.out.println("Auto Selected: " + m_autoSelected);
     switch(m_autoSelected){
-      case "PID TUNER":
+      /*case "PID TUNER":
        autonomousCommand = new PIDTunnerCommand(m_drive, m_arm, m_wrist);
-      break;
+      break;*/
 
       case "STRAIGHT AUTO":
         autonomousCommand = new StraightAuto(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
@@ -208,20 +213,28 @@ public class RobotContainer {
         autonomousCommand = new PieceWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
-      case "TWO WORKING":
-        autonomousCommand = new TwoWorking(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      case "BLUE TWO WORKING":
+        autonomousCommand = new BlueTwoWorking(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
-      case "TWO PIECES AND BALANCE":
-        autonomousCommand = new TwoPiecesWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      case "BLUE TWO AND BALANCE":
+        autonomousCommand = new BlueTwoPiecesWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
-      case "THREE PIECES":
+      /*case "THREE PIECES":
        autonomousCommand = new ThreePieces(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       case "THREE BALANCE":
        autonomousCommand = new ThreePiecesBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      break;*/
+
+      case "RED TWO WORKING":
+       autonomousCommand = new RedTwoWorking(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      break;
+
+      case "RED TWO AND BALANCE":
+       autonomousCommand = new RedTwoBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
     }
 
