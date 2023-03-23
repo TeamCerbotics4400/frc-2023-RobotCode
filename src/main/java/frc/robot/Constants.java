@@ -31,7 +31,7 @@ public final class Constants {
 
   public static final boolean twoControllerMode = true;
 
-  public static final boolean needToLog = false; 
+  public static final boolean needToLog = true; 
   
   public static final class DriveConstants{
     public static final int LeftLeader_ID = 2; //3
@@ -113,6 +113,7 @@ public final class Constants {
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
     public static double AVE_MARIA_SHOOT_POSITION = 155.0;
+    public static double COUNTER_BALANCE_POSITION = 60.0;
 
     public static double ARM_THRESHOLD = 9.5;
   }
