@@ -40,7 +40,6 @@ public class NodeSelector extends SubsystemBase {
     this.currentSelectionNodes = 0;
     this.currentSelectionLevels = 2;
 
-    nodeNames.add("No Node");
     nodeNames.add("Node 1 Cone");
     nodeNames.add("Node 2 Cube");
     nodeNames.add("Node 3 Cone");
