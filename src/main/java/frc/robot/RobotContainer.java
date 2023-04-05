@@ -6,24 +6,17 @@ package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
-import frc.robot.commands.CombinedShooter;
 import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.LimelightAutoAlign;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePieces;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.ThreePiecesBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoPiecesWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
-import frc.robot.commands.IntakeCubes;
 import frc.robot.commands.LimelightToggle;
 import frc.robot.commands.StateIntakeCommand;
-
-import javax.swing.plaf.nimbus.State;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
+import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.NodeSelector;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,8 +38,7 @@ import frc.robot.subsystems.NodeSelector;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-import frc.robot.subsystems.WristSubsystem;
-import team4400.StateMachines;
+
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Joystick chassisDriver = new Joystick(0);
