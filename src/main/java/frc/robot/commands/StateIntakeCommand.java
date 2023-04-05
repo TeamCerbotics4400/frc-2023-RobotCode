@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.NodeSelector;
 import team4400.StateMachines;
@@ -15,15 +16,17 @@ import team4400.StateMachines.IntakeState;
 public class StateIntakeCommand extends CommandBase {
   /** Creates a new StateIntakeCommand. */
   FalconShooter m_shooter;
+  ArmSubsystem m_arm;
   NodeSelector m_selector;
   Joystick intakeJoystick;
   Joystick shootingJoystick;
 
-  public StateIntakeCommand(FalconShooter m_shooter, Joystick intakeJoystick, 
+  public StateIntakeCommand(FalconShooter m_shooter, ArmSubsystem m_arm, Joystick intakeJoystick, 
   Joystick shootingJoystick, NodeSelector m_selector) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_shooter = m_shooter;
     this.m_selector = m_selector;
+    this.m_arm = m_arm;
     this.intakeJoystick = intakeJoystick;
     this.shootingJoystick = shootingJoystick;
 
@@ -50,7 +53,7 @@ public class StateIntakeCommand extends CommandBase {
       }
     }
   
-    if(m_shooter.needToStop()){
+    if(m_shooter.needToStop() && m_arm.isReady()){
       StateMachines.setIntakeFull();
     }
 

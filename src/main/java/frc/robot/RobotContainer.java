@@ -109,7 +109,7 @@ public class RobotContainer {
    m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    chassisDriver));
 
-   m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, chassisDriver, 
+   m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
                                                       subsystemsDriver, m_nodeSelector));
 
     new JoystickButton(chassisDriver, 1).whileTrue(new 
