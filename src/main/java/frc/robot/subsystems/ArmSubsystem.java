@@ -75,8 +75,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
 
       SmartDashboard.putBoolean("Arm ready", isReady());
-      SmartDashboard.putNumber("Corriente Derecha", rightMotor.getOutputCurrent());
-      SmartDashboard.putNumber("Corriente Izquierda", leftMotor.getOutputCurrent());
+      //SmartDashboard.putNumber("Corriente Derecha", rightMotor.getOutputCurrent());
+      //SmartDashboard.putNumber("Corriente Izquierda", leftMotor.getOutputCurrent());
       //SmartDashboard.putNumber("Target Verdadero ", targetAngle);
       //SmartDashboard.putNumber("Goal Objetivo",this.getController().getGoal().position);;
       //SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());

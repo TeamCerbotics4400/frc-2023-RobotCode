@@ -8,17 +8,12 @@ import java.util.HashMap;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoCommands.IdleArm;
-import frc.robot.commands.AutoCommands.IntakeCube;
-import frc.robot.commands.AutoCommands.ShootCone;
 import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
@@ -46,7 +41,7 @@ public class StraightAuto extends SequentialCommandGroup {
      m_drive.resetOdometry(twoPiecesTrajectory.getInitialPose()));
 
     addCommands(resetOdometry, 
-     new ShootCone(m_shooter, m_arm, m_wrist).andThen(new IdleArm(m_arm, m_wrist)), 
+     new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)), 
      m_drive.createCommandForTrajectory(twoPiecesTrajectory, 
      false).andThen(() -> m_drive.tankDriveVolts(0, 0)));
   }

@@ -12,17 +12,12 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoCommands.AveMariaShoot;
-import frc.robot.commands.AutoCommands.CounterBalance;
 import frc.robot.commands.AutoCommands.IdleArm;
 import frc.robot.commands.AutoCommands.IntakeCube;
-import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;

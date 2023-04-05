@@ -17,7 +17,6 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.AutoCommands.AveMariaShoot;
 import frc.robot.commands.AutoCommands.IdleArm;
 import frc.robot.commands.AutoCommands.IntakeCube;
-import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;

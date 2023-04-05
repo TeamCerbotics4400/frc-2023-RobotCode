@@ -29,7 +29,8 @@ public class IntakeCubes extends CommandBase {
     
     m_shooter.setMotorsPower(-1.0, -1.0);
 
-    m_shooter.stopShooterSensorCube();
+    m_shooter.stopShooterCurrent();
+    //m_shooter.stopShooterSensorCube();
   }
 
   // Called once the command ends or is interrupted.
@@ -43,10 +44,10 @@ public class IntakeCubes extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_shooter.isShooterOcuppiedCube()){
-      return true;
-      } else{
+    //if(m_shooter.isShooterOcuppiedCube()){
+      //return true;
+      //} else{
         return false;
-      }
+      //}
   }
 }

@@ -29,6 +29,8 @@ public class FalconShooter extends SubsystemBase {
 
   int pidSlot = 0;
 
+  double stopCurrent = 87;
+
   //Beam DIO 0
   //Beam 2 DIO 3
   public FalconShooter() {
@@ -75,6 +77,10 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
     SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
 
+    SmartDashboard.putNumber("Left Voltage", leftFlyWheel.getSupplyCurrent());
+    SmartDashboard.putNumber("Right Voltage", rightFlyWheel.getSupplyCurrent());
+
+    SmartDashboard.putBoolean("NeedToStop", needToStop());
     //SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
     SmartDashboard.putBoolean("Shooter w cone", isShooterOcuppiedCone());
     //SmartDashboard.putBoolean("Sensor 2", beamSensor2.get());
@@ -161,6 +167,20 @@ public class FalconShooter extends SubsystemBase {
   public void setMotorsPower(double leftPower, double rightPower){
     leftFlyWheel.set(TalonFXControlMode.PercentOutput, leftPower);
     rightFlyWheel.set(TalonFXControlMode.PercentOutput, rightPower);
+  }
+
+  public boolean needToStop(){
+    if(leftFlyWheel.getSupplyCurrent() > stopCurrent && rightFlyWheel.getSupplyCurrent() > stopCurrent){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public void stopShooterCurrent(){
+    if(needToStop()){
+      setMotorsPower(0, 0);
+    }
   }
 
   public void stopShooterSensorCube(){

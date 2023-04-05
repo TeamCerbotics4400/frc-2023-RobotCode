@@ -7,25 +7,18 @@ package frc.robot.commands;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.NodeSelector;
-import frc.robot.subsystems.WristSubsystem;
 
 public class CombinedShooter extends CommandBase {
   /** Creates a new CombinedShooter. */
-  ArmSubsystem m_arm;
-  WristSubsystem m_wrist;
   FalconShooter m_shooter;
   NodeSelector m_selector;
 
   private ArrayList<String> cubeNodes;
 
-  public CombinedShooter(ArmSubsystem m_arm, WristSubsystem m_wrist, FalconShooter m_shooter, 
-  NodeSelector m_selector) {
+  public CombinedShooter(FalconShooter m_shooter, NodeSelector m_selector) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_arm = m_arm;
-    this.m_wrist = m_wrist;
     this.m_shooter = m_shooter;
     this.m_selector = m_selector;
 
@@ -53,31 +46,16 @@ public class CombinedShooter extends CommandBase {
       break;
 
       case "Mid":
-        if(cubeNodes.contains(m_selector.getAlignName())){
           //800 RPM for cube
           //m_shooter.goToDashboardVelocity();
           m_shooter.leftSetpoint(800);
           m_shooter.rightSetpoint(800);
-        
-        } else {
-      
-          m_shooter.leftSetpoint(800);//950);
-          m_shooter.rightSetpoint(800);//950);
-        }
       break;
 
       case "High":
-      if(cubeNodes.contains(m_selector.getAlignName())){
-      
         //m_shooter.goToDashboardVelocity();
         m_shooter.leftSetpoint(1200);
         m_shooter.rightSetpoint(1200);
-      
-      } else {
-    
-        m_shooter.leftSetpoint(1200);//1045);
-        m_shooter.rightSetpoint(1200);//1045);
-      }
       break;
 
       case "Ave Maria":
