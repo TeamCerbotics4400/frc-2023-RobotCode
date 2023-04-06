@@ -42,6 +42,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.LimelightHelpers.LimelightResults;
+import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 import team4400.Util.DriveSignal;
 
 public class DriveTrain extends SubsystemBase {
@@ -359,12 +361,6 @@ public class DriveTrain extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition();
   }
 
-  public void correctOdo(){
-    wheelOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()), 
-    encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition()), estimatedPose2d());
-  }
-
   public void resetVisionOdo(Pose2d pose){
     visionOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(leftEncoder.getPosition()), 
@@ -408,25 +404,24 @@ public class DriveTrain extends SubsystemBase {
    * 
    * All of this data is then sent to a Fied2d() widget on the Shuffleboard.
   */
-  /*public void updateOdometryWVisionCorrectionPhoton(){
+  public void odometryWvision(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
 
-    Optional<EstimatedRobotPose> result = 
-    pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+    LimelightResults results = VisionSubsystem.getLimelightResults();
 
-    if(result.isPresent()){
-      EstimatedRobotPose camPose = result.get();
-      m_poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), 
-      camPose.timestampSeconds);
-      m_field.getObject("Cam est Pose").setPose(camPose.estimatedPose.toPose2d());
+    if(results.targetingResults.valid){
+      Pose2d camPose = VisionSubsystem.getPoseFromAprilTags();
+      m_poseEstimator.addVisionMeasurement(camPose, 
+      results.targetingResults.timestamp_LIMELIGHT_publish);
+      m_field.getObject("Cam est Pose").setPose(camPose);
     } else {
       m_field.getObject("Cam est Pose").setPose(m_poseEstimator.getEstimatedPosition());
     }
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-  }*/
+  }
 
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();

@@ -155,8 +155,9 @@ public final class Constants {
     public static final double GRID_CENTER = 2.75;
   
     public static final double CHARGING_STATION_CLEARENCE = 3.00;
-  
-    public static final double FIELD_WIDTH = Units.inchesToMeters((12 * 26) + 3.5);
+
+    public static final double FIELD_LENGTH_METERS = 16.54175;
+    public static final double FIELD_WIDTH_METERS = 8.0137;
   
     //Single Substation around = X 14.01 Y 6.83
     public static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
@@ -177,7 +178,7 @@ public final class Constants {
                   entry -> new Pose2d(
                       new Translation2d(
                           entry.getValue().getX(),
-                          FIELD_WIDTH - entry.getValue().getY()),
+                          FIELD_WIDTH_METERS - entry.getValue().getY()),
                       entry.getValue().getRotation())));
           
           public static final Map<Alliance, Map<String, Pose2d>> POSE_MAP = Map.of(
