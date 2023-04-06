@@ -60,7 +60,7 @@ public class DebuggingAutoAlign extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_drive.tankDriveVolts(0, 0);
-    LimelightHelpers.setLEDMode_ForceOff(VisionConstants.limelightName);
+    LimelightHelpers.setLEDMode_ForceOff(VisionConstants.tapeLimelight);
   }
 
   // Returns true when the command should end.

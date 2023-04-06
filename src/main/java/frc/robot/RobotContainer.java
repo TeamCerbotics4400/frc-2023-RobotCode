@@ -14,8 +14,9 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoPiecesWB
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
+import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
-import frc.robot.commands.LimelightToggle;
+import frc.robot.commands.AlignToNode;
 import frc.robot.commands.StateIntakeCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -105,8 +106,8 @@ public class RobotContainer {
    m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
                                                       subsystemsDriver, m_nodeSelector));
 
-    new JoystickButton(chassisDriver, 1).whileTrue(new 
-                                            DriveToNode(m_drive, m_nodeSelector, chassisDriver));
+    new JoystickButton(chassisDriver, 1).whileTrue(new AlignToNode(m_drive));
+                                            //DriveToNode(m_drive, m_nodeSelector, chassisDriver));
 
     new JoystickButton(chassisDriver, 2).whileTrue(new LimelightAutoAlign(m_drive, chassisDriver));
 

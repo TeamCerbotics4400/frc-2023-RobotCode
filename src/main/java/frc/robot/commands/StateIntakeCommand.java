@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
@@ -99,14 +100,6 @@ public class StateIntakeCommand extends CommandBase {
       }
       break;
     }
-    /*if(StateMachines.getIntakeState() == IntakeState.INTAKING){
-      m_shooter.setMotorsPower(-1.0, -1.0);
-    } else if(StateMachines.getIntakeState() == IntakeState.SHOOTING) {
-      //new CombinedShooter(m_shooter, m_selector);
-      m_shooter.setMotorsPower(0.5, 0.5);
-    } else {
-      m_shooter.setMotorsPower(0, 0);
-    }*/
 
     SmartDashboard.putString("Current Intake State", StateMachines.getIntakeState().toString());
   }

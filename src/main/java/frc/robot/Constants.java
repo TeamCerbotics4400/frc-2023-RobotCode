@@ -145,6 +145,10 @@ public final class Constants {
 
   public static final class VisionConstants {
     /** ---PROTOTYPE--- */
+
+    public static final String orangeName = "OV9281";
+    public static final String tapeLimelight = "limelight-tape";
+    public static final String tagLimelightName = "limelight-tag";
     public static double HEIGHT_OF_OUTER_PORT = 2.64;//Altura del target
     public static double LIMELIGHT_FLOOR_CLEREANCE= 0.79;//Altura de la limelight
     public static double LIMELIGHT_VERTICAL_ANGLE = 36; //Angulo de la limelight
@@ -165,8 +169,7 @@ public final class Constants {
                           0, 0,
                           0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
     // from center.
-    public static final String orangeName = "OV9281";
-    public static final String limelightName = "limelight-cerbo";
+    
   }
 
   public static final class FieldConstants{
@@ -181,15 +184,15 @@ public final class Constants {
   
     //Single Substation around = X 14.01 Y 6.83
     public static final Map<String, Pose2d> BLUE_MAP = Map.ofEntries(
-              Map.entry("Node 1 Cone", new Pose2d(new Translation2d(1.15, 0.17), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 2 Cube", new Pose2d(new Translation2d(1.15, 0.71), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 3 Cone", new Pose2d(new Translation2d(1.15, 1.27), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 4 Cone", new Pose2d(new Translation2d(1.15, 1.84), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 5 Cube", new Pose2d(new Translation2d(1.15, 2.40), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 6 Cone", new Pose2d(new Translation2d(1.15, 2.95), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 7 Cone", new Pose2d(new Translation2d(1.15, 3.51), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 8 Cube", new Pose2d(new Translation2d(1.15, 4.07), Rotation2d.fromDegrees(180))),
-              Map.entry("Node 9 Cone", new Pose2d(new Translation2d(1.15, 4.64), Rotation2d.fromDegrees(180)))
+            Map.entry("Node 1 Cone", new Pose2d(new Translation2d(1.55, 0.42), Rotation2d.fromDegrees(180))),
+            Map.entry("Node 2 Cube", new Pose2d(new Translation2d(1.55, 1.06), Rotation2d.fromDegrees(180))),
+            Map.entry("Node 3 Cone", new Pose2d(new Translation2d(1.55, 1.62), Rotation2d.fromDegrees(180))),
+            Map.entry("Node 4 Cone", new Pose2d(new Translation2d(1.55, 2.19), Rotation2d.fromDegrees(180))),
+            Map.entry("Node 5 Cube", new Pose2d(new Translation2d(1.55, 2.75), Rotation2d.fromDegrees(180))),
+            Map.entry("Node 6 Cone", new Pose2d(new Translation2d(1.55, 3.31), Rotation2d.fromDegrees(180))),
+            Map.entry("Node 7 Cone", new Pose2d(new Translation2d(1.55, 3.86), Rotation2d.fromDegrees(180))),
+            Map.entry("Node 8 Cube", new Pose2d(new Translation2d(1.55, 4.42), Rotation2d.fromDegrees(180))),
+            Map.entry("Node 9 Cone", new Pose2d(new Translation2d(1.55, 4.99), Rotation2d.fromDegrees(180)))
           );
 
           private static final Map<String, Pose2d> RED_MAP =

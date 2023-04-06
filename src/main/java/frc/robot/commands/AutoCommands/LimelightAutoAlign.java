@@ -43,13 +43,13 @@ public class LimelightAutoAlign extends CommandBase {
   public void initialize() {
     //alignPID.reset();
     profiledAlignPID.reset(m_drive.getCorrectedAngle());
-    LimelightHelpers.setLEDMode_ForceOn(VisionConstants.limelightName);
+    LimelightHelpers.setLEDMode_ForceOn(VisionConstants.tapeLimelight);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    profiledAlignPID.setGoal(LimelightHelpers.getTY(VisionConstants.limelightName));
+    profiledAlignPID.setGoal(LimelightHelpers.getTY(VisionConstants.tapeLimelight));
     m_drive.drive(-joy.getRawAxis(1), profiledAlignPID.calculate(m_drive.getCorrectedAngle()));
     //alignPID.setSetpoint(LimelightHelpers.getTY(VisionConstants.limelightName));
     //m_drive.drive(-joy.getRawAxis(1), alignPID.calculate(m_drive.getCorrectedAngle()));
@@ -59,7 +59,7 @@ public class LimelightAutoAlign extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_drive.tankDriveVolts(0, 0);
-    LimelightHelpers.setLEDMode_ForceOff(VisionConstants.limelightName);
+    LimelightHelpers.setLEDMode_ForceOff(VisionConstants.tapeLimelight);
   }
 
   // Returns true when the command should end.

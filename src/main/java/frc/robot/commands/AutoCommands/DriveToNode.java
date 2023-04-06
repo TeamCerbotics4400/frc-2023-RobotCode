@@ -32,7 +32,7 @@ public class DriveToNode extends CommandBase {
 
   Rotation2d closestRotation = new Rotation2d();
 
-  double convergenceFactor = -0.65;
+  double convergenceFactor = -0.40;
 
   DoubleLogEntry intermediatePoseLog;
 
@@ -72,11 +72,23 @@ public class DriveToNode extends CommandBase {
     .minus(m_drive.getEstimationTranslation()));
 
     angularController.setSetpoint(targetRotation.getDegrees());
-    double angularSpeed = angularController.calculate(m_drive.getEstimationRotation()
-      .plus(Rotation2d.fromDegrees(0)).getDegrees());
-    angularSpeed = MathUtil.clamp(angularSpeed, -0.5, 0.5);
 
-    m_drive.drive(-joy.getRawAxis(1), angularSpeed);
+    double angularSpeed;
+
+    if(m_drive.getVisionPose().getX() > m_nodeSelector.getNodeToAlign().getTranslation().getX() + 0.55){
+      angularSpeed = angularController.calculate(m_drive.getEstimationRotation()
+      .plus(Rotation2d.fromDegrees(0)).getDegrees());
+      angularSpeed = MathUtil.clamp(angularSpeed, -0.5, 0.5);
+
+      m_drive.drive(-joy.getRawAxis(1), angularSpeed);
+
+    } else {
+      angularSpeed = angularController.calculate(m_drive.getEstimationAngle());
+
+      m_drive.drive(-joy.getRawAxis(1), angularSpeed);
+    }
+
+    
 
     SmartDashboard.putNumberArray("Intermediate pose", 
         new double[] {intermediatePoint.getX(), intermediatePoint.getY(), 

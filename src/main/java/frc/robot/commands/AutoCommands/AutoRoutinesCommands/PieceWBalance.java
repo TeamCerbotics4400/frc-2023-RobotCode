@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.WristConstants;
-import frc.robot.commands.AutoBalance;
+import frc.robot.commands.AutoCommands.AutoBalance;
 import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
