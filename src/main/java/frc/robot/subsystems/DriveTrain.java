@@ -109,8 +109,6 @@ public class DriveTrain extends SubsystemBase {
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
 
-  public PhotonCameraWrapper pcw;
-
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
   //Units per Rotation : 0.4788
@@ -155,8 +153,6 @@ public class DriveTrain extends SubsystemBase {
 
     debuggingTab = Shuffleboard.getTab("Debugging Tab");
     competitionTab = Shuffleboard.getTab("Competition Tab");
-
-    pcw = new PhotonCameraWrapper();
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
@@ -407,7 +403,7 @@ public class DriveTrain extends SubsystemBase {
    * 
    * All of this data is then sent to a Fied2d() widget on the Shuffleboard.
   */
-  public void updateOdometryWVisionCorrectionPhoton(){
+  /*public void updateOdometryWVisionCorrectionPhoton(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
@@ -425,7 +421,7 @@ public class DriveTrain extends SubsystemBase {
     }
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-  }
+  }*/
 
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();
