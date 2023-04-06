@@ -9,10 +9,7 @@ import java.util.stream.Collectors;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -144,32 +141,11 @@ public final class Constants {
   }
 
   public static final class VisionConstants {
-    /** ---PROTOTYPE--- */
 
     public static final String orangeName = "OV9281";
     public static final String tapeLimelight = "limelight-tape";
-    public static final String tagLimelightName = "limelight-tag";
-    public static double HEIGHT_OF_OUTER_PORT = 2.64;//Altura del target
-    public static double LIMELIGHT_FLOOR_CLEREANCE= 0.79;//Altura de la limelight
-    public static double LIMELIGHT_VERTICAL_ANGLE = 36; //Angulo de la limelight
+    public static final String tagLimelightName = "limelight-tags";
 
-    public static final Transform3d limelighCamPose =
-          new Transform3d(
-                  new Translation3d(Units.inchesToMeters(Units.inchesToMeters(5.53)), 
-                  Units.inchesToMeters(-4.72), Units.inchesToMeters(17)),
-                  new Rotation3d(
-                          0, 0,
-                          0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
-
-    public static final Transform3d orangeCamPose =
-          new Transform3d(
-                  new Translation3d(Units.inchesToMeters(Units.inchesToMeters(-2.27)), 
-                  Units.inchesToMeters(5.37), Units.inchesToMeters(18.24)),
-                  new Rotation3d(
-                          0, 0,
-                          0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
-    // from center.
-    
   }
 
   public static final class FieldConstants{

@@ -1,4 +1,4 @@
-//LimelightHelpers v1.2.0 (Feb 13, 2023)
+//LimelightHelpers v1.2.1 (March 1, 2023)
 
 package frc.robot;
 
@@ -26,7 +26,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-//TODO: http://limelight-cerbo.local:5801 Limelight address
+//TODO: 'http://limelight-tape.local:5801' Limelight 2+ Reflective Tape
+//TODO: 'http://limelight-tags.local:5801' Limelight 3 Apriltags
 public class LimelightHelpers {
 
     public static class LimelightTarget_Retro {
@@ -522,7 +523,7 @@ public class LimelightHelpers {
     }
 
     public static double[] getBotPose_TargetSpace(String limelightName) {
-        return getLimelightNTDoubleArray(limelightName, "botpose_targetSpace");
+        return getLimelightNTDoubleArray(limelightName, "botpose_targetspace");
     }
 
     public static double[] getCameraPose_TargetSpace(String limelightName) {

@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.Optional;
-import org.photonvision.EstimatedRobotPose;
-
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -42,7 +39,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.VisionConstants;
 import team4400.Util.DriveSignal;
 
 public class DriveTrain extends SubsystemBase {
@@ -155,6 +154,12 @@ public class DriveTrain extends SubsystemBase {
     competitionTab = Shuffleboard.getTab("Competition Tab");
 
     PortForwarder.add(5800, "photonvision.local", 5800);
+
+    //Set tag Limelight pose
+    LimelightHelpers.setCameraPose_RobotSpace(VisionConstants.tagLimelightName, -0.04819, -0.133825, 0.4708, 0, 0, 0);
+
+    //Set tape Limelight pose
+    //LimelightHelpers.setCameraPose_RobotSpace(VisionConstants.tagLimelightName, -0.04819, -0.133825, 0.4708, 0, 0, 0);
 
     //SmartDashboard.putNumber("left P", leftPIDController.getP());
     //SmartDashboard.putNumber("left D", leftPIDController.getD());
