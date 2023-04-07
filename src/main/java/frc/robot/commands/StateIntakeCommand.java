@@ -57,7 +57,7 @@ public class StateIntakeCommand extends CommandBase {
       }
     }
   
-    if(m_shooter.needToStop() && m_arm.isReady()){
+    if(m_shooter.needToStop() && m_arm.isInIntakingPos()){
       StateMachines.setIntakeFull();
     }
 

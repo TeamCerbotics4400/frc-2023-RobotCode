@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
-import frc.robot.commands.AutoCommands.DriveToNode;
 import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
@@ -17,7 +16,6 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
 import frc.robot.commands.AlignToNode;
-import frc.robot.commands.DebuggingAutoAlign;
 import frc.robot.commands.StateIntakeCommand;
 
 import edu.wpi.first.wpilibj.Joystick;

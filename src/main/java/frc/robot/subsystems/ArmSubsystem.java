@@ -75,20 +75,7 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
 
       SmartDashboard.putBoolean("Arm ready", isReady());
-      //SmartDashboard.putNumber("Corriente Derecha", rightMotor.getOutputCurrent());
-      //SmartDashboard.putNumber("Corriente Izquierda", leftMotor.getOutputCurrent());
-      //SmartDashboard.putNumber("Target Verdadero ", targetAngle);
-      //SmartDashboard.putNumber("Goal Objetivo",this.getController().getGoal().position);;
-      //SmartDashboard.putNumber("Error de posicion", this.getController().getPositionError());
-
-      /*double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
-      if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}
-
-      double p = SmartDashboard.getNumber("Arm P", this.m_controller.getP());
-      double d = SmartDashboard.getNumber("Arm D", this.m_controller.getD());
-
-      if((p != ArmConstants.kP)){this.m_controller.setP(p); p = ArmConstants.kP;}
-      if((d != ArmConstants.kD)){this.m_controller.setD(d); d = ArmConstants.kD;}*/
+      SmartDashboard.putBoolean("Is Intaking Pose", isInIntakingPos());
   }
 
   @Override
@@ -128,6 +115,16 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
   public boolean isReady(){
     if(getMeasurement() > getController().getGoal().position - ArmConstants.ARM_THRESHOLD 
     && getMeasurement() < getController().getGoal().position + ArmConstants.ARM_THRESHOLD){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean isInIntakingPos(){
+    if(this.getController().getGoal().position == ArmConstants.BACK_FLOOR_POSITION && 
+    isReady() || this.getController().getGoal().position == ArmConstants.FRONT_FLOOR_POSITION && 
+    isReady()){
       return true;
     } else {
       return false;

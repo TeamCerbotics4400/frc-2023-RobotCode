@@ -40,8 +40,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.LimelightHelpers.LimelightResults;
+import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import team4400.Util.DriveSignal;
 
 public class DriveTrain extends SubsystemBase {
@@ -84,7 +88,7 @@ public class DriveTrain extends SubsystemBase {
                     Rotation2d.fromDegrees(-getAngle()), 
                     0.0, 0.0, new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)), 
                     new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.005, 0.005, 0.001), 
-                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.2));
+                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.9, 0.9, 0.9));
   
   /* 
    * We decided that having two types of odometry would work better than just having one of them.
@@ -176,9 +180,9 @@ public class DriveTrain extends SubsystemBase {
      m_poseEstimator.getEstimatedPosition().getX(), 
      m_poseEstimator.getEstimatedPosition().getY());
 
-     SmartDashboard.putNumber("Odo X", wheelOdometry.getPoseMeters().getX());
+     SmartDashboard.putNumber("Odo X", m_poseEstimator.getEstimatedPosition().getX());
 
-     SmartDashboard.putNumber("Odo Y", wheelOdometry.getPoseMeters().getY());
+     SmartDashboard.putNumber("Odo Y", m_poseEstimator.getEstimatedPosition().getY());
 
      SmartDashboard.putNumber("Vision angle", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
@@ -378,12 +382,14 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
 
-    LimelightResults results = VisionSubsystem.getLimelightResults();
+    LimelightHelpers.Results results = 
+        LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName).targetingResults;
 
-    if(results.targetingResults.valid){
-      Pose2d camPose = VisionSubsystem.getPoseFromAprilTags();
+    if(results.valid){
+      Pose2d camPose = LimelightHelpers.toPose2D(results.botpose_wpiblue);
       m_poseEstimator.addVisionMeasurement(camPose, 
-      Timer.getFPGATimestamp());
+      Timer.getFPGATimestamp() - (results.latency_capture / 1000.0)
+       - (results.latency_pipeline / 1000.0));
       m_field.getObject("Cam est Pose").setPose(camPose);
     } else {
       m_field.getObject("Cam est Pose").setPose(m_poseEstimator.getEstimatedPosition());
@@ -395,6 +401,7 @@ public class DriveTrain extends SubsystemBase {
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();
   }
+  
 
   //Gets the Balance PID Controller for use in other classes
   public PIDController getBalanceController(){
