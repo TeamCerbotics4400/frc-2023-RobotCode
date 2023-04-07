@@ -61,7 +61,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
 
   @Override
   public void periodic() {
-      // TODO Auto-generated method stub
       super.periodic();
       //SmartDashboard.putBoolean("Wrist ready", isReady());
       //SmartDashboard.putNumber("Angulo Muneca", getMeasurement());
@@ -72,15 +71,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
       //SmartDashboard.putBoolean("Hall effect activado", hallEffectSensor.get());
 
       //resetEncoderSensor();
-
-      /*double desiredAngle = SmartDashboard.getNumber("Desired Angle", targetAngle);
-      if((desiredAngle != targetAngle)){desiredAngle = targetAngle;}
-
-      double p = SmartDashboard.getNumber("Arm P", this.m_controller.getP());
-      double d = SmartDashboard.getNumber("Arm D", this.m_controller.getD());
-
-      if((p != ArmConstants.kP)){this.m_controller.setP(p); p = ArmConstants.kP;}
-      if((d != ArmConstants.kD)){this.m_controller.setD(d); d = ArmConstants.kD;}*/
   }
 
   @Override

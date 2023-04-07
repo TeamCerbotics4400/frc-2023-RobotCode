@@ -4,9 +4,8 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 //import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.VisionConstants;
@@ -16,18 +15,15 @@ public class DebuggingAutoAlign extends CommandBase {
   /** Creates a new LimelightAutoAlign. */
   DriveTrain m_drive;
 
-  Joystick joy;
-
-  PIDController profiledAlignPID;
+  ProfiledPIDController profiledAlignPID;
   //PIDController alignPID;
 
-  public DebuggingAutoAlign(DriveTrain m_drive, Joystick joy) {
+  public DebuggingAutoAlign(DriveTrain m_drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
-    this.joy = joy;
 
     //alignPID = m_drive.getTurnPID();
-    profiledAlignPID = m_drive.getTurnPID();
+    profiledAlignPID = m_drive.getProfiledAlign();
 
     profiledAlignPID.enableContinuousInput(-180, 180);
     profiledAlignPID.setTolerance(0.05);
@@ -42,15 +38,15 @@ public class DebuggingAutoAlign extends CommandBase {
   @Override
   public void initialize() {
     //alignPID.reset();
-    profiledAlignPID.reset();
+    profiledAlignPID.reset(m_drive.getCorrectedAngle());
     //LimelightHelpers.setLEDMode_ForceOn(VisionConstants.limelightName);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    profiledAlignPID.setSetpoint(90);
-    m_drive.setCheesyishDrive(joy.getRawAxis(1), profiledAlignPID.calculate(m_drive.getCorrectedAngle()), true);
+    profiledAlignPID.setGoal(0);
+    m_drive.drive(0, profiledAlignPID.calculate(m_drive.getCorrectedAngle()));
     //m_drive.drive(-joy.getRawAxis(1), profiledAlignPID.calculate(m_drive.getCorrectedAngle()));
     //alignPID.setSetpoint(LimelightHelpers.getTY(VisionConstants.limelightName));
     //m_drive.drive(-joy.getRawAxis(1), alignPID.calculate(m_drive.getCorrectedAngle()));
@@ -66,7 +62,7 @@ public class DebuggingAutoAlign extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return profiledAlignPID.atSetpoint();
+    return false;
   }
 }
 

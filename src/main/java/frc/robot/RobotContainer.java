@@ -17,6 +17,7 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
 import frc.robot.commands.AlignToNode;
+import frc.robot.commands.DebuggingAutoAlign;
 import frc.robot.commands.StateIntakeCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -39,6 +40,7 @@ import frc.robot.subsystems.NodeSelector;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -49,6 +51,7 @@ public class RobotContainer {
   private NodeSelector m_nodeSelector = new NodeSelector(subsystemsDriver);
   private WristSubsystem m_wrist = new WristSubsystem();
   private ArmSubsystem m_arm = new ArmSubsystem();
+  private VisionSubsystem m_vision = new VisionSubsystem();
   
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
@@ -80,12 +83,8 @@ public class RobotContainer {
     return m_drive;
   }
 
-  public ArmSubsystem getArm(){
-    return m_arm;
-  }
-
-  public WristSubsystem getWrist(){
-    return m_wrist;
+  public VisionSubsystem getVision(){
+    return m_vision;
   }
 
   /**
@@ -106,7 +105,7 @@ public class RobotContainer {
    m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
                                                       subsystemsDriver, m_nodeSelector));
 
-    new JoystickButton(chassisDriver, 1).whileTrue(new AlignToNode(m_drive));
+    new JoystickButton(chassisDriver, 1).whileTrue(new AlignToNode(m_drive, chassisDriver));
                                             //DriveToNode(m_drive, m_nodeSelector, chassisDriver));
 
     new JoystickButton(chassisDriver, 2).whileTrue(new LimelightAutoAlign(m_drive, chassisDriver));

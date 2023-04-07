@@ -29,7 +29,7 @@ public class FalconShooter extends SubsystemBase {
 
   int pidSlot = 0;
 
-  double stopCurrent = 87;
+  double stopCurrent = 60;
 
   //Beam DIO 0
   //Beam 2 DIO 3
@@ -58,7 +58,7 @@ public class FalconShooter extends SubsystemBase {
     rightFlyWheel.config_IntegralZone(pidSlot, ShooterConstants.kIz);
     rightFlyWheel.config_kF(pidSlot, ShooterConstants.kFF);
     
-    SmartDashboard.putNumber("Target Velo", desiredVelo);
+    //SmartDashboard.putNumber("Target Velo", desiredVelo);
 
     /*SmartDashboard.putNumber("Shooter P", ShooterConstants.kP);
     SmartDashboard.putNumber("Shooter I", ShooterConstants.kI);
@@ -75,19 +75,12 @@ public class FalconShooter extends SubsystemBase {
     //SmartDashboard.putNumber("Average RPM", getAverageRPM());
     SmartDashboard.putNumber("Left Current", leftFlyWheel.getStatorCurrent());
     SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
-    SmartDashboard.putBoolean("Is Shooter full", isShooterOcuppiedCube());
-
-    SmartDashboard.putNumber("Left Voltage", leftFlyWheel.getSupplyCurrent());
-    SmartDashboard.putNumber("Right Voltage", rightFlyWheel.getSupplyCurrent());
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
-    //SmartDashboard.putBoolean("Sensor 1", beamSensor.get());
-    SmartDashboard.putBoolean("Shooter w cone", isShooterOcuppiedCone());
-    //SmartDashboard.putBoolean("Sensor 2", beamSensor2.get());
 
-    double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
+    //double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
 
-    if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
+    //if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
     
   
     /*double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);

@@ -29,6 +29,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -39,11 +40,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.LimelightHelpers.LimelightResults;
-import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 import team4400.Util.DriveSignal;
 
 public class DriveTrain extends SubsystemBase {
@@ -113,6 +111,8 @@ public class DriveTrain extends SubsystemBase {
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
   //Units per Rotation : 0.4788
+  //Ancho con bumpers = 29.5 in/0.7493 m
+  //Largo con bumpers = 33.5 in/0.8509 m 
   public DriveTrain() {
 
     leftLeader.restoreFactoryDefaults();
@@ -147,8 +147,6 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setSmartCurrentLimit(75);
     leftFollower.setSmartCurrentLimit(75);
     rightFollower.setSmartCurrentLimit(75);
-   
-    
 
     imu.configFactoryDefault();
 
@@ -157,17 +155,10 @@ public class DriveTrain extends SubsystemBase {
 
     PortForwarder.add(5800, "photonvision.local", 5800);
 
-    //Set tag Limelight pose
-    LimelightHelpers.setCameraPose_RobotSpace(VisionConstants.tagLimelightName, -0.04819, -0.133825, 0.4708, 0, 0, 0);
+    SmartDashboard.putData("Align PID", profiledAlignPID);
 
-    //Set tape Limelight pose
-    //LimelightHelpers.setCameraPose_RobotSpace(VisionConstants.tagLimelightName, -0.04819, -0.133825, 0.4708, 0, 0, 0);
-
-    //SmartDashboard.putNumber("left P", leftPIDController.getP());
-    //SmartDashboard.putNumber("left D", leftPIDController.getD());
-
-    //SmartDashboard.putNumber("right P", rightPIDController.getP());
-    //SmartDashboard.putNumber("right D", rightPIDController.getD());
+    profiledAlignPID.setConstraints(
+      new TrapezoidProfile.Constraints(DriveConstants.turnMaxVel, DriveConstants.turnMaxAcc));
 
     resetImu();
     resetEncoders();
@@ -194,32 +185,10 @@ public class DriveTrain extends SubsystemBase {
      //SmartDashboard.putNumber("Left Encoder meters", encoderCountsToMeters(leftEncoder.getPosition()));
      //SmartDashboard.putNumber("Right Encoder Meters", encoderCountsToMeters(rightEncoder.getPosition()));
 
-    /*SmartDashboard.putNumber("visionOdometry X", visionOdometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("visionOdometry Y", visionOdometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("visionOdometry Rotation", 
-    visionOdometry.getPoseMeters().getRotation().getDegrees());*/
-
     SmartDashboard.putNumber("Odo Angle", 
     wheelOdometry.getPoseMeters().getRotation().getDegrees());
     
     SmartDashboard.putNumber("Gyro angle", getCorrectedAngle());
-
-    //SmartDashboard.putNumber("Current Angle", getCorrectedAngle());
-
-    //SmartDashboard.putNumber("PID Error", balancePID.getPositionError());
-
-    //double lP = SmartDashboard.getNumber("left P", leftPIDController.getP());
-    //double lD = SmartDashboard.getNumber("left D", leftPIDController.getD());
-
-    //double rP = SmartDashboard.getNumber("right P", rightPIDController.getP());
-    //double rD = SmartDashboard.getNumber("right D", rightPIDController.getD());
-
-    //if((lP != leftPIDController.getP())){leftPIDController.setP(lP);}
-    //if((lD != leftPIDController.getD())){leftPIDController.setD(lD);}
-
-    //if((rP != rightPIDController.getP())){rightPIDController.setP(rP);}
-    //if((rD != rightPIDController.getD())){rightPIDController.setD(rD);}
-  
   }
 
   public void selectDashboardType(){
@@ -308,7 +277,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void resetImu(){
-    imu.setYaw(180);
+    imu.setYaw(0);
   }
 
   public double encoderCountsToMeters(double encoderCounts){
@@ -414,7 +383,7 @@ public class DriveTrain extends SubsystemBase {
     if(results.targetingResults.valid){
       Pose2d camPose = VisionSubsystem.getPoseFromAprilTags();
       m_poseEstimator.addVisionMeasurement(camPose, 
-      results.targetingResults.timestamp_LIMELIGHT_publish);
+      Timer.getFPGATimestamp());
       m_field.getObject("Cam est Pose").setPose(camPose);
     } else {
       m_field.getObject("Cam est Pose").setPose(m_poseEstimator.getEstimatedPosition());

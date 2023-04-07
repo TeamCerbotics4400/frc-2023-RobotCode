@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -21,6 +22,8 @@ public class StateIntakeCommand extends CommandBase {
   NodeSelector m_selector;
   Joystick intakeJoystick;
   Joystick shootingJoystick;
+
+  Timer rumbleTimer = new Timer();
 
   public StateIntakeCommand(FalconShooter m_shooter, ArmSubsystem m_arm, Joystick intakeJoystick, 
   Joystick shootingJoystick, NodeSelector m_selector) {
@@ -61,6 +64,8 @@ public class StateIntakeCommand extends CommandBase {
     switch(StateMachines.getIntakeState().toString()){
       case "IDLE":
         m_shooter.setMotorsPower(0, 0);
+        rumbleTimer.stop();
+        rumbleTimer.reset();
       break;
 
       case "INTAKING":
@@ -71,6 +76,13 @@ public class StateIntakeCommand extends CommandBase {
 
       case "FULL":
        m_shooter.setMotorsPower(0, 0);
+       rumbleTimer.start();
+
+       if(rumbleTimer.get() < 1){
+        intakeJoystick.setRumble(RumbleType.kBothRumble, 1);
+       } else {
+        intakeJoystick.setRumble(RumbleType.kBothRumble, 0);
+       }
       break;
 
       case "SHOOTING":
