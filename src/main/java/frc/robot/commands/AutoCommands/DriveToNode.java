@@ -67,7 +67,7 @@ public class DriveToNode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.getVisionPose());
+    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.getVisionOdo());
     Rotation2d targetRotation = GeomUtil.direction(intermediatePoint
     .minus(m_drive.getEstimationTranslation()));
 
