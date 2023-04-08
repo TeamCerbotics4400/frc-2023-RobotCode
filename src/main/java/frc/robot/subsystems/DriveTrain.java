@@ -29,6 +29,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -117,6 +118,8 @@ public class DriveTrain extends SubsystemBase {
   ShuffleboardTab competitionTab;
 
   private Alliance alliance;
+
+  private DoubleArrayLogEntry bot3dPose;
 
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
@@ -216,6 +219,8 @@ public class DriveTrain extends SubsystemBase {
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
 
     m_field.getObject("Cam est Pose").setPose(pose);
+
+    bot3dPose.append(log3dPose());
   }
 
   public void selectDashboardType(){
@@ -357,12 +362,6 @@ public class DriveTrain extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition();
   }
 
-  public void resetVisionOdo(Pose2d pose){
-    visionOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()), 
-    encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition()), pose);
-  }
-
   public double getLeftDistance(){
     return encoderCountsToMeters(leftEncoder.getPosition());
   }
@@ -456,6 +455,22 @@ public class DriveTrain extends SubsystemBase {
       return null;
     }
     return robotPose;
+  }
+
+  public double[] log3dPose(){
+    if(!LimelightHelpers.getTV(VisionConstants.tagLimelightName)){
+      return null;
+    }
+
+    double[] poseComponents;
+    if(alliance == Alliance.Blue){
+      poseComponents = LimelightHelpers.getBotPose_wpiBlue(VisionConstants.tagLimelightName);
+    } else if(alliance == Alliance.Red) {
+      poseComponents = LimelightHelpers.getBotPose_wpiRed(VisionConstants.tagLimelightName);
+    } else {
+      return null;
+    }
+    return poseComponents;
   }
 
   public void getEstimatedPose(){
