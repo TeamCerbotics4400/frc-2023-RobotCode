@@ -4,10 +4,12 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 //import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.DriveTrain;
 
@@ -15,7 +17,7 @@ public class DebuggingAutoAlign extends CommandBase {
   /** Creates a new LimelightAutoAlign. */
   DriveTrain m_drive;
 
-  ProfiledPIDController profiledAlignPID;
+  PIDController angularController;
   //PIDController alignPID;
 
   public DebuggingAutoAlign(DriveTrain m_drive) {
@@ -23,10 +25,10 @@ public class DebuggingAutoAlign extends CommandBase {
     this.m_drive = m_drive;
 
     //alignPID = m_drive.getTurnPID();
-    profiledAlignPID = m_drive.getProfiledAlign();
+    angularController = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
 
-    profiledAlignPID.enableContinuousInput(-180, 180);
-    profiledAlignPID.setTolerance(0.05);
+    angularController.enableContinuousInput(-180, 180);
+    angularController.setTolerance(0.05);
 
     //alignPID.enableContinuousInput(-180, 180);
     //alignPID.setTolerance(0.05);
@@ -38,15 +40,15 @@ public class DebuggingAutoAlign extends CommandBase {
   @Override
   public void initialize() {
     //alignPID.reset();
-    profiledAlignPID.reset(m_drive.getCorrectedAngle());
+    angularController.reset();
     //LimelightHelpers.setLEDMode_ForceOn(VisionConstants.limelightName);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    profiledAlignPID.setGoal(0);
-    m_drive.drive(0, profiledAlignPID.calculate(m_drive.getCorrectedAngle()));
+    angularController.setSetpoint(0);
+    m_drive.drive(0, angularController.calculate(m_drive.getCorrectedAngle()));
     //m_drive.drive(-joy.getRawAxis(1), profiledAlignPID.calculate(m_drive.getCorrectedAngle()));
     //alignPID.setSetpoint(LimelightHelpers.getTY(VisionConstants.limelightName));
     //m_drive.drive(-joy.getRawAxis(1), alignPID.calculate(m_drive.getCorrectedAngle()));

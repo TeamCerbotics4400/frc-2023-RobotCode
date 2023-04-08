@@ -19,7 +19,9 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -27,9 +29,11 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -112,6 +116,8 @@ public class DriveTrain extends SubsystemBase {
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
 
+  private Alliance alliance;
+
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
   //Units per Rotation : 0.4788
@@ -193,6 +199,23 @@ public class DriveTrain extends SubsystemBase {
     wheelOdometry.getPoseMeters().getRotation().getDegrees());
     
     SmartDashboard.putNumber("Gyro angle", getCorrectedAngle());
+
+    m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
+    encoderCountsToMeters(leftEncoder.getPosition()), 
+    encoderCountsToMeters(rightEncoder.getPosition()));
+
+    Pose2d pose = getVisionPose().toPose2d();
+    double timestamp = Timer.getFPGATimestamp() - 
+    (LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName)
+    .targetingResults.latency_capture / 1000.0) - 
+    (LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName)
+    .targetingResults.latency_pipeline / 1000.0);
+
+    m_poseEstimator.addVisionMeasurement(pose, timestamp);
+
+    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
+
+    m_field.getObject("Cam est Pose").setPose(pose);
   }
 
   public void selectDashboardType(){
@@ -300,7 +323,7 @@ public class DriveTrain extends SubsystemBase {
     leftEncoder.setPosition(0);
   }
 
-  public Pose2d getVisionPose() {
+  public Pose2d getVisionOdo() {
     return visionOdometry.getPoseMeters();
   }
 
@@ -366,6 +389,10 @@ public class DriveTrain extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
   }
 
+  public void setAlliance(Alliance alliance){
+    this.alliance = alliance;
+  }
+
   /* 
    * On board we have two cameras, a Limelight 2+ for use on retroreflective targets and a 
    * OV9281 Raspicam connected to an Orange pi co-processor. The relevant camera in this method
@@ -385,7 +412,7 @@ public class DriveTrain extends SubsystemBase {
     LimelightHelpers.Results results = 
         LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName).targetingResults;
 
-    if(results.valid){
+    if(results.getBotPose2d().getTranslation() != new Translation2d(0.0, new Rotation2d(0.0))){
       Pose2d camPose = LimelightHelpers.toPose2D(results.botpose_wpiblue);
       m_poseEstimator.addVisionMeasurement(camPose, 
       Timer.getFPGATimestamp() - (results.latency_capture / 1000.0)
@@ -396,6 +423,39 @@ public class DriveTrain extends SubsystemBase {
     }
 
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
+  }
+
+  public Pose3d getVisionPose(){
+    if(!LimelightHelpers.getTV(VisionConstants.tagLimelightName)){
+      return null;
+    }
+
+    Pose3d robotPose;
+    double[] poseComponents;
+    if(alliance == Alliance.Blue){
+      poseComponents = LimelightHelpers.getBotPose_wpiBlue(VisionConstants.tagLimelightName);
+      robotPose = new Pose3d(
+        poseComponents[0],
+        poseComponents[1],
+        poseComponents[2],
+        new Rotation3d(
+          poseComponents[3],
+          poseComponents[4],
+          poseComponents[5]));
+    } else if(alliance == Alliance.Red) {
+      poseComponents = LimelightHelpers.getBotPose_wpiRed(VisionConstants.tagLimelightName);
+      robotPose = new Pose3d(
+        poseComponents[0],
+        poseComponents[1],
+        poseComponents[2],
+        new Rotation3d(
+          poseComponents[3],
+          poseComponents[4],
+          poseComponents[5]));
+    } else {
+      return null;
+    }
+    return robotPose;
   }
 
   public void getEstimatedPose(){

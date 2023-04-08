@@ -103,7 +103,7 @@ public class RobotContainer {
    m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
                                                       subsystemsDriver, m_nodeSelector));
 
-    new JoystickButton(chassisDriver, 1).whileTrue(new AlignToNode(m_drive, chassisDriver));
+    new JoystickButton(chassisDriver, 1).whileTrue(new AlignToNode(m_drive, m_nodeSelector, chassisDriver));
                                             //DriveToNode(m_drive, m_nodeSelector, chassisDriver));
 
     new JoystickButton(chassisDriver, 2).whileTrue(new LimelightAutoAlign(m_drive, chassisDriver));

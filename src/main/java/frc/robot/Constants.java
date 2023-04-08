@@ -142,9 +142,13 @@ public final class Constants {
 
   public static final class VisionConstants {
 
-    public static final String orangeName = "OV9281";
     public static final String tapeLimelight = "limelight-tape";
     public static final String tagLimelightName = "limelight-tags";
+
+    public static final int normalTracking_Pipeline = 0;
+    public static final int lowAlign_Pipeline = 1;
+    public static final int midAlign_Pipeline = 2;
+    public static final int highAlign_Pipeline = 3;
 
   }
 

@@ -7,28 +7,33 @@ package frc.robot.commands;
 import java.util.ArrayList;
 import java.util.Map;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.NodeSelector;
 
 public class AlignToNode extends CommandBase {
   /** Creates a new AlignToNode. */
   DriveTrain m_drive;
+  NodeSelector m_selector;
   Joystick joy;
 
   private ArrayList<String> cubeNodes;
 
-  ProfiledPIDController profiledAlignPID;
+  PIDController angularController;
 
-  public AlignToNode(DriveTrain m_drive, Joystick joy) {
+  public AlignToNode(DriveTrain m_drive, NodeSelector m_selector, Joystick joy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drive = m_drive;
+    this.m_selector = m_selector;
     this.joy = joy;
 
     cubeNodes = new ArrayList<String>();
@@ -38,10 +43,10 @@ public class AlignToNode extends CommandBase {
     cubeNodes.add("Node 8 Cube");
 
 
-    profiledAlignPID = m_drive.getProfiledAlign();
+    angularController = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
 
-    profiledAlignPID.enableContinuousInput(-180, 180);
-    profiledAlignPID.setTolerance(0.05);
+    angularController.enableContinuousInput(-180, 180);
+    angularController.setTolerance(0.05);
 
     addRequirements(m_drive);
   }
@@ -49,8 +54,26 @@ public class AlignToNode extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    profiledAlignPID.reset(m_drive.getCorrectedAngle());
-    profiledAlignPID.setGoal(-LimelightHelpers.getTX(VisionConstants.tagLimelightName));
+    angularController.reset();
+
+    switch(m_selector.getLevelName()){
+      case "Low": 
+       LimelightHelpers.setPipelineIndex(VisionConstants.tagLimelightName, VisionConstants.lowAlign_Pipeline);
+      break;
+
+      case "Mid":
+       LimelightHelpers.setPipelineIndex(VisionConstants.tagLimelightName, VisionConstants.midAlign_Pipeline);
+      break;
+
+      case "High":
+       LimelightHelpers.setPipelineIndex(VisionConstants.tagLimelightName, VisionConstants.highAlign_Pipeline);
+      break;
+
+      case "Ave Maria":
+       LimelightHelpers.setPipelineIndex(VisionConstants.tagLimelightName, VisionConstants.normalTracking_Pipeline);
+      break;
+    }
+    //angularController.setSetpoint(-LimelightHelpers.getTX(VisionConstants.tagLimelightName));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -64,7 +87,7 @@ public class AlignToNode extends CommandBase {
     }*/
     
     
-    m_drive.drive(-joy.getRawAxis(1), profiledAlignPID.calculate(m_drive.getCorrectedAngle()));
+    m_drive.drive(-joy.getRawAxis(1), angularController.calculate(LimelightHelpers.getTX(VisionConstants.tagLimelightName)));
 
     SmartDashboard.putString("Nearest Node", getNearestNode());
   }
@@ -73,7 +96,7 @@ public class AlignToNode extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_drive.tankDriveVolts(0, 0);
-    LimelightHelpers.setLEDMode_ForceOff(VisionConstants.tapeLimelight);
+    //LimelightHelpers.setPipelineIndex(VisionConstants.tagLimelightName, VisionConstants.normalTracking_Pipeline);
   }
 
   // Returns true when the command should end.
