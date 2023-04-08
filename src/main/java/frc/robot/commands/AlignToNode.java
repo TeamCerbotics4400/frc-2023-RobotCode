@@ -7,12 +7,14 @@ package frc.robot.commands;
 import java.util.ArrayList;
 import java.util.Map;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.DriveTrain;
@@ -24,7 +26,7 @@ public class AlignToNode extends CommandBase {
 
   private ArrayList<String> cubeNodes;
 
-  ProfiledPIDController profiledAlignPID;
+  PIDController angularController;
 
   public AlignToNode(DriveTrain m_drive, Joystick joy) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -38,10 +40,10 @@ public class AlignToNode extends CommandBase {
     cubeNodes.add("Node 8 Cube");
 
 
-    profiledAlignPID = m_drive.getProfiledAlign();
+    angularController = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
 
-    profiledAlignPID.enableContinuousInput(-180, 180);
-    profiledAlignPID.setTolerance(0.05);
+    angularController.enableContinuousInput(-180, 180);
+    angularController.setTolerance(0.05);
 
     addRequirements(m_drive);
   }
@@ -49,8 +51,8 @@ public class AlignToNode extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    profiledAlignPID.reset(m_drive.getCorrectedAngle());
-    profiledAlignPID.setGoal(-LimelightHelpers.getTX(VisionConstants.tagLimelightName));
+    angularController.reset();
+    //angularController.setSetpoint(-LimelightHelpers.getTX(VisionConstants.tagLimelightName));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -64,7 +66,7 @@ public class AlignToNode extends CommandBase {
     }*/
     
     
-    m_drive.drive(-joy.getRawAxis(1), profiledAlignPID.calculate(m_drive.getCorrectedAngle()));
+    m_drive.drive(-joy.getRawAxis(1), angularController.calculate(LimelightHelpers.getTX(VisionConstants.tagLimelightName)));
 
     SmartDashboard.putString("Nearest Node", getNearestNode());
   }

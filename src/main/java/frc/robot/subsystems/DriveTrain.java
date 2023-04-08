@@ -385,7 +385,7 @@ public class DriveTrain extends SubsystemBase {
     LimelightHelpers.Results results = 
         LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName).targetingResults;
 
-    if(results.valid){
+    if(results.getBotPose2d().getTranslation() != new Translation2d(0.0, new Rotation2d(0.0))){
       Pose2d camPose = LimelightHelpers.toPose2D(results.botpose_wpiblue);
       m_poseEstimator.addVisionMeasurement(camPose, 
       Timer.getFPGATimestamp() - (results.latency_capture / 1000.0)
