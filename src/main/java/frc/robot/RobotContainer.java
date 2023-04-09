@@ -9,6 +9,7 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueLoadingTwoPieces;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoPiecesWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
@@ -56,7 +57,7 @@ public class RobotContainer {
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT AUTO", 
       "PIECE AND BALANCE", "BLUE TWO WORKING", "BLUE TWO AND BALANCE", "THREE PIECES", "THREE BALANCE", "RED TWO WORKING",
-      "RED TWO AND BALANCE"};
+      "RED TWO AND BALANCE", "AUTO_TESTING"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -71,6 +72,7 @@ public class RobotContainer {
     //m_autoChooser.addOption("Three and Balance", m_autoNames[7]);
     m_autoChooser.addOption("RED Two Working", m_autoNames[8]);
     m_autoChooser.addOption("RED Two and Balance", m_autoNames[9]);
+    m_autoChooser.addOption("Auto Testing", m_autoNames[10]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -200,6 +202,10 @@ public class RobotContainer {
 
       case "RED TWO AND BALANCE":
        autonomousCommand = new RedTwoBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      break;
+
+      case "AUTO TESTING":
+       autonomousCommand = new BlueLoadingTwoPieces(m_drive);
       break;
     }
 

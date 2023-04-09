@@ -9,7 +9,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,6 +40,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
           ArmConstants.kV, ArmConstants.kA);
 
   boolean onTarget;
+
+  DoubleArrayLogEntry arm3dPose;
 
   /** Create a new ArmSubsystem. */
   public ArmSubsystem() {
@@ -76,6 +81,10 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
       SmartDashboard.putBoolean("Arm ready", isReady());
       SmartDashboard.putBoolean("Is Intaking Pose", isInIntakingPos());
+
+      SmartDashboard.putNumberArray("Arm 3d Pose", new double[] {getArm3dPose().getX(),
+         getArm3dPose().getY(), getArm3dPose().getZ(), getArm3dPose().getRotation().getX(), 
+         getArm3dPose().getRotation().getY(), getArm3dPose().getRotation().getZ()});
   }
 
   @Override
@@ -109,6 +118,19 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     leftMotor.setVoltage(
         pidVal
         + m_controller.calculate(m_controller.getSetpoint().velocity, acceleration));
+  }
+
+  public Pose3d getSuperStructurePose(){
+    return new Pose3d(0,0.0, 0.0, new Rotation3d(0.0, 0.0, 0.0));
+  }
+
+  public Pose3d getArm3dPose(){
+    return new Pose3d(0,0.0, 0.0, new Rotation3d(0.0, 90, 0.0));
+  }
+
+  public double[] posetoArray(Pose3d pose){
+    return new double[] {pose.getX(), pose.getY(), pose.getZ(), 
+      pose.getRotation().getX(), pose.getRotation().getY(), pose.getRotation().getZ()};
   }
 
   //For use in autonomous methods to shoot after the Arm is in position

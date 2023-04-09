@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run(); 
-    //m_robotContainer.getDrivetrain().odometryWvision();
+    m_robotContainer.getDrivetrain().odometryWvision();
     //VisionSubsystem.getRobot3dPose();
   }
 
@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-  DriverStation.getAlliance();
+    m_robotContainer.getDrivetrain().setAlliance(DriverStation.getAlliance());
   }
 
   /** This function is called periodically during operator control. */

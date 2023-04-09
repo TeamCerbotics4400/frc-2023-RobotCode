@@ -28,6 +28,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.vision.VisionThread;
@@ -93,7 +94,7 @@ public class DriveTrain extends SubsystemBase {
                     Rotation2d.fromDegrees(-getAngle()), 
                     0.0, 0.0, new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)), 
                     new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.005, 0.005, 0.001), 
-                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.9, 0.9, 0.9));
+                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.1));
   
   /* 
    * We decided that having two types of odometry would work better than just having one of them.
@@ -203,24 +204,9 @@ public class DriveTrain extends SubsystemBase {
     
     SmartDashboard.putNumber("Gyro angle", getCorrectedAngle());
 
-    m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
-    encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition()));
+    SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
 
-    Pose2d pose = getVisionPose().toPose2d();
-    double timestamp = Timer.getFPGATimestamp() - 
-    (LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName)
-    .targetingResults.latency_capture / 1000.0) - 
-    (LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName)
-    .targetingResults.latency_pipeline / 1000.0);
-
-    m_poseEstimator.addVisionMeasurement(pose, timestamp);
-
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-
-    m_field.getObject("Cam est Pose").setPose(pose);
-
-    bot3dPose.append(log3dPose());
+    //bot3dPose.append(log3dPose());
   }
 
   public void selectDashboardType(){
@@ -411,7 +397,7 @@ public class DriveTrain extends SubsystemBase {
     LimelightHelpers.Results results = 
         LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName).targetingResults;
 
-    if(results.getBotPose2d().getTranslation() != new Translation2d(0.0, new Rotation2d(0.0))){
+    if(LimelightHelpers.getTV(VisionConstants.tagLimelightName) && areTagsatGoodRange()){
       Pose2d camPose = LimelightHelpers.toPose2D(results.botpose_wpiblue);
       m_poseEstimator.addVisionMeasurement(camPose, 
       Timer.getFPGATimestamp() - (results.latency_capture / 1000.0)
@@ -424,57 +410,16 @@ public class DriveTrain extends SubsystemBase {
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
   }
 
-  public Pose3d getVisionPose(){
-    if(!LimelightHelpers.getTV(VisionConstants.tagLimelightName)){
-      return null;
-    }
-
-    Pose3d robotPose;
-    double[] poseComponents;
-    if(alliance == Alliance.Blue){
-      poseComponents = LimelightHelpers.getBotPose_wpiBlue(VisionConstants.tagLimelightName);
-      robotPose = new Pose3d(
-        poseComponents[0],
-        poseComponents[1],
-        poseComponents[2],
-        new Rotation3d(
-          poseComponents[3],
-          poseComponents[4],
-          poseComponents[5]));
-    } else if(alliance == Alliance.Red) {
-      poseComponents = LimelightHelpers.getBotPose_wpiRed(VisionConstants.tagLimelightName);
-      robotPose = new Pose3d(
-        poseComponents[0],
-        poseComponents[1],
-        poseComponents[2],
-        new Rotation3d(
-          poseComponents[3],
-          poseComponents[4],
-          poseComponents[5]));
-    } else {
-      return null;
-    }
-    return robotPose;
-  }
-
-  public double[] log3dPose(){
-    if(!LimelightHelpers.getTV(VisionConstants.tagLimelightName)){
-      return null;
-    }
-
-    double[] poseComponents;
-    if(alliance == Alliance.Blue){
-      poseComponents = LimelightHelpers.getBotPose_wpiBlue(VisionConstants.tagLimelightName);
-    } else if(alliance == Alliance.Red) {
-      poseComponents = LimelightHelpers.getBotPose_wpiRed(VisionConstants.tagLimelightName);
-    } else {
-      return null;
-    }
-    return poseComponents;
-  }
-
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();
+  }
+
+  public boolean areTagsatGoodRange(){
+    if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.5){
+      return true;
+    } else {
+      return false;
+    }
   }
   
 
