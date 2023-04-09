@@ -19,23 +19,18 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
-import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -49,9 +44,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.LimelightHelpers.LimelightResults;
-import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
-import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import team4400.Util.DriveSignal;
 
 public class DriveTrain extends SubsystemBase {
@@ -117,8 +109,6 @@ public class DriveTrain extends SubsystemBase {
 
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
-
-  private Alliance alliance;
 
   private DoubleArrayLogEntry bot3dPose;
 
@@ -189,20 +179,6 @@ public class DriveTrain extends SubsystemBase {
      visionOdometry.update(Rotation2d.fromDegrees(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), 
      m_poseEstimator.getEstimatedPosition().getX(), 
      m_poseEstimator.getEstimatedPosition().getY());
-
-     SmartDashboard.putNumber("Odo X", m_poseEstimator.getEstimatedPosition().getX());
-
-     SmartDashboard.putNumber("Odo Y", m_poseEstimator.getEstimatedPosition().getY());
-
-     SmartDashboard.putNumber("Vision angle", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
-
-     //SmartDashboard.putNumber("Left Encoder meters", encoderCountsToMeters(leftEncoder.getPosition()));
-     //SmartDashboard.putNumber("Right Encoder Meters", encoderCountsToMeters(rightEncoder.getPosition()));
-
-    SmartDashboard.putNumber("Odo Angle", 
-    wheelOdometry.getPoseMeters().getRotation().getDegrees());
-    
-    SmartDashboard.putNumber("Gyro angle", getCorrectedAngle());
 
     SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
 
@@ -298,11 +274,7 @@ public class DriveTrain extends SubsystemBase {
     imu.setYaw(0);
   }
 
-  public double encoderCountsToMeters(double encoderCounts){
-    double wheelRotations = encoderCounts / 8.41;
-    double distance = wheelRotations * (Math.PI * 0.1524);
-    return distance;
-  }
+  
 
   public double getDistance(){
     return (encoderCountsToMeters(leftEncoder.getPosition()) + 
@@ -374,20 +346,21 @@ public class DriveTrain extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
   }
 
-  public void setAlliance(Alliance alliance){
-    this.alliance = alliance;
-  }
-
   /* 
    * On board we have two cameras, a Limelight 2+ for use on retroreflective targets and a 
-   * OV9281 Raspicam connected to an Orange pi co-processor. The relevant camera in this method
-   * is the Raspicam, where we have installed photonvision for use on fudicial targets.
+   * Limelight 3. The relevant camera in this method is the Limelight 3, 
+   * where we are using it for fudicial targets tracking.
    * 
    * In this method we call our co-processor and camera, get what it detects and send that data
    * to the pose estimator to correct our odometry. If no apriltag is detected, the robot will
    * continue using the motor encoders and the mounted gyro to change it's position on the field.
    * 
-   * All of this data is then sent to a Fied2d() widget on the Shuffleboard.
+   * All of this data is then sent to a Fied2d() widget on the Shuffleboard and logged
+   * for later visualization.
+   * 
+   * After 2 regionals and 1 week before Worlds, we also added a rejection conditional. If the 
+   * detected tag is at or over a certain distance we just dont use that data. 
+   * It gives a much cleaner and less noisy estimation.
   */
   public void odometryWvision(){
     m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
@@ -410,10 +383,7 @@ public class DriveTrain extends SubsystemBase {
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
   }
 
-  public void getEstimatedPose(){
-    m_poseEstimator.getEstimatedPosition();
-  }
-
+  //The rejection method in question
   public boolean areTagsatGoodRange(){
     if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.5){
       return true;
@@ -421,7 +391,10 @@ public class DriveTrain extends SubsystemBase {
       return false;
     }
   }
-  
+
+  public void getEstimatedPose(){
+    m_poseEstimator.getEstimatedPosition();
+  }
 
   //Gets the Balance PID Controller for use in other classes
   public PIDController getBalanceController(){
@@ -442,6 +415,8 @@ public class DriveTrain extends SubsystemBase {
    * and using a tool called TunableNumber we can fine-tune our PID controllers without the need to be
    * deploying code after every change.
    */
+
+   /*********** Autos ***********/
 
   //Ramsete Command for following created Trajectories
   public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
@@ -490,5 +465,13 @@ public class DriveTrain extends SubsystemBase {
             this);
 
     return ramseteCommand;
+  }
+
+  /*********** Unit Conversions ***********/
+  
+  public double encoderCountsToMeters(double encoderCounts){
+    double wheelRotations = encoderCounts / 8.41;
+    double distance = wheelRotations * (Math.PI * 0.1524);
+    return distance;
   }
 }

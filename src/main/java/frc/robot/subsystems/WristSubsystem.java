@@ -52,9 +52,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
 
     wristMotor.setSmartCurrentLimit(5);
 
-    /*SmartDashboard.putNumber("Arm P", this.m_controller.getP());
-    SmartDashboard.putNumber("Arm D", this.m_controller.getD());*/
-
     resetEncoder();
   }
 
@@ -62,15 +59,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   @Override
   public void periodic() {
       super.periodic();
-      //SmartDashboard.putBoolean("Wrist ready", isReady());
-      //SmartDashboard.putNumber("Angulo Muneca", getMeasurement());
-      //SmartDashboard.putNumber("Objetivo Muneca",this.getController().getSetpoint().position);
-      //SmartDashboard.putNumber("Objetivo Velocidad", this.getController().getSetpoint().velocity);
-      //SmartDashboard.putNumber("Wrist Angle", getDegrees().getDegrees());
-
-      //SmartDashboard.putBoolean("Hall effect activado", hallEffectSensor.get());
-
-      //resetEncoderSensor();
   }
 
   @Override

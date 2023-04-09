@@ -10,11 +10,28 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.subsystems.VisionSubsystem;
+
+/*
+ * 
+_________             ___.           __  .__               
+\_   ___ \  __________\_ |__   _____/  |_|__| ____   ______
+/    \  \/_/ __ \_  __ \ __ \ /  _ \   __\  |/ ___\ /  ___/
+\     \___\  ___/|  | \/ \_\ (  <_> )  | |  \  \___ \___ \ 
+ \______  /\___  >__|  |___  /\____/|__| |__|\___  >____  >
+        \/     \/          \/                    \/     \/ 
+            _____    _____  _______  _______               
+           /  |  |  /  |  | \   _  \ \   _  \              
+          /   |  |_/   |  |_/  /_\  \/  /_\  \             
+         /    ^   /    ^   /\  \_/   \  \_/   \            
+         \____   |\____   |  \_____  /\_____  /            
+              |__|     |__|        \/       \/             
+
+        (Ascii art inspired by Botbusters 4635)
+ *
+ */
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,10 +43,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-
-  /*BooleanLogEntry myBooleanLogEntry;
-  DoubleLogEntry myDoubleLogEntry;
-  StringLogEntry myStringLogEntry;*/
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -48,10 +61,6 @@ public class Robot extends TimedRobot {
     }
     
     PathPlannerServer.startServer(5811);
-
-    /*myBooleanLogEntry = new BooleanLogEntry(log, "/my/boolean");
-    myDoubleLogEntry = new DoubleLogEntry(log, "/my/double");
-    myStringLogEntry = new StringLogEntry(log, "/my/string");*/
   }
 
   /**
@@ -69,7 +78,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run(); 
     m_robotContainer.getDrivetrain().odometryWvision();
-    //VisionSubsystem.getRobot3dPose();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -105,15 +113,11 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.getDrivetrain().setAlliance(DriverStation.getAlliance());
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    /*myBooleanLogEntry.append(true);
-    myDoubleLogEntry.append(3.5);
-    myStringLogEntry.append("Ala si jala esto");*/
   }
 
   @Override

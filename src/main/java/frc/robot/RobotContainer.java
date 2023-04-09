@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
-import frc.robot.commands.AutoCommands.LimelightAutoAlign;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueLoadingTwoPieces;
@@ -14,9 +13,10 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoPiecesWB
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
+import frc.robot.commands.TeleOpCommands.AlignToNode;
+import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
-import frc.robot.commands.AlignToNode;
 import frc.robot.commands.StateIntakeCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -99,60 +99,62 @@ public class RobotContainer {
   private void configureBindings() {
 
   //Controller 1
+  //Left and right sticks
    m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    chassisDriver));
 
+   //Y button, left and right bumpers
    m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
                                                       subsystemsDriver, m_nodeSelector));
 
-    new JoystickButton(chassisDriver, 1).whileTrue(new AlignToNode(m_drive, m_nodeSelector, chassisDriver));
-                                            //DriveToNode(m_drive, m_nodeSelector, chassisDriver));
-
-    new JoystickButton(chassisDriver, 2).whileTrue(new LimelightAutoAlign(m_drive, chassisDriver));
-
-    new JoystickButton(chassisDriver, 5).onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
+   //A button
+   new JoystickButton(chassisDriver, 1).whileTrue(new 
+                                          AlignToNode(m_drive, m_nodeSelector, chassisDriver));
+   //B utton
+   new JoystickButton(chassisDriver, 2).whileTrue(new 
+                                                    LimelightAutoAlign(m_drive, chassisDriver));
+      
+   //Left bumper
+   new JoystickButton(chassisDriver, 5)
+    .onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
-   //.whileTrue(new StateIntakeCommand(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
-   //.whileFalse(new StateIntakeCommand(m_shooter));
 
+   //Right bumper
    new JoystickButton(chassisDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   //.whileTrue(new StateIntakeCommand(m_shooter))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
-   //.whileFalse(new StateIntakeCommand(m_shooter));
 
    //Controller 2
-   //new POVButton(subsystemsDriver, 90).onTrue(new NodeSelectionRight(m_nodeSelector));
-
+   //Pov right
    new POVButton(subsystemsDriver, 90).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionRight()));
 
+   //Pov left
    new POVButton(subsystemsDriver, 270).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionLeft()));
 
+   //Pov up
    new POVButton(subsystemsDriver, 0).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionUp()));
 
+   //Pov down
    new POVButton(subsystemsDriver, 180).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionDown()));
 
-   /*new JoystickButton(subsystemsDriver, 3).onTrue(m_arm.goToPosition(ArmConstants.SUBSTATION_POSITION))
-   .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
-   .whileTrue(new IntakeCubes(m_shooter))
-   .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
-   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
-
-   new JoystickButton(subsystemsDriver, 5).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
+   //Left bumper
+   new JoystickButton(subsystemsDriver, 5)
+   .onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   new JoystickButton(subsystemsDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
+   //Right bumper
+   new JoystickButton(subsystemsDriver, 6)
+   .onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
-   //new JoystickButton(subsystemsDriver, 4).whileTrue(new CombinedShooter(m_arm, m_wrist, m_shooter, m_nodeSelector));
-
+   //Right stick button
    new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
   }    
 

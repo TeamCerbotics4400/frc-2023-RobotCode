@@ -57,15 +57,6 @@ public class FalconShooter extends SubsystemBase {
     rightFlyWheel.config_kD(pidSlot, ShooterConstants.kD);
     rightFlyWheel.config_IntegralZone(pidSlot, ShooterConstants.kIz);
     rightFlyWheel.config_kF(pidSlot, ShooterConstants.kFF);
-    
-    //SmartDashboard.putNumber("Target Velo", desiredVelo);
-
-    /*SmartDashboard.putNumber("Shooter P", ShooterConstants.kP);
-    SmartDashboard.putNumber("Shooter I", ShooterConstants.kI);
-    SmartDashboard.putNumber("Shooter D", ShooterConstants.kD);
-    //SmartDashboard.putNumber("Shooter Iz", ShooterConstants.kIz);
-    SmartDashboard.putNumber("Shooter FF", ShooterConstants.kFF);*/
-
   }
 
   @Override
@@ -77,32 +68,6 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
-
-    //double targetVelo = SmartDashboard.getNumber("Target Velo", 0);
-
-    //if((desiredVelo != targetVelo)){desiredVelo = targetVelo;}
-    
-  
-    /*double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);
-    double i = SmartDashboard.getNumber("Shooter I", ShooterConstants.kI);
-    //double iz = SmartDashboard.getNumber("Shooter Iz", ShooterConstants.kIz);
-    double d = SmartDashboard.getNumber("Shooter D", ShooterConstants.kD);
-    double ff = SmartDashboard.getNumber("Shooter FF", ShooterConstants.kFF);
-
-    SmartDashboard.putBoolean("Is Beam Sensor Active", beamSensor.get());
-
-    if((p != ShooterConstants.kP)){leftFlyWheel.config_kP(pidSlot, p); 
-                                    rightFlyWheel.config_kP(pidSlot,p); ShooterConstants.kP = p;}
-    if((i != ShooterConstants.kI)){leftFlyWheel.config_kI(pidSlot, i); 
-                                    rightFlyWheel.config_kI(pidSlot, i); ShooterConstants.kI = i;}
-    //if((iz != ShooterConstants.kIz)){leftFlyWheel.config_IntegralZone(pidSlot, iz); 
-      //                              rightFlyWheel.config_IntegralZone(pidSlot, iz); ShooterConstants.kIz = iz;}                                
-    if((d != ShooterConstants.kD)){leftFlyWheel.config_kD(pidSlot, d); 
-                                    rightFlyWheel.config_kD(pidSlot,d); ShooterConstants.kD = d;}
-    if((ff != ShooterConstants.kFF)){leftFlyWheel.config_kF(pidSlot, ff); 
-                                    rightFlyWheel.config_kF(pidSlot,ff); ShooterConstants.kFF = ff;}*/
-
-                                  
   }
 
   public double falconUnitsToRPM(double sensorUnits) {
@@ -148,11 +113,6 @@ public class FalconShooter extends SubsystemBase {
   }
 
   public void goToDashboardVelocity(){
-    leftSetpoint(desiredVelo);
-    rightSetpoint(desiredVelo);
-  }
-
-  public void coneDashboardVelo(){
     leftSetpoint(desiredVelo);
     rightSetpoint(desiredVelo);
   }

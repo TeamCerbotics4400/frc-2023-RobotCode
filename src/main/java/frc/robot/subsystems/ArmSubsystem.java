@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 
-/** A robot arm subsystem that moves with a motion profile. */
+/** A robot arm subsystem that moves with a motion profile. **/
 
 /*
  * Why not use Rev's motion profiling if we have Neo 500 motors?
