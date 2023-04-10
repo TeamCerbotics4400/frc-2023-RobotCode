@@ -5,6 +5,7 @@
 package frc.robot.commands.AutoCommands.AutoRoutinesCommands;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,7 +25,7 @@ public class PIDTunnerCommand extends SequentialCommandGroup {
   ArmSubsystem m_arm;
   WristSubsystem m_wrist;
 
-  Trajectory pidTunerTrajectory = PathPlanner.loadPath("PIDTuner", AutoConstants.kMaxSpeedMetersPerSecond, 
+  PathPlannerTrajectory pidTunerTrajectory = PathPlanner.loadPath("PIDTuner", AutoConstants.kMaxSpeedMetersPerSecond, 
   AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
   public PIDTunnerCommand(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist) {
@@ -34,7 +35,7 @@ public class PIDTunnerCommand extends SequentialCommandGroup {
     m_drive.resetOdometry(pidTunerTrajectory.getInitialPose()));
 
     addCommands(resetOdometry, new IdleArm(m_arm, m_wrist), 
-    m_drive.createCommandForTrajectory(pidTunerTrajectory, false)
+    m_drive.createCommandForTrajectory(pidTunerTrajectory)
     .andThen(() -> m_drive.tankDriveVolts(0, 0)));
   }
 }

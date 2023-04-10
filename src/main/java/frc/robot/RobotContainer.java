@@ -57,7 +57,7 @@ public class RobotContainer {
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT AUTO", 
       "PIECE AND BALANCE", "BLUE TWO WORKING", "BLUE TWO AND BALANCE", "THREE PIECES", "THREE BALANCE", "RED TWO WORKING",
-      "RED TWO AND BALANCE", "AUTO_TESTING"};
+      "RED TWO AND BALANCE", "AUTO TESTING"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -207,7 +207,7 @@ public class RobotContainer {
       break;
 
       case "AUTO TESTING":
-       autonomousCommand = new BlueLoadingTwoPieces(m_drive);
+       autonomousCommand = new BlueLoadingTwoPieces(m_drive, m_arm, m_wrist);
       break;
     }
 

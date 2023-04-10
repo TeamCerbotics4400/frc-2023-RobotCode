@@ -10,7 +10,10 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.AutoCommands.IdleArm;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.WristSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -18,16 +21,17 @@ import frc.robot.subsystems.DriveTrain;
 public class BlueLoadingTwoPieces extends SequentialCommandGroup {
   /** Creates a new BlueLoadingTwoPieces. */
   PathPlannerTrajectory loading2 = PathPlanner.loadPath("Loading2", 
-  AutoConstants.kMaxSpeedMetersPerSecond, 
-  AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
+  2.0, 
+  1.0, true);
 
-  public BlueLoadingTwoPieces(DriveTrain m_drive) {
+  public BlueLoadingTwoPieces(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
     InstantCommand resetOdometry = new InstantCommand(() -> 
     m_drive.resetOdometry(loading2.getInitialPose()));
     
-    addCommands(resetOdometry, m_drive.createCommandForTrajectory(loading2, false));
+    addCommands(resetOdometry, new IdleArm(m_arm, m_wrist), 
+    m_drive.createCommandForTrajectoryVision(loading2));
   }
 }

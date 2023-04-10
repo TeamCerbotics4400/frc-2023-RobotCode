@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPRamseteCommand;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -419,12 +421,9 @@ public class DriveTrain extends SubsystemBase {
    /*********** Autos ***********/
 
   //Ramsete Command for following created Trajectories
-  public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
-    if (initPose) {
-      new InstantCommand(() -> {resetOdometry(trajectory.getInitialPose());}); 
-    }
-    RamseteCommand ramseteCommand =
-        new RamseteCommand(
+  public Command createCommandForTrajectory(PathPlannerTrajectory trajectory) {
+    PPRamseteCommand ramseteCommand =
+        new PPRamseteCommand(
             trajectory,
             this::getWheelPose,
             new RamseteController(2, 0.7),
@@ -438,17 +437,15 @@ public class DriveTrain extends SubsystemBase {
             rightPIDController,
             // RamseteCommand passes volts to the callback
             this::tankDriveVolts,
+            false,
             this);
 
     return ramseteCommand;
   }
 
-  public Command createCommandForTrajectoryVision(Trajectory trajectory, Boolean initPose) {
-    if (initPose) {
-      new InstantCommand(() -> {resetOdometry(trajectory.getInitialPose());}); 
-    }
-    RamseteCommand ramseteCommand =
-        new RamseteCommand(
+  public Command createCommandForTrajectoryVision(PathPlannerTrajectory trajectory) {
+    PPRamseteCommand ramseteCommand =
+        new PPRamseteCommand(
             trajectory,
             this::estimatedPose2d,
             new RamseteController(2, 0.7),
@@ -462,6 +459,7 @@ public class DriveTrain extends SubsystemBase {
             rightPIDController,
             // RamseteCommand passes volts to the callback
             this::tankDriveVolts,
+            false,
             this);
 
     return ramseteCommand;

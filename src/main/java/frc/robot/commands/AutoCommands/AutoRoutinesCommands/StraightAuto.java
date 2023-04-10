@@ -42,7 +42,7 @@ public class StraightAuto extends SequentialCommandGroup {
 
     addCommands(resetOdometry, 
      new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)), 
-     m_drive.createCommandForTrajectory(twoPiecesTrajectory, 
-     false).andThen(() -> m_drive.tankDriveVolts(0, 0)));
+     m_drive.createCommandForTrajectory(twoPiecesTrajectory)
+     .andThen(() -> m_drive.tankDriveVolts(0, 0)));
   }
 }

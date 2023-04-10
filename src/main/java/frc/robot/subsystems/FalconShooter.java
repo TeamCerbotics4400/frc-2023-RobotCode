@@ -29,7 +29,7 @@ public class FalconShooter extends SubsystemBase {
 
   int pidSlot = 0;
 
-  double stopCurrent = 15;
+  double stopCurrent = 7;
 
   //Beam DIO 0
   //Beam 2 DIO 3

@@ -5,6 +5,7 @@
 package frc.robot.commands.AutoCommands.AutoRoutinesCommands;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -26,7 +27,7 @@ import frc.robot.subsystems.WristSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PieceWBalance extends SequentialCommandGroup {
   /** Creates a new OnlyBalanceAutoCommand. */
-  Trajectory onlyBalanceTrajectory = PathPlanner.loadPath("Only Balance", 
+  PathPlannerTrajectory onlyBalanceTrajectory = PathPlanner.loadPath("Only Balance", 
     AutoConstants.kMaxSpeedMetersPerSecond, 
     AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
     DriveTrain m_drive;
@@ -54,7 +55,7 @@ public class PieceWBalance extends SequentialCommandGroup {
     new ShootCube(m_shooter, m_arm, m_wrist, m_selector).raceWith(new WaitCommand(4)), 
       m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
       m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
-      m_drive.createCommandForTrajectory(onlyBalanceTrajectory, false) , 
+      m_drive.createCommandForTrajectory(onlyBalanceTrajectory) , 
       new AutoBalance(m_drive));
   }
 }

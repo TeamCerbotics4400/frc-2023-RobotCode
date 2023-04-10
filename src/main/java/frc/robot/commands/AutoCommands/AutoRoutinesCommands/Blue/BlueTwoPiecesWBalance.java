@@ -57,7 +57,7 @@ public class BlueTwoPiecesWBalance extends SequentialCommandGroup {
 
     addCommands(resetOdometry, aveMaria, 
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
-    new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance, 
-    false), piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));//.alongWith(new CounterBalance(m_arm, m_wrist, m_node)));
+    new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance), 
+    piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));//.alongWith(new CounterBalance(m_arm, m_wrist, m_node)));
   }
 }
