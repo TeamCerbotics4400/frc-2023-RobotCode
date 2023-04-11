@@ -60,21 +60,21 @@ public class CubeShooter extends CommandBase {
         break;
       }
      } else {
-      shooter.setMotorsPower(0, 0);
+      shooter.setMotorsPower(0, 0, 0);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setMotorsPower(0, 0);
+    shooter.setMotorsPower(0, 0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     if(DriverStation.isAutonomous()){
-      if(!shooter.isShooterOcuppiedCube()){
+      if(shooter.needToStop()){
         return true;
       } else{
         return false;

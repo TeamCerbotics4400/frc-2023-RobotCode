@@ -17,6 +17,7 @@ import frc.robot.commands.TeleOpCommands.AlignToNode;
 import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
+import frc.robot.commands.ShooterPID;
 import frc.robot.commands.StateIntakeCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -104,10 +105,10 @@ public class RobotContainer {
    chassisDriver));
 
    //Y button, left and right bumpers
-   if(DriverStation.isTeleop()){
+   /*if(DriverStation.isTeleop()){
     m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
                                                       subsystemsDriver, m_nodeSelector));
-   }
+   }*/
    
 
    //A button
@@ -118,7 +119,7 @@ public class RobotContainer {
                                                     LimelightAutoAlign(m_drive, chassisDriver));
       
    //Left bumper
-   new JoystickButton(chassisDriver, 5)
+   /*new JoystickButton(chassisDriver, 5)
     .onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
@@ -128,7 +129,7 @@ public class RobotContainer {
    new JoystickButton(chassisDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
-   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
 
    //Controller 2
    //Pov right
@@ -144,7 +145,7 @@ public class RobotContainer {
    new POVButton(subsystemsDriver, 180).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionDown()));
 
    //Left bumper
-   new JoystickButton(subsystemsDriver, 5)
+   /*new JoystickButton(subsystemsDriver, 5)
    .onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
@@ -155,10 +156,12 @@ public class RobotContainer {
    .onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
-   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
 
    //Right stick button
    new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
+
+   new JoystickButton(subsystemsDriver, 4).whileTrue(new ShooterPID(m_shooter));
   }    
 
   /**

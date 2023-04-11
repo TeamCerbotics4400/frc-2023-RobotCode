@@ -80,10 +80,10 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
   @Override
   public void periodic() {
       super.periodic();
-      SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
+      //SmartDashboard.putNumber("Angulo Encoder", getMeasurement());
 
-      SmartDashboard.putBoolean("Arm ready", isReady());
-      SmartDashboard.putBoolean("Is Intaking Pose", isInIntakingPos());
+      //SmartDashboard.putBoolean("Arm ready", isReady());
+      //SmartDashboard.putBoolean("Is Intaking Pose", isInIntakingPos());
   }
 
   @Override

@@ -179,7 +179,7 @@ public class DriveTrain extends SubsystemBase {
      m_poseEstimator.getEstimatedPosition().getX(), 
      m_poseEstimator.getEstimatedPosition().getY());
 
-    SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
+    //SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
 
     //bot3dPose.append(log3dPose());
   }

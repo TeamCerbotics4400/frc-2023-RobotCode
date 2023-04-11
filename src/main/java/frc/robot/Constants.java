@@ -68,6 +68,7 @@ public final class Constants {
     /** ---PROTOTYPE--- */
     public static final byte LEFT_FLYWHEEL_ID = 8; 
     public static final byte RIGHT_FLYWHEEL_ID = 9;
+    public static final byte HORIZONTAL_FLYWHEEL_ID = 0;
 
 
     public static double kP= 0.078061,

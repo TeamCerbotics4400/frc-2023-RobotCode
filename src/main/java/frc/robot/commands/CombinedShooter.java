@@ -67,7 +67,7 @@ public class CombinedShooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setMotorsPower(0, 0);
+    m_shooter.setMotorsPower(0, 0, 0);
   }
 
   // Returns true when the command should end.
