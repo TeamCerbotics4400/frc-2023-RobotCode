@@ -18,7 +18,7 @@ import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
 import frc.robot.commands.StateIntakeCommand;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -104,8 +104,11 @@ public class RobotContainer {
    chassisDriver));
 
    //Y button, left and right bumpers
-   m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
+   if(DriverStation.isTeleop()){
+    m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
                                                       subsystemsDriver, m_nodeSelector));
+   }
+   
 
    //A button
    new JoystickButton(chassisDriver, 1).whileTrue(new 
@@ -207,7 +210,7 @@ public class RobotContainer {
       break;
 
       case "AUTO TESTING":
-       autonomousCommand = new BlueLoadingTwoPieces(m_drive, m_arm, m_wrist);
+       autonomousCommand = new BlueLoadingTwoPieces(m_drive, m_arm, m_wrist, m_shooter);
       break;
     }
 

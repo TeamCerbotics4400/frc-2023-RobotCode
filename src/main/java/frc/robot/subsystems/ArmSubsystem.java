@@ -11,10 +11,13 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants.ArmConstants;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -38,6 +41,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       new ArmFeedforward(
           ArmConstants.kS, ArmConstants.kG,
           ArmConstants.kV, ArmConstants.kA);
+
+  private static final Translation2d rootPosition = new Translation2d(0.0, 0.0);
 
   boolean onTarget;
 
@@ -69,8 +74,6 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     leftMotor.setSmartCurrentLimit(80);
     rightMotor.setSmartCurrentLimit(80);
 
-    /*SmartDashboard.putNumber("Arm P", this.m_controller.getP());
-    SmartDashboard.putNumber("Arm D", this.m_controller.getD());*/
   }
 
 
@@ -81,10 +84,6 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
       SmartDashboard.putBoolean("Arm ready", isReady());
       SmartDashboard.putBoolean("Is Intaking Pose", isInIntakingPos());
-
-      SmartDashboard.putNumberArray("Arm 3d Pose", new double[] {getArm3dPose().getX(),
-         getArm3dPose().getY(), getArm3dPose().getZ(), getArm3dPose().getRotation().getX(), 
-         getArm3dPose().getRotation().getY(), getArm3dPose().getRotation().getZ()});
   }
 
   @Override
@@ -125,7 +124,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
   }
 
   public Pose3d getArm3dPose(){
-    return new Pose3d(0,0.0, 0.0, new Rotation3d(0.0, 90, 0.0));
+    return new Pose3d(rootPosition.getX(), 0.0, rootPosition.getY(), 
+                          new Rotation3d(0.0, getMeasurement(), 0.0));
   }
 
   public double[] posetoArray(Pose3d pose){
