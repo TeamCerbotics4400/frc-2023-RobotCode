@@ -4,11 +4,13 @@
 
 package frc.robot.commands.TeleOpCommands;
 
+import edu.wpi.first.math.controller.PIDController;
 //import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.DriveTrain;
 
@@ -18,7 +20,7 @@ public class LimelightAutoAlign extends CommandBase {
 
   Joystick joy;
 
-  ProfiledPIDController profiledAlignPID;
+  PIDController angularController;
   //PIDController alignPID;
 
   public LimelightAutoAlign(DriveTrain m_drive, Joystick joy) {
@@ -27,10 +29,10 @@ public class LimelightAutoAlign extends CommandBase {
     this.joy = joy;
 
     //alignPID = m_drive.getTurnPID();
-    profiledAlignPID = m_drive.getProfiledAlign();
+    angularController = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
 
-    profiledAlignPID.enableContinuousInput(-180, 180);
-    profiledAlignPID.setTolerance(0.05);
+    angularController.enableContinuousInput(-180, 180);
+    angularController.setTolerance(0.05);
 
     //alignPID.enableContinuousInput(-180, 180);
     //alignPID.setTolerance(0.05);
@@ -50,7 +52,7 @@ public class LimelightAutoAlign extends CommandBase {
   @Override
   public void execute() {
     //profiledAlignPID.setGoal(LimelightHelpers.getTY(VisionConstants.tapeLimelight));
-    m_drive.drive(-joy.getRawAxis(1), profiledAlignPID.calculate(LimelightHelpers.getTY(VisionConstants.tapeLimelight)));
+    m_drive.drive(-joy.getRawAxis(1), angularController.calculate(LimelightHelpers.getTY(VisionConstants.tapeLimelight)));
     //alignPID.setSetpoint(LimelightHelpers.getTY(VisionConstants.limelightName));
     //m_drive.drive(-joy.getRawAxis(1), alignPID.calculate(m_drive.getCorrectedAngle()));
   }

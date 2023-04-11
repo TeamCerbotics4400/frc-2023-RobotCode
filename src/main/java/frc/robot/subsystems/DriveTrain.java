@@ -63,10 +63,6 @@ public class DriveTrain extends SubsystemBase {
 
   private PIDController alignPID = new PIDController(DriveConstants.TkP, DriveConstants.TkI, DriveConstants.TkD);
 
-  private ProfiledPIDController profiledAlignPID = new 
-  ProfiledPIDController(DriveConstants.TkP, 0, DriveConstants.TkD, 
-  new TrapezoidProfile.Constraints(DriveConstants.turnMaxVel, DriveConstants.turnMaxAcc));
-
   DifferentialDrive differentialDrive = new DifferentialDrive(leftControllers, rightControllers);
 
   Field2d m_field = new Field2d();
@@ -155,13 +151,6 @@ public class DriveTrain extends SubsystemBase {
 
     debuggingTab = Shuffleboard.getTab("Debugging Tab");
     competitionTab = Shuffleboard.getTab("Competition Tab");
-
-    PortForwarder.add(5800, "photonvision.local", 5800);
-
-    SmartDashboard.putData("Align PID", profiledAlignPID);
-
-    profiledAlignPID.setConstraints(
-      new TrapezoidProfile.Constraints(DriveConstants.turnMaxVel, DriveConstants.turnMaxAcc));
 
     resetImu();
     resetEncoders();
@@ -401,10 +390,6 @@ public class DriveTrain extends SubsystemBase {
   //Gets the Balance PID Controller for use in other classes
   public PIDController getTurnPID(){
     return alignPID;
-  }
-
-  public ProfiledPIDController getProfiledAlign(){
-    return profiledAlignPID;
   }
 
   /* 

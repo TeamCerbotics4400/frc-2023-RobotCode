@@ -68,7 +68,7 @@ public final class Constants {
     /** ---PROTOTYPE--- */
     public static final byte LEFT_FLYWHEEL_ID = 8; 
     public static final byte RIGHT_FLYWHEEL_ID = 9;
-    public static final byte HORIZONTAL_FLYWHEEL_ID = 0;
+    public static final byte HORIZONTAL_FLYWHEEL_ID = 10;
 
 
     public static double kP= 0.078061,
@@ -79,8 +79,6 @@ public final class Constants {
                         kS = 0.093193,
                         kV = 0.33252,
                         kA = 0.011115;
-
-    public static double targetVelocity = 0;
 
     public static final double shooterTreshold = 300;
 
@@ -103,9 +101,9 @@ public final class Constants {
                          kA = 0.0019641,//0.003212,
                          kG = 0.12588;//0.44033;
 
-    public static double IDLE_POSITION = 160.5 - 70.5;
+    public static double IDLE_POSITION = 90.0;
     public static double SUBSTATION_POSITION = 130.5;
-    public static double SCORING_POSITION = 115;//199.5 - 70.5;
+    public static double SCORING_POSITION = 115;
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
     public static double AVE_MARIA_SHOOT_POSITION = 155.0;

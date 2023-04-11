@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,17 +39,19 @@ public class FalconShooter extends SubsystemBase {
 
   double stopCurrent = 7;
 
-  //Beam DIO 0
-  //Beam 2 DIO 3
+  //Reduccion Falcon = 3/1
+  //Reduccion Neo = 2/1
   public FalconShooter() {
     leftFlyWheel.configFactoryDefault();
     rightFlyWheel.configFactoryDefault();
 
     leftFlyWheel.setInverted(true);
     rightFlyWheel.setInverted(false);
+    horizontalFlyWheel.setInverted(false);
 
     leftFlyWheel.setNeutralMode(NeutralMode.Brake);
     rightFlyWheel.setNeutralMode(NeutralMode.Brake);
+    horizontalFlyWheel.setIdleMode(IdleMode.kCoast);
 
     leftFlyWheel.configVoltageCompSaturation(12);
     rightFlyWheel.configVoltageCompSaturation(12);
