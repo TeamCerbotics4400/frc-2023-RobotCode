@@ -7,10 +7,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FalconShooter;
 
-public class ShooterPID extends CommandBase {
+public class ShooterDebugger extends CommandBase {
   /** Creates a new ShooterPID. */
   FalconShooter m_shooter;
-  public ShooterPID(FalconShooter m_shooter) {
+  public ShooterDebugger(FalconShooter m_shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_shooter = m_shooter;
 

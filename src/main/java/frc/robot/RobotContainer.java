@@ -17,7 +17,6 @@ import frc.robot.commands.TeleOpCommands.AlignToNode;
 import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
-import frc.robot.commands.ShooterPID;
 import frc.robot.commands.StateIntakeCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;

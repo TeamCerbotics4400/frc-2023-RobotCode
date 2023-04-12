@@ -29,7 +29,7 @@ import frc.robot.subsystems.WristSubsystem;
 public class BlueTwoWorking extends SequentialCommandGroup {
   /** Creates a new StraightLineAutoCommand. */
 
-  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("TwoCable", 
+  PathPlannerTrajectory cableTwo = PathPlanner.loadPath("Cable2", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   1.5, true);
 
@@ -40,7 +40,7 @@ public class BlueTwoWorking extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     InstantCommand resetOdometry = new InstantCommand(
-      () -> m_drive.resetOdometry(straightTrajectory.getInitialPose()));
+      () -> m_drive.resetOdometry(cableTwo.getInitialPose()));
 
     InstantCommand aveMaria = new InstantCommand(
       () -> m_selector.selectLevel(3));
@@ -52,7 +52,7 @@ public class BlueTwoWorking extends SequentialCommandGroup {
 
     addCommands(resetOdometry, aveMaria,
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)),
-    new FollowPathWithEvents(m_drive.createCommandForTrajectory(straightTrajectory), 
-    straightTrajectory.getMarkers(), eventMap).andThen(new IdleArm(m_arm, m_wrist)));
+    new FollowPathWithEvents(m_drive.createCommandForTrajectory(cableTwo), 
+    cableTwo.getMarkers(), eventMap).andThen(new IdleArm(m_arm, m_wrist)));
   }
 }

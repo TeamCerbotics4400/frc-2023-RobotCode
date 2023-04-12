@@ -30,7 +30,7 @@ import frc.robot.subsystems.WristSubsystem;
 public class ThreePieces extends SequentialCommandGroup {
   /** Creates a new StraightLineAutoCommand. */
 
-  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("ThreePieces", 
+  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("Cable3", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   1.25, true);
 
