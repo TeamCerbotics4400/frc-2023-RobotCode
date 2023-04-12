@@ -17,6 +17,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+import team4400.Util.Interpolation.InterpolatingDouble;
+import team4400.Util.Interpolation.InterpolatingTreeMap;
 
 public class FalconShooter extends SubsystemBase {
   /** Creates a new FalconShooter. */
@@ -27,6 +29,27 @@ public class FalconShooter extends SubsystemBase {
 
   RelativeEncoder neoEncoder = horizontalFlyWheel.getEncoder();
   SparkMaxPIDController neoController = horizontalFlyWheel.getPIDController();
+
+  static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
+    kDistanceToShooterHighSpeed = new InterpolatingTreeMap<>();
+
+    static{
+      kDistanceToShooterHighSpeed.put(new InterpolatingDouble(0.0), new InterpolatingDouble(0.0));
+    }
+
+  static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
+   kDistanceToShooterMidSpeed = new InterpolatingTreeMap<>();
+
+    static{
+      kDistanceToShooterMidSpeed.put(new InterpolatingDouble(0.0), new InterpolatingDouble(0.0));
+    }
+
+  static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
+      kDistanceToShooterLowSpeed = new InterpolatingTreeMap<>();
+
+    static{
+      kDistanceToShooterLowSpeed.put(new InterpolatingDouble(0.0), new InterpolatingDouble(0.0));
+    }
 
   boolean onTarget = false;
 
@@ -80,6 +103,10 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
+
+    double targetVelo = SmartDashboard.getNumber("Desired velo", 0);
+
+    if(desiredVelo != targetVelo){desiredVelo = targetVelo;}
   }
 
   public double getHorizontalRPM(){

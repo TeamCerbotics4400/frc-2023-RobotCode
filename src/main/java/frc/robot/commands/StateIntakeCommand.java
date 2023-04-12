@@ -104,10 +104,10 @@ public class StateIntakeCommand extends CommandBase {
         break;
   
         case "High":
-          //m_shooter.goToDashboardVelocity();
-          m_shooter.leftSetpoint(1200);
-          m_shooter.rightSetpoint(1200);
-          m_shooter.horizontalSetpoint(1200);
+          m_shooter.goToDashboardVelocity();
+          //m_shooter.leftSetpoint(1200);
+          //m_shooter.rightSetpoint(1200);
+          //m_shooter.horizontalSetpoint(1200);
         break;
   
         case "Ave Maria":
