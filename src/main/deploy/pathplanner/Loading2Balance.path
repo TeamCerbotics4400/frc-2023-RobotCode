@@ -170,5 +170,30 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "Intake"
+      ]
+    },
+    {
+      "position": 1.25,
+      "names": [
+        "Shoot"
+      ]
+    },
+    {
+      "position": 2.02,
+      "names": [
+        "Intake"
+      ]
+    },
+    {
+      "position": 4.2,
+      "names": [
+        "event"
+      ]
+    }
+  ]
 }

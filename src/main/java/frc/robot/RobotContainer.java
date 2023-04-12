@@ -207,7 +207,7 @@ public class RobotContainer {
       break;
 
       case "AUTO TESTING":
-       autonomousCommand = new BlueLoadingTwoPieces(m_drive, m_arm, m_wrist, m_shooter);
+       autonomousCommand = new BlueLoadingTwoPieces(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
     }
 

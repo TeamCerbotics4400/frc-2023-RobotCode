@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
@@ -73,13 +72,6 @@ public class CubeShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(DriverStation.isAutonomous()){
-      if(shooter.needToStop()){
-        return true;
-      } else{
-        return false;
-      }
-    } 
     return false;
   }
 }

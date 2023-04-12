@@ -38,20 +38,20 @@ public final class Constants {
     public static final byte Gyro_ID = 13;
 
     //Turn PID values, for auto-aligning
-    public static double TkP = 0.03,//0.02,
+    public static double TkP = 0.03,
                                TkI = 0.0,
-                               TkD = 0.00245,//0.010132,
+                               TkD = 0.00245,
                                turnMaxVel = 200,
                                turnMaxAcc = 200;
 
     //
-    public static final double kP = -0.250//-2.402//2.402//0.0028046//4.068E-06,//0.0019356//0.013687
+    public static final double kP = -0.250
     ,  kI = 0
-    , kD = 0;//0.26741;//-0.2671;//0.20844;//0.0010903
+    , kD = 0;
 
-    public static final double kS = 0.15756,//0.16361,
-                               kV = 2.0967,//2.0757,
-                               kA = 0.69012;//0.86207;
+    public static final double kS = 0.15756,
+                               kV = 2.0967,
+                               kA = 0.69012;
 
     public static final double WHEEL_DIAMETER = 0.1524;
     public static final double TRACK_WIDTH = 0.504; 
@@ -112,7 +112,7 @@ public final class Constants {
   }
 
   public static final class WristConstants {
-    public static byte WRIST_ID = 7; //PlaceHolder
+    public static byte WRIST_ID = 7; 
 
     public static double kP = 0.15221,
                          kI = 0.0,
@@ -135,7 +135,7 @@ public final class Constants {
 
   public static final class AutoConstants{
     public static final double kMaxSpeedMetersPerSecond = 4.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;//2.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
   }
 
   public static final class VisionConstants {

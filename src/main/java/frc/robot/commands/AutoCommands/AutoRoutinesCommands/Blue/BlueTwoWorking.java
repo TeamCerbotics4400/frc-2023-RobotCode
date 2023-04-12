@@ -29,7 +29,7 @@ import frc.robot.subsystems.WristSubsystem;
 public class BlueTwoWorking extends SequentialCommandGroup {
   /** Creates a new StraightLineAutoCommand. */
 
-  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("TwoPiecesWorking", 
+  PathPlannerTrajectory straightTrajectory = PathPlanner.loadPath("TwoCable", 
   AutoConstants.kMaxSpeedMetersPerSecond, 
   1.5, true);
 
@@ -52,7 +52,7 @@ public class BlueTwoWorking extends SequentialCommandGroup {
 
     addCommands(resetOdometry, aveMaria,
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)),
-    new FollowPathWithEvents(m_drive.createCommandForTrajectory(straightTrajectory), straightTrajectory.getMarkers(), eventMap).andThen(new IdleArm(m_arm, m_wrist)));
-    //new ShootCube(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)));
+    new FollowPathWithEvents(m_drive.createCommandForTrajectory(straightTrajectory), 
+    straightTrajectory.getMarkers(), eventMap).andThen(new IdleArm(m_arm, m_wrist)));
   }
 }
