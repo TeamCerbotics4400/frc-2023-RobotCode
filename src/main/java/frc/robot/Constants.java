@@ -70,15 +70,14 @@ public final class Constants {
     public static final byte RIGHT_FLYWHEEL_ID = 9;
     public static final byte HORIZONTAL_FLYWHEEL_ID = 10;
 
-
-    public static double kP= 0.078061,
+    public static double kP= 0.087,
                         kI = 0.0,
-                        kD = 0.0,
+                        kD = 0.95,
                         kIz = 0,
-                        kFF = 0.049,
-                        kS = 0.093193,
-                        kV = 0.33252,
-                        kA = 0.011115;
+                        kFF = 0.0495,
+                        hKp = 0.00004,
+                        hKd = 0.0,
+                        hKff = 0.000205;
 
     public static final double shooterTreshold = 300;
 

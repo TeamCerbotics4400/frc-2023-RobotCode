@@ -44,10 +44,11 @@ public class FalconShooter extends SubsystemBase {
   public FalconShooter() {
     leftFlyWheel.configFactoryDefault();
     rightFlyWheel.configFactoryDefault();
+    horizontalFlyWheel.restoreFactoryDefaults();
 
     leftFlyWheel.setInverted(true);
     rightFlyWheel.setInverted(false);
-    horizontalFlyWheel.setInverted(false);
+    horizontalFlyWheel.setInverted(true);
 
     leftFlyWheel.setNeutralMode(NeutralMode.Brake);
     rightFlyWheel.setNeutralMode(NeutralMode.Brake);
@@ -68,16 +69,15 @@ public class FalconShooter extends SubsystemBase {
     rightFlyWheel.config_IntegralZone(pidSlot, ShooterConstants.kIz);
     rightFlyWheel.config_kF(pidSlot, ShooterConstants.kFF);
 
-    neoController.setP(ShooterConstants.kP);
-    neoController.setI(ShooterConstants.kI);
-    neoController.setD(ShooterConstants.kD);
-    neoController.setFF(ShooterConstants.kFF);
+    neoController.setP(ShooterConstants.hKp);
+    neoController.setD(ShooterConstants.hKd);
+    neoController.setFF(ShooterConstants.hKff);
 
     SmartDashboard.putNumber("Desired velo", desiredVelo);
 
-    SmartDashboard.putNumber("Shooter P", ShooterConstants.kP);
-    SmartDashboard.putNumber("Shooter D", ShooterConstants.kP);
-    SmartDashboard.putNumber("Shooter FF", ShooterConstants.kP);
+    //SmartDashboard.putNumber("Shooter P", ShooterConstants.hKp);
+    //SmartDashboard.putNumber("Shooter D", ShooterConstants.hKd);
+    //SmartDashboard.putNumber("Shooter FF", ShooterConstants.hKff);
   }
 
   @Override
@@ -92,28 +92,19 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putNumber("Right RPM", getRightRPM());
     SmartDashboard.putNumber("Horizontal RPM", getHorizontalRPM());
 
-    double targetVelo = SmartDashboard.getNumber("Desired Velo", 0);
+    double targetVelo = SmartDashboard.getNumber("Desired velo", 0);
 
     if(desiredVelo != targetVelo){desiredVelo = targetVelo;}
 
-    double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);
-    double d = SmartDashboard.getNumber("Shooter D", ShooterConstants.kD);
-    double ff = SmartDashboard.getNumber("Shooter FF", ShooterConstants.kFF);
+    //double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);
+    //double d = SmartDashboard.getNumber("Shooter D", ShooterConstants.kD);
+    //double ff = SmartDashboard.getNumber("Shooter FF", ShooterConstants.kFF);
 
-    if(ShooterConstants.kP != p){ShooterConstants.kP = p; 
-                                 leftFlyWheel.config_kP(pidSlot, p); 
-                                 rightFlyWheel.config_kP(pidSlot, p); 
-                                 neoController.setP(p);}
+    //if(ShooterConstants.hKp != p){neoController.setP(p);}
 
-    if(ShooterConstants.kD != d){ShooterConstants.kD = d; 
-                                 leftFlyWheel.config_kD(pidSlot, d); 
-                                 rightFlyWheel.config_kD(pidSlot, d); 
-                                 neoController.setD(d);}
+   // if(ShooterConstants.hKd != d){neoController.setD(d);}
 
-    if(ShooterConstants.kFF != ff){ShooterConstants.kFF = ff; 
-                                 leftFlyWheel.config_kF(pidSlot, ff); 
-                                 rightFlyWheel.config_kF(pidSlot, ff); 
-                                 neoController.setFF(ff);}
+    //if(ShooterConstants.hKff != ff){neoController.setFF(ff);}
     
   }
 

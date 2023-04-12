@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
 
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -61,6 +62,10 @@ public class Robot extends TimedRobot {
     }
     
     PathPlannerServer.startServer(5811);
+
+    for (int port = 5800; port <= 5805; port++) {
+      PortForwarder.add(port, "limelight.tags", port);
+    }
   }
 
   /**

@@ -13,6 +13,8 @@ public class ShooterPID extends CommandBase {
   public ShooterPID(FalconShooter m_shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_shooter = m_shooter;
+
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.

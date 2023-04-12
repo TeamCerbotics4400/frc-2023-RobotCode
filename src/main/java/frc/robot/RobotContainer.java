@@ -40,7 +40,6 @@ import frc.robot.subsystems.NodeSelector;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -51,7 +50,6 @@ public class RobotContainer {
   private NodeSelector m_nodeSelector = new NodeSelector(subsystemsDriver);
   private WristSubsystem m_wrist = new WristSubsystem();
   private ArmSubsystem m_arm = new ArmSubsystem();
-  private VisionSubsystem m_vision = new VisionSubsystem();
   
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
@@ -82,10 +80,6 @@ public class RobotContainer {
 
   public DriveTrain getDrivetrain(){
     return m_drive;
-  }
-
-  public VisionSubsystem getVision(){
-    return m_vision;
   }
 
   /**
