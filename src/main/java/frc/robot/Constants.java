@@ -102,7 +102,7 @@ public final class Constants {
 
     public static double IDLE_POSITION = 90.0;
     public static double SUBSTATION_POSITION = 130.5;
-    public static double SCORING_POSITION = 115;
+    public static double SCORING_POSITION = 100;//115;
     public static double BACK_FLOOR_POSITION = 1.15;
     public static double FRONT_FLOOR_POSITION = 173.0;
     public static double AVE_MARIA_SHOOT_POSITION = 155.0;

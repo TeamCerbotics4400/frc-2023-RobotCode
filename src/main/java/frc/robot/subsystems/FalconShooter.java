@@ -53,11 +53,12 @@ public class FalconShooter extends SubsystemBase {
 
   boolean onTarget = false;
 
-  double desiredVelo = 0;
+  double falconDesiredVelo = 0;
+  double neoDesiredVelo = 0;
 
   int pidSlot = 0;
 
-  double stopCurrent = 15;
+  double stopCurrent = 11;
 
   //Reduccion Falcon = 3/1
   //Reduccion Neo = 2/1
@@ -93,7 +94,8 @@ public class FalconShooter extends SubsystemBase {
     neoController.setD(ShooterConstants.hKd);
     neoController.setFF(ShooterConstants.hKff);
 
-    SmartDashboard.putNumber("Desired velo", desiredVelo);
+    SmartDashboard.putNumber("Falcon velo", falconDesiredVelo);
+    SmartDashboard.putNumber("Neo velo", neoDesiredVelo);
   }
 
   @Override
@@ -104,9 +106,11 @@ public class FalconShooter extends SubsystemBase {
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
 
-    double targetVelo = SmartDashboard.getNumber("Desired velo", 0);
+    double falconTargetVelo = SmartDashboard.getNumber("Falcon velo", 0);
+    double neoTargetVelo = SmartDashboard.getNumber("Neo velo", 0);
 
-    if(desiredVelo != targetVelo){desiredVelo = targetVelo;}
+    if(falconDesiredVelo != falconTargetVelo){falconDesiredVelo = falconTargetVelo;}
+    if(neoDesiredVelo != neoTargetVelo){neoDesiredVelo = neoTargetVelo;}
   }
 
   public double getHorizontalRPM(){
@@ -126,7 +130,7 @@ public class FalconShooter extends SubsystemBase {
   }
 
   public double getTargetVelo(){
-    return desiredVelo;
+    return falconDesiredVelo;
   }
 
   public boolean isOnTarget(){
@@ -152,9 +156,9 @@ public class FalconShooter extends SubsystemBase {
   }
 
   public void goToDashboardVelocity(){
-    leftSetpoint(desiredVelo);
-    rightSetpoint(desiredVelo);
-    horizontalSetpoint(desiredVelo);
+    leftSetpoint(falconDesiredVelo);
+    rightSetpoint(falconDesiredVelo);
+    horizontalSetpoint(neoDesiredVelo);
   }
 
   public void setMotorsPower(double leftPower, double rightPower, double horizontalPower){

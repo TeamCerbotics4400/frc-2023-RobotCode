@@ -98,16 +98,16 @@ public class StateIntakeCommand extends CommandBase {
         case "Mid":
             //800 RPM for cube
             //m_shooter.goToDashboardVelocity();
-            m_shooter.leftSetpoint(800);
-            m_shooter.rightSetpoint(800);
-            m_shooter.horizontalSetpoint(800);
+            m_shooter.leftSetpoint(1200);
+            m_shooter.rightSetpoint(1200);
+            m_shooter.horizontalSetpoint(1200);
         break;
   
         case "High":
-          m_shooter.goToDashboardVelocity();
-          //m_shooter.leftSetpoint(1200);
-          //m_shooter.rightSetpoint(1200);
-          //m_shooter.horizontalSetpoint(1200);
+          //m_shooter.goToDashboardVelocity();
+          m_shooter.leftSetpoint(1400);
+          m_shooter.rightSetpoint(1400);
+          m_shooter.horizontalSetpoint(2050);
         break;
   
         case "Ave Maria":
