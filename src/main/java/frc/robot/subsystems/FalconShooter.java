@@ -37,7 +37,7 @@ public class FalconShooter extends SubsystemBase {
 
   int pidSlot = 0;
 
-  double stopCurrent = 7;
+  double stopCurrent = 15;
 
   //Reduccion Falcon = 3/1
   //Reduccion Neo = 2/1
@@ -83,18 +83,18 @@ public class FalconShooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //SmartDashboard.putNumber("Left Current", leftFlyWheel.getStatorCurrent());
-    //SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
+    SmartDashboard.putNumber("Left Current", leftFlyWheel.getStatorCurrent());
+    SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
 
-    //SmartDashboard.putBoolean("NeedToStop", needToStop());
+    SmartDashboard.putBoolean("NeedToStop", needToStop());
 
-    SmartDashboard.putNumber("Left RPM", getLeftRPM());
-    SmartDashboard.putNumber("Right RPM", getRightRPM());
-    SmartDashboard.putNumber("Horizontal RPM", getHorizontalRPM());
+    //SmartDashboard.putNumber("Left RPM", getLeftRPM());
+    //SmartDashboard.putNumber("Right RPM", getRightRPM());
+    //SmartDashboard.putNumber("Horizontal RPM", getHorizontalRPM());
 
-    double targetVelo = SmartDashboard.getNumber("Desired velo", 0);
+    //double targetVelo = SmartDashboard.getNumber("Desired velo", 0);
 
-    if(desiredVelo != targetVelo){desiredVelo = targetVelo;}
+    //if(desiredVelo != targetVelo){desiredVelo = targetVelo;}
 
     //double p = SmartDashboard.getNumber("Shooter P", ShooterConstants.kP);
     //double d = SmartDashboard.getNumber("Shooter D", ShooterConstants.kD);

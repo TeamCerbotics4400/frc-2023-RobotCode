@@ -71,6 +71,7 @@ public class StateIntakeCommand extends CommandBase {
       case "INTAKING":
       m_shooter.leftSetpoint(-6000);
       m_shooter.rightSetpoint(-6000);
+      m_shooter.horizontalSetpoint(-6000);
        //m_shooter.setMotorsPower(-1, -1);
       break;
 
@@ -91,6 +92,7 @@ public class StateIntakeCommand extends CommandBase {
         case "Low":
             m_shooter.leftSetpoint(550);
             m_shooter.rightSetpoint(550);
+            m_shooter.horizontalSetpoint(550);
         break;
   
         case "Mid":
@@ -98,17 +100,20 @@ public class StateIntakeCommand extends CommandBase {
             //m_shooter.goToDashboardVelocity();
             m_shooter.leftSetpoint(800);
             m_shooter.rightSetpoint(800);
+            m_shooter.horizontalSetpoint(800);
         break;
   
         case "High":
           //m_shooter.goToDashboardVelocity();
           m_shooter.leftSetpoint(1200);
           m_shooter.rightSetpoint(1200);
+          m_shooter.horizontalSetpoint(1200);
         break;
   
         case "Ave Maria":
           m_shooter.leftSetpoint(6000);
           m_shooter.rightSetpoint(6000);
+          m_shooter.horizontalSetpoint(6000);
       }
       break;
     }
