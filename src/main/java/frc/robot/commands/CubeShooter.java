@@ -39,18 +39,21 @@ public class CubeShooter extends CommandBase {
     if(m_arm.isReady() && m_wrist.isReady()){
       switch(m_selector.getLevelName()){
         case "Low":
-          shooter.leftSetpoint(500);
-          shooter.rightSetpoint(500);
+            shooter.leftSetpoint(550);
+            shooter.rightSetpoint(550);
+            shooter.horizontalSetpoint(550);
         break;
         
         case "Mid":
-          shooter.leftSetpoint(800);
-          shooter.rightSetpoint(800);
+          shooter.leftSetpoint(1200);
+          shooter.rightSetpoint(1200);
+          shooter.horizontalSetpoint(1200);
         break;
         
         case "High":
-          shooter.leftSetpoint(1200);
-          shooter.rightSetpoint(1200);
+        shooter.leftSetpoint(1500);
+        shooter.rightSetpoint(1500);
+        shooter.horizontalSetpoint(2050);
         break;
 
         case "Ave Maria":

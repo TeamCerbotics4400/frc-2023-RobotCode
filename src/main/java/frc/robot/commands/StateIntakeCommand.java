@@ -90,9 +90,9 @@ public class StateIntakeCommand extends CommandBase {
        //new CombinedShooter(m_shooter, m_selector);
        switch(m_selector.getLevelName()){
         case "Low":
-            m_shooter.leftSetpoint(550);
-            m_shooter.rightSetpoint(550);
-            m_shooter.horizontalSetpoint(550);
+            m_shooter.leftSetpoint(500);
+            m_shooter.rightSetpoint(500);
+            m_shooter.horizontalSetpoint(650);
         break;
   
         case "Mid":
@@ -105,9 +105,9 @@ public class StateIntakeCommand extends CommandBase {
   
         case "High":
           //m_shooter.goToDashboardVelocity();
-          m_shooter.leftSetpoint(1400);
-          m_shooter.rightSetpoint(1400);
-          m_shooter.horizontalSetpoint(2050);
+          m_shooter.leftSetpoint(1600);
+          m_shooter.rightSetpoint(1600);
+          m_shooter.horizontalSetpoint(2100);
         break;
   
         case "Ave Maria":

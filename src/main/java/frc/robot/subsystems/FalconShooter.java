@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -14,6 +15,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -29,6 +31,8 @@ public class FalconShooter extends SubsystemBase {
 
   RelativeEncoder neoEncoder = horizontalFlyWheel.getEncoder();
   SparkMaxPIDController neoController = horizontalFlyWheel.getPIDController();
+
+  LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
   static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
     kDistanceToShooterHighSpeed = new InterpolatingTreeMap<>();
@@ -58,11 +62,12 @@ public class FalconShooter extends SubsystemBase {
 
   int pidSlot = 0;
 
-  double stopCurrent = 11;
+  double stopCurrent = 13;
 
   //Reduccion Falcon = 3/1
   //Reduccion Neo = 2/1
   public FalconShooter() {
+
     leftFlyWheel.configFactoryDefault();
     rightFlyWheel.configFactoryDefault();
     horizontalFlyWheel.restoreFactoryDefaults();
@@ -74,6 +79,9 @@ public class FalconShooter extends SubsystemBase {
     leftFlyWheel.setNeutralMode(NeutralMode.Brake);
     rightFlyWheel.setNeutralMode(NeutralMode.Brake);
     horizontalFlyWheel.setIdleMode(IdleMode.kCoast);
+
+    leftFlyWheel.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 5, 0.5));
+    rightFlyWheel.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 5, 0.5));
 
     leftFlyWheel.configVoltageCompSaturation(12);
     rightFlyWheel.configVoltageCompSaturation(12);
@@ -103,6 +111,11 @@ public class FalconShooter extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Current", leftFlyWheel.getStatorCurrent());
     SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
+
+    SmartDashboard.putNumber("Left Current Filtered", filter.calculate(leftFlyWheel.getStatorCurrent()));
+    SmartDashboard.putNumber("Right Current Filtered", filter.calculate(rightFlyWheel.getStatorCurrent()));
+
+    SmartDashboard.putNumber("Horizontal Roller Current", horizontalFlyWheel.getOutputCurrent());
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
 
@@ -168,7 +181,7 @@ public class FalconShooter extends SubsystemBase {
   }
 
   public boolean needToStop(){
-    if(leftFlyWheel.getSupplyCurrent() > stopCurrent && rightFlyWheel.getSupplyCurrent() > stopCurrent){
+    if(filter.calculate(leftFlyWheel.getSupplyCurrent()) > stopCurrent && filter.calculate(rightFlyWheel.getSupplyCurrent()) > stopCurrent){
       return true;
     } else {
       return false;

@@ -139,7 +139,7 @@ public class RobotContainer {
 
    //Left bumper
     new JoystickButton(subsystemsDriver, 5)
-   .onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
+   .onTrue(m_arm.goToPosition(130))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));

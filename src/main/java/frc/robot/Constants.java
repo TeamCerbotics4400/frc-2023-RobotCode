@@ -104,7 +104,7 @@ public final class Constants {
     public static double SUBSTATION_POSITION = 130.5;
     public static double SCORING_POSITION = 100;//115;
     public static double BACK_FLOOR_POSITION = 1.15;
-    public static double FRONT_FLOOR_POSITION = 173.0;
+    public static double FRONT_FLOOR_POSITION = 175.0;
     public static double AVE_MARIA_SHOOT_POSITION = 155.0;
     public static double COUNTER_BALANCE_POSITION = 60.0;
 
@@ -114,7 +114,7 @@ public final class Constants {
   public static final class WristConstants {
     public static byte WRIST_ID = 7; 
 
-    public static double kP = 0.15221,
+    public static double kP = 0.18221,
                          kI = 0.0,
                          kD = 0.0151835,
                          kFF = 0.0,
@@ -127,7 +127,7 @@ public final class Constants {
 
     public static double LEFT_POSITION = 90.0;
     public static double IDLE_POSITION = 0.0;
-    public static double RIGHT_POSITION = -90.0;
+    public static double RIGHT_POSITION = -95.0;
 
     public static double WRIST_THRESHOLD = 4;
   }
@@ -200,3 +200,4 @@ public final class Constants {
           }
     }
 }
+/*Cherry was here (He left the area) */
