@@ -5,9 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
@@ -74,8 +72,8 @@ public class StateIntake extends CommandBase {
         intakeJoystick.setRumble(RumbleType.kBothRumble, 1);
        } else {
         intakeJoystick.setRumble(RumbleType.kBothRumble, 0);
-       }
-      break;*/
+       }*/
+      break;
       
     }
 
@@ -92,8 +90,7 @@ public class StateIntake extends CommandBase {
   @Override
   public boolean isFinished() {
     if(DriverStation.isAutonomous()){
-      Timer.delay(0.1);
-      if(m_arm.isInShootingPos() && m_shooter.hasAlreadyShot() && StateMachines.isShooting()){
+      if(m_shooter.needToStop() && m_arm.isInIntakingPos()){
         return true;
       } else{
         return false;

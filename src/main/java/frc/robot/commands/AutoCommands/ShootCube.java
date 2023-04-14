@@ -4,18 +4,16 @@
 
 package frc.robot.commands.AutoCommands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
-import frc.robot.commands.CubeShooter;
 import frc.robot.commands.StateShooterCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.NodeSelector;
 import frc.robot.subsystems.WristSubsystem;
-import team4400.StateMachines;
+import team4400.StateMachines.IntakeState;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -38,6 +36,7 @@ public class ShootCube extends ParallelCommandGroup {
 
     addCommands(m_arm.goToPosition(ArmConstants.SCORING_POSITION), 
     m_wrist.goToPosition(WristConstants.LEFT_POSITION), 
-    (new StateShooterCommand(m_shooter, m_arm, null, m_selector)).raceWith(new WaitCommand(4)));
+    (new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, m_selector))
+    .raceWith(new WaitCommand(4)));
   }
 }

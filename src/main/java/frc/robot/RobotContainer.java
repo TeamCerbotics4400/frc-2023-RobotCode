@@ -101,12 +101,6 @@ public class RobotContainer {
   //Left and right sticks
    m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    chassisDriver));
-
-   //Y button, left and right bumpers
-   //if(DriverStation.isTeleop()){
-    //m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
-      //                                                subsystemsDriver, m_nodeSelector));
-   //}
    
    //A button
    new JoystickButton(chassisDriver, 1).whileTrue(new 
@@ -162,7 +156,8 @@ public class RobotContainer {
    new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
 
    new JoystickButton(subsystemsDriver, 4)
-   .whileTrue(new StateShooterCommand(m_shooter, m_arm, IntakeState.SHOOTING, m_nodeSelector));
+   .whileTrue(new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
+                                                                            m_nodeSelector));
   }    
 
   /**
