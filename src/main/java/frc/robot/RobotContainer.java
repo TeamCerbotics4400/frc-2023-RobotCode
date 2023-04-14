@@ -17,7 +17,9 @@ import frc.robot.commands.TeleOpCommands.AlignToNode;
 import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
+import frc.robot.commands.StateIntake;
 import frc.robot.commands.StateIntakeCommand;
+import frc.robot.commands.StateShooterCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -32,6 +34,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.WristSubsystem;
+import team4400.StateMachines.IntakeState;
 import frc.robot.subsystems.NodeSelector;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -102,10 +105,10 @@ public class RobotContainer {
    chassisDriver));
 
    //Y button, left and right bumpers
-   if(DriverStation.isTeleop()){
-    m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
-                                                      subsystemsDriver, m_nodeSelector));
-   }
+   //if(DriverStation.isTeleop()){
+    //m_shooter.setDefaultCommand(new StateIntakeCommand(m_shooter, m_arm, chassisDriver, 
+      //                                                subsystemsDriver, m_nodeSelector));
+   //}
    
    //A button
    new JoystickButton(chassisDriver, 1).whileTrue(new 
@@ -118,12 +121,15 @@ public class RobotContainer {
    new JoystickButton(chassisDriver, 5)
     .onTrue(m_arm.goToPosition(ArmConstants.BACK_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.RIGHT_POSITION))
+   .whileTrue(new StateIntake(m_shooter, m_arm, IntakeState.INTAKING))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
    //Right bumper
-   new JoystickButton(chassisDriver, 6).onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
+   new JoystickButton(chassisDriver, 6)
+   .onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
+   .whileTrue(new StateIntake(m_shooter, m_arm, IntakeState.INTAKING))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
@@ -157,7 +163,8 @@ public class RobotContainer {
    //Right stick button
    new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
 
-   //new JoystickButton(subsystemsDriver, 4).whileTrue(new ShooterPID(m_shooter));
+   new JoystickButton(subsystemsDriver, 4)
+   .whileTrue(new StateShooterCommand(m_shooter, m_arm, IntakeState.SHOOTING, m_nodeSelector));
   }    
 
   /**

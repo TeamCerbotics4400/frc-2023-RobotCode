@@ -16,23 +16,25 @@ import frc.robot.subsystems.NodeSelector;
 import team4400.StateMachines;
 import team4400.StateMachines.IntakeState;
 
-public class StateIntakeCommand extends CommandBase {
+public class StateIntake extends CommandBase {
   /** Creates a new StateIntakeCommand. */
   FalconShooter m_shooter;
   ArmSubsystem m_arm;
   NodeSelector m_selector;
   IntakeState state;
+  Joystick intakeJoystick;
+  Joystick shootingJoystick;
 
   Timer rumbleTimer = new Timer();
 
-  public StateIntakeCommand(FalconShooter m_shooter, ArmSubsystem m_arm, IntakeState state, NodeSelector m_selector) {
+  public StateIntake(FalconShooter m_shooter, ArmSubsystem m_arm, IntakeState state) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_shooter = m_shooter;
-    this.m_selector = m_selector;
     this.m_arm = m_arm;
     this.state = state;
+
     addRequirements(m_shooter);
-  } 
+  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -41,40 +43,40 @@ public class StateIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-      StateMachines.setIntakeState(state);
+
+    if(StateMachines.getIntakeState() != IntakeState.FULL){
+      StateMachines.setState(state);
+
+    if(m_shooter.needToStop() && m_arm.isInIntakingPos()){
+      StateMachines.setIntakeFull();
+    }
+  }
 
     switch(StateMachines.getIntakeState().toString()){
-      case "SHOOTING":
-       //new CombinedShooter(m_shooter, m_selector);
-       switch(m_selector.getLevelName()){
-        case "Low":
-            m_shooter.leftSetpoint(500);
-            m_shooter.rightSetpoint(500);
-            m_shooter.horizontalSetpoint(650);
-        break;
-  
-        case "Mid":
-            //800 RPM for cube
-            //m_shooter.goToDashboardVelocity();
-            m_shooter.leftSetpoint(1200);
-            m_shooter.rightSetpoint(1200);
-            m_shooter.horizontalSetpoint(1200);
-        break;
-  
-        case "High":
-          //m_shooter.goToDashboardVelocity();
-          m_shooter.leftSetpoint(1600);
-          m_shooter.rightSetpoint(1600);
-          m_shooter.horizontalSetpoint(2100);
-        break;
-  
-        case "Ave Maria":
-          m_shooter.leftSetpoint(6000);
-          m_shooter.rightSetpoint(6000);
-          m_shooter.horizontalSetpoint(6000);
-      }
+      case "IDLE":
+        m_shooter.setMotorsPower(0, 0, 0);
+        rumbleTimer.stop();
+        rumbleTimer.reset();
       break;
+
+      case "INTAKING":
+      m_shooter.leftSetpoint(-6000);
+      m_shooter.rightSetpoint(-6000);
+      m_shooter.horizontalSetpoint(-6000);
+       //m_shooter.setMotorsPower(-1, -1);
+      break;
+
+      case "FULL":
+       m_shooter.setMotorsPower(0, 0, 0);
+       rumbleTimer.start();
+
+       if(rumbleTimer.get() < 1){
+        intakeJoystick.setRumble(RumbleType.kBothRumble, 1);
+       } else {
+        intakeJoystick.setRumble(RumbleType.kBothRumble, 0);
+       }
+      break;
+      
     }
 
     SmartDashboard.putString("Current Intake State", StateMachines.getIntakeState().toString());
