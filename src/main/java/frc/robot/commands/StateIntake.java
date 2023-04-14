@@ -22,8 +22,8 @@ public class StateIntake extends CommandBase {
   ArmSubsystem m_arm;
   NodeSelector m_selector;
   IntakeState state;
-  Joystick intakeJoystick;
-  Joystick shootingJoystick;
+  //Joystick intakeJoystick;
+  //Joystick shootingJoystick;
 
   Timer rumbleTimer = new Timer();
 
@@ -70,12 +70,12 @@ public class StateIntake extends CommandBase {
        m_shooter.setMotorsPower(0, 0, 0);
        rumbleTimer.start();
 
-       if(rumbleTimer.get() < 1){
+       /*if(rumbleTimer.get() < 1){
         intakeJoystick.setRumble(RumbleType.kBothRumble, 1);
        } else {
         intakeJoystick.setRumble(RumbleType.kBothRumble, 0);
        }
-      break;
+      break;*/
       
     }
 

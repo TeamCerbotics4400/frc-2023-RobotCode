@@ -165,7 +165,7 @@ public class DriveTrain extends SubsystemBase {
      m_poseEstimator.getEstimatedPosition().getX(), 
      m_poseEstimator.getEstimatedPosition().getY());
 
-    //SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
+    SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
 
     //bot3dPose.append(log3dPose());
   }
@@ -368,7 +368,7 @@ public class DriveTrain extends SubsystemBase {
 
   //The rejection method in question
   public boolean areTagsatGoodRange(){
-    if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.5){
+    if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 5.25){
       return true;
     } else {
       return false;
