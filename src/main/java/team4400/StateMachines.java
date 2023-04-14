@@ -40,6 +40,10 @@ public class StateMachines {
         }
     }
 
+    public static void setState(IntakeState state){
+        currentIntakeState = state;
+    }
+
     public static IntakeState getIntakeState(){
         return currentIntakeState;
     }

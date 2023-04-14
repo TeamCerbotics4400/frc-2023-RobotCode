@@ -64,6 +64,8 @@ public class FalconShooter extends SubsystemBase {
 
   double stopCurrent = 13;
 
+  double shootCurrent = 7.0;
+
   //Reduccion Falcon = 3/1
   //Reduccion Neo = 2/1
   public FalconShooter() {
@@ -101,16 +103,11 @@ public class FalconShooter extends SubsystemBase {
     neoController.setP(ShooterConstants.hKp);
     neoController.setD(ShooterConstants.hKd);
     neoController.setFF(ShooterConstants.hKff);
-
-    SmartDashboard.putNumber("Falcon velo", falconDesiredVelo);
-    SmartDashboard.putNumber("Neo velo", neoDesiredVelo);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Left Current", leftFlyWheel.getStatorCurrent());
-    SmartDashboard.putNumber("Right Current", rightFlyWheel.getStatorCurrent());
 
     SmartDashboard.putNumber("Left Current Filtered", filter.calculate(leftFlyWheel.getStatorCurrent()));
     SmartDashboard.putNumber("Right Current Filtered", filter.calculate(rightFlyWheel.getStatorCurrent()));
@@ -118,12 +115,6 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putNumber("Horizontal Roller Current", horizontalFlyWheel.getOutputCurrent());
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
-
-    double falconTargetVelo = SmartDashboard.getNumber("Falcon velo", 0);
-    double neoTargetVelo = SmartDashboard.getNumber("Neo velo", 0);
-
-    if(falconDesiredVelo != falconTargetVelo){falconDesiredVelo = falconTargetVelo;}
-    if(neoDesiredVelo != neoTargetVelo){neoDesiredVelo = neoTargetVelo;}
   }
 
   public double getHorizontalRPM(){
@@ -182,6 +173,14 @@ public class FalconShooter extends SubsystemBase {
 
   public boolean needToStop(){
     if(filter.calculate(leftFlyWheel.getSupplyCurrent()) > stopCurrent && filter.calculate(rightFlyWheel.getSupplyCurrent()) > stopCurrent){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean hasAlreadyShot(){
+    if(filter.calculate(leftFlyWheel.getSupplyCurrent()) > shootCurrent && filter.calculate(rightFlyWheel.getSupplyCurrent()) > shootCurrent){
       return true;
     } else {
       return false;

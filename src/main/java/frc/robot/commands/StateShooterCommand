@@ -21,22 +21,18 @@ public class StateIntakeCommand extends CommandBase {
   FalconShooter m_shooter;
   ArmSubsystem m_arm;
   NodeSelector m_selector;
-  Joystick intakeJoystick;
-  Joystick shootingJoystick;
+  IntakeState state;
 
   Timer rumbleTimer = new Timer();
 
-  public StateIntakeCommand(FalconShooter m_shooter, ArmSubsystem m_arm, Joystick intakeJoystick, 
-  Joystick shootingJoystick, NodeSelector m_selector) {
+  public StateIntakeCommand(FalconShooter m_shooter, ArmSubsystem m_arm, IntakeState state, NodeSelector m_selector) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_shooter = m_shooter;
     this.m_selector = m_selector;
     this.m_arm = m_arm;
-    this.intakeJoystick = intakeJoystick;
-    this.shootingJoystick = shootingJoystick;
-
+    this.state = state;
     addRequirements(m_shooter);
-  }
+  } 
 
   // Called when the command is initially scheduled.
   @Override
@@ -46,47 +42,9 @@ public class StateIntakeCommand extends CommandBase {
   @Override
   public void execute() {
     
-    if(intakeJoystick.getRawButton(6) || intakeJoystick.getRawButton(5)){
-      if(StateMachines.getIntakeState() != IntakeState.FULL){
-        StateMachines.setIntaking();
-      }
-    } else if(shootingJoystick.getRawButton(4)){
-      StateMachines.setShooting();
-    } else {
-      if(StateMachines.getIntakeState() != IntakeState.FULL){
-        StateMachines.setIntakeIdle();
-      }
-    }
-  
-    if(m_shooter.needToStop() && m_arm.isInIntakingPos()){
-      StateMachines.setIntakeFull();
-    }
+      StateMachines.setIntakeState(state);
 
     switch(StateMachines.getIntakeState().toString()){
-      case "IDLE":
-        m_shooter.setMotorsPower(0, 0, 0);
-        rumbleTimer.stop();
-        rumbleTimer.reset();
-      break;
-
-      case "INTAKING":
-      m_shooter.leftSetpoint(-6000);
-      m_shooter.rightSetpoint(-6000);
-      m_shooter.horizontalSetpoint(-6000);
-       //m_shooter.setMotorsPower(-1, -1);
-      break;
-
-      case "FULL":
-       m_shooter.setMotorsPower(0, 0, 0);
-       rumbleTimer.start();
-
-       if(rumbleTimer.get() < 1){
-        intakeJoystick.setRumble(RumbleType.kBothRumble, 1);
-       } else {
-        intakeJoystick.setRumble(RumbleType.kBothRumble, 0);
-       }
-      break;
-
       case "SHOOTING":
        //new CombinedShooter(m_shooter, m_selector);
        switch(m_selector.getLevelName()){

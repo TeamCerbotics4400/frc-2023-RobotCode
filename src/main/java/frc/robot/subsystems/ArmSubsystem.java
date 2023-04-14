@@ -150,5 +150,15 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
       return false;
     }
   }
+
+  public boolean isInShootingPos(){
+    if(this.getController().getGoal().position == ArmConstants.SCORING_POSITION && 
+    isReady() || this.getController().getGoal().position == ArmConstants.AVE_MARIA_SHOOT_POSITION && 
+    isReady()){
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 

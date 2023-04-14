@@ -9,11 +9,9 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoCommands.AutoBalance;
+import frc.robot.commands.AutoCommands.IdleArm;
 import frc.robot.commands.AutoCommands.ShootCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
@@ -51,10 +49,9 @@ public class PieceWBalance extends SequentialCommandGroup {
     InstantCommand shootHigh = new InstantCommand(() -> m_selector.selectLevel(2));
 
     addCommands(resetOdometry, shootHigh,
-    new ShootCube(m_shooter, m_arm, m_wrist, m_selector).raceWith(new WaitCommand(4)), 
-      m_arm.goToPosition(ArmConstants.IDLE_POSITION).alongWith(
-      m_wrist.goToPosition(WristConstants.IDLE_POSITION)),
-      m_drive.createCommandForTrajectory(onlyBalanceTrajectory) , 
+    //new ShootCube(m_shooter, m_arm, m_wrist, m_selector), 
+      new IdleArm(m_arm, m_wrist),
+      m_drive.createCommandForTrajectoryVision(onlyBalanceTrajectory) , 
       new AutoBalance(m_drive));
   }
 }

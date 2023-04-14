@@ -81,6 +81,10 @@ public class RobotContainer {
     return m_drive;
   }
 
+  public ArmSubsystem getArm(){
+    return m_arm;
+  }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -103,7 +107,6 @@ public class RobotContainer {
                                                       subsystemsDriver, m_nodeSelector));
    }
    
-
    //A button
    new JoystickButton(chassisDriver, 1).whileTrue(new 
                                           AlignToNode(m_drive, m_nodeSelector, chassisDriver));
@@ -139,7 +142,7 @@ public class RobotContainer {
 
    //Left bumper
     new JoystickButton(subsystemsDriver, 5)
-   .onTrue(m_arm.goToPosition(130))
+   .onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
