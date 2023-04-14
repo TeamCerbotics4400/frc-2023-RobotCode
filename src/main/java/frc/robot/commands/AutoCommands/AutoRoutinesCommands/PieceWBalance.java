@@ -49,7 +49,7 @@ public class PieceWBalance extends SequentialCommandGroup {
     InstantCommand shootHigh = new InstantCommand(() -> m_selector.selectLevel(2));
 
     addCommands(resetOdometry, shootHigh,
-    new ShootCube(m_shooter, m_arm, m_wrist, m_selector), 
+    //new ShootCube(m_shooter, m_arm, m_wrist, m_selector), 
       new IdleArm(m_arm, m_wrist),
       m_drive.createCommandForTrajectoryVision(onlyBalanceTrajectory) , 
       new AutoBalance(m_drive));
