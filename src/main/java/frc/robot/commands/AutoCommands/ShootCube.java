@@ -37,6 +37,6 @@ public class ShootCube extends ParallelCommandGroup {
     addCommands(m_arm.goToPosition(ArmConstants.SCORING_POSITION), 
     m_wrist.goToPosition(WristConstants.LEFT_POSITION), 
     (new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, m_selector))
-    .raceWith(new WaitCommand(4)));
+    .raceWith(new WaitCommand(2.5)));
   }
 }

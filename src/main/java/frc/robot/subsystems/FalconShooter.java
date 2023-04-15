@@ -64,7 +64,7 @@ public class FalconShooter extends SubsystemBase {
 
   double stopCurrent = 13;
 
-  double shootCurrent = 7.0;
+  double shootCurrent = 5.0;
 
   //Reduccion Falcon = 3/1
   //Reduccion Neo = 2/1
@@ -103,16 +103,31 @@ public class FalconShooter extends SubsystemBase {
     neoController.setP(ShooterConstants.hKp);
     neoController.setD(ShooterConstants.hKd);
     neoController.setFF(ShooterConstants.hKff);
+
+    SmartDashboard.putNumber("Falcon velo", falconDesiredVelo);
+    SmartDashboard.putNumber("Neo velo", neoDesiredVelo);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    SmartDashboard.putNumber("Left Current Filtered", filter.calculate(leftFlyWheel.getStatorCurrent()));
-    SmartDashboard.putNumber("Right Current Filtered", filter.calculate(rightFlyWheel.getStatorCurrent()));
+    //SmartDashboard.putNumber("Left Current Filtered", filter.calculate(leftFlyWheel.getStatorCurrent()));
+    //SmartDashboard.putNumber("Right Current Filtered", filter.calculate(rightFlyWheel.getStatorCurrent()));
 
-    SmartDashboard.putNumber("Horizontal Roller Current", horizontalFlyWheel.getOutputCurrent());
+    //SmartDashboard.putNumber("Horizontal Roller Current", horizontalFlyWheel.getOutputCurrent());
+
+    SmartDashboard.putBoolean("Has already Shot", hasAlreadyShot());
+
+    SmartDashboard.putNumber("Horizontal velo", neoEncoder.getVelocity());
+    SmartDashboard.putNumber("Left Velo", getLeftRPM());
+    SmartDashboard.putNumber("Right Velo", getRightRPM());
+
+    double falconVelo = SmartDashboard.getNumber("Falcon velo", 0);
+    double neoVelo = SmartDashboard.getNumber("Neo velo", 0);
+
+    if(falconDesiredVelo != falconVelo){falconDesiredVelo = falconVelo;}
+    if(neoDesiredVelo != neoVelo){neoDesiredVelo = neoVelo;}
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
   }

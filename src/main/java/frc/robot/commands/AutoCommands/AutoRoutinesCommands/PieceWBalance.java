@@ -25,7 +25,7 @@ public class PieceWBalance extends SequentialCommandGroup {
   /** Creates a new OnlyBalanceAutoCommand. */
   PathPlannerTrajectory onlyBalanceTrajectory = PathPlanner.loadPath("Only Balance", 
     1.0, 
-    0.5, true);
+    0.75, true);
     DriveTrain m_drive;
     ArmSubsystem m_arm;
     WristSubsystem m_wrist;
@@ -48,9 +48,9 @@ public class PieceWBalance extends SequentialCommandGroup {
     InstantCommand shootHigh = new InstantCommand(() -> m_selector.selectLevel(2));
 
     addCommands(resetOdometry, shootHigh,
-    //new ShootCube(m_shooter, m_arm, m_wrist, m_selector), 
+    new ShootCube(m_shooter, m_arm, m_wrist, m_selector), 
       new IdleArm(m_arm, m_wrist),
-      m_drive.createCommandForTrajectoryVision(onlyBalanceTrajectory) , 
+      m_drive.createCommandForTrajectoryVision(onlyBalanceTrajectory),
       new AutoBalance(m_drive));
   }
 }

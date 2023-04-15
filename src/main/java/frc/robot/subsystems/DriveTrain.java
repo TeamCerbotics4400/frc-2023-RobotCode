@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.opencv.core.Mat;
+
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPRamseteCommand;
@@ -14,6 +16,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -76,9 +79,7 @@ public class DriveTrain extends SubsystemBase {
             new DifferentialDrivePoseEstimator(
                     DriveConstants.kDriveKinematics, 
                     Rotation2d.fromDegrees(-getAngle()), 
-                    0.0, 0.0, new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)), 
-                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.005, 0.005, 0.001), 
-                    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.1));
+                    0.0, 0.0, new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)));
   
   /* 
    * We decided that having two types of odometry would work better than just having one of them.
@@ -166,6 +167,8 @@ public class DriveTrain extends SubsystemBase {
      m_poseEstimator.getEstimatedPosition().getY());
 
     SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
+
+    setDynamicVisionStdDevs();
 
     //bot3dPose.append(log3dPose());
   }
@@ -377,6 +380,24 @@ public class DriveTrain extends SubsystemBase {
 
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();
+  }
+
+  public void setDynamicVisionStdDevs(){
+    if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 2.5){
+      m_poseEstimator.setVisionMeasurementStdDevs(new 
+                              MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.1));
+    } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
+        && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
+          m_poseEstimator.setVisionMeasurementStdDevs(new 
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.3, 0.3, 0.3));
+    } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
+    && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
+      m_poseEstimator.setVisionMeasurementStdDevs(new 
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.7, 0.7, 0.7));
+    } else {
+      m_poseEstimator.setVisionMeasurementStdDevs(new 
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(1.0, 1.0, 1.0));
+    }
   }
 
   //Gets the Balance PID Controller for use in other classes

@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FalconShooter;
+import team4400.StateMachines;
 
 public class ShooterDebugger extends CommandBase {
   /** Creates a new ShooterPID. */
@@ -31,6 +32,7 @@ public class ShooterDebugger extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_shooter.setMotorsPower(0, 0, 0);
+    StateMachines.setIntakeIdle();
   }
 
   // Returns true when the command should end.

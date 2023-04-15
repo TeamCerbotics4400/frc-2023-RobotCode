@@ -29,6 +29,7 @@ public class StateShooterCommand extends CommandBase {
   IntakeState state, NodeSelector m_selector) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_shooter = m_shooter;
+    this.m_wrist = m_wrist;
     this.m_selector = m_selector;
     this.m_arm = m_arm;
     this.state = state;
@@ -104,9 +105,9 @@ public class StateShooterCommand extends CommandBase {
   
         case "High":
           //m_shooter.goToDashboardVelocity();
-          m_shooter.leftSetpoint(1600);
-          m_shooter.rightSetpoint(1600);
-          m_shooter.horizontalSetpoint(2100);
+          m_shooter.leftSetpoint(1600);//2300
+          m_shooter.rightSetpoint(1600);//2300
+          m_shooter.horizontalSetpoint(2100);//2800
         break;
   
         case "Ave Maria":
@@ -132,10 +133,10 @@ public class StateShooterCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     if(DriverStation.isAutonomous()){
-      Timer.delay(0.1);
+      //Timer.delay(0.5);
       if(m_arm.isInShootingPos() && m_shooter.hasAlreadyShot() && StateMachines.isShooting()){
         return true;
-      } else{
+      } else {
         return false;
       }
     } 

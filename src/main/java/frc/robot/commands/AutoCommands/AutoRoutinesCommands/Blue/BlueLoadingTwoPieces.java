@@ -29,8 +29,11 @@ import frc.robot.subsystems.WristSubsystem;
 public class BlueLoadingTwoPieces extends SequentialCommandGroup {
   /** Creates a new BlueLoadingTwoPieces. */
   PathPlannerTrajectory loading2 = PathPlanner.loadPath("Loading2", 
-  5.0, 
-  3.0, true);
+  //5.0, 
+  2.0,
+  1.0,
+  //3.0,
+   true);
 
   HashMap<String, Command> eventMap = new HashMap<>();
 
@@ -50,8 +53,8 @@ public class BlueLoadingTwoPieces extends SequentialCommandGroup {
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
     
     addCommands(resetOdometry, aveMaria, 
-    new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector)
-    .andThen(new IdleArm(m_arm, m_wrist)), 
+    new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector),
+    new IdleArm(m_arm, m_wrist), //m_drive.createCommandForTrajectory(loading2));
     new FollowPathWithEvents(m_drive.createCommandForTrajectoryVision(loading2), 
                                                         loading2.getMarkers(), eventMap));
   }

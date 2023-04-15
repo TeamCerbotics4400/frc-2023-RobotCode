@@ -49,9 +49,9 @@ public final class Constants {
     ,  kI = 0
     , kD = 0;
 
-    public static final double kS = 0.15756,
-                               kV = 2.0967,
-                               kA = 0.69012;
+    public static final double kS = 0.16744,//0.15756,
+                               kV = 2.1196,//2.0967,
+                               kA = 0.80908;//0.69012;
 
     public static final double WHEEL_DIAMETER = 0.1524;
     public static final double TRACK_WIDTH = 0.504; 

@@ -90,7 +90,7 @@ public class StateIntake extends CommandBase {
   @Override
   public boolean isFinished() {
     if(DriverStation.isAutonomous()){
-      if(m_shooter.needToStop() && m_arm.isInIntakingPos()){
+      if(StateMachines.getIntakeState() == IntakeState.FULL){
         return true;
       } else{
         return false;

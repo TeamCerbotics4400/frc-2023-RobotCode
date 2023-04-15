@@ -17,9 +17,12 @@ import frc.robot.commands.TeleOpCommands.AlignToNode;
 import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
+import frc.robot.commands.ShooterDebugger;
 import frc.robot.commands.StateIntake;
 import frc.robot.commands.StateShooterCommand;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -50,6 +53,8 @@ public class RobotContainer {
   private NodeSelector m_nodeSelector = new NodeSelector(subsystemsDriver);
   private WristSubsystem m_wrist = new WristSubsystem();
   private ArmSubsystem m_arm = new ArmSubsystem();
+
+  Timer rumbleTimer = new Timer();
   
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
   private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
@@ -86,6 +91,18 @@ public class RobotContainer {
     return m_arm;
   }
 
+  public Timer getRumbleTimer(){
+    return rumbleTimer;
+  }
+
+  public void setIntakeRumble(){
+    rumbleTimer.start();
+    if(rumbleTimer.get() < 1){
+      chassisDriver.setRumble(RumbleType.kBothRumble, 1);
+    } else {
+      chassisDriver.setRumble(RumbleType.kBothRumble, 0);
+    }
+  }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -156,8 +173,8 @@ public class RobotContainer {
    new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
 
    new JoystickButton(subsystemsDriver, 4)
-   .whileTrue(new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
-                                                                            m_nodeSelector));
+   .whileTrue(new ShooterDebugger(m_shooter)); //StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
+                                                                           // m_nodeSelector));
   }    
 
   /**
