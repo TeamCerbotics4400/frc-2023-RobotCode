@@ -132,6 +132,11 @@ public class FalconShooter extends SubsystemBase {
     SmartDashboard.putBoolean("NeedToStop", needToStop());
   }
 
+  public void setCurrentLimit(double current, double seconds){
+    leftFlyWheel.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, current, 5, seconds));
+    rightFlyWheel.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, current, 5, seconds));
+  }
+
   public double getHorizontalRPM(){
     return neoEncoder.getVelocity();
   }

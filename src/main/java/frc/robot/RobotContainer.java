@@ -21,8 +21,6 @@ import frc.robot.commands.ShooterDebugger;
 import frc.robot.commands.StateIntake;
 import frc.robot.commands.StateShooterCommand;
 
-import javax.swing.GrayFilter;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -159,16 +157,15 @@ public class RobotContainer {
    new POVButton(subsystemsDriver, 180).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionDown()));
 
    //Left bumper
-   /* 
     new JoystickButton(subsystemsDriver, 5)
    .onTrue(m_arm.goToPosition(ArmConstants.FRONT_FLOOR_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
-   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));*/
+   .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
    //Right bumper
    new JoystickButton(subsystemsDriver, 6)
-   .onTrue(m_arm.goToPosition(90.0))
+   .onTrue(m_arm.goToPosition(ArmConstants.SCORING_POSITION))
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
@@ -177,8 +174,8 @@ public class RobotContainer {
    new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
 
    new JoystickButton(subsystemsDriver, 4)
-   .whileTrue(new ShooterDebugger(m_shooter));//StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
-                                                                           //m_nodeSelector));
+   .whileTrue(new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
+                                                                           m_nodeSelector));
   }    
 
   /**

@@ -18,11 +18,11 @@ public class StateMachines {
         CABLE,
         MIDDLE,
         LOADING,
-        EMPTY
+        TELE
     }
 
     //POSITION
-    public static PositionState currentPositionState = PositionState.EMPTY;
+    public static PositionState currentPositionState = PositionState.TELE;
 
     public static void setPositionState(PositionState state){
         currentPositionState = state;

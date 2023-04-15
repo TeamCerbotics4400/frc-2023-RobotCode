@@ -38,7 +38,9 @@ public class StateShooterCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_shooter.setCurrentLimit(80, 1.0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -67,9 +69,9 @@ public class StateShooterCommand extends CommandBase {
   
         case "High":
           //m_shooter.goToDashboardVelocity();
-          m_shooter.leftSetpoint(1600);
-          m_shooter.rightSetpoint(1600);
-          m_shooter.horizontalSetpoint(2100);
+          m_shooter.leftSetpoint(2600);
+          m_shooter.rightSetpoint(2600);
+          m_shooter.horizontalSetpoint(4500);
         break;
   
         case "Ave Maria":
@@ -90,9 +92,9 @@ public class StateShooterCommand extends CommandBase {
        //new CombinedShooter(m_shooter, m_selector);
        switch(m_selector.getLevelName()){
         case "Low":
-            m_shooter.leftSetpoint(500);
-            m_shooter.rightSetpoint(500);
-            m_shooter.horizontalSetpoint(650);
+            m_shooter.leftSetpoint(750);
+            m_shooter.rightSetpoint(750);
+            m_shooter.horizontalSetpoint(750);
         break;
   
         case "Mid":
@@ -105,9 +107,9 @@ public class StateShooterCommand extends CommandBase {
   
         case "High":
           //m_shooter.goToDashboardVelocity();
-          m_shooter.leftSetpoint(1600);//2300
-          m_shooter.rightSetpoint(1600);//2300
-          m_shooter.horizontalSetpoint(2100);//2800
+          m_shooter.leftSetpoint(1350);//2300
+          m_shooter.rightSetpoint(1350);//2300
+          m_shooter.horizontalSetpoint(3250);//2800
         break;
   
         case "Ave Maria":

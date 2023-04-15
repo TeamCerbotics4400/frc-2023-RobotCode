@@ -36,7 +36,9 @@ public class StateIntake extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_shooter.setCurrentLimit(20, 0.2);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

@@ -168,6 +168,8 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
 
+    SmartDashboard.putString("Position State", StateMachines.getPositionState().toString());
+
     setDynamicVisionStdDevs();
 
     positionState();
@@ -373,11 +375,41 @@ public class DriveTrain extends SubsystemBase {
 
   //The rejection method in question
   public boolean areTagsatGoodRange(){
-    if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 5.25){
-      return true;
-    } else {
-      return false;
+    boolean goodRange = false;
+    switch(StateMachines.getPositionState().toString()){
+      case "CABLE":
+      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 5.25){
+        goodRange = true;
+      } else {
+        goodRange = false;
+      }
+      break;
+
+      case "MIDDLE":
+      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 5.25){
+        goodRange = true;
+      } else {
+        goodRange = false;
+      }
+      break;
+
+      case "LOADING":
+      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.75){
+        goodRange = true;
+      } else {
+        goodRange = false;
+      }
+      break;
+
+      case "TELE":
+      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.0){
+        goodRange = true;
+      } else {
+        goodRange = false;
+      }
     }
+
+    return goodRange;
   }
 
   public void getEstimatedPose(){
@@ -403,12 +435,16 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void positionState(){
-    if(m_poseEstimator.getEstimatedPosition().getY() <= 1.45){
-      StateMachines.setPositionState(PositionState.CABLE);
-    } else if(m_poseEstimator.getEstimatedPosition().getY() >= 4.0){
-      StateMachines.setPositionState(PositionState.LOADING);
+    if(DriverStation.isAutonomous()){
+      if(m_poseEstimator.getEstimatedPosition().getY() <= 1.45){
+        StateMachines.setPositionState(PositionState.CABLE);
+      } else if(m_poseEstimator.getEstimatedPosition().getY() >= 4.0){
+        StateMachines.setPositionState(PositionState.LOADING);
+      } else {
+        StateMachines.setPositionState(PositionState.MIDDLE);
+      }
     } else {
-      StateMachines.setPositionState(PositionState.MIDDLE);
+      StateMachines.setPositionState(PositionState.TELE);
     }
   }
 
