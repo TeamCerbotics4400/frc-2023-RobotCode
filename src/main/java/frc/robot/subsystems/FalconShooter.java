@@ -64,7 +64,7 @@ public class FalconShooter extends SubsystemBase {
 
   double stopCurrent = 13;
 
-  double shootCurrent = 5.0;
+  double shootCurrent = 7.0;
 
   //Reduccion Falcon = 3/1
   //Reduccion Neo = 2/1

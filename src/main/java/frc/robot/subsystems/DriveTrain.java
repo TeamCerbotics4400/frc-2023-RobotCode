@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import org.opencv.core.Mat;
-
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPRamseteCommand;
@@ -16,7 +14,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MatBuilder;
-import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -43,6 +40,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.VisionConstants;
+import team4400.StateMachines;
+import team4400.StateMachines.PositionState;
 import team4400.Util.DriveSignal;
 
 public class DriveTrain extends SubsystemBase {
@@ -79,7 +78,8 @@ public class DriveTrain extends SubsystemBase {
             new DifferentialDrivePoseEstimator(
                     DriveConstants.kDriveKinematics, 
                     Rotation2d.fromDegrees(-getAngle()), 
-                    0.0, 0.0, new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)));
+                    0.0, 0.0, 
+                    new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)));
   
   /* 
    * We decided that having two types of odometry would work better than just having one of them.
@@ -169,6 +169,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
 
     setDynamicVisionStdDevs();
+
+    positionState();
 
     //bot3dPose.append(log3dPose());
   }
@@ -397,6 +399,16 @@ public class DriveTrain extends SubsystemBase {
     } else {
       m_poseEstimator.setVisionMeasurementStdDevs(new 
           MatBuilder<>(Nat.N3(), Nat.N1()).fill(1.0, 1.0, 1.0));
+    }
+  }
+
+  public void positionState(){
+    if(m_poseEstimator.getEstimatedPosition().getY() <= 1.45){
+      StateMachines.setPositionState(PositionState.CABLE);
+    } else if(m_poseEstimator.getEstimatedPosition().getY() >= 4.0){
+      StateMachines.setPositionState(PositionState.LOADING);
+    } else {
+      StateMachines.setPositionState(PositionState.MIDDLE);
     }
   }
 

@@ -14,6 +14,25 @@ public class StateMachines {
         SHOOTING
     }
 
+    public enum PositionState{
+        CABLE,
+        MIDDLE,
+        LOADING,
+        EMPTY
+    }
+
+    //POSITION
+    public static PositionState currentPositionState = PositionState.EMPTY;
+
+    public static void setPositionState(PositionState state){
+        currentPositionState = state;
+    }
+
+    public static PositionState getPositionState(){
+        return currentPositionState;
+    }
+
+    //INTAKE
     public static IntakeState currentIntakeState = IntakeState.IDLE;
 
     public static void setIntaking(){
@@ -40,7 +59,7 @@ public class StateMachines {
         }
     }
 
-    public static void setState(IntakeState state){
+    public static void setIntakeState(IntakeState state){
         currentIntakeState = state;
     }
 

@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
-import frc.robot.commands.CubeShooter;
 import frc.robot.commands.StateShooterCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;

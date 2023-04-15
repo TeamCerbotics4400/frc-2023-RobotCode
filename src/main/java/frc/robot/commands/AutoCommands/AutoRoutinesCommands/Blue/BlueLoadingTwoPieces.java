@@ -30,8 +30,8 @@ public class BlueLoadingTwoPieces extends SequentialCommandGroup {
   /** Creates a new BlueLoadingTwoPieces. */
   PathPlannerTrajectory loading2 = PathPlanner.loadPath("Loading2", 
   //5.0, 
-  2.0,
-  1.0,
+  3.0,
+  1.5,
   //3.0,
    true);
 

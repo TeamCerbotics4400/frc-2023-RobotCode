@@ -43,7 +43,7 @@ public class StateIntake extends CommandBase {
   public void execute() {
 
     if(StateMachines.getIntakeState() != IntakeState.FULL){
-      StateMachines.setState(state);
+      StateMachines.setIntakeState(state);
 
     if(m_shooter.needToStop() && m_arm.isInIntakingPos()){
       StateMachines.setIntakeFull();

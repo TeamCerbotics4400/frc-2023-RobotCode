@@ -107,6 +107,7 @@ public final class Constants {
     public static double FRONT_FLOOR_POSITION = 175.0;
     public static double AVE_MARIA_SHOOT_POSITION = 155.0;
     public static double COUNTER_BALANCE_POSITION = 60.0;
+    public static double TESTING_ANGLE = 90.0;
 
     public static double ARM_THRESHOLD = 9.5;
   }

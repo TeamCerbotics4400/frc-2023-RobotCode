@@ -45,7 +45,7 @@ public class StateShooterCommand extends CommandBase {
   public void execute() {
     if(DriverStation.isAutonomous()){
      if(m_arm.isReady() && m_wrist.isReady()){
-      StateMachines.setState(state);
+      StateMachines.setIntakeState(state);
 
     switch(StateMachines.getIntakeState().toString()){
       case "SHOOTING":
@@ -83,7 +83,7 @@ public class StateShooterCommand extends CommandBase {
       m_shooter.setMotorsPower(0, 0, 0);
      }
     } else {
-      StateMachines.setState(state);
+      StateMachines.setIntakeState(state);
 
     switch(StateMachines.getIntakeState().toString()){
       case "SHOOTING":

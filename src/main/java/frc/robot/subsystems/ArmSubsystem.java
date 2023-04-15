@@ -71,7 +71,6 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
     leftMotor.setSmartCurrentLimit(80);
     rightMotor.setSmartCurrentLimit(80);
-
   }
 
 
