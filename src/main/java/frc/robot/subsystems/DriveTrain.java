@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -27,6 +28,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -107,7 +109,7 @@ public class DriveTrain extends SubsystemBase {
 
   private DoubleArrayLogEntry bot3dPose;
 
-  Debouncer poseDebouncer = new Debouncer(1.0, DebounceType.kBoth);
+  Debouncer poseDebouncer = new Debouncer(0.2, DebounceType.kRising);
 
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
@@ -144,10 +146,10 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setIdleMode(IdleMode.kBrake);
     rightFollower.setIdleMode(IdleMode.kBrake);
 
-    leftLeader.setSmartCurrentLimit(75);
-    rightLeader.setSmartCurrentLimit(75);
-    leftFollower.setSmartCurrentLimit(75);
-    rightFollower.setSmartCurrentLimit(75);
+    leftLeader.setSmartCurrentLimit(45);//75);
+    rightLeader.setSmartCurrentLimit(45);//75);
+    leftFollower.setSmartCurrentLimit(45);//75);
+    rightFollower.setSmartCurrentLimit(45);//75);
 
     imu.configFactoryDefault();
 
@@ -170,15 +172,15 @@ public class DriveTrain extends SubsystemBase {
      m_poseEstimator.getEstimatedPosition().getX(), 
      m_poseEstimator.getEstimatedPosition().getY());
 
-    SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
+    SmartDashboard.putBoolean("Tags good range", poseDebouncer.calculate(areTagsatGoodRange()));
 
     SmartDashboard.putString("Position State", StateMachines.getPositionState().toString());
 
     SmartDashboard.putNumber("Num of tags", getNumofDetectedTargets());
 
-    setDynamicVisionStdDevs();
-
     positionState();
+
+    dynamicVisionDvs();
 
     //bot3dPose.append(log3dPose());
   }
@@ -387,6 +389,24 @@ public class DriveTrain extends SubsystemBase {
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
   }
 
+  public void dynamicVisionDvs(){
+    double xyStds = 0;
+    double degStds = 0;
+    if(getNumofDetectedTargets() >= 2){
+      xyStds = 0.2;
+      degStds = 2.5;
+    } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.5){
+      xyStds = 1.0;
+      degStds = 12;
+    } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.1 ){
+      xyStds = 2.0;
+      degStds = 30;
+    }
+
+    m_poseEstimator.setVisionMeasurementStdDevs(
+                  VecBuilder.fill(xyStds, xyStds, Units.degreesToRadians(degStds)));
+  }
+
   //The rejection method in question
   public boolean areTagsatGoodRange(){
     boolean goodRange = false;
@@ -409,24 +429,6 @@ public class DriveTrain extends SubsystemBase {
 
   public void getEstimatedPose(){
     m_poseEstimator.getEstimatedPosition();
-  }
-
-  public void setDynamicVisionStdDevs(){
-    if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 2.5){
-      m_poseEstimator.setVisionMeasurementStdDevs(new 
-                              MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.1));
-    } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
-        && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
-          m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.7, 0.7, 0.7));
-    } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
-    && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
-      m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(1.2, 1.2, 1.2));
-    } else {
-      m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(2.0, 2.0, 2.0));
-    }
   }
 
   public void positionState(){
