@@ -19,6 +19,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -105,6 +107,8 @@ public class DriveTrain extends SubsystemBase {
 
   private DoubleArrayLogEntry bot3dPose;
 
+  Debouncer poseDebouncer = new Debouncer(1.0, DebounceType.kBoth);
+
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
   //Units per Rotation : 0.4788
@@ -169,6 +173,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putBoolean("Tags good range", areTagsatGoodRange());
 
     SmartDashboard.putString("Position State", StateMachines.getPositionState().toString());
+
+    SmartDashboard.putNumber("Num of tags", getNumofDetectedTargets());
 
     setDynamicVisionStdDevs();
 
@@ -306,6 +312,14 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(rightEncoder.getPosition()), pose);
   }
 
+  public void resetPoseEstimator(Pose2d pose){
+    resetEncoders();
+    resetImu();
+    m_poseEstimator.resetPosition(Rotation2d.fromDegrees(getAngle()),
+    encoderCountsToMeters(leftEncoder.getPosition()), 
+    encoderCountsToMeters(rightEncoder.getPosition()), pose);
+  }
+
   public Pose2d estimatedPose2d(){
     return m_poseEstimator.getEstimatedPosition();
   }
@@ -360,7 +374,7 @@ public class DriveTrain extends SubsystemBase {
     LimelightHelpers.Results results = 
         LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName).targetingResults;
 
-    if(LimelightHelpers.getTV(VisionConstants.tagLimelightName) && areTagsatGoodRange()){
+    if(LimelightHelpers.getTV(VisionConstants.tagLimelightName) && poseDebouncer.calculate(areTagsatGoodRange())){
       Pose2d camPose = LimelightHelpers.toPose2D(results.botpose_wpiblue);
       m_poseEstimator.addVisionMeasurement(camPose, 
       Timer.getFPGATimestamp() - (results.latency_capture / 1000.0)
@@ -376,39 +390,20 @@ public class DriveTrain extends SubsystemBase {
   //The rejection method in question
   public boolean areTagsatGoodRange(){
     boolean goodRange = false;
-    switch(StateMachines.getPositionState().toString()){
-      case "CABLE":
-      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 5.25){
+    if(getNumofDetectedTargets() <= 1){
+      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.5){
         goodRange = true;
       } else {
         goodRange = false;
       }
-      break;
-
-      case "MIDDLE":
-      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 5.25){
-        goodRange = true;
-      } else {
-        goodRange = false;
-      }
-      break;
-
-      case "LOADING":
-      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.75){
-        goodRange = true;
-      } else {
-        goodRange = false;
-      }
-      break;
-
-      case "TELE":
-      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.0){
+    } else {
+      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 6.0){
         goodRange = true;
       } else {
         goodRange = false;
       }
     }
-
+    
     return goodRange;
   }
 
@@ -423,19 +418,19 @@ public class DriveTrain extends SubsystemBase {
     } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
         && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
           m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.3, 0.3, 0.3));
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.7, 0.7, 0.7));
     } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
     && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
       m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.7, 0.7, 0.7));
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(1.2, 1.2, 1.2));
     } else {
       m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(1.0, 1.0, 1.0));
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(2.0, 2.0, 2.0));
     }
   }
 
   public void positionState(){
-    if(DriverStation.isAutonomous()){
+    if(DriverStation.isTeleop()){
       if(m_poseEstimator.getEstimatedPosition().getY() <= 1.45){
         StateMachines.setPositionState(PositionState.CABLE);
       } else if(m_poseEstimator.getEstimatedPosition().getY() >= 4.0){
@@ -446,6 +441,11 @@ public class DriveTrain extends SubsystemBase {
     } else {
       StateMachines.setPositionState(PositionState.TELE);
     }
+  }
+
+  public int getNumofDetectedTargets(){
+    return LimelightHelpers
+    .getLatestResults(VisionConstants.tagLimelightName).targetingResults.targets_Fiducials.length;
   }
 
   //Gets the Balance PID Controller for use in other classes

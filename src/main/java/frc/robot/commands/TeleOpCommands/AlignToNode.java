@@ -86,7 +86,7 @@ public class AlignToNode extends CommandBase {
     }*/
     
     
-    m_drive.drive(-joy.getRawAxis(1), angularController.calculate(LimelightHelpers.getTX(VisionConstants.tagLimelightName) + 0.133825));
+    m_drive.drive(-joy.getRawAxis(1), angularController.calculate(LimelightHelpers.getTX(VisionConstants.tagLimelightName) + 0.05));
 
     SmartDashboard.putString("Nearest Node", getNearestNode());
   }

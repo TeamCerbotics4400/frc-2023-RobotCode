@@ -104,8 +104,8 @@ public class FalconShooter extends SubsystemBase {
     neoController.setD(ShooterConstants.hKd);
     neoController.setFF(ShooterConstants.hKff);
 
-    SmartDashboard.putNumber("Falcon velo", falconDesiredVelo);
-    SmartDashboard.putNumber("Neo velo", neoDesiredVelo);
+    //SmartDashboard.putNumber("Falcon velo", falconDesiredVelo);
+    //SmartDashboard.putNumber("Neo velo", neoDesiredVelo);
   }
 
   @Override
@@ -119,15 +119,15 @@ public class FalconShooter extends SubsystemBase {
 
     SmartDashboard.putBoolean("Has already Shot", hasAlreadyShot());
 
-    SmartDashboard.putNumber("Horizontal velo", neoEncoder.getVelocity());
-    SmartDashboard.putNumber("Left Velo", getLeftRPM());
-    SmartDashboard.putNumber("Right Velo", getRightRPM());
+    //SmartDashboard.putNumber("Horizontal velo", neoEncoder.getVelocity());
+    //SmartDashboard.putNumber("Left Velo", getLeftRPM());
+    //SmartDashboard.putNumber("Right Velo", getRightRPM());
 
-    double falconVelo = SmartDashboard.getNumber("Falcon velo", 0);
-    double neoVelo = SmartDashboard.getNumber("Neo velo", 0);
+    //double falconVelo = SmartDashboard.getNumber("Falcon velo", 0);
+    //double neoVelo = SmartDashboard.getNumber("Neo velo", 0);
 
-    if(falconDesiredVelo != falconVelo){falconDesiredVelo = falconVelo;}
-    if(neoDesiredVelo != neoVelo){neoDesiredVelo = neoVelo;}
+    //if(falconDesiredVelo != falconVelo){falconDesiredVelo = falconVelo;}
+    //if(neoDesiredVelo != neoVelo){neoDesiredVelo = neoVelo;}
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
   }
