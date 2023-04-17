@@ -144,8 +144,10 @@ public final class Constants {
     public static final String tapeLimelight = "limelight-tape";
     public static final String tagLimelightName = "limelight-tags";
 
-    public static double HEIGHT_OF_OUTER_PORT = 0.445;//Altura del target
-    public static double LIMELIGHT_FLOOR_CLEREANCE= 0.47;//Altura de la limelight
+    public static double HEIGHT_OF_HIGH_NODE = 0.90;//Altura del target
+    public static double HEIGHT_OF_MID_NODE = 0.60;
+    public static double HEIGHT_OF_TAG = 0.45;
+    public static double LIMELIGHT_FLOOR_CLEREANCE= 0.04819;//Altura de la limelight
     public static double LIMELIGHT_VERTICAL_ANGLE = 0;
 
     public static final int normalTracking_Pipeline = 0;

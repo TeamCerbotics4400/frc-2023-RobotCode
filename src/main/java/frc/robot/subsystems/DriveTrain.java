@@ -146,10 +146,10 @@ public class DriveTrain extends SubsystemBase {
     rightLeader.setIdleMode(IdleMode.kBrake);
     rightFollower.setIdleMode(IdleMode.kBrake);
 
-    leftLeader.setSmartCurrentLimit(45);//75);
-    rightLeader.setSmartCurrentLimit(45);//75);
-    leftFollower.setSmartCurrentLimit(45);//75);
-    rightFollower.setSmartCurrentLimit(45);//75);
+    leftLeader.setSmartCurrentLimit(40);//75);
+    rightLeader.setSmartCurrentLimit(40);//75);
+    leftFollower.setSmartCurrentLimit(40);//75);
+    rightFollower.setSmartCurrentLimit(40);//75);
 
     imu.configFactoryDefault();
 
@@ -178,7 +178,9 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Num of tags", getNumofDetectedTargets());
 
-    positionState();
+    SmartDashboard.putNumber("Pose Difference", m_poseEstimator.getEstimatedPosition().getTranslation().getDistance(LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).toPose2d().getTranslation()));
+
+    //positionState();
 
     dynamicVisionDvs();
 
@@ -392,13 +394,13 @@ public class DriveTrain extends SubsystemBase {
   public void dynamicVisionDvs(){
     double xyStds = 0;
     double degStds = 0;
-    if(getNumofDetectedTargets() >= 2){
+    if(getNumofDetectedTargets() >= 2 && poseDebouncer.calculate(areTagsatGoodRange())){
       xyStds = 0.2;
       degStds = 2.5;
-    } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.5){
+    } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.5 && poseDebouncer.calculate(areTagsatGoodRange())){
       xyStds = 1.0;
       degStds = 12;
-    } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.1 ){
+    } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.1 && poseDebouncer.calculate(areTagsatGoodRange())){
       xyStds = 2.0;
       degStds = 30;
     }

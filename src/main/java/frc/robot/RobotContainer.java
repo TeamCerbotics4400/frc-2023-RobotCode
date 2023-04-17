@@ -174,8 +174,8 @@ public class RobotContainer {
    new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
 
    new JoystickButton(subsystemsDriver, 4)
-   .whileTrue(new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
-                                                                           m_nodeSelector));
+   .whileTrue(new ShooterDebugger(m_shooter, m_nodeSelector)); //StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
+                                                                           //m_nodeSelector));
   }    
 
   /**
