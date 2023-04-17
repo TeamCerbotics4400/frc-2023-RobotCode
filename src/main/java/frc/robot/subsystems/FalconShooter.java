@@ -140,8 +140,10 @@ public class FalconShooter extends SubsystemBase {
 
     SmartDashboard.putBoolean("Has already Shot", hasAlreadyShot());
 
-    SmartDashboard.putNumber("Distance To Target Z", LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ());
+    //SmartDashboard.putNumber("Distance To Target Z", LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ());
 
+    //Tunable Number Shooter
+    /* 
     SmartDashboard.putNumber("Horizontal velo", neoEncoder.getVelocity());
     SmartDashboard.putNumber("Left Velo", getLeftRPM());
     SmartDashboard.putNumber("Right Velo", getRightRPM());
@@ -150,7 +152,7 @@ public class FalconShooter extends SubsystemBase {
     double neoVelo = SmartDashboard.getNumber("Neo velo", 0);
 
     if(falconDesiredVelo != falconVelo){falconDesiredVelo = falconVelo;}
-    if(neoDesiredVelo != neoVelo){neoDesiredVelo = neoVelo;}
+    if(neoDesiredVelo != neoVelo){neoDesiredVelo = neoVelo;}*/
 
     SmartDashboard.putBoolean("NeedToStop", needToStop());
   }
@@ -253,6 +255,14 @@ public class FalconShooter extends SubsystemBase {
   public void stopShooterCurrent(){
     if(needToStop()){
       setMotorsPower(0, 0, 0);
+    }
+  }
+
+  public boolean onInterpolationRange(){
+    if(LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ() < 1.43){
+      return true;
+    } else {
+      return false;
     }
   }
 

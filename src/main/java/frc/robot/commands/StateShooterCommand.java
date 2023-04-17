@@ -71,9 +71,9 @@ public class StateShooterCommand extends CommandBase {
   
         case "High":
           //m_shooter.goToDashboardVelocity();
-          m_shooter.leftSetpoint(2600);
-          m_shooter.rightSetpoint(2600);
-          m_shooter.horizontalSetpoint(4500);
+          m_shooter.leftSetpoint(2050);
+          m_shooter.rightSetpoint(2050);
+          m_shooter.horizontalSetpoint(2500);
         break;
   
         case "Ave Maria":

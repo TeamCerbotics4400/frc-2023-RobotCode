@@ -13,6 +13,8 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -98,8 +100,8 @@ public class DriveTrain extends SubsystemBase {
     Rotation2d.fromDegrees(getCorrectedAngle()), encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
 
-  ShuffleboardTab debuggingTab;
-  ShuffleboardTab competitionTab;
+  //ShuffleboardTab debuggingTab;
+  //ShuffleboardTab competitionTab;
 
   Alliance alliance = Alliance.Invalid;
 
@@ -149,8 +151,8 @@ public class DriveTrain extends SubsystemBase {
 
     imu.configFactoryDefault();
 
-    debuggingTab = Shuffleboard.getTab("Debugging Tab");
-    competitionTab = Shuffleboard.getTab("Competition Tab");
+    //debuggingTab = Shuffleboard.getTab("Debugging Tab");
+    //competitionTab = Shuffleboard.getTab("Competition Tab");
 
     resetImu();
     resetEncoders();
@@ -170,18 +172,32 @@ public class DriveTrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Num of tags", getNumofDetectedTargets());
 
-    dynamicVisionDvs();
+    SmartDashboard.putString("Alliance", alliance.toString());
+
+    //SmartDashboard.putNumber("Wheel X", wheelOdometry.getPoseMeters().getX());
+    //SmartDashboard.putNumber("Wheel Y", wheelOdometry.getPoseMeters().getY());
+    //SmartDashboard.putNumber("Wheel Angle", wheelOdometry.getPoseMeters().getRotation().getDegrees());
+
+    setDynamicVisionStdDevs();
+    //dynamicVisionDvs();
 
     //bot3dPose.append(log3dPose());
   }
 
-  public void selectDashboardType(){
+  /*public void selectDashboardType(){
     if(DriverStation.isFMSAttached()){
       Shuffleboard.getTab("Competition Tab");
     }
     else{
       Shuffleboard.getTab("Debugging Tab");
     }
+  }*/
+
+  public void setDriveCurrentLimit(int current){
+    leftLeader.setSmartCurrentLimit(current);
+    rightLeader.setSmartCurrentLimit(current);
+    leftFollower.setSmartCurrentLimit(current);
+    rightFollower.setSmartCurrentLimit(current);
   }
 
   /*********** Drive Methods ***********/
@@ -383,18 +399,18 @@ public class DriveTrain extends SubsystemBase {
     double xyStds = 0;
     double degStds = 0;
     if(getNumofDetectedTargets() >= 2 && poseDebouncer.calculate(areTagsatGoodRange())){
-      xyStds = 0.2;
-      degStds = 2.5;
+      xyStds = 0.1;
+      degStds = 0.1;
     } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.5 && poseDebouncer.calculate(areTagsatGoodRange())){
-      xyStds = 1.0;
-      degStds = 12;
+      xyStds = 0.5;
+      degStds = 0.5;
     } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.1 && poseDebouncer.calculate(areTagsatGoodRange())){
-      xyStds = 2.0;
-      degStds = 30;
+      xyStds = 1.2;
+      degStds = 1.2;
     }
 
     m_poseEstimator.setVisionMeasurementStdDevs(
-                  VecBuilder.fill(xyStds, xyStds, Units.degreesToRadians(degStds)));
+                  VecBuilder.fill(xyStds, xyStds, degStds));
   }
 
   //The rejection method in question
@@ -433,6 +449,24 @@ public class DriveTrain extends SubsystemBase {
     } 
     
     return goodRange;
+  }
+
+  public void setDynamicVisionStdDevs(){
+    if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 2.5){
+      m_poseEstimator.setVisionMeasurementStdDevs(new 
+                              MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.1));
+    } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
+        && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
+          m_poseEstimator.setVisionMeasurementStdDevs(new 
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.3, 0.3, 0.3));
+    } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
+    && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
+      m_poseEstimator.setVisionMeasurementStdDevs(new 
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.7, 0.7, 0.7));
+    } else {
+      m_poseEstimator.setVisionMeasurementStdDevs(new 
+          MatBuilder<>(Nat.N3(), Nat.N1()).fill(1.0, 1.0, 1.0));
+    }
   }
 
   public void positionState(){

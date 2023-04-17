@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueLoadingTwoPieces;
@@ -67,7 +68,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     m_autoChooser.setDefaultOption("PieceBalance Default", m_DefaultAuto);
-    //m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
+    m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
     //m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
     m_autoChooser.addOption("BLUE Two Working", m_autoNames[4]);
@@ -189,9 +190,9 @@ public class RobotContainer {
 
     System.out.println("Auto Selected: " + m_autoSelected);
     switch(m_autoSelected){
-      /*case "PID TUNER":
+      case "PID TUNER":
        autonomousCommand = new PIDTunnerCommand(m_drive, m_arm, m_wrist);
-      break;*/
+      break;
 
       case "STRAIGHT AUTO":
         autonomousCommand = new StraightAuto(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);

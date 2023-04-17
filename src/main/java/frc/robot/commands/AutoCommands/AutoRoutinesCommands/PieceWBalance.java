@@ -24,7 +24,7 @@ import frc.robot.subsystems.WristSubsystem;
 public class PieceWBalance extends SequentialCommandGroup {
   /** Creates a new OnlyBalanceAutoCommand. */
   PathPlannerTrajectory onlyBalanceTrajectory = PathPlanner.loadPath("Only Balance", 
-    1.0, 
+    2.0, 
     0.75, true);
     DriveTrain m_drive;
     ArmSubsystem m_arm;
@@ -44,6 +44,8 @@ public class PieceWBalance extends SequentialCommandGroup {
 
     InstantCommand resetOdometry = 
     new InstantCommand(() -> m_drive.resetOdometry(onlyBalanceTrajectory.getInitialPose()));
+
+    InstantCommand setCurrent = new InstantCommand(() -> m_drive.setDriveCurrentLimit(75));
 
     InstantCommand shootHigh = new InstantCommand(() -> m_selector.selectLevel(2));
 

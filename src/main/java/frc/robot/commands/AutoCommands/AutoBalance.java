@@ -4,6 +4,8 @@
 
 package frc.robot.commands.AutoCommands;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
@@ -12,6 +14,8 @@ public class AutoBalance extends CommandBase {
   private final DriveTrain m_drive;
 
   private double balancedAngle = 0.0;
+  
+  Debouncer angleDebouncer = new Debouncer(0.1, DebounceType.kBoth);
   //private double balancedX = 3.85;
   
   public AutoBalance(DriveTrain m_drive) {
@@ -25,7 +29,7 @@ public class AutoBalance extends CommandBase {
   @Override
   public void initialize() {
     m_drive.getBalanceController().setSetpoint(balancedAngle);
-    m_drive.getBalanceController().setIntegratorRange(-0.5, 0.5 );
+    m_drive.getBalanceController().reset();
     m_drive.getBalanceController().setTolerance(0.32);
   }
 
@@ -44,7 +48,7 @@ public class AutoBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_drive.getBalanceController().atSetpoint() && isAtBalancedPose()){
+    if(m_drive.getBalanceController().atSetpoint() && angleDebouncer.calculate(isAtBalancedPose())){
       return true; 
     } else {
       return false;

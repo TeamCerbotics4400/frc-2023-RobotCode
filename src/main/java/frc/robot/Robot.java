@@ -4,12 +4,16 @@
 
 package frc.robot;
 
+import java.sql.Driver;
+
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -46,6 +50,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  DoubleLogEntry batteryVoltageLog;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -57,9 +62,10 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     
+    DataLog log = DataLogManager.getLog();
+    
     if(Constants.needToLog){
       DataLogManager.start();
-      DataLog log = DataLogManager.getLog();
       DriverStation.startDataLog(log);
     }
     
@@ -68,6 +74,8 @@ public class Robot extends TimedRobot {
     for (int port = 5800; port <= 5805; port++) {
       PortForwarder.add(port, "limelight.tags", port);
     }
+
+    batteryVoltageLog = new DoubleLogEntry(log, "Battery Voltage");
 
     m_robotContainer.getDrivetrain().setAlliance(DriverStation.getAlliance());
   }
@@ -87,6 +95,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run(); 
     m_robotContainer.getDrivetrain().odometryWvision();
+    batteryVoltageLog.append(RobotController.getBatteryVoltage());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -109,6 +118,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    m_robotContainer.getDrivetrain().setDriveCurrentLimit(50);
   }
 
   /** This function is called periodically during autonomous. */
@@ -126,6 +137,7 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.getDrivetrain().setAlliance(DriverStation.getAlliance());
+    m_robotContainer.getDrivetrain().setDriveCurrentLimit(75);
   }
 
   /** This function is called periodically during operator control. */
