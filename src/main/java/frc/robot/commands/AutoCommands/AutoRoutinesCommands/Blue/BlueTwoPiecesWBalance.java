@@ -13,7 +13,6 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.AutoCommands.AutoBalance;
 import frc.robot.commands.AutoCommands.AveMariaShoot;
 import frc.robot.commands.AutoCommands.IdleArm;
@@ -50,7 +49,7 @@ public class BlueTwoPiecesWBalance extends SequentialCommandGroup {
      * 3 Ave Maria
      */
     InstantCommand aveMaria = new InstantCommand(() -> m_node.selectLevel(3));
-    InstantCommand highShoot = new InstantCommand(() -> m_node.selectLevel(2));
+    //InstantCommand highShoot = new InstantCommand(() -> m_node.selectLevel(2));
 
     eventMap.put("Shoot", new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));

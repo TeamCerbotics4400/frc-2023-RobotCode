@@ -17,7 +17,6 @@ import frc.robot.commands.TeleOpCommands.AlignToNode;
 import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
 import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
-import frc.robot.commands.ShooterDebugger;
 import frc.robot.commands.StateIntake;
 import frc.robot.commands.StateShooterCommand;
 
@@ -174,8 +173,8 @@ public class RobotContainer {
    new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
 
    new JoystickButton(subsystemsDriver, 4)
-   .whileTrue(new ShooterDebugger(m_shooter, m_nodeSelector)); //StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
-                                                                           //m_nodeSelector));
+   .whileTrue(new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
+                                                                            m_nodeSelector));
   }    
 
   /**

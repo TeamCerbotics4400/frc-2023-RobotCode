@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.LimelightHelpers;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.NodeSelector;
@@ -98,18 +100,30 @@ public class StateShooterCommand extends CommandBase {
         break;
   
         case "Mid":
-            //800 RPM for cube
-            //m_shooter.goToDashboardVelocity();
+            /* En caso de que la interpolacion no jale
             m_shooter.leftSetpoint(1200);
             m_shooter.rightSetpoint(1200);
-            m_shooter.horizontalSetpoint(1200);
+            m_shooter.horizontalSetpoint(1200);*/
+            m_shooter.leftSetpoint(m_shooter.getSpeedForDistanceFalconMid(
+              LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ()));
+            m_shooter.rightSetpoint(m_shooter.getSpeedForDistanceFalconMid(
+              LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ()));
+            m_shooter.horizontalSetpoint(m_shooter.getSpeedForDistanceNeoMid(
+              LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ()));
         break;
   
         case "High":
-          //m_shooter.goToDashboardVelocity();
+          /* En caso de que la interpolacion no jale
           m_shooter.leftSetpoint(1350);//2300
           m_shooter.rightSetpoint(1350);//2300
-          m_shooter.horizontalSetpoint(3250);//2800
+          m_shooter.horizontalSetpoint(3250);//2800*/
+
+          m_shooter.leftSetpoint(m_shooter.getSpeedForDistanceFalconHigh(
+            LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ()));
+          m_shooter.rightSetpoint(m_shooter.getSpeedForDistanceFalconHigh(
+            LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ()));
+          m_shooter.horizontalSetpoint(m_shooter.getSpeedForDistanceNeoHigh(
+            LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ()));
         break;
   
         case "Ave Maria":

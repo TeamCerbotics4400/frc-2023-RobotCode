@@ -60,14 +60,20 @@ public class FalconShooter extends SubsystemBase {
    kDistanceToShooterMidSpeedFalcon = new InterpolatingTreeMap<>();
 
     static{
-      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(0.0), new InterpolatingDouble(0.0));
+      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(0.79), new InterpolatingDouble(1100.0));
+      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(0.94), new InterpolatingDouble(1200.0));
+      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(0.94), new InterpolatingDouble(1225.0));
+      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(1.43), new InterpolatingDouble(1600.0));
     }
 
   static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
    kDistanceToShooterMidSpeedNeo = new InterpolatingTreeMap<>();
 
     static{
-      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(0.0), new InterpolatingDouble(0.0));
+      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(0.79), new InterpolatingDouble(1200.0));
+      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(0.94), new InterpolatingDouble(1700.0));
+      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(1.10), new InterpolatingDouble(1725.0));
+      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(1.43), new InterpolatingDouble(2100.0));
     }
 
   boolean onTarget = false;
@@ -134,8 +140,6 @@ public class FalconShooter extends SubsystemBase {
 
     SmartDashboard.putBoolean("Has already Shot", hasAlreadyShot());
 
-    SmartDashboard.putNumber("Distance To Target X", LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getX());
-    SmartDashboard.putNumber("Distance To Target Y", LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getY());
     SmartDashboard.putNumber("Distance To Target Z", LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ());
 
     SmartDashboard.putNumber("Horizontal velo", neoEncoder.getVelocity());
@@ -205,6 +209,16 @@ public class FalconShooter extends SubsystemBase {
 
   public double getSpeedForDistanceNeoHigh(double distance){
     return kDistanceToShooterHighSpeedNeo.getInterpolated(new InterpolatingDouble
+    (Math.max(Math.min(distance, 1.43), 0.79))).value;
+  }
+
+  public double getSpeedForDistanceFalconMid(double distance){
+    return kDistanceToShooterMidSpeedFalcon.getInterpolated(new InterpolatingDouble
+    (Math.max(Math.min(distance, 1.43), 0.79))).value;
+  }
+
+  public double getSpeedForDistanceNeoMid(double distance){
+    return kDistanceToShooterMidSpeedNeo.getInterpolated(new InterpolatingDouble
     (Math.max(Math.min(distance, 1.43), 0.79))).value;
   }
 

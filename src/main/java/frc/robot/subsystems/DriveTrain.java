@@ -13,8 +13,6 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.MatBuilder;
-import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -177,10 +175,6 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putString("Position State", StateMachines.getPositionState().toString());
 
     SmartDashboard.putNumber("Num of tags", getNumofDetectedTargets());
-
-    SmartDashboard.putNumber("Pose Difference", m_poseEstimator.getEstimatedPosition().getTranslation().getDistance(LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).toPose2d().getTranslation()));
-
-    //positionState();
 
     dynamicVisionDvs();
 
