@@ -67,7 +67,7 @@ public class DriveToNode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.getVisionOdo());
+    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.estimatedPose2d());
     Rotation2d targetRotation = GeomUtil.direction(intermediatePoint
     .minus(m_drive.getEstimationTranslation()));
 
@@ -75,7 +75,7 @@ public class DriveToNode extends CommandBase {
 
     double angularSpeed;
 
-    if(m_drive.getVisionOdo().getX() > m_nodeSelector.getNodeToAlign().getTranslation().getX() + 0.55){
+    if(m_drive.estimatedPose2d().getX() > m_nodeSelector.getNodeToAlign().getTranslation().getX() + 0.55){
       angularSpeed = angularController.calculate(m_drive.getEstimationRotation()
       .plus(Rotation2d.fromDegrees(0)).getDegrees());
       angularSpeed = MathUtil.clamp(angularSpeed, -0.5, 0.5);
@@ -107,7 +107,7 @@ public class DriveToNode extends CommandBase {
   }
 
   public boolean isChargingSCleared(){
-    if(m_drive.getVisionOdo().getX() <= FieldConstants.CHARGING_STATION_CLEARENCE){
+    if(m_drive.estimatedPose2d().getX() <= FieldConstants.CHARGING_STATION_CLEARENCE){
       return true;
     } else{
       return false;
@@ -115,7 +115,7 @@ public class DriveToNode extends CommandBase {
   }
 
   public boolean isOnRight(){
-    if(m_drive.getVisionOdo().getY() >= FieldConstants.GRID_CENTER){
+    if(m_drive.estimatedPose2d().getY() >= FieldConstants.GRID_CENTER){
       return true;
     } else {
       return false;

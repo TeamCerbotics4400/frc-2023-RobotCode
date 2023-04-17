@@ -68,6 +68,8 @@ public class Robot extends TimedRobot {
     for (int port = 5800; port <= 5805; port++) {
       PortForwarder.add(port, "limelight.tags", port);
     }
+
+    m_robotContainer.getDrivetrain().setAlliance(DriverStation.getAlliance());
   }
 
   /**
@@ -122,6 +124,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_robotContainer.getDrivetrain().setAlliance(DriverStation.getAlliance());
   }
 
   /** This function is called periodically during operator control. */

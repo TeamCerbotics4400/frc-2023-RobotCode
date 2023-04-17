@@ -31,6 +31,7 @@ import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -92,11 +93,6 @@ public class DriveTrain extends SubsystemBase {
    * get measurements and avoid having lots of noise on our measurements for more accurate path
    * following 
    */
-  DifferentialDriveOdometry visionOdometry = new DifferentialDriveOdometry(
-                      new Rotation2d(m_poseEstimator.getEstimatedPosition()
-                                      .getRotation().getDegrees()), 
-                      m_poseEstimator.getEstimatedPosition().getX(),
-                      m_poseEstimator.getEstimatedPosition().getY());
 
   DifferentialDriveOdometry wheelOdometry = new DifferentialDriveOdometry(
     Rotation2d.fromDegrees(getCorrectedAngle()), encoderCountsToMeters(leftEncoder.getPosition()), 
@@ -105,9 +101,11 @@ public class DriveTrain extends SubsystemBase {
   ShuffleboardTab debuggingTab;
   ShuffleboardTab competitionTab;
 
+  Alliance alliance = Alliance.Invalid;
+
   private DoubleArrayLogEntry bot3dPose;
 
-  Debouncer poseDebouncer = new Debouncer(0.2, DebounceType.kRising);
+  Debouncer poseDebouncer = new Debouncer(0.1, DebounceType.kRising);
 
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
@@ -165,10 +163,6 @@ public class DriveTrain extends SubsystemBase {
      wheelOdometry.update(Rotation2d.fromDegrees(getCorrectedAngle()), 
      encoderCountsToMeters(leftEncoder.getPosition()), 
      encoderCountsToMeters(rightEncoder.getPosition()));
-
-     visionOdometry.update(Rotation2d.fromDegrees(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), 
-     m_poseEstimator.getEstimatedPosition().getX(), 
-     m_poseEstimator.getEstimatedPosition().getY());
 
     SmartDashboard.putBoolean("Tags good range", poseDebouncer.calculate(areTagsatGoodRange()));
 
@@ -258,6 +252,10 @@ public class DriveTrain extends SubsystemBase {
 
   /*********** Odometry ***********/
 
+  public void setAlliance(Alliance alliance){
+    this.alliance = alliance;
+  }
+
   public double getAngle(){
     return imu.getYaw();
   }
@@ -278,10 +276,6 @@ public class DriveTrain extends SubsystemBase {
   public void resetSensors(){
     rightEncoder.setPosition(0);
     leftEncoder.setPosition(0);
-  }
-
-  public Pose2d getVisionOdo() {
-    return visionOdometry.getPoseMeters();
   }
 
   public Pose2d getWheelPose(){
@@ -406,25 +400,39 @@ public class DriveTrain extends SubsystemBase {
   //The rejection method in question
   public boolean areTagsatGoodRange(){
     boolean goodRange = false;
-    if(getNumofDetectedTargets() <= 1){
-      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 3.5){
-        goodRange = true;
+    //If Alliance is Blue, use Blue Community
+    if(alliance == Alliance.Blue){
+      if(getNumofDetectedTargets() <= 1){
+        if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
+          goodRange = true;
+        } else {
+          goodRange = false;
+        }
+        //If Alliance is Red, use Red Community
       } else {
-        goodRange = false;
+        if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 6.0){
+          goodRange = true;
+        } else {
+          goodRange = false;
+        }
       }
     } else {
-      if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() < 6.0){
-        goodRange = true;
+      if(getNumofDetectedTargets() <= 1){
+        if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 13.0){
+          goodRange = true;
+        } else {
+          goodRange = false;
+        }
       } else {
-        goodRange = false;
+        if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 10.50){
+          goodRange = true;
+        } else {
+          goodRange = false;
+        }
       }
-    }
+    } 
     
     return goodRange;
-  }
-
-  public void getEstimatedPose(){
-    m_poseEstimator.getEstimatedPosition();
   }
 
   public void positionState(){

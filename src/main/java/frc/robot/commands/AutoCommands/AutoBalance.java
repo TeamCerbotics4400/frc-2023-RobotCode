@@ -25,6 +25,7 @@ public class AutoBalance extends CommandBase {
   @Override
   public void initialize() {
     m_drive.getBalanceController().setSetpoint(balancedAngle);
+    m_drive.getBalanceController().setIntegratorRange(-0.5, 0.5 );
     m_drive.getBalanceController().setTolerance(0.32);
   }
 
@@ -43,6 +44,18 @@ public class AutoBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_drive.getBalanceController().atSetpoint();
+    if(m_drive.getBalanceController().atSetpoint() && isAtBalancedPose()){
+      return true; 
+    } else {
+      return false;
+    }
+  }
+
+  public boolean isAtBalancedPose(){
+    if(m_drive.estimatedPose2d().getX() <= 3.98 &&  m_drive.estimatedPose2d().getX() >= 3.80){
+      return true;
+    } else {
+      return false;
+    }
   }
 }
