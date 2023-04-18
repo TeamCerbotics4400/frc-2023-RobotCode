@@ -23,6 +23,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -301,7 +302,9 @@ public class DriveTrain extends SubsystemBase {
     vision.resetPoseEstimator(pose);
   }
 
-  
+  public void setAllianceForVision(Alliance alliance){
+    vision.setAlliance(alliance);
+  }
 
   //Gets the Balance PID Controller for use in other classes
   public PIDController getBalanceController(){

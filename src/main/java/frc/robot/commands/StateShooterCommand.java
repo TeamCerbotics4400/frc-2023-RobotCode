@@ -97,9 +97,9 @@ public class StateShooterCommand extends CommandBase {
        //new CombinedShooter(m_shooter, m_selector);
        switch(m_selector.getLevelName()){
         case "Low":
-            m_shooter.leftSetpoint(750);
-            m_shooter.rightSetpoint(750);
-            m_shooter.horizontalSetpoint(750);
+            m_shooter.leftSetpoint(650);
+            m_shooter.rightSetpoint(650);
+            m_shooter.horizontalSetpoint(650);
         break;
   
         case "Mid":
