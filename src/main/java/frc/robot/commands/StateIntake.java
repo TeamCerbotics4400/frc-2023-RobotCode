@@ -79,7 +79,7 @@ public class StateIntake extends CommandBase {
       
     }
 
-    SmartDashboard.putString("Current Intake State", StateMachines.getIntakeState().toString());
+    //SmartDashboard.putString("Current Intake State", StateMachines.getIntakeState().toString());
   }
 
   // Called once the command ends or is interrupted.

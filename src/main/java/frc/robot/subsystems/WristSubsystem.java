@@ -53,6 +53,8 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
 
     wristMotor.setSmartCurrentLimit(5);
 
+    wristMotor.setCANTimeout(0);
+
     resetEncoder();
   }
 
@@ -61,7 +63,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   public void periodic() {
       super.periodic();
 
-      SmartDashboard.putNumber("Wrist Angle", getMeasurement());
+      //SmartDashboard.putNumber("Wrist Angle", getMeasurement());
   }
 
   @Override
@@ -99,11 +101,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
                 },
                 this);
     return ejecutable;
-  }
-
-  public void goToPositionMethod(double position){
-    this.setGoal(position);
-    this.enable();
   }
 
   public boolean isReady(){

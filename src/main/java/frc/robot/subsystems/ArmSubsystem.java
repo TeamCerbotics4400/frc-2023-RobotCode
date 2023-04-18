@@ -71,13 +71,16 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
 
     leftMotor.setSmartCurrentLimit(80);
     rightMotor.setSmartCurrentLimit(80);
+
+    leftMotor.setCANTimeout(0);
+    rightMotor.setCANTimeout(0);
   }
 
 
   @Override
   public void periodic() {
       super.periodic();
-      SmartDashboard.putNumber("Arm Angle", getMeasurement());
+      //SmartDashboard.putNumber("Arm Angle", getMeasurement());
 
       //SmartDashboard.putBoolean("Arm ready", isReady());
       //SmartDashboard.putBoolean("Is Intaking Pose", isInIntakingPos());
@@ -106,14 +109,6 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
                 },
                 this);
     return ejecutable;
-  }
-
-  public void goToPositionMethod(double goalPosition) {
-    double pidVal = m_controller.calculate(getMeasurement(), goalPosition);
-    double acceleration = (m_controller.getSetpoint().velocity );
-    leftMotor.setVoltage(
-        pidVal
-        + m_controller.calculate(m_controller.getSetpoint().velocity, acceleration));
   }
 
   public Pose3d getSuperStructurePose(){

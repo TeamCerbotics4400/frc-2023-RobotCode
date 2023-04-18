@@ -120,6 +120,11 @@ public class DriveTrain extends SubsystemBase {
     leftFollower.setSmartCurrentLimit(40);//75);
     rightFollower.setSmartCurrentLimit(40);//75);
 
+    leftLeader.setCANTimeout(0);
+    rightLeader.setCANTimeout(0);
+    leftFollower.setCANTimeout(0);
+    rightFollower.setCANTimeout(0);
+
     imu.configFactoryDefault();
 
     //debuggingTab = Shuffleboard.getTab("Debugging Tab");
@@ -137,9 +142,7 @@ public class DriveTrain extends SubsystemBase {
      encoderCountsToMeters(leftEncoder.getPosition()), 
      encoderCountsToMeters(rightEncoder.getPosition()));
 
-    SmartDashboard.putString("Position State", StateMachines.getPositionState().toString());
-
-    
+    //SmartDashboard.putString("Position State", StateMachines.getPositionState().toString());
 
     //SmartDashboard.putNumber("Wheel X", wheelOdometry.getPoseMeters().getX());
     //SmartDashboard.putNumber("Wheel Y", wheelOdometry.getPoseMeters().getY());

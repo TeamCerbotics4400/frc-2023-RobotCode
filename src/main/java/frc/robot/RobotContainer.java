@@ -16,7 +16,6 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
 import frc.robot.commands.TeleOpCommands.AlignToNode;
 import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
-import frc.robot.commands.TeleOpCommands.LimelightToggle;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
 import frc.robot.commands.StateIntake;
 import frc.robot.commands.StateShooterCommand;
@@ -67,7 +66,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    m_autoChooser.setDefaultOption("PieceBalance Default", m_DefaultAuto);
+    m_autoChooser.setDefaultOption("Piece and Balance", m_DefaultAuto);
     m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
     //m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
@@ -144,12 +143,6 @@ public class RobotContainer {
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
 
    //Controller 2
-   //Pov right
-   new POVButton(subsystemsDriver, 90).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionRight()));
-
-   //Pov left
-   new POVButton(subsystemsDriver, 270).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionLeft()));
-
    //Pov up
    new POVButton(subsystemsDriver, 0).onTrue(new InstantCommand(() -> m_nodeSelector.updateSelectionUp()));
 
@@ -169,9 +162,6 @@ public class RobotContainer {
    .whileTrue(m_wrist.goToPosition(WristConstants.LEFT_POSITION))
    .whileFalse(m_arm.goToPosition(ArmConstants.IDLE_POSITION))
    .whileFalse(m_wrist.goToPosition(WristConstants.IDLE_POSITION));
-
-   //Right stick button
-   new JoystickButton(subsystemsDriver, 10).whileTrue(new LimelightToggle());
 
    new JoystickButton(subsystemsDriver, 4)
    .whileTrue(new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 

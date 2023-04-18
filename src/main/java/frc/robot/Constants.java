@@ -26,7 +26,7 @@ public final class Constants {
 
   public static final boolean tuningMode = false;
 
-  public static final boolean needToLog = true; 
+  public static final boolean needToLog = false; 
   
   public static final class DriveConstants{
     public static final int LeftLeader_ID = 2; //3

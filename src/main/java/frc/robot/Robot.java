@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
 
-import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -69,10 +68,6 @@ public class Robot extends TimedRobot {
     
     PathPlannerServer.startServer(5811);
 
-    for (int port = 5800; port <= 5805; port++) {
-      PortForwarder.add(port, "limelight.tags", port);
-    }
-
     batteryVoltageLog = new DoubleLogEntry(log, "Battery Voltage");
   }
 
@@ -96,7 +91,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    LimelightHelpers.setLEDMode_PipelineControl(VisionConstants.tapeLimelight);
+    //LimelightHelpers.setLEDMode_PipelineControl(VisionConstants.tapeLimelight);
   }
 
   @Override
@@ -113,7 +108,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
-    m_robotContainer.getDrivetrain().setDriveCurrentLimit(50);
+    m_robotContainer.getDrivetrain().setDriveCurrentLimit(75);
 
     m_robotContainer.getDrivetrain().setAllianceForVision(DriverStation.getAlliance());
   }
@@ -131,19 +126,19 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.getDrivetrain().setDriveCurrentLimit(75);
+    m_robotContainer.getDrivetrain().setDriveCurrentLimit(40);
     m_robotContainer.getDrivetrain().setAllianceForVision(DriverStation.getAlliance());
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(StateMachines.getIntakeState() == IntakeState.FULL){
+    /*if(StateMachines.getIntakeState() == IntakeState.FULL){
       m_robotContainer.setIntakeRumble(); 
     } else {
       m_robotContainer.getRumbleTimer().stop();
       m_robotContainer.getRumbleTimer().reset();
-    }
+    }*/
   }
 
   @Override

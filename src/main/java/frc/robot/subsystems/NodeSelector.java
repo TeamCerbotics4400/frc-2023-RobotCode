@@ -63,28 +63,6 @@ public class NodeSelector extends SubsystemBase {
     displaySelection();
   }
 
-  public void updateSelectionRight(){
-    int pov = joy.getPOV();
-
-    if(pov == 90){
-      currentSelectionNodes++;
-      if(currentSelectionNodes >= nodeNames.size()){
-        currentSelectionNodes = 0;
-      }
-    }
-  }
-
-  public void updateSelectionLeft(){
-    int pov = joy.getPOV();
-
-    if(pov == 270){
-      currentSelectionNodes--;
-      if(currentSelectionNodes < 0){
-        currentSelectionNodes = nodeNames.size() - 1;
-      }
-    }  
-  }
-
   public void updateSelectionUp(){
     int pov = joy.getPOV();
 
@@ -109,16 +87,12 @@ public class NodeSelector extends SubsystemBase {
 
   public void displaySelection(){
     
-    String currentKeyNodes = nodeNames.get(currentSelectionNodes);
     String currentKeyLevels = scoringLevels.get(currentSelectionLevels);
 
-    if (currentKeyNodes != null) {
+    if (currentKeyLevels != null) {
       // Get the string representation of the selected entry
   
       // Display the selected entry on the SmartDashboard
-      SmartDashboard.putString("Selected Node", currentKeyNodes);
-      nodeToAlign = pose_map.get(currentKeyNodes);
-
       SmartDashboard.putString("Selected Level", currentKeyLevels);
       levelToShoot = level;
 

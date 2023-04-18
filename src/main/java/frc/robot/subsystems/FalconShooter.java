@@ -125,8 +125,8 @@ public class FalconShooter extends SubsystemBase {
     neoController.setD(ShooterConstants.hKd);
     neoController.setFF(ShooterConstants.hKff);
 
-    SmartDashboard.putNumber("Falcon velo", falconDesiredVelo);
-    SmartDashboard.putNumber("Neo velo", neoDesiredVelo);
+    //SmartDashboard.putNumber("Falcon velo", falconDesiredVelo);
+    //SmartDashboard.putNumber("Neo velo", neoDesiredVelo);
   }
 
   @Override
@@ -137,8 +137,6 @@ public class FalconShooter extends SubsystemBase {
     //SmartDashboard.putNumber("Right Current Filtered", filter.calculate(rightFlyWheel.getStatorCurrent()));
 
     //SmartDashboard.putNumber("Horizontal Roller Current", horizontalFlyWheel.getOutputCurrent());
-
-    SmartDashboard.putBoolean("Has already Shot", hasAlreadyShot());
 
     //SmartDashboard.putNumber("Distance To Target Z", LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ());
 
@@ -154,7 +152,7 @@ public class FalconShooter extends SubsystemBase {
     if(falconDesiredVelo != falconVelo){falconDesiredVelo = falconVelo;}
     if(neoDesiredVelo != neoVelo){neoDesiredVelo = neoVelo;}*/
 
-    SmartDashboard.putBoolean("NeedToStop", needToStop());
+    //SmartDashboard.putBoolean("NeedToStop", needToStop());
   }
 
   public void setCurrentLimit(double current, double seconds){
