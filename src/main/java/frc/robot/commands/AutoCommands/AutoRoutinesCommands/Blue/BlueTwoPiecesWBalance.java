@@ -30,7 +30,7 @@ public class BlueTwoPiecesWBalance extends SequentialCommandGroup {
   /** Creates a new TwoPiecesWBalance. */
   PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("Cable2Balance",//"TwoPiecesTesting", 
   5.0, 
-  1.75, true);//AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
+  1.85, true);//AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
   HashMap<String, Command> eventMap = new HashMap<>();
 
@@ -40,7 +40,7 @@ public class BlueTwoPiecesWBalance extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
 
     InstantCommand resetOdometry = new InstantCommand(() -> 
-    m_drive.resetVisionPose(piecesBalance.getInitialPose()));
+    m_drive.resetOdometry(piecesBalance.getInitialPose()));
 
     /*
      * 0 Low
@@ -49,15 +49,17 @@ public class BlueTwoPiecesWBalance extends SequentialCommandGroup {
      * 3 Ave Maria
      */
     InstantCommand aveMaria = new InstantCommand(() -> m_node.selectLevel(3));
+    InstantCommand low = new InstantCommand(() -> m_node.selectLevel(0));
     //InstantCommand highShoot = new InstantCommand(() -> m_node.selectLevel(2));
 
     eventMap.put("Shoot", new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
+    eventMap.put("Low", low);
 
     addCommands(resetOdometry, aveMaria, 
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
-    new FollowPathWithEvents(m_drive.createCommandForTrajectoryVision(piecesBalance), 
+    new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance), 
     piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive).alongWith(new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node))));//.alongWith(new CounterBalance(m_arm, m_wrist, m_node)));
   }
 }

@@ -15,7 +15,6 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
 import frc.robot.commands.TeleOpCommands.AlignToNode;
-import frc.robot.commands.TeleOpCommands.LimelightAutoAlign;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
 import frc.robot.commands.StateIntake;
 import frc.robot.commands.StateShooterCommand;
@@ -122,9 +121,6 @@ public class RobotContainer {
    //A button
    new JoystickButton(chassisDriver, 1).whileTrue(new 
                                           AlignToNode(m_drive, m_nodeSelector, chassisDriver));
-   //B utton
-   new JoystickButton(chassisDriver, 2).whileTrue(new 
-                                                    LimelightAutoAlign(m_drive, chassisDriver));
       
    //Left bumper
    new JoystickButton(chassisDriver, 5)

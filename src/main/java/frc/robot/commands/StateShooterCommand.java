@@ -56,9 +56,9 @@ public class StateShooterCommand extends CommandBase {
        //new CombinedShooter(m_shooter, m_selector);
        switch(m_selector.getLevelName()){
         case "Low":
-            m_shooter.leftSetpoint(500);
-            m_shooter.rightSetpoint(500);
-            m_shooter.horizontalSetpoint(650);
+            m_shooter.leftSetpoint(1850);
+            m_shooter.rightSetpoint(1850);
+            m_shooter.horizontalSetpoint(2500);
         break;
   
         case "Mid":
@@ -163,7 +163,7 @@ public class StateShooterCommand extends CommandBase {
     double rpmDifference = 0.0;
     switch(m_selector.getLevelName()){
       case "Low":
-         rpmDifference = 500 - m_shooter.getAverageRPM();
+         rpmDifference = 1850 - m_shooter.getAverageRPM();
       break;
 
       case "Mid":
