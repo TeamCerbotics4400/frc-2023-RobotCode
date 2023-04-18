@@ -5,16 +5,12 @@
 package frc.robot.commands.TeleOpCommands;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.NodeSelector;
@@ -88,7 +84,7 @@ public class AlignToNode extends CommandBase {
     
     m_drive.drive(-joy.getRawAxis(1), angularController.calculate(LimelightHelpers.getTX(VisionConstants.tagLimelightName)));
 
-    SmartDashboard.putString("Nearest Node", getNearestNode());
+    //SmartDashboard.putString("Nearest Node", getNearestNode());
   }
 
   // Called once the command ends or is interrupted.
@@ -104,7 +100,7 @@ public class AlignToNode extends CommandBase {
     return false;
   }
 
-  public String getNearestNode(){
+  /*public String getNearestNode(){
     String nearestNode = null;
     double minDistance = Double.POSITIVE_INFINITY;
 
@@ -118,5 +114,5 @@ public class AlignToNode extends CommandBase {
     }
 
     return nearestNode;
-  }
+  }*/
 }

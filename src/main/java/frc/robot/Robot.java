@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.sql.Driver;
-
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.net.PortForwarder;
@@ -76,8 +74,6 @@ public class Robot extends TimedRobot {
     }
 
     batteryVoltageLog = new DoubleLogEntry(log, "Battery Voltage");
-
-    m_robotContainer.getDrivetrain().setAlliance(DriverStation.getAlliance());
   }
 
   /**
@@ -94,7 +90,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run(); 
-    m_robotContainer.getDrivetrain().odometryWvision();
     batteryVoltageLog.append(RobotController.getBatteryVoltage());
   }
 
@@ -106,7 +101,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    m_robotContainer.getDrivetrain().positionState();
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -135,8 +129,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    m_robotContainer.getDrivetrain().setAlliance(DriverStation.getAlliance());
     m_robotContainer.getDrivetrain().setDriveCurrentLimit(75);
   }
 

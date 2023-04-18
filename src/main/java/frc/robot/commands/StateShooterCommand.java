@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FalconShooter;
@@ -47,6 +48,8 @@ public class StateShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putBoolean("On Revs", onRevs());
+
     if(DriverStation.isAutonomous()){
      if(m_arm.isReady() && m_wrist.isReady()){
       StateMachines.setIntakeState(state);
@@ -77,9 +80,9 @@ public class StateShooterCommand extends CommandBase {
         break;
   
         case "Ave Maria":
-          m_shooter.leftSetpoint(6000);
-          m_shooter.rightSetpoint(6000);
-          m_shooter.horizontalSetpoint(6000);
+          m_shooter.leftSetpoint(1950);
+          m_shooter.rightSetpoint(1950);
+          m_shooter.horizontalSetpoint(2600);
       }
       break;
     }
@@ -150,12 +153,39 @@ public class StateShooterCommand extends CommandBase {
   public boolean isFinished() {
     if(DriverStation.isAutonomous()){
       //Timer.delay(0.5);
-      if(m_arm.isInShootingPos() && m_shooter.hasAlreadyShot() && StateMachines.isShooting()){
+      if(m_arm.isInShootingPos() && onRevs() && StateMachines.isShooting()){
         return true;
       } else {
         return false;
       }
     } 
     return false;
+  }
+
+  public boolean onRevs(){
+    double rpmDifference = 0.0;
+    switch(m_selector.getLevelName()){
+      case "Low":
+         rpmDifference = 500 - m_shooter.getAverageRPM();
+      break;
+
+      case "Mid":
+         rpmDifference = 1200 - m_shooter.getAverageRPM();
+      break;
+
+      case "High":
+         rpmDifference = 2050 - m_shooter.getAverageRPM();
+      break;
+
+      case "Ave Maria":
+         rpmDifference = 1950 - m_shooter.getAverageRPM();
+      break;
+    }
+
+    if(rpmDifference <= ShooterConstants.shooterTreshold){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

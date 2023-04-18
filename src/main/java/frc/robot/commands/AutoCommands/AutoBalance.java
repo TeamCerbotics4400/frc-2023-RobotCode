@@ -56,7 +56,7 @@ public class AutoBalance extends CommandBase {
   }
 
   public boolean isAtBalancedPose(){
-    if(m_drive.estimatedPose2d().getX() <= 3.98 &&  m_drive.estimatedPose2d().getX() >= 3.80){
+    if(m_drive.getVisionPose().getX() <= 3.98 &&  m_drive.getVisionPose().getX() >= 3.80){
       return true;
     } else {
       return false;

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.NodeSelector;
 import team4400.Util.GeomUtil;
@@ -57,7 +56,7 @@ public class DriveToNode extends CommandBase {
 
     double testTarget = Double.POSITIVE_INFINITY;
     double distance = 
-    m_nodeSelector.getNodeToAlign().getTranslation().getDistance(m_drive.getEstimationTranslation());
+    m_nodeSelector.getNodeToAlign().getTranslation().getDistance(m_drive.getVisionPose().getTranslation());
     if(distance < testTarget){
       closestRotation = m_nodeSelector.getNodeToAlign().getRotation();
       testTarget = distance;
@@ -67,23 +66,23 @@ public class DriveToNode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.estimatedPose2d());
+    Translation2d intermediatePoint = determineIntermediatePoint(m_drive.getVisionPose());
     Rotation2d targetRotation = GeomUtil.direction(intermediatePoint
-    .minus(m_drive.getEstimationTranslation()));
+    .minus(m_drive.getVisionPose().getTranslation()));
 
     angularController.setSetpoint(targetRotation.getDegrees());
 
     double angularSpeed;
 
-    if(m_drive.estimatedPose2d().getX() > m_nodeSelector.getNodeToAlign().getTranslation().getX() + 0.55){
-      angularSpeed = angularController.calculate(m_drive.getEstimationRotation()
+    if(m_drive.getVisionPose().getX() > m_nodeSelector.getNodeToAlign().getTranslation().getX() + 0.55){
+      angularSpeed = angularController.calculate(m_drive.getVisionPose().getRotation()
       .plus(Rotation2d.fromDegrees(0)).getDegrees());
       angularSpeed = MathUtil.clamp(angularSpeed, -0.5, 0.5);
 
       m_drive.drive(-joy.getRawAxis(1), angularSpeed);
 
     } else {
-      angularSpeed = angularController.calculate(m_drive.getEstimationAngle());
+      angularSpeed = angularController.calculate(m_drive.getVisionPose().getRotation().getDegrees());
 
       m_drive.drive(-joy.getRawAxis(1), angularSpeed);
     }
@@ -106,7 +105,7 @@ public class DriveToNode extends CommandBase {
     return false;
   }
 
-  public boolean isChargingSCleared(){
+  /*public boolean isChargingSCleared(){
     if(m_drive.estimatedPose2d().getX() <= FieldConstants.CHARGING_STATION_CLEARENCE){
       return true;
     } else{
@@ -120,11 +119,11 @@ public class DriveToNode extends CommandBase {
     } else {
       return false;
     }
-  }
+  }*/
 
   public Translation2d determineIntermediatePoint(Pose2d robotPose){
     double intermediateDistance = 
-        m_nodeSelector.getNodeToAlign().getTranslation().getDistance(m_drive.getEstimationTranslation());
+        m_nodeSelector.getNodeToAlign().getTranslation().getDistance(m_drive.getVisionPose().getTranslation());
     Pose2d intermediatePose = new Pose2d(m_nodeSelector.getNodeToAlign().getTranslation(), closestRotation)
         .transformBy(GeomUtil.transformFromTranslation(intermediateDistance * convergenceFactor, 0.0));
     return intermediatePose.getTranslation(); 

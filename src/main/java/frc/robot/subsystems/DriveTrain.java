@@ -13,40 +13,23 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.MatBuilder;
-import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.VisionConstants;
 import team4400.StateMachines;
-import team4400.StateMachines.PositionState;
 import team4400.Util.DriveSignal;
 
 public class DriveTrain extends SubsystemBase {
@@ -69,8 +52,6 @@ public class DriveTrain extends SubsystemBase {
 
   DifferentialDrive differentialDrive = new DifferentialDrive(leftControllers, rightControllers);
 
-  Field2d m_field = new Field2d();
-
   RelativeEncoder leftEncoder = leftLeader.getEncoder();
   RelativeEncoder rightEncoder = rightLeader.getEncoder();
 
@@ -78,13 +59,6 @@ public class DriveTrain extends SubsystemBase {
 
   SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
   SparkMaxPIDController controladorDer = rightLeader.getPIDController();
-
-  private final DifferentialDrivePoseEstimator m_poseEstimator =
-            new DifferentialDrivePoseEstimator(
-                    DriveConstants.kDriveKinematics, 
-                    Rotation2d.fromDegrees(-getAngle()), 
-                    0.0, 0.0, 
-                    new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)));
   
   /* 
    * We decided that having two types of odometry would work better than just having one of them.
@@ -99,15 +73,13 @@ public class DriveTrain extends SubsystemBase {
   DifferentialDriveOdometry wheelOdometry = new DifferentialDriveOdometry(
     Rotation2d.fromDegrees(getCorrectedAngle()), encoderCountsToMeters(leftEncoder.getPosition()), 
     encoderCountsToMeters(rightEncoder.getPosition()));
-
+  
   //ShuffleboardTab debuggingTab;
   //ShuffleboardTab competitionTab;
 
-  Alliance alliance = Alliance.Invalid;
+  private VisionSystem vision = new VisionSystem(this);
 
   private DoubleArrayLogEntry bot3dPose;
-
-  Debouncer poseDebouncer = new Debouncer(0.1, DebounceType.kRising);
 
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
@@ -133,8 +105,6 @@ public class DriveTrain extends SubsystemBase {
 
     leftLeader.setInverted(true);
     leftFollower.setInverted(true);
-
-    SmartDashboard.putData("Field", m_field);
     
     leftFollower.follow(leftLeader);
     rightFollower.follow(rightLeader);
@@ -166,20 +136,13 @@ public class DriveTrain extends SubsystemBase {
      encoderCountsToMeters(leftEncoder.getPosition()), 
      encoderCountsToMeters(rightEncoder.getPosition()));
 
-    SmartDashboard.putBoolean("Tags good range", poseDebouncer.calculate(areTagsatGoodRange()));
-
     SmartDashboard.putString("Position State", StateMachines.getPositionState().toString());
 
-    SmartDashboard.putNumber("Num of tags", getNumofDetectedTargets());
-
-    SmartDashboard.putString("Alliance", alliance.toString());
+    
 
     //SmartDashboard.putNumber("Wheel X", wheelOdometry.getPoseMeters().getX());
     //SmartDashboard.putNumber("Wheel Y", wheelOdometry.getPoseMeters().getY());
     //SmartDashboard.putNumber("Wheel Angle", wheelOdometry.getPoseMeters().getRotation().getDegrees());
-
-    setDynamicVisionStdDevs();
-    //dynamicVisionDvs();
 
     //bot3dPose.append(log3dPose());
   }
@@ -268,10 +231,6 @@ public class DriveTrain extends SubsystemBase {
 
   /*********** Odometry ***********/
 
-  public void setAlliance(Alliance alliance){
-    this.alliance = alliance;
-  }
-
   public double getAngle(){
     return imu.getYaw();
   }
@@ -320,18 +279,6 @@ public class DriveTrain extends SubsystemBase {
     encoderCountsToMeters(rightEncoder.getPosition()), pose);
   }
 
-  public void resetPoseEstimator(Pose2d pose){
-    resetEncoders();
-    resetImu();
-    m_poseEstimator.resetPosition(Rotation2d.fromDegrees(getAngle()),
-    encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition()), pose);
-  }
-
-  public Pose2d estimatedPose2d(){
-    return m_poseEstimator.getEstimatedPosition();
-  }
-
   public double getLeftDistance(){
     return encoderCountsToMeters(leftEncoder.getPosition());
   }
@@ -346,147 +293,15 @@ public class DriveTrain extends SubsystemBase {
     differentialDrive.feed();
   }
 
-  public Translation2d getEstimationTranslation(){
-    return m_poseEstimator.getEstimatedPosition().getTranslation();
+  public Pose2d getVisionPose(){
+    return vision.estimatedPose2d();
   }
 
-  public Rotation2d getEstimationRotation(){
-    return m_poseEstimator.getEstimatedPosition().getRotation();
+  public void resetVisionPose(Pose2d pose){
+    vision.resetPoseEstimator(pose);
   }
 
-  public double getEstimationAngle(){
-    return m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
-  }
-
-  /* 
-   * On board we have two cameras, a Limelight 2+ for use on retroreflective targets and a 
-   * Limelight 3. The relevant camera in this method is the Limelight 3, 
-   * where we are using it for fudicial targets tracking.
-   * 
-   * In this method we call our co-processor and camera, get what it detects and send that data
-   * to the pose estimator to correct our odometry. If no apriltag is detected, the robot will
-   * continue using the motor encoders and the mounted gyro to change it's position on the field.
-   * 
-   * All of this data is then sent to a Fied2d() widget on the Shuffleboard and logged
-   * for later visualization.
-   * 
-   * After 2 regionals and 1 week before Worlds, we also added a rejection conditional. If the 
-   * detected tag is at or over a certain distance we just dont use that data. 
-   * It gives a much cleaner and less noisy estimation.
-  */
-  public void odometryWvision(){
-    m_poseEstimator.update(Rotation2d.fromDegrees(getAngle()), 
-    encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition()));
-
-    LimelightHelpers.Results results = 
-        LimelightHelpers.getLatestResults(VisionConstants.tagLimelightName).targetingResults;
-
-    if(LimelightHelpers.getTV(VisionConstants.tagLimelightName) && poseDebouncer.calculate(areTagsatGoodRange())){
-      Pose2d camPose = LimelightHelpers.toPose2D(results.botpose_wpiblue);
-      m_poseEstimator.addVisionMeasurement(camPose, 
-      Timer.getFPGATimestamp() - (results.latency_capture / 1000.0)
-       - (results.latency_pipeline / 1000.0));
-      m_field.getObject("Cam est Pose").setPose(camPose);
-    } else {
-      m_field.getObject("Cam est Pose").setPose(m_poseEstimator.getEstimatedPosition());
-    }
-
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
-  }
-
-  public void dynamicVisionDvs(){
-    double xyStds = 0;
-    double degStds = 0;
-    if(getNumofDetectedTargets() >= 2 && poseDebouncer.calculate(areTagsatGoodRange())){
-      xyStds = 0.1;
-      degStds = 0.1;
-    } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.5 && poseDebouncer.calculate(areTagsatGoodRange())){
-      xyStds = 0.5;
-      degStds = 0.5;
-    } else if(LimelightHelpers.getTA(VisionConstants.tagLimelightName) >= 0.1 && poseDebouncer.calculate(areTagsatGoodRange())){
-      xyStds = 1.2;
-      degStds = 1.2;
-    }
-
-    m_poseEstimator.setVisionMeasurementStdDevs(
-                  VecBuilder.fill(xyStds, xyStds, degStds));
-  }
-
-  //The rejection method in question
-  public boolean areTagsatGoodRange(){
-    boolean goodRange = false;
-    //If Alliance is Blue, use Blue Community
-    if(alliance == Alliance.Blue){
-      if(getNumofDetectedTargets() <= 1){
-        if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
-          goodRange = true;
-        } else {
-          goodRange = false;
-        }
-        //If Alliance is Red, use Red Community
-      } else {
-        if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 6.0){
-          goodRange = true;
-        } else {
-          goodRange = false;
-        }
-      }
-    } else {
-      if(getNumofDetectedTargets() <= 1){
-        if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 13.0){
-          goodRange = true;
-        } else {
-          goodRange = false;
-        }
-      } else {
-        if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 10.50){
-          goodRange = true;
-        } else {
-          goodRange = false;
-        }
-      }
-    } 
-    
-    return goodRange;
-  }
-
-  public void setDynamicVisionStdDevs(){
-    if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 2.5){
-      m_poseEstimator.setVisionMeasurementStdDevs(new 
-                              MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.1));
-    } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
-        && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
-          m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.3, 0.3, 0.3));
-    } else if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 2.5 
-    && LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 3.5){
-      m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.7, 0.7, 0.7));
-    } else {
-      m_poseEstimator.setVisionMeasurementStdDevs(new 
-          MatBuilder<>(Nat.N3(), Nat.N1()).fill(1.0, 1.0, 1.0));
-    }
-  }
-
-  public void positionState(){
-    if(DriverStation.isTeleop()){
-      if(m_poseEstimator.getEstimatedPosition().getY() <= 1.45){
-        StateMachines.setPositionState(PositionState.CABLE);
-      } else if(m_poseEstimator.getEstimatedPosition().getY() >= 4.0){
-        StateMachines.setPositionState(PositionState.LOADING);
-      } else {
-        StateMachines.setPositionState(PositionState.MIDDLE);
-      }
-    } else {
-      StateMachines.setPositionState(PositionState.TELE);
-    }
-  }
-
-  public int getNumofDetectedTargets(){
-    return LimelightHelpers
-    .getLatestResults(VisionConstants.tagLimelightName).targetingResults.targets_Fiducials.length;
-  }
+  
 
   //Gets the Balance PID Controller for use in other classes
   public PIDController getBalanceController(){
@@ -533,7 +348,7 @@ public class DriveTrain extends SubsystemBase {
     PPRamseteCommand ramseteCommand =
         new PPRamseteCommand(
             trajectory,
-            this::estimatedPose2d,
+            this::getVisionPose,
             new RamseteController(2, 0.7),
             new SimpleMotorFeedforward(
                 DriveConstants.kS,
