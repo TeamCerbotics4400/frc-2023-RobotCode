@@ -50,10 +50,12 @@ public class RedTwoBalance extends SequentialCommandGroup {
      * 3 Ave Maria
      */
     InstantCommand aveMaria = new InstantCommand(() -> m_node.selectLevel(3));
+    InstantCommand low = new InstantCommand(() -> m_node.selectLevel(0));
 
     eventMap.put("Shoot", new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
+    eventMap.put("Low", low);
 
     addCommands(resetOdometry, aveMaria, 
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),

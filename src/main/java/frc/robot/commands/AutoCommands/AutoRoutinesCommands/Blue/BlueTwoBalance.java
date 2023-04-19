@@ -26,7 +26,7 @@ import frc.robot.subsystems.WristSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class BlueTwoPiecesWBalance extends SequentialCommandGroup {
+public class BlueTwoBalance extends SequentialCommandGroup {
   /** Creates a new TwoPiecesWBalance. */
   PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("Cable2Balance",//"TwoPiecesTesting", 
   5.0, 
@@ -34,7 +34,7 @@ public class BlueTwoPiecesWBalance extends SequentialCommandGroup {
 
   HashMap<String, Command> eventMap = new HashMap<>();
 
-  public BlueTwoPiecesWBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, 
+  public BlueTwoBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist, 
   FalconShooter m_shooter, NodeSelector m_node) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

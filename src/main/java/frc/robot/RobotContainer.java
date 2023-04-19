@@ -10,7 +10,7 @@ import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueLoadingTwoPieces;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoPiecesWBalance;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
@@ -66,7 +66,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     m_autoChooser.setDefaultOption("Piece and Balance", m_DefaultAuto);
-    m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
+    //m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
     //m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
     m_autoChooser.addOption("BLUE Two Working", m_autoNames[4]);
@@ -75,7 +75,7 @@ public class RobotContainer {
     //m_autoChooser.addOption("Three and Balance", m_autoNames[7]);
     m_autoChooser.addOption("RED Two Working", m_autoNames[8]);
     m_autoChooser.addOption("RED Two and Balance", m_autoNames[9]);
-    m_autoChooser.addOption("Auto Testing", m_autoNames[10]);
+    //m_autoChooser.addOption("Auto Testing", m_autoNames[10]);
 
     SmartDashboard.putData("Auto Choices", m_autoChooser);
 
@@ -193,7 +193,7 @@ public class RobotContainer {
       break;
 
       case "BLUE TWO AND BALANCE":
-        autonomousCommand = new BlueTwoPiecesWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+        autonomousCommand = new BlueTwoBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       /*case "THREE PIECES":
@@ -212,9 +212,9 @@ public class RobotContainer {
        autonomousCommand = new RedTwoBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
-      case "AUTO TESTING":
+      /*case "AUTO TESTING":
        autonomousCommand = new BlueLoadingTwoPieces(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
+      break;*/
     }
 
     return autonomousCommand;

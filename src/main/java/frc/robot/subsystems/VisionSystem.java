@@ -47,6 +47,7 @@ public class VisionSystem {
         vision_thread();
     }
 
+    //Start the vision systeam in a different CPU thread for better command scheduler performance
     public void vision_thread(){
         try{
             new Thread(() -> {

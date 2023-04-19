@@ -5,19 +5,13 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.FieldConstants;
-
 public class NodeSelector extends SubsystemBase {
   /** Creates a new NodeSelector. */
-  private Map<String, Pose2d> pose_map;
   private int currentSelectionNodes;
   private int currentSelectionLevels;
   private ArrayList<String> nodeNames = new ArrayList<String>();
@@ -32,11 +26,6 @@ public class NodeSelector extends SubsystemBase {
   public NodeSelector(Joystick joy) {
     this.joy = joy;
     this.level = levelToShoot;
-    if(DriverStation.getAlliance() == Alliance.Blue){
-    this.pose_map = FieldConstants.getBlueMap();
-    } else{
-    this.pose_map = FieldConstants.getRedMap();
-    }
     this.currentSelectionNodes = 0;
     this.currentSelectionLevels = 2;
 

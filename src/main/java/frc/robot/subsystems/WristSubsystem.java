@@ -63,7 +63,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   public void periodic() {
       super.periodic();
 
-      //SmartDashboard.putNumber("Wrist Angle", getMeasurement());
+     SmartDashboard.putNumber("Wrist Angle", getMeasurement());
   }
 
   @Override
