@@ -7,8 +7,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 11.145800169462934,
-        "y": 0.45
+        "x": 10.845551753418597,
+        "y": 0.4500000000000002
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -24,20 +24,45 @@
     },
     {
       "anchorPoint": {
-        "x": 9.87,
-        "y": 0.88
+        "x": 9.93,
+        "y": 0.95
       },
       "prevControl": {
-        "x": 10.892050541081517,
-        "y": 0.8799999999999999
+        "x": 10.323193188679236,
+        "y": 0.9803235993979851
       },
       "nextControl": {
-        "x": 10.892050541081517,
-        "y": 0.8799999999999999
+        "x": 10.323193188679236,
+        "y": 0.9803235993979851
       },
       "holonomicAngle": 0,
       "isReversal": true,
       "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 11.27,
+        "y": 1.07
+      },
+      "prevControl": {
+        "x": 10.919554159736055,
+        "y": 1.0572722259850689
+      },
+      "nextControl": {
+        "x": 11.620445840263944,
+        "y": 1.0827277740149313
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": 2.0,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -53,18 +78,18 @@
         "y": 1.09
       },
       "prevControl": {
-        "x": 11.651370465245426,
-        "y": 1.0376640437570563
+        "x": 11.150862032875612,
+        "y": 1.077702224229753
       },
       "nextControl": {
-        "x": 11.651370465245426,
-        "y": 1.0376640437570563
+        "x": 11.150862032875612,
+        "y": 1.077702224229753
       },
       "holonomicAngle": 0,
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
@@ -74,12 +99,12 @@
     },
     {
       "anchorPoint": {
-        "x": 9.71,
-        "y": 2.0
+        "x": 9.86,
+        "y": 2.03
       },
       "prevControl": {
-        "x": 10.233555962555757,
-        "y": 1.723960255479239
+        "x": 10.423377662545688,
+        "y": 1.84857674948528
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -96,7 +121,7 @@
     }
   ],
   "maxVelocity": null,
-  "maxAcceleration": null,
+  "maxAcceleration": 2.0,
   "isReversed": true,
   "markers": [
     {
@@ -106,13 +131,13 @@
       ]
     },
     {
-      "position": 1.25,
+      "position": 1.05,
       "names": [
         "Shoot"
       ]
     },
     {
-      "position": 2.02,
+      "position": 3.02,
       "names": [
         "Intake"
       ]
