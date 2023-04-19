@@ -23,7 +23,7 @@ import frc.robot.subsystems.WristSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PieceWBalance extends SequentialCommandGroup {
   /** Creates a new OnlyBalanceAutoCommand. */
-  PathPlannerTrajectory onlyBalanceTrajectory = PathPlanner.loadPath("Only Balance", 
+  PathPlannerTrajectory onlyBalanceTrajectory = PathPlanner.loadPath("OnlyBalanceBlue", 
     2.0, 
     0.75, true);
     DriveTrain m_drive;
