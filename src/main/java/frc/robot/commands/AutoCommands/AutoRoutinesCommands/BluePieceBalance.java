@@ -21,7 +21,7 @@ import frc.robot.subsystems.WristSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class PieceWBalance extends SequentialCommandGroup {
+public class BluePieceBalance extends SequentialCommandGroup {
   /** Creates a new OnlyBalanceAutoCommand. */
   PathPlannerTrajectory onlyBalanceTrajectory = PathPlanner.loadPath("OnlyBalanceBlue", 
     2.0, 
@@ -32,7 +32,7 @@ public class PieceWBalance extends SequentialCommandGroup {
     FalconShooter m_shooter;
     NodeSelector m_selector;
 
-  public PieceWBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist,
+  public BluePieceBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist,
    FalconShooter m_shooter, NodeSelector m_selector) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -49,7 +49,7 @@ public class PieceWBalance extends SequentialCommandGroup {
 
     InstantCommand shootHigh = new InstantCommand(() -> m_selector.selectLevel(2));
 
-    addCommands(resetOdometry, shootHigh,
+    addCommands(setCurrent, resetOdometry, shootHigh,
     new ShootCube(m_shooter, m_arm, m_wrist, m_selector), 
       new IdleArm(m_arm, m_wrist),
       m_drive.createCommandForTrajectoryVision(onlyBalanceTrajectory),

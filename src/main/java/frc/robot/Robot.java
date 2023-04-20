@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
-    m_robotContainer.getDrivetrain().setDriveCurrentLimit(75);
+    //m_robotContainer.getDrivetrain().setDriveCurrentLimit(75);
 
     m_robotContainer.getDrivetrain().setAllianceForVision(DriverStation.getAlliance());
   }
@@ -123,7 +123,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.getDrivetrain().setDriveCurrentLimit(40);
+    m_robotContainer.getDrivetrain().setDriveCurrentLimit(75);
     m_robotContainer.getDrivetrain().setAllianceForVision(DriverStation.getAlliance());
   }
 

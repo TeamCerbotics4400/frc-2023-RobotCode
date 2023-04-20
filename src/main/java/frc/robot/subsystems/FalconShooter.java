@@ -83,7 +83,7 @@ public class FalconShooter extends SubsystemBase {
 
   int pidSlot = 0;
 
-  double stopCurrent = 8.5;
+  double stopCurrent = 10;
 
   double shootCurrent = 7.0;
 

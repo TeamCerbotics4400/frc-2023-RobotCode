@@ -7,11 +7,12 @@ package frc.robot;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PieceWBalance;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.BluePieceBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueLoadingTwoPieces;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedPieceBaance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
 import frc.robot.commands.TeleOpCommands.AlignToNode;
@@ -56,16 +57,17 @@ public class RobotContainer {
   Timer rumbleTimer = new Timer();
   
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
-  private final String m_DefaultAuto = "PIECE AND BALANCE";//"NO AUTO";
+  private final String m_DefaultAuto = "PIECE AND BALANCE BLUE";//"NO AUTO";
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT AUTO", 
-      "PIECE AND BALANCE", "BLUE TWO WORKING", "BLUE TWO AND BALANCE", "THREE PIECES", "THREE BALANCE", "RED TWO WORKING",
-      "RED TWO AND BALANCE", "AUTO TESTING"};
+      "PIECE AND BALANCE BLUE", "BLUE TWO WORKING", "BLUE TWO AND BALANCE", "THREE PIECES", "THREE BALANCE", "RED TWO WORKING",
+      "RED TWO AND BALANCE", "AUTO TESTING", "PIECE AND BALANCE RED"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    m_autoChooser.setDefaultOption("Piece and Balance", m_DefaultAuto);
+    m_autoChooser.setDefaultOption("BLUE Piece and Balance", m_DefaultAuto);
+    m_autoChooser.setDefaultOption("RED Piece and Balance", m_autoNames[11]);
     //m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
     //m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
@@ -184,8 +186,12 @@ public class RobotContainer {
         autonomousCommand = new StraightAuto(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
-      case "PIECE AND BALANCE":
-        autonomousCommand = new PieceWBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      case "PIECE AND BALANCE BLUE":
+        autonomousCommand = new BluePieceBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+      break;
+
+      case "PIECE AND BALANCE RED":
+        autonomousCommand = new RedPieceBaance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       case "BLUE TWO WORKING":

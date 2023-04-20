@@ -45,12 +45,15 @@ public class BlueTwoWorking extends SequentialCommandGroup {
     InstantCommand aveMaria = new InstantCommand(
       () -> m_selector.selectLevel(3));
 
+    InstantCommand current = new InstantCommand(() -> m_drive.setDriveCurrentLimit(40));
+
     eventMap.put("Shoot", new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
+    
     //eventMap.put("Mid", setLevelMid);
 
-    addCommands(resetOdometry, aveMaria,
+    addCommands(current, resetOdometry, aveMaria,
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector).andThen(new IdleArm(m_arm, m_wrist)),
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(cableTwo), 
     cableTwo.getMarkers(), eventMap).andThen(new IdleArm(m_arm, m_wrist)));

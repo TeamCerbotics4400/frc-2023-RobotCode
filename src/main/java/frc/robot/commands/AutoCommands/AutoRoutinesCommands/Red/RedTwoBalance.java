@@ -51,13 +51,14 @@ public class RedTwoBalance extends SequentialCommandGroup {
      */
     InstantCommand aveMaria = new InstantCommand(() -> m_node.selectLevel(3));
     InstantCommand low = new InstantCommand(() -> m_node.selectLevel(0));
+    InstantCommand current = new InstantCommand(() -> m_drive.setDriveCurrentLimit(40));
 
     eventMap.put("Shoot", new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node));
     eventMap.put("Idle", new IdleArm(m_arm, m_wrist));
     eventMap.put("Intake", new IntakeCube(m_shooter, m_arm, m_wrist));
     eventMap.put("Low", low);
 
-    addCommands(resetOdometry, aveMaria, 
+    addCommands(current, resetOdometry, aveMaria, 
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_node).andThen(new IdleArm(m_arm, m_wrist)),
     new FollowPathWithEvents(m_drive.createCommandForTrajectory(piecesBalance),
     piecesBalance.getMarkers(), eventMap).andThen(new AutoBalance(m_drive)));//.alongWith(new CounterBalance(m_arm, m_wrist, m_node)));
