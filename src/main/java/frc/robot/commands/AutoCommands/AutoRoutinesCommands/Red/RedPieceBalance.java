@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.AutoCommands.AutoRoutinesCommands;
+package frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -21,9 +21,9 @@ import frc.robot.subsystems.WristSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class BluePieceBalance extends SequentialCommandGroup {
+public class RedPieceBalance extends SequentialCommandGroup {
   /** Creates a new OnlyBalanceAutoCommand. */
-  PathPlannerTrajectory onlyBalanceTrajectory = PathPlanner.loadPath("OnlyBalanceBlue", 
+  PathPlannerTrajectory onlyBalanceTrajectory = PathPlanner.loadPath("OnlyBalanceRed", 
     2.0, 
     0.75, true);
     DriveTrain m_drive;
@@ -32,7 +32,7 @@ public class BluePieceBalance extends SequentialCommandGroup {
     FalconShooter m_shooter;
     NodeSelector m_selector;
 
-  public BluePieceBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist,
+  public RedPieceBalance(DriveTrain m_drive, ArmSubsystem m_arm, WristSubsystem m_wrist,
    FalconShooter m_shooter, NodeSelector m_selector) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

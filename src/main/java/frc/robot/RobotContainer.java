@@ -7,12 +7,12 @@ package frc.robot;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.BluePieceBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueLoadingTwoPieces;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BluePieceBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedPieceBaance;
+import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedPieceBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
 import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
 import frc.robot.commands.TeleOpCommands.AlignToNode;
@@ -60,7 +60,8 @@ public class RobotContainer {
   private final String m_DefaultAuto = "PIECE AND BALANCE BLUE";//"NO AUTO";
   private String m_autoSelected;
   private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT AUTO", 
-      "PIECE AND BALANCE BLUE", "BLUE TWO WORKING", "BLUE TWO AND BALANCE", "THREE PIECES", "THREE BALANCE", "RED TWO WORKING",
+      "PIECE AND BALANCE BLUE", "BLUE TWO WORKING", "BLUE TWO AND BALANCE", 
+      "THREE PIECES", "THREE BALANCE", "RED TWO WORKING",
       "RED TWO AND BALANCE", "AUTO TESTING", "PIECE AND BALANCE RED"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -71,11 +72,11 @@ public class RobotContainer {
     //m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
     m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
     //m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
-    m_autoChooser.addOption("BLUE Two Working", m_autoNames[4]);
+    m_autoChooser.addOption("BLUE Two", m_autoNames[4]);
     m_autoChooser.addOption("BLUE Two and Balance", m_autoNames[5]);
     //m_autoChooser.addOption("Three pieces", m_autoNames[6]);
     //m_autoChooser.addOption("Three and Balance", m_autoNames[7]);
-    m_autoChooser.addOption("RED Two Working", m_autoNames[8]);
+    m_autoChooser.addOption("RED Two", m_autoNames[8]);
     m_autoChooser.addOption("RED Two and Balance", m_autoNames[9]);
     //m_autoChooser.addOption("Auto Testing", m_autoNames[10]);
 
@@ -191,7 +192,7 @@ public class RobotContainer {
       break;
 
       case "PIECE AND BALANCE RED":
-        autonomousCommand = new RedPieceBaance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
+        autonomousCommand = new RedPieceBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
       break;
 
       case "BLUE TWO WORKING":

@@ -30,8 +30,8 @@ import frc.robot.subsystems.WristSubsystem;
 public class RedTwoBalance extends SequentialCommandGroup {
   /** Creates a new TwoPiecesWBalance. */
   PathPlannerTrajectory piecesBalance = PathPlanner.loadPath("Cable2RedBalance",//"TwoPiecesTesting", 
-  AutoConstants.kMaxSpeedMetersPerSecond, 
-  2.0, true);//AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
+  5.0, 
+  1.85, true);//AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
   HashMap<String, Command> eventMap = new HashMap<>();
 

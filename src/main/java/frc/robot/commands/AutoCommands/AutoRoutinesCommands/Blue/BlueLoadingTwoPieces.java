@@ -29,8 +29,8 @@ public class BlueLoadingTwoPieces extends SequentialCommandGroup {
   /** Creates a new BlueLoadingTwoPieces. */
   PathPlannerTrajectory loading2 = PathPlanner.loadPath("Loading2", 
   //5.0, 
-  3.0,
-  1.5,
+  5.0,
+  1.85,
   //3.0,
    true);
 
@@ -54,7 +54,7 @@ public class BlueLoadingTwoPieces extends SequentialCommandGroup {
     addCommands(resetOdometry, aveMaria, 
     new AveMariaShoot(m_shooter, m_arm, m_wrist, m_selector),
     new IdleArm(m_arm, m_wrist), //m_drive.createCommandForTrajectory(loading2));
-    new FollowPathWithEvents(m_drive.createCommandForTrajectoryVision(loading2), 
+    new FollowPathWithEvents(m_drive.createCommandForTrajectory(loading2), 
                                                         loading2.getMarkers(), eventMap));
   }
 }
