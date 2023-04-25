@@ -170,7 +170,6 @@ public class VisionSystem {
         } else {
           goodRange = false;
         }
-        //If Alliance is Red, use Red Community
       } else {
         if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() <= 6.0){
           goodRange = true;
@@ -178,6 +177,7 @@ public class VisionSystem {
           goodRange = false;
         }
       }
+    //If Alliance is Red, use Red Community
     } else {
       if(getNumofDetectedTargets() <= 1){
         if(LimelightHelpers.getBotPose2d_wpiBlue(VisionConstants.tagLimelightName).getX() >= 13.0){

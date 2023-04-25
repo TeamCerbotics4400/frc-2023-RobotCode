@@ -35,6 +35,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FalconShooter;
 import frc.robot.subsystems.WristSubsystem;
+import team4400.StateMachines;
 import team4400.StateMachines.IntakeState;
 import frc.robot.subsystems.NodeSelector;
 /**
@@ -165,6 +166,8 @@ public class RobotContainer {
    new JoystickButton(subsystemsDriver, 4)
    .whileTrue(new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
                                                                             m_nodeSelector));
+
+   new JoystickButton(subsystemsDriver, 2).onTrue(new InstantCommand(() -> StateMachines.setIntakeIdle()));
   }    
 
   /**

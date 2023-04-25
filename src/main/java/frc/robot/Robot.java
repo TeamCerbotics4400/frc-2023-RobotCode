@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import team4400.StateMachines;
+import team4400.StateMachines.IntakeState;
 
 /*
  * 
@@ -130,12 +132,12 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    /*if(StateMachines.getIntakeState() == IntakeState.FULL){
+    if(StateMachines.getIntakeState() == IntakeState.FULL){
       m_robotContainer.setIntakeRumble(); 
     } else {
       m_robotContainer.getRumbleTimer().stop();
       m_robotContainer.getRumbleTimer().reset();
-    }*/
+    }
   }
 
   @Override
