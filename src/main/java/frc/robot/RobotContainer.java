@@ -167,7 +167,7 @@ public class RobotContainer {
    .whileTrue(new StateShooterCommand(m_shooter, m_arm, m_wrist, IntakeState.SHOOTING, 
                                                                             m_nodeSelector));
 
-   new JoystickButton(subsystemsDriver, 2).onTrue(new InstantCommand(() -> StateMachines.setIntakeIdle()));
+   new JoystickButton(subsystemsDriver, 2).toggleOnTrue(new InstantCommand(() -> StateMachines.setIntakeIdle()));
   }    
 
   /**
