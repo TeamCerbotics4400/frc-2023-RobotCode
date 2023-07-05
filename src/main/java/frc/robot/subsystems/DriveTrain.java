@@ -198,7 +198,7 @@ public class DriveTrain extends SubsystemBase {
   }
   
   public void setCheesyishDrive(Joystick joystick){
-    setCheesyishDrive(0.8 * setJoyDeadBand(-joystick.getRawAxis(1), 0.15) ,0.8 * setJoyDeadBand(-joystick.getRawAxis(4), 0.15) , joystick.getRawButton(10));
+    setCheesyishDrive(0.4 * setJoyDeadBand(-joystick.getRawAxis(1), 0.15) ,0.4 * setJoyDeadBand(-joystick.getRawAxis(4), 0.15) , joystick.getRawButton(10));
   }
   
   public static double setJoyDeadBand(double joystickValue, double deadBand) {
