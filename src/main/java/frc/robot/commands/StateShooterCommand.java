@@ -77,9 +77,9 @@ public class StateShooterCommand extends CommandBase {
         break;
   
         case "Ave Maria":
-          m_shooter.leftSetpoint(1950);
-          m_shooter.rightSetpoint(1950);
-          m_shooter.horizontalSetpoint(2600);
+          m_shooter.leftSetpoint(5500);
+          m_shooter.rightSetpoint(5500);
+          m_shooter.horizontalSetpoint(5500);
       }
       break;
     }
@@ -127,9 +127,9 @@ public class StateShooterCommand extends CommandBase {
         break;
   
         case "Ave Maria":
-          m_shooter.leftSetpoint(1200);
-          m_shooter.rightSetpoint(1200);
-          m_shooter.horizontalSetpoint(1200);
+          m_shooter.leftSetpoint(5500);
+          m_shooter.rightSetpoint(5500);
+          m_shooter.horizontalSetpoint(5500);
       }
       break;
      }
