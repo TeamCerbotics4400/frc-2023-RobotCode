@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.Pigeon2;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPRamseteCommand;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -14,20 +11,12 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import team4400.Util.DriveSignal;
@@ -55,31 +44,11 @@ public class DriveTrain extends SubsystemBase {
   RelativeEncoder leftEncoder = leftLeader.getEncoder();
   RelativeEncoder rightEncoder = rightLeader.getEncoder();
 
-  Pigeon2 imu = new Pigeon2(DriveConstants.Gyro_ID);
-
   SparkMaxPIDController controladorIzq = leftLeader.getPIDController();
   SparkMaxPIDController controladorDer = rightLeader.getPIDController();
   
-  /* 
-   * We decided that having two types of odometry would work better than just having one of them.
-   * The visionOdometry is used for the TeleOp period, it helps us find our way on the field
-   * using vision correction (hence the name *VISION*Odometry)
-   * 
-   * On the other hand the wheelOdometry class helps us use the classical encoder getPosition() to
-   * get measurements and avoid having lots of noise on our measurements for more accurate path
-   * following 
-   */
-
-  DifferentialDriveOdometry wheelOdometry = new DifferentialDriveOdometry(
-    Rotation2d.fromDegrees(getCorrectedAngle()), encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition()));
-  
   //ShuffleboardTab debuggingTab;
   //ShuffleboardTab competitionTab;
-
-  private VisionSystem vision = new VisionSystem(this);
-
-  private DoubleArrayLogEntry bot3dPose;
 
   //Relacion: 8.41 : 1
   //Diametro de llantas: 6 in
@@ -124,22 +93,15 @@ public class DriveTrain extends SubsystemBase {
     leftFollower.setCANTimeout(0);
     rightFollower.setCANTimeout(0);
 
-    imu.configFactoryDefault();
-
     //debuggingTab = Shuffleboard.getTab("Debugging Tab");
     //competitionTab = Shuffleboard.getTab("Competition Tab");
 
-    resetImu();
     resetEncoders();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-     wheelOdometry.update(Rotation2d.fromDegrees(getCorrectedAngle()), 
-     encoderCountsToMeters(leftEncoder.getPosition()), 
-     encoderCountsToMeters(rightEncoder.getPosition()));
 
     //SmartDashboard.putString("Position State", StateMachines.getPositionState().toString());
 
@@ -234,18 +196,6 @@ public class DriveTrain extends SubsystemBase {
 
   /*********** Odometry ***********/
 
-  public double getAngle(){
-    return imu.getYaw();
-  }
-
-  public double getCorrectedAngle(){
-    return Math.IEEEremainder(getAngle(), 360);
-  }
-
-  public void resetImu(){
-    imu.setYaw(0);
-  }
-
   public double getDistance(){
     return (encoderCountsToMeters(leftEncoder.getPosition()) + 
           encoderCountsToMeters(rightEncoder.getPosition())) / 2;
@@ -256,14 +206,6 @@ public class DriveTrain extends SubsystemBase {
     leftEncoder.setPosition(0);
   }
 
-  public Pose2d getWheelPose(){
-    return wheelOdometry.getPoseMeters();
-  }
-
-  public double getPitch(){
-    return imu.getPitch();
-  }
-
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(encoderCountsToMeters(leftEncoder.getPosition()),
     encoderCountsToMeters(rightEncoder.getPosition()));
@@ -272,14 +214,6 @@ public class DriveTrain extends SubsystemBase {
   public void resetEncoders(){
     leftEncoder.setPosition(0);
     rightEncoder.setPosition(0);
-  }
-
-  public void resetOdometry(Pose2d pose) {
-    resetEncoders();
-    resetImu();
-    wheelOdometry.resetPosition(Rotation2d.fromDegrees(getAngle()),
-    encoderCountsToMeters(leftEncoder.getPosition()), 
-    encoderCountsToMeters(rightEncoder.getPosition()), pose);
   }
 
   public double getLeftDistance(){
@@ -294,18 +228,6 @@ public class DriveTrain extends SubsystemBase {
     leftControllers.setVoltage(leftVolts);
     rightControllers.setVoltage(rightVolts);
     differentialDrive.feed();
-  }
-
-  public Pose2d getVisionPose(){
-    return vision.estimatedPose2d();
-  }
-
-  public void resetVisionPose(Pose2d pose){
-    vision.resetPoseEstimator(pose);
-  }
-
-  public void setAllianceForVision(Alliance alliance){
-    vision.setAlliance(alliance);
   }
 
   //Gets the Balance PID Controller for use in other classes
@@ -323,53 +245,6 @@ public class DriveTrain extends SubsystemBase {
    * and using a tool called TunableNumber we can fine-tune our PID controllers without the need to be
    * deploying code after every change.
    */
-
-   /*********** Autos ***********/
-
-  //Ramsete Command for following created Trajectories
-  public Command createCommandForTrajectory(PathPlannerTrajectory trajectory) {
-    PPRamseteCommand ramseteCommand =
-        new PPRamseteCommand(
-            trajectory,
-            this::getWheelPose,
-            new RamseteController(2, 0.7),
-            new SimpleMotorFeedforward(
-                DriveConstants.kS,
-                DriveConstants.kV,
-                DriveConstants.kA),
-                DriveConstants.kDriveKinematics,
-            this::getWheelSpeeds,
-            leftPIDController,
-            rightPIDController,
-            // RamseteCommand passes volts to the callback
-            this::tankDriveVolts,
-            false,
-            this);
-
-    return ramseteCommand;
-  }
-
-  public Command createCommandForTrajectoryVision(PathPlannerTrajectory trajectory) {
-    PPRamseteCommand ramseteCommand =
-        new PPRamseteCommand(
-            trajectory,
-            this::getVisionPose,
-            new RamseteController(2, 0.7),
-            new SimpleMotorFeedforward(
-                DriveConstants.kS,
-                DriveConstants.kV,
-                DriveConstants.kA),
-                DriveConstants.kDriveKinematics,
-            this::getWheelSpeeds,
-            leftPIDController,
-            rightPIDController,
-            // RamseteCommand passes volts to the callback
-            this::tankDriveVolts,
-            false,
-            this);
-
-    return ramseteCommand;
-  }
 
   /*********** Unit Conversions ***********/
   

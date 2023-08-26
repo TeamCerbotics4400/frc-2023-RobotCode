@@ -6,15 +6,6 @@ package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.WristConstants;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.PIDTunnerCommand;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.StraightAuto;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BluePieceBalance;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoBalance;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Blue.BlueTwoWorking;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedPieceBalance;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoBalance;
-import frc.robot.commands.AutoCommands.AutoRoutinesCommands.Red.RedTwoWorking;
-import frc.robot.commands.TeleOpCommands.AlignToNode;
 import frc.robot.commands.TeleOpCommands.TeleOpControl;
 import frc.robot.commands.StateIntake;
 import frc.robot.commands.StateShooterCommand;
@@ -22,8 +13,6 @@ import frc.robot.commands.StateShooterCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -55,33 +44,10 @@ public class RobotContainer {
   private ArmSubsystem m_arm = new ArmSubsystem();
 
   Timer rumbleTimer = new Timer();
-  
-  private final SendableChooser<String> m_autoChooser = new SendableChooser<>(); 
-  private final String m_DefaultAuto = "NO AUTO";
-  private String m_autoSelected;
-  private final String[] m_autoNames = {"NO AUTO", "PID TUNER", "STRAIGHT AUTO", 
-      "PIECE AND BALANCE BLUE", "BLUE TWO WORKING", "BLUE TWO AND BALANCE", 
-      "THREE PIECES", "THREE BALANCE", "RED TWO WORKING",
-      "RED TWO AND BALANCE", "AUTO TESTING", "PIECE AND BALANCE RED", "NO AUTO"};
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    m_autoChooser.setDefaultOption("No Auto", m_DefaultAuto);
-    m_autoChooser.addOption("BLUE Piece and Balance", m_autoNames[3]);
-    m_autoChooser.addOption("RED Piece and Balance", m_autoNames[11]);
-    //m_autoChooser.addOption("PID Tuner", m_autoNames[1]);
-    m_autoChooser.addOption("Straight Auto", m_autoNames[2]);
-    //m_autoChooser.addOption("Piece and balance", m_autoNames[3]);
-    m_autoChooser.addOption("BLUE Two", m_autoNames[4]);
-    m_autoChooser.addOption("BLUE Two and Balance", m_autoNames[5]);
-    //m_autoChooser.addOption("Three pieces", m_autoNames[6]);
-    //m_autoChooser.addOption("Three and Balance", m_autoNames[7]);
-    m_autoChooser.addOption("RED Two", m_autoNames[8]);
-    m_autoChooser.addOption("RED Two and Balance", m_autoNames[9]);
-    //m_autoChooser.addOption("Auto Testing", m_autoNames[10]);
-
-    SmartDashboard.putData("Auto Choices", m_autoChooser);
 
     configureBindings();
   }
@@ -121,10 +87,6 @@ public class RobotContainer {
   //Left and right sticks
    m_drive.setDefaultCommand(new TeleOpControl(m_drive, 
    chassisDriver));
-   
-   //A button
-   new JoystickButton(chassisDriver, 1).whileTrue(new 
-                                          AlignToNode(m_drive, m_nodeSelector, chassisDriver));
       
    //Left bumper
    new JoystickButton(chassisDriver, 5)
@@ -177,61 +139,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    Command autonomousCommand = null;
-    m_autoSelected = m_autoChooser.getSelected();
-
-    System.out.println("Auto Selected: " + m_autoSelected);
-    switch(m_autoSelected){
-
-      case "NO AUTO":
-        autonomousCommand = null;
-      break;
-
-      case "PID TUNER":
-       autonomousCommand = new PIDTunnerCommand(m_drive, m_arm, m_wrist);
-      break;
-
-      case "STRAIGHT AUTO":
-        autonomousCommand = new StraightAuto(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
-
-      case "PIECE AND BALANCE BLUE":
-        autonomousCommand = new BluePieceBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
-
-      case "PIECE AND BALANCE RED":
-        autonomousCommand = new RedPieceBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
-
-      case "BLUE TWO WORKING":
-        autonomousCommand = new BlueTwoWorking(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
-
-      case "BLUE TWO AND BALANCE":
-        autonomousCommand = new BlueTwoBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
-
-      /*case "THREE PIECES":
-       autonomousCommand = new ThreePieces(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
-
-      case "THREE BALANCE":
-       autonomousCommand = new ThreePiecesBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;*/
-
-      case "RED TWO WORKING":
-       autonomousCommand = new RedTwoWorking(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
-
-      case "RED TWO AND BALANCE":
-       autonomousCommand = new RedTwoBalance(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;
-
-      /*case "AUTO TESTING":
-       autonomousCommand = new BlueLoadingTwoPieces(m_drive, m_arm, m_wrist, m_shooter, m_nodeSelector);
-      break;*/
-    }
-
-    return autonomousCommand;
+    return null;
   }
 }

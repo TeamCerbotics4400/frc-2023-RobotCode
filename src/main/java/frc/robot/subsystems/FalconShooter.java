@@ -17,11 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimelightHelpers;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.VisionConstants;
-import team4400.Util.Interpolation.InterpolatingDouble;
-import team4400.Util.Interpolation.InterpolatingTreeMap;
 
 public class FalconShooter extends SubsystemBase {
   /** Creates a new FalconShooter. */
@@ -34,46 +30,6 @@ public class FalconShooter extends SubsystemBase {
   SparkMaxPIDController neoController = horizontalFlyWheel.getPIDController();
 
   LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
-
-  static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
-    kDistanceToShooterHighSpeedFalcon = new InterpolatingTreeMap<>();
-
-    static{
-      kDistanceToShooterHighSpeedFalcon.put(new InterpolatingDouble(0.79), new InterpolatingDouble(1405.0));
-      kDistanceToShooterHighSpeedFalcon.put(new InterpolatingDouble(0.94), new InterpolatingDouble(1505.0));
-      kDistanceToShooterHighSpeedFalcon.put(new InterpolatingDouble(1.10), new InterpolatingDouble(1705.0));
-      kDistanceToShooterHighSpeedFalcon.put(new InterpolatingDouble(1.43), new InterpolatingDouble(2050.0));
-    }
-  
-  static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
-    kDistanceToShooterHighSpeedNeo = new InterpolatingTreeMap<>();
-
-    static{
-      kDistanceToShooterHighSpeedNeo.put(new InterpolatingDouble(0.79), new InterpolatingDouble(1975.0));
-      kDistanceToShooterHighSpeedNeo.put(new InterpolatingDouble(0.94), new InterpolatingDouble(2075.0));
-      kDistanceToShooterHighSpeedNeo.put(new InterpolatingDouble(1.10), new InterpolatingDouble(2275.0));
-      kDistanceToShooterHighSpeedNeo.put(new InterpolatingDouble(1.43), new InterpolatingDouble(2500.0));
-    }
-
-  static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
-   kDistanceToShooterMidSpeedFalcon = new InterpolatingTreeMap<>();
-
-    static{
-      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(0.79), new InterpolatingDouble(1100.0));
-      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(0.94), new InterpolatingDouble(1200.0));
-      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(0.94), new InterpolatingDouble(1225.0));
-      kDistanceToShooterMidSpeedFalcon.put(new InterpolatingDouble(1.43), new InterpolatingDouble(1600.0));
-    }
-
-  static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble>
-   kDistanceToShooterMidSpeedNeo = new InterpolatingTreeMap<>();
-
-    static{
-      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(0.79), new InterpolatingDouble(1200.0));
-      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(0.94), new InterpolatingDouble(1700.0));
-      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(1.10), new InterpolatingDouble(1725.0));
-      kDistanceToShooterMidSpeedNeo.put(new InterpolatingDouble(1.43), new InterpolatingDouble(2100.0));
-    }
 
   boolean onTarget = false;
 
@@ -201,26 +157,6 @@ public class FalconShooter extends SubsystemBase {
     neoController.setReference(setPoint, ControlType.kVelocity);
   }
 
-  public double getSpeedForDistanceFalconHigh(double distance){
-    return kDistanceToShooterHighSpeedFalcon.getInterpolated(new InterpolatingDouble
-    (Math.max(Math.min(distance, 1.43), 0.79))).value;
-  }
-
-  public double getSpeedForDistanceNeoHigh(double distance){
-    return kDistanceToShooterHighSpeedNeo.getInterpolated(new InterpolatingDouble
-    (Math.max(Math.min(distance, 1.43), 0.79))).value;
-  }
-
-  public double getSpeedForDistanceFalconMid(double distance){
-    return kDistanceToShooterMidSpeedFalcon.getInterpolated(new InterpolatingDouble
-    (Math.max(Math.min(distance, 1.43), 0.79))).value;
-  }
-
-  public double getSpeedForDistanceNeoMid(double distance){
-    return kDistanceToShooterMidSpeedNeo.getInterpolated(new InterpolatingDouble
-    (Math.max(Math.min(distance, 1.43), 0.79))).value;
-  }
-
   public void goToDashboardVelocity(){
     leftSetpoint(falconDesiredVelo);
     rightSetpoint(falconDesiredVelo);
@@ -252,14 +188,6 @@ public class FalconShooter extends SubsystemBase {
   public void stopShooterCurrent(){
     if(needToStop()){
       setMotorsPower(0, 0, 0);
-    }
-  }
-
-  public boolean onInterpolationRange(){
-    if(LimelightHelpers.getTargetPose3d_CameraSpace(VisionConstants.tagLimelightName).getZ() < 1.43){
-      return true;
-    } else {
-      return false;
     }
   }
 
